@@ -1,0 +1,6 @@
+create sequence nest_bucket_document_nest_bucket_document_id_seq;
+
+alter sequence nest_bucket_document_nest_bucket_document_id_seq owner to xfw3;
+
+alter sequence nest_bucket_document_nest_bucket_document_id_seq owned by nest_document.nest_document_id;
+

@@ -1,0 +1,222 @@
+{
+    "tables": [
+        {
+            "schema": "production",
+            "columns": [
+                {
+                    "nullable": false,
+                    "data_type": "text",
+                    "column_name": "lookup",
+                    "is_primary_key": true
+                },
+                {
+                    "nullable": true,
+                    "data_type": "jsonb",
+                    "column_name": "lookup_json",
+                    "is_primary_key": false
+                }
+            ],
+            "table_name": "lookup"
+        },
+        {
+            "schema": "production",
+            "columns": [
+                {
+                    "nullable": false,
+                    "data_type": "bigint",
+                    "column_name": "nest_id",
+                    "is_primary_key": true
+                },
+                {
+                    "nullable": false,
+                    "data_type": "integer",
+                    "column_name": "width",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "integer",
+                    "column_name": "height",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "integer",
+                    "column_name": "amount",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "integer",
+                    "column_name": "production_impact",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "integer",
+                    "column_name": "remaining_impact",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "timestamp with time zone",
+                    "column_name": "created_at",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "timestamp with time zone",
+                    "column_name": "updated_at",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "integer",
+                    "column_name": "domain_id",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": true,
+                    "data_type": "numeric",
+                    "column_name": "waste_percentage",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": true,
+                    "data_type": "jsonb",
+                    "column_name": "placement_json",
+                    "is_primary_key": false
+                }
+            ],
+            "table_name": "nest"
+        },
+        {
+            "schema": "production",
+            "columns": [
+                {
+                    "nullable": false,
+                    "data_type": "bigint",
+                    "column_name": "nest_log_id",
+                    "is_primary_key": true
+                },
+                {
+                    "nullable": false,
+                    "data_type": "bigint",
+                    "column_name": "nest_id",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": true,
+                    "data_type": "integer",
+                    "column_name": "from_status_sequence",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": true,
+                    "data_type": "integer",
+                    "column_name": "to_status_sequence",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "integer",
+                    "column_name": "amount",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "integer",
+                    "column_name": "remaining_impact_delta",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "ARRAY",
+                    "column_name": "resource_ids",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "timestamp with time zone",
+                    "column_name": "moved_at",
+                    "is_primary_key": false
+                }
+            ],
+            "table_name": "nest_log"
+        },
+        {
+            "schema": "production",
+            "columns": [
+                {
+                    "nullable": false,
+                    "data_type": "bigint",
+                    "column_name": "nest_unit_manifest_id",
+                    "is_primary_key": true
+                },
+                {
+                    "nullable": false,
+                    "data_type": "bigint",
+                    "column_name": "nest_id",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "jsonb",
+                    "column_name": "param_json",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "text",
+                    "column_name": "item_code",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "jsonb",
+                    "column_name": "possible_status_sequence",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "integer",
+                    "column_name": "production_impact_per_unit",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "jsonb",
+                    "column_name": "config_json",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "timestamp with time zone",
+                    "column_name": "created_at",
+                    "is_primary_key": false
+                },
+                {
+                    "nullable": false,
+                    "data_type": "timestamp with time zone",
+                    "column_name": "updated_at",
+                    "is_primary_key": false
+                }
+            ],
+            "table_name": "nest_unit_manifest"
+        }
+    ],
+    "foreign_keys": [
+        {
+            "to_table": "production.nest",
+            "to_column": "nest_id",
+            "from_table": "production.nest_unit_manifest",
+            "from_column": "nest_id"
+        },
+        {
+            "to_table": "production.nest",
+            "to_column": "nest_id",
+            "from_table": "production.nest_log",
+            "from_column": "nest_id"
+        }
+    ]
+}
