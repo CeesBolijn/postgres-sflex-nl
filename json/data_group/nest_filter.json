@@ -1,0 +1,83 @@
+{
+  "data_group_id": 52,
+  "data_group": "nest_filter",
+  "data_group_json": [
+    {
+      "layout": "filter",
+      "params": [
+        {
+          "key": "production_line_id",
+          "is_query_param": true
+        },
+        {
+          "key": "nest_id",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "children": [],
+      "widget_id": "nest_filter",
+      "field_config": {
+        "nest_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nest",
+                "subtitle": "QR-Code scannen oder Nest-Namen eingeben"
+              },
+              "en": {
+                "title": "Nest",
+                "subtitle": "Scan QR code or enter the nest name"
+              },
+              "es": {
+                "title": "Nest",
+                "subtitle": "Escanea el código QR o introduce el nombre del nest"
+              },
+              "fr": {
+                "title": "Nest",
+                "subtitle": "Scannez le QR code ou saisissez le nom du nest"
+              },
+              "nl": {
+                "title": "Nest",
+                "subtitle": "Scan QR-code of geef de nest-naam"
+              },
+              "uk": {
+                "title": "Nest",
+                "subtitle": "Відскануйте QR-код або введіть назву nest"
+              }
+            },
+            "order": 0,
+            "control": "dropdown-list",
+            "no_label": true,
+            "input_data": {
+              "src": [
+                "get_nest_list"
+              ],
+              "params": [
+                {
+                  "key": "production_line_id",
+                  "is_query_param": true
+                },
+                {
+                  "key": "resource_uids",
+                  "is_optional": true,
+                  "is_query_param": true
+                },
+                {
+                  "key": "internal_status",
+                  "default_value": "printed"
+                },
+                {
+                  "key": "require_thumbnail",
+                  "default_value": true
+                }
+              ],
+              "text_field": "nest_name",
+              "value_field": "nest_id"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,646 @@
+{
+  "data_group_id": 17,
+  "data_group": "production_line_overview",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_state_current"
+      ],
+      "page": 50,
+      "title": "Resources",
+      "layout": "three-d",
+      "params": [
+        {
+          "key": "model",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "production_line_overview",
+      "row_options": {
+        "nav": {
+          "menu": [
+            {
+              "i18n": {
+                "de": {
+                  "title": "Maschine"
+                },
+                "en": {
+                  "title": "Machine"
+                },
+                "es": {
+                  "title": "Máquina"
+                },
+                "fr": {
+                  "title": "Machine"
+                },
+                "nl": {
+                  "title": "Machine"
+                },
+                "uk": {
+                  "title": "Машина"
+                }
+              },
+              "icon": "Settings01",
+              "path": "(sidebar:xfw/nl/sidebar/productielijn-machine)",
+              "params": [
+                {
+                  "key": "resource_id",
+                  "is_query_param": true
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "Analytik"
+                },
+                "en": {
+                  "title": "Analytics"
+                },
+                "es": {
+                  "title": "Analítica"
+                },
+                "fr": {
+                  "title": "Analytique"
+                },
+                "nl": {
+                  "title": "Analyse"
+                },
+                "uk": {
+                  "title": "Аналітика"
+                }
+              },
+              "icon": "BarChart01",
+              "path": "(sidebar:oee)",
+              "hidden_when": [
+                {
+                  "op": "not in",
+                  "field": "type",
+                  "value": [
+                    "printer",
+                    "cutter",
+                    "laser",
+                    "coater",
+                    "calander",
+                    "laminator",
+                    "cure-oven",
+                    "slitter",
+                    "folder",
+                    "finish",
+                    "grommet-seam"
+                  ]
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "TCO & Kapazität"
+                },
+                "en": {
+                  "title": "TCO & capacity"
+                },
+                "es": {
+                  "title": "TCO y capacidad"
+                },
+                "fr": {
+                  "title": "TCO & capacité"
+                },
+                "nl": {
+                  "title": "TCO & capaciteit"
+                },
+                "uk": {
+                  "title": "TCO та потужність"
+                }
+              },
+              "icon": "CoinsStacked01",
+              "path": "(sidebar:tco)",
+              "hidden_when": [
+                {
+                  "op": "not in",
+                  "field": "type",
+                  "value": [
+                    "printer",
+                    "cutter",
+                    "laser",
+                    "coater",
+                    "calander",
+                    "laminator",
+                    "cure-oven",
+                    "slitter",
+                    "folder",
+                    "finish",
+                    "grommet-seam"
+                  ]
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "Produktion"
+                },
+                "en": {
+                  "title": "Production"
+                },
+                "es": {
+                  "title": "Producción"
+                },
+                "fr": {
+                  "title": "Production"
+                },
+                "nl": {
+                  "title": "Productie"
+                },
+                "uk": {
+                  "title": "Виробництво"
+                }
+              },
+              "icon": "Printer",
+              "path": "(sidebar:production)",
+              "hidden_when": [
+                {
+                  "op": "not in",
+                  "field": "type",
+                  "value": [
+                    "printer",
+                    "cutter",
+                    "laser",
+                    "coater",
+                    "calander",
+                    "laminator",
+                    "cure-oven",
+                    "slitter",
+                    "folder",
+                    "finish",
+                    "grommet-seam"
+                  ]
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "Tinte & Köpfe"
+                },
+                "en": {
+                  "title": "Ink & heads"
+                },
+                "es": {
+                  "title": "Tintas y cabezales"
+                },
+                "fr": {
+                  "title": "Encre & têtes"
+                },
+                "nl": {
+                  "title": "Inkt & koppen"
+                },
+                "uk": {
+                  "title": "Чорнила та головки"
+                }
+              },
+              "icon": "Droplets01",
+              "path": "(sidebar:ink-heads)",
+              "hidden_when": [
+                {
+                  "op": "not in",
+                  "field": "type",
+                  "value": [
+                    "printer"
+                  ]
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "Qualitätsmanagement"
+                },
+                "en": {
+                  "title": "Quality management"
+                },
+                "es": {
+                  "title": "Gestión de calidad"
+                },
+                "fr": {
+                  "title": "Gestion qualité"
+                },
+                "nl": {
+                  "title": "Kwaliteitsbeheer"
+                },
+                "uk": {
+                  "title": "Управління якістю"
+                }
+              },
+              "icon": "CheckCircle",
+              "path": "(sidebar:quality-management)",
+              "hidden_when": [
+                {
+                  "op": "not in",
+                  "field": "type",
+                  "value": [
+                    "printer",
+                    "cutter",
+                    "laser",
+                    "coater",
+                    "calander",
+                    "laminator",
+                    "finish"
+                  ]
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "Wartung & Tickets"
+                },
+                "en": {
+                  "title": "Maintenance & tickets"
+                },
+                "es": {
+                  "title": "Mantenimiento y tickets"
+                },
+                "fr": {
+                  "title": "Maintenance & tickets"
+                },
+                "nl": {
+                  "title": "Onderhoud & tickets"
+                },
+                "uk": {
+                  "title": "Обслуговування та заявки"
+                }
+              },
+              "icon": "Tool01",
+              "path": "(sidebar:maintenance-tickets)",
+              "hidden_when": [
+                {
+                  "op": "not in",
+                  "field": "type",
+                  "value": [
+                    "printer",
+                    "cutter",
+                    "laser",
+                    "coater",
+                    "calander",
+                    "laminator",
+                    "cure-oven",
+                    "slitter",
+                    "folder",
+                    "finish",
+                    "grommet-seam"
+                  ]
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "Werkzeug & Verschleiß"
+                },
+                "en": {
+                  "title": "Tooling & wear"
+                },
+                "es": {
+                  "title": "Herramientas y desgaste"
+                },
+                "fr": {
+                  "title": "Outillage & usure"
+                },
+                "nl": {
+                  "title": "Gereedschap & slijtage"
+                },
+                "uk": {
+                  "title": "Інструмент та знос"
+                }
+              },
+              "icon": "Scissors01",
+              "path": "(sidebar:tooling-wear)",
+              "hidden_when": [
+                {
+                  "op": "not in",
+                  "field": "type",
+                  "value": [
+                    "cutter",
+                    "slitter"
+                  ]
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "Warteschlange"
+                },
+                "en": {
+                  "title": "Queued jobs"
+                },
+                "es": {
+                  "title": "Trabajos en cola"
+                },
+                "fr": {
+                  "title": "File d'attente"
+                },
+                "nl": {
+                  "title": "Wachtrij"
+                },
+                "uk": {
+                  "title": "Черга"
+                }
+              },
+              "icon": "LayersThree01",
+              "path": "(sidebar:queued-jobs)",
+              "hidden_when": [
+                {
+                  "op": "not in",
+                  "field": "type",
+                  "value": [
+                    "queue"
+                  ]
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "Verbrauch & Abfall"
+                },
+                "en": {
+                  "title": "Consumption & waste"
+                },
+                "es": {
+                  "title": "Consumo y desperdicio"
+                },
+                "fr": {
+                  "title": "Consommation & déchets"
+                },
+                "nl": {
+                  "title": "Verbruik & afval"
+                },
+                "uk": {
+                  "title": "Споживання та відходи"
+                }
+              },
+              "icon": "Trash01",
+              "path": "(sidebar:consumption-waste)",
+              "hidden_when": [
+                {
+                  "op": "not in",
+                  "field": "type",
+                  "value": [
+                    "stock"
+                  ]
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "Materialspezifikationen"
+                },
+                "en": {
+                  "title": "Material specifications"
+                },
+                "es": {
+                  "title": "Especificaciones del material"
+                },
+                "fr": {
+                  "title": "Spécifications matériaux"
+                },
+                "nl": {
+                  "title": "Materiaalspecificaties"
+                },
+                "uk": {
+                  "title": "Специфікації матеріалів"
+                }
+              },
+              "icon": "File05",
+              "path": "(sidebar:material-specs)",
+              "hidden_when": [
+                {
+                  "op": "not in",
+                  "field": "type",
+                  "value": [
+                    "stock"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "field_config": {
+        "type": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "state": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "State"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "État"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Стан"
+              }
+            },
+            "order": 1,
+            "control": "badge",
+            "no_label": true
+          }
+        },
+        "job_name": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "start_at": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "nest_name": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "layout_name": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "page_number": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "resource_uid": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "capacity_left": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Verfügbar m²"
+              },
+              "en": {
+                "title": "Available m²"
+              },
+              "es": {
+                "title": "Disponible m²"
+              },
+              "fr": {
+                "title": "Disponible m²"
+              },
+              "nl": {
+                "title": "Beschikbaar m²"
+              },
+              "uk": {
+                "title": "Доступно m²"
+              }
+            },
+            "order": 4
+          },
+          "scale": 0
+        },
+        "resource_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Name"
+              },
+              "en": {
+                "title": "Name"
+              },
+              "es": {
+                "title": "Nombre"
+              },
+              "fr": {
+                "title": "Nom"
+              },
+              "nl": {
+                "title": "Naam"
+              },
+              "uk": {
+                "title": "Назва"
+              }
+            },
+            "order": 0
+          }
+        },
+        "offset_seconds": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "duration_seconds": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "capacity_sqm_per_day": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Kapazität m²"
+              },
+              "en": {
+                "title": "Capacity m²"
+              },
+              "es": {
+                "title": "Capacidad m²"
+              },
+              "fr": {
+                "title": "Capacité m²"
+              },
+              "nl": {
+                "title": "Capaciteit m²"
+              },
+              "uk": {
+                "title": "Потужність m²"
+              }
+            },
+            "order": 2
+          },
+          "scale": 0
+        },
+        "capacity_reserved_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Geplant m²"
+              },
+              "en": {
+                "title": "Planned m²"
+              },
+              "es": {
+                "title": "Planificado m²"
+              },
+              "fr": {
+                "title": "Planifié m²"
+              },
+              "nl": {
+                "title": "Gepland m²"
+              },
+              "uk": {
+                "title": "Заплановано m²"
+              }
+            },
+            "order": 3
+          },
+          "scale": 0
+        }
+      },
+      "three_d_config": {
+        "tooltip": {
+          "hidden_when": [
+            {
+              "op": "==",
+              "value": "0",
+              "field": "capacity_sqm_per_day"
+            }
+          ],
+          "field_config": {
+            "capacity_left": {
+              "ui": {
+                "order": 4
+              }
+            },
+            "capacity_sqm_per_day": {
+              "ui": {
+                "order": 2
+              }
+            },
+            "capacity_reserved_sqm": {
+              "ui": {
+                "order": 3
+              }
+            }
+          }
+        }
+      },
+      "class_name": "grid grid-cols-6 gap-1"
+    }
+  ]
+}

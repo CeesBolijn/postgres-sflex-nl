@@ -1,0 +1,45 @@
+{
+  "data_group_id": 33,
+  "data_group": "resource_plan_timeline",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_plan_timeline"
+      ],
+      "layout": "timeline-bar",
+      "params": [
+        {
+          "key": "resource_uids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "model",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "from",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "resource_plan",
+      "timeline_bar_config": {
+        "color_field": "state.color",
+        "title_field": "name",
+        "offset_field": "offset_seconds",
+        "duration_field": "duration_seconds",
+        "class_names_field": "state.class_name",
+        "group_by": [
+          "resource_uid"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,249 @@
+{
+  "data_group_id": 69,
+  "data_group": "plan_batch_nests",
+  "data_group_json": [
+    {
+      "src": [
+        "get_batch_orderlines"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "batch_id",
+          "is_query_param": true
+        },
+        {
+          "key": "from",
+          "is_query_param": true
+        }
+      ],
+      "children": [],
+      "widget_id": "batch_nest_flow_board",
+      "field_config": {
+        "specs": {
+          "ui": {
+            "i18n": {
+              "nl": {
+                "title": "Afmeting"
+              }
+            },
+            "field": "${product_amount}x ${product_width} x ${product_height}",
+            "order": 4
+          }
+        },
+        "nest_name": {
+          "ui": {
+            "i18n": {
+              "nl": {
+                "title": "Nest"
+              }
+            },
+            "order": 0
+          }
+        },
+        "nest_amount": {
+          "ui": {
+            "i18n": {
+              "nl": {
+                "title": "Aantal"
+              }
+            },
+            "order": 2
+          },
+          "scale": 0
+        },
+        "company_name": {
+          "ui": {
+            "i18n": {
+              "nl": {
+                "title": "Klant"
+              }
+            },
+            "order": 8
+          }
+        },
+        "product_width": {
+          "ui": {
+            "i18n": {
+              "nl": {
+                "title": "Breedte"
+              }
+            },
+            "order": 6
+          }
+        },
+        "product_amount": {
+          "ui": {
+            "i18n": {
+              "nl": {
+                "title": "Aantal"
+              }
+            },
+            "order": 5
+          }
+        },
+        "product_height": {
+          "ui": {
+            "i18n": {
+              "nl": {
+                "title": "Hoogte"
+              }
+            },
+            "order": 7
+          }
+        },
+        "production_date": {
+          "ui": {
+            "i18n": {
+              "nl": {
+                "title": "Productiedatum"
+              }
+            },
+            "order": 4,
+            "type": "datetime"
+          }
+        },
+        "nest_status_json": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "waste_percentage": {
+          "ui": {
+            "i18n": {
+              "nl": {
+                "title": "Afval %"
+              }
+            },
+            "order": 1
+          },
+          "scale": 1
+        },
+        "production_orderline_id": {
+          "ui": {
+            "i18n": {
+              "nl": {
+                "title": "Orderline"
+              }
+            },
+            "order": 3
+          }
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-container",
+        "children": [
+          {
+            "layout": "flow-table",
+            "children": [
+              {
+                "layout": "flow-table",
+                "row_options": {
+                  "nav": {
+                    "on_select": {
+                      "path": "(subdetail:uploader-data)",
+                      "params": [
+                        {
+                          "key": "production_orderline_id",
+                          "is_query_param": true
+                        }
+                      ]
+                    }
+                  },
+                  "colexp": false,
+                  "checkable": false,
+                  "selectable": true,
+                  "deselectable": true
+                },
+                "field_config": {
+                  "specs": {
+                    "ui": {
+                      "order": 2,
+                      "class_name": "col-span-2"
+                    }
+                  },
+                  "company_name": {
+                    "ui": {
+                      "order": 1,
+                      "class_name": "col-span-2"
+                    }
+                  },
+                  "production_orderline_id": {
+                    "ui": {
+                      "order": 0,
+                      "class_name": "col-span-2"
+                    }
+                  }
+                },
+                "class_name": "grid grid-cols-6 gap-1"
+              }
+            ],
+            "group_by": [
+              "production_date"
+            ],
+            "row_options": {
+              "colexp": true,
+              "checkable": false,
+              "selectable": false,
+              "colexp_field": "${nest_id}-${production_date}",
+              "class_names_field": "class_names"
+            },
+            "field_config": {
+              "product_amount": {
+                "ui": {
+                  "order": 1,
+                  "class_name": "col-span-1  text-right"
+                },
+                "aggregate_fn": "sum"
+              },
+              "production_date": {
+                "ui": {
+                  "order": 0,
+                  "class_name": "col-span-2",
+                  "type": "datetime"
+                }
+              }
+            },
+            "class_name": "grid grid-cols-3 gap-1"
+          }
+        ],
+        "group_by": [
+          "nest_id"
+        ],
+        "row_options": {
+          "colexp": true,
+          "checkable": false,
+          "selectable": true,
+          "colexp_field": "nest_id"
+        },
+        "field_config": {
+          "nest_name": {
+            "ui": {
+              "order": 0,
+              "class_name": "col-span-3"
+            }
+          },
+          "nest_amount": {
+            "ui": {
+              "order": 2,
+              "class_name": "col-span-1  text-right"
+            },
+            "aggregate_fn": "max"
+          },
+          "waste_percentage": {
+            "ui": {
+              "order": 1,
+              "class_name": "col-span-1  text-right"
+            },
+            "scale": 1,
+            "aggregate_fn": "max"
+          }
+        },
+        "filter_fields": [
+          "nest_id"
+        ],
+        "class_name": "grid grid-cols-5 gap-1"
+      }
+    }
+  ]
+}

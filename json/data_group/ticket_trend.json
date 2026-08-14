@@ -1,0 +1,309 @@
+{
+  "data_group_id": 53,
+  "data_group": "ticket_trend",
+  "data_group_json": [
+    {
+      "src": [
+        "get_ticket_trend_by_production_line"
+      ],
+      "layout": "combo-chart",
+      "params": [
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "weeks",
+          "default_value": 10
+        },
+        {
+          "key": "production_line_id",
+          "is_optional": false,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "ticket_trend",
+      "field_config": {
+        "r_week": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Woche"
+              },
+              "en": {
+                "title": "Week"
+              },
+              "es": {
+                "title": "Semana"
+              },
+              "fr": {
+                "title": "Semaine"
+              },
+              "nl": {
+                "title": "Week"
+              },
+              "uk": {
+                "title": "Тиждень"
+              }
+            },
+            "order": 0
+          }
+        },
+        "r_year": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "r_week_start": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Wochenbeginn"
+              },
+              "en": {
+                "title": "Week start"
+              },
+              "es": {
+                "title": "Inicio de semana"
+              },
+              "fr": {
+                "title": "Début de semaine"
+              },
+              "nl": {
+                "title": "Weekstart"
+              },
+              "uk": {
+                "title": "Початок тижня"
+              }
+            },
+            "order": 1,
+            "type": "date"
+          }
+        },
+        "r_ticket_count": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Tickets"
+              },
+              "en": {
+                "title": "Tickets"
+              },
+              "es": {
+                "title": "Tickets"
+              },
+              "fr": {
+                "title": "Tickets"
+              },
+              "nl": {
+                "title": "Tickets"
+              },
+              "uk": {
+                "title": "Тікети"
+              }
+            },
+            "order": 2
+          }
+        },
+        "r_orderline_count": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Auftragspositionen"
+              },
+              "en": {
+                "title": "Order lines"
+              },
+              "es": {
+                "title": "Líneas de pedido"
+              },
+              "fr": {
+                "title": "Lignes de commande"
+              },
+              "nl": {
+                "title": "Orderlines"
+              },
+              "uk": {
+                "title": "Рядки замовлення"
+              }
+            },
+            "order": 3
+          }
+        },
+        "r_trend_direction": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "r_ticket_percentage": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Ticket-Anteil"
+              },
+              "en": {
+                "title": "Ticket percentage"
+              },
+              "es": {
+                "title": "Porcentaje de tickets"
+              },
+              "fr": {
+                "title": "Taux de tickets"
+              },
+              "nl": {
+                "title": "Ticket percentage"
+              },
+              "uk": {
+                "title": "Відсоток тікетів"
+              }
+            },
+            "order": 4
+          },
+          "type": "percent"
+        },
+        "r_trend_block.block.i18n": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Trend"
+              },
+              "en": {
+                "title": "Trend"
+              },
+              "es": {
+                "title": "Tendencia"
+              },
+              "fr": {
+                "title": "Tendance"
+              },
+              "nl": {
+                "title": "Trend"
+              },
+              "uk": {
+                "title": "Тенденція"
+              }
+            },
+            "order": 5,
+            "control": "i18n-text"
+          }
+        }
+      },
+      "combo_chart_config": {
+        "axes": {
+          "x": {
+            "field": "r_week_start",
+            "show_grid": false
+          },
+          "y_left": {
+            "format": "compact-number",
+            "begin_at_zero": true
+          },
+          "y_right": {
+            "max": "auto",
+            "format": "percent",
+            "decimals": 2,
+            "begin_at_zero": true
+          }
+        },
+        "i18n": {
+          "de": {
+            "title": "Externe Beschwerden"
+          },
+          "en": {
+            "title": "External complaints"
+          },
+          "es": {
+            "title": "Reclamaciones externas"
+          },
+          "fr": {
+            "title": "Réclamations externes"
+          },
+          "nl": {
+            "title": "Externe klachten"
+          },
+          "uk": {
+            "title": "Зовнішні скарги"
+          }
+        },
+        "legend": {
+          "position": "bottom",
+          "alignment": "center"
+        },
+        "series": [
+          {
+            "axis": "y_left",
+            "type": "bar",
+            "color": "rgba(255,255,255,0.12)",
+            "z_order": 1,
+            "bar_width": 0.9,
+            "value_field": "r_orderline_count"
+          },
+          {
+            "axis": "y_left",
+            "type": "bar",
+            "color": "#C28DFF",
+            "z_order": 2,
+            "bar_width": 0.45,
+            "value_field": "r_ticket_count"
+          },
+          {
+            "axis": "y_right",
+            "type": "line",
+            "style": "dotted",
+            "tension": 0.3,
+            "z_order": 3,
+            "color_field": "r_trend_block.color",
+            "value_field": "r_ticket_percentage",
+            "point_radius": 2
+          }
+        ],
+        "tooltip": {
+          "sections": [
+            {
+              "field_config": {
+                "r_week": {
+                  "ui": {
+                    "order": 1
+                  }
+                },
+                "r_week_start": {
+                  "ui": {
+                    "order": 0
+                  }
+                }
+              }
+            },
+            {
+              "field_config": {
+                "r_ticket_count": {
+                  "ui": {
+                    "order": 1
+                  }
+                },
+                "r_orderline_count": {
+                  "ui": {
+                    "order": 0
+                  }
+                },
+                "r_ticket_percentage": {
+                  "ui": {
+                    "order": 2
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "key_field": "r_week_start",
+        "label_field": "r_week",
+        "label_format": "w{value}",
+        "header_metric": {
+          "trend_field": "r_trend_block",
+          "value_field": "r_ticket_count",
+          "aggregate_fn": "latest"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "data_group_id": 50,
+  "data_group": "test_get_nesting_preview",
+  "data_group_json": [
+    {
+      "src": [
+        "test_get_nesting_printfactory",
+        "test_get_nesting_printfactory_meta"
+      ],
+      "layout": "nesting-preview",
+      "params": [
+        {
+          "key": "nesting_bucket_id",
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "test_get_nesting_preview"
+    }
+  ]
+}

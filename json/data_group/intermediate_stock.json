@@ -1,0 +1,349 @@
+{
+  "data_group_id": 55,
+  "data_group": "intermediate_stock",
+  "data_group_json": [
+    {
+      "src": [
+        "get_nest_list"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "production_line_id",
+          "is_query_param": true
+        },
+        {
+          "key": "resource_uids",
+          "is_query_param": true
+        },
+        {
+          "key": "internal_status",
+          "default_value": [
+            "printed"
+          ]
+        },
+        {
+          "key": "require_thumbnail",
+          "default_value": true
+        }
+      ],
+      "children": [],
+      "widget_id": "intermediate_stock",
+      "field_config": {
+        "sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "m²"
+              },
+              "en": {
+                "title": "m²"
+              },
+              "nl": {
+                "title": "m²"
+              }
+            },
+            "order": 10,
+            "scale": 2
+          }
+        },
+        "nest_id": {
+          "ui": {
+            "order": 0,
+            "hidden": true
+          }
+        },
+        "nest_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nest"
+              },
+              "en": {
+                "title": "Nest"
+              },
+              "nl": {
+                "title": "Nest"
+              }
+            },
+            "order": 1
+          }
+        },
+        "nested_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Genestet am"
+              },
+              "en": {
+                "title": "Nested at"
+              },
+              "nl": {
+                "title": "Genest op"
+              }
+            },
+            "order": 2,
+            "hidden": true,
+            "type": "datetime"
+          }
+        },
+        "printed_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Gedruckt am"
+              },
+              "en": {
+                "title": "Printed at"
+              },
+              "nl": {
+                "title": "Geprint op"
+              }
+            },
+            "order": 3,
+            "type": "datetime"
+          }
+        },
+        "material_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "nl": {
+                "title": "Materiaal"
+              }
+            },
+            "order": 4
+          }
+        },
+        "nest_json.width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Breite"
+              },
+              "en": {
+                "title": "Width"
+              },
+              "nl": {
+                "title": "Breedte"
+              }
+            },
+            "order": 6
+          }
+        },
+        "nest_json.amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Anzahl"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "nl": {
+                "title": "Aantal"
+              }
+            },
+            "order": 5
+          }
+        },
+        "nest_json.height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Höhe"
+              },
+              "en": {
+                "title": "Height"
+              },
+              "nl": {
+                "title": "Hoogte"
+              }
+            },
+            "order": 7
+          }
+        },
+        "nest_json.material_width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material Breite"
+              },
+              "en": {
+                "title": "Material width"
+              },
+              "nl": {
+                "title": "Materiaal breedte"
+              }
+            },
+            "order": 8,
+            "hidden": true
+          }
+        },
+        "nest_json.material_height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material Höhe"
+              },
+              "en": {
+                "title": "Material height"
+              },
+              "nl": {
+                "title": "Materiaal hoogte"
+              }
+            },
+            "order": 9,
+            "hidden": true
+          }
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-container",
+        "children": [
+          {
+            "layout": "flow-cards",
+            "group_by": [
+              "nest_name"
+            ],
+            "row_options": {
+              "nav": {
+                "on_select": {
+                  "path": "(detail:nest-detail)",
+                  "params": [
+                    {
+                      "key": "nest_id",
+                      "is_query_param": true
+                    }
+                  ]
+                }
+              },
+              "colexp": false,
+              "checkable": false,
+              "selectable": true
+            },
+            "field_config": {
+              "sqm": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "m²"
+                    },
+                    "en": {
+                      "title": "m²"
+                    },
+                    "nl": {
+                      "title": "m²"
+                    }
+                  },
+                  "order": 5,
+                  "scale": 1,
+                  "class_name": "col-span-1"
+                },
+                "aggregate_fn": "sum"
+              },
+              "nest_name": {
+                "ui": {
+                  "order": 0,
+                  "class_name": "col-span-3"
+                }
+              },
+              "printed_at": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Gedruckt"
+                    },
+                    "en": {
+                      "title": "Printed"
+                    },
+                    "nl": {
+                      "title": "Geprint"
+                    }
+                  },
+                  "order": 1,
+                  "class_name": "col-span-3  text-right",
+                  "type": "datetime"
+                }
+              },
+              "nest_json.width": {
+                "ui": {
+                  "order": 3,
+                  "class_name": "col-span-1"
+                }
+              },
+              "nest_json.amount": {
+                "ui": {
+                  "order": 1,
+                  "class_name": "col-span-1"
+                }
+              },
+              "nest_json.height": {
+                "ui": {
+                  "order": 4,
+                  "class_name": "col-span-1"
+                }
+              }
+            },
+            "class_name": "grid grid-cols-6 gap-1"
+          }
+        ],
+        "group_by": [
+          "material_name"
+        ],
+        "row_options": {
+          "colexp": true,
+          "checkable": false,
+          "selectable": false
+        },
+        "field_config": {
+          "sqm": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "m²"
+                },
+                "en": {
+                  "title": "m²"
+                },
+                "nl": {
+                  "title": "m²"
+                }
+              },
+              "order": 1,
+              "scale": 2,
+              "class_name": "col-span-1  text-right"
+            },
+            "aggregate_fn": "sum"
+          },
+          "material_name": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Material"
+                },
+                "en": {
+                  "title": "Material"
+                },
+                "nl": {
+                  "title": "Materiaal"
+                }
+              },
+              "order": 0,
+              "class_name": "col-span-3"
+            }
+          }
+        },
+        "column_max_width": 400,
+        "column_min_width": 300,
+        "class_name": "grid grid-cols-4 gap-1",
+        "hidden_when_column_empty": true
+      }
+    }
+  ]
+}

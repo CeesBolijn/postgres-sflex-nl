@@ -1,0 +1,297 @@
+{
+  "data_group_id": 39,
+  "data_group": "uploader_data_list",
+  "data_group_json": [
+    {
+      "src": [
+        "get_uploader_data"
+      ],
+      "layout": "cards",
+      "params": [
+        {
+          "key": "production_orderline_id",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "uploader_data",
+      "field_config": {
+        "amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Menge"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "es": {
+                "title": "Cantidad"
+              },
+              "fr": {
+                "title": "Quantité"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "order": 2,
+            "class_name": "col-span-2"
+          }
+        },
+        "status": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "Status"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "Statut"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Статус"
+              }
+            },
+            "order": 1,
+            "control": "badge",
+            "class_name": "col-span-2"
+          }
+        },
+        "order_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "back_width": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "back_height": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "front_width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Breite"
+              },
+              "en": {
+                "title": "Width"
+              },
+              "es": {
+                "title": "Ancho"
+              },
+              "fr": {
+                "title": "Largeur"
+              },
+              "nl": {
+                "title": "Breedte"
+              },
+              "uk": {
+                "title": "Ширина"
+              }
+            },
+            "order": 3,
+            "class_name": "col-span-2"
+          }
+        },
+        "front_height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Höhe"
+              },
+              "en": {
+                "title": "Height"
+              },
+              "es": {
+                "title": "Altura"
+              },
+              "fr": {
+                "title": "Hauteur"
+              },
+              "nl": {
+                "title": "Hoogte"
+              },
+              "uk": {
+                "title": "Висота"
+              }
+            },
+            "order": 4,
+            "class_name": "col-span-2"
+          }
+        },
+        "back_file_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Rückseite Datei"
+              },
+              "en": {
+                "title": "Back file"
+              },
+              "es": {
+                "title": "Archivo posterior"
+              },
+              "fr": {
+                "title": "Fichier verso"
+              },
+              "nl": {
+                "title": "Achterkant bestand"
+              },
+              "uk": {
+                "title": "Файл задньої сторони"
+              }
+            },
+            "order": 7,
+            "class_name": "col-span-6",
+            "hidden_when": [
+              {
+                "op": "==",
+                "value": null,
+                "field": "back_file_name"
+              }
+            ]
+          }
+        },
+        "front_file_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Vorderseite Datei"
+              },
+              "en": {
+                "title": "Front file"
+              },
+              "es": {
+                "title": "Archivo frontal"
+              },
+              "fr": {
+                "title": "Fichier recto"
+              },
+              "nl": {
+                "title": "Voorkant bestand"
+              },
+              "uk": {
+                "title": "Файл передньої сторони"
+              }
+            },
+            "order": 5,
+            "class_name": "col-span-6"
+          }
+        },
+        "back_preview_url": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Rückseite"
+              },
+              "en": {
+                "title": "Back"
+              },
+              "es": {
+                "title": "Posterior"
+              },
+              "fr": {
+                "title": "Verso"
+              },
+              "nl": {
+                "title": "Achterkant"
+              },
+              "uk": {
+                "title": "Задня сторона"
+              }
+            },
+            "order": 8,
+            "control": "img",
+            "class_name": "col-span-6",
+            "hidden_when": [
+              {
+                "op": "==",
+                "value": null,
+                "field": "back_preview_url"
+              }
+            ]
+          }
+        },
+        "uploader_data_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "front_preview_url": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Vorderseite"
+              },
+              "en": {
+                "title": "Front"
+              },
+              "es": {
+                "title": "Frontal"
+              },
+              "fr": {
+                "title": "Recto"
+              },
+              "nl": {
+                "title": "Voorkant"
+              },
+              "uk": {
+                "title": "Передня сторона"
+              }
+            },
+            "order": 6,
+            "control": "img",
+            "class_name": "col-span-6"
+          }
+        },
+        "production_orderline_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Auftragsposition"
+              },
+              "en": {
+                "title": "Order line"
+              },
+              "es": {
+                "title": "Línea de pedido"
+              },
+              "fr": {
+                "title": "Ligne de commande"
+              },
+              "nl": {
+                "title": "Orderregel"
+              },
+              "uk": {
+                "title": "Рядок замовлення"
+              }
+            },
+            "order": 0,
+            "class_name": "col-span-4"
+          },
+          "nav": {
+            "path": "https://v2.proboview.nl/orders/edit/{order_id}/sales-orderlines/{sales_orderline_id}/production-orderlines"
+          }
+        }
+      },
+      "class_name": "grid grid-cols-6 gap-1"
+    }
+  ]
+}

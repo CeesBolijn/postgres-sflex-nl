@@ -1,0 +1,268 @@
+{
+  "data_group_id": 38,
+  "data_group": "orderline_list",
+  "data_group_json": [
+    {
+      "src": [
+        "get_orderlines"
+      ],
+      "layout": "cards",
+      "params": [
+        {
+          "key": "order_id",
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "orderlines",
+      "row_options": {
+        "nav": {
+          "on_select": {
+            "path": "(detail:uploader-data)",
+            "params": [
+              {
+                "key": "production_orderline_id",
+                "is_query_param": true
+              }
+            ]
+          }
+        },
+        "selectable": true
+      },
+      "field_config": {
+        "number": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Auftrag"
+              },
+              "en": {
+                "title": "Order"
+              },
+              "es": {
+                "title": "Pedido"
+              },
+              "fr": {
+                "title": "Commande"
+              },
+              "nl": {
+                "title": "Order"
+              },
+              "uk": {
+                "title": "Замовлення"
+              }
+            },
+            "order": 1,
+            "class_name": "col-span-2"
+          },
+          "nav": {
+            "path": "https://v2.proboview.nl/orders/edit/{order_id}"
+          }
+        },
+        "material_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "es": {
+                "title": "Material"
+              },
+              "fr": {
+                "title": "Matériau"
+              },
+              "nl": {
+                "title": "Materiaal"
+              },
+              "uk": {
+                "title": "Матеріал"
+              }
+            },
+            "order": 5,
+            "class_name": "col-span-6"
+          }
+        },
+        "product_width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Breite"
+              },
+              "en": {
+                "title": "Width"
+              },
+              "es": {
+                "title": "Ancho"
+              },
+              "fr": {
+                "title": "Largeur"
+              },
+              "nl": {
+                "title": "Breedte"
+              },
+              "uk": {
+                "title": "Ширина"
+              }
+            },
+            "order": 7,
+            "class_name": "col-span-2"
+          }
+        },
+        "product_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Menge"
+              },
+              "en": {
+                "title": "Quantity"
+              },
+              "es": {
+                "title": "Cantidad"
+              },
+              "fr": {
+                "title": "Quantité"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "order": 6,
+            "class_name": "col-span-2"
+          }
+        },
+        "product_height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Höhe"
+              },
+              "en": {
+                "title": "Height"
+              },
+              "es": {
+                "title": "Altura"
+              },
+              "fr": {
+                "title": "Hauteur"
+              },
+              "nl": {
+                "title": "Hoogte"
+              },
+              "uk": {
+                "title": "Висота"
+              }
+            },
+            "order": 8,
+            "class_name": "col-span-2"
+          }
+        },
+        "production_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionsdatum"
+              },
+              "en": {
+                "title": "Production date"
+              },
+              "es": {
+                "title": "Fecha de producción"
+              },
+              "fr": {
+                "title": "Date de production"
+              },
+              "nl": {
+                "title": "Productiedatum"
+              },
+              "uk": {
+                "title": "Дата виробництва"
+              }
+            },
+            "order": 3,
+            "class_name": "col-span-4",
+            "type": "datetime"
+          },
+          "type": "date"
+        },
+        "sales_orderline_id": {
+          "ui": {
+            "i18n": {
+              "en": {
+                "title": "Sales orderline"
+              },
+              "nl": {
+                "title": "Verkoop orderregel"
+              }
+            },
+            "order": 2,
+            "class_name": "col-span-2"
+          }
+        },
+        "internal_status_code": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "Status"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "Statut"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Статус"
+              }
+            },
+            "order": 4,
+            "control": "badge",
+            "no_label": true,
+            "class_name": "col-span-2"
+          }
+        },
+        "production_orderline_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Sauftragszeile"
+              },
+              "en": {
+                "title": "Order line"
+              },
+              "es": {
+                "title": "Línea de orden"
+              },
+              "fr": {
+                "title": "Ligne d'ordre"
+              },
+              "nl": {
+                "title": "Orderregel"
+              },
+              "uk": {
+                "title": "Рядок виробничого замовлення"
+              }
+            },
+            "order": 0,
+            "class_name": "col-span-2"
+          },
+          "nav": {
+            "path": "https://v2.proboview.nl/orders/edit/{order_id}/sales-orderlines/{sales_orderline_id}/production-orderlines"
+          }
+        }
+      },
+      "class_name": "grid grid-cols-6 gap-1"
+    }
+  ]
+}

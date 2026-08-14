@@ -25,6 +25,24 @@ Stack: PostgreSQL (owner `xfw3`), React 19.2, Tailwind 4.2, UntitledUI/react, Fi
 - `template` (niet `text_formula`) voor template strings
 - bij "code" als hoofd-key: property `content` voor alle tekst, plus een property voor wat je maakt
 
+## data_group json
+zie `docs/data-group-governance.md` voor de volledige analyse
+
+- een key heeft overal dezelfde vorm — een lijst blijft een lijst, ook met één element
+  (`children`, `hidden_when`, `src` zijn altijd een array)
+- config-keys staan nooit tussen veldnamen: `field_config` bevat alleen velden,
+  layout-keys als `class_name` staan ernaast
+- `ui.type` zegt wat de waarde ís, `ui.control` hoe hij getoond wordt
+- één tekst-slot in `i18n`: `title` (niet `text` of `label`); `subtitle` alleen bij een echte tweede regel
+- `<naam>_field` betekent "de naam van een veld", zonder suffix is het de waarde zelf
+- eenheid in de key, niet in een aparte property: `duration_in_seconds`, niet `duration` + `unit`
+- percentages altijd `_percentage` (niet `_perc`, `_pct`, `_percent`)
+- één conditie-vorm: `{field, op, value}`, vergelijk je twee velden dan `value_field`
+- sorteren: `sort: {field, direction}`; groeperen: `group_by`, altijd een array
+- chart-config keys heten `<chart>_chart_config`, varianten zijn properties of een prefix
+  (`stacked_bar_chart_config`), geen losse key per variant
+- booleans met `no_*` / `hide_*` staan default op false
+
 ## overig
 - titels: alleen eerste woord met hoofdletter
 - geen technisch jargon, korte uitleg

@@ -1,0 +1,217 @@
+{
+  "data_group_id": 32,
+  "data_group": "resource_queue",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_queue"
+      ],
+      "layout": "cards",
+      "params": [
+        {
+          "key": "resource_uids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "from",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "resource_queue",
+      "field_config": {
+        "width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Breite"
+              },
+              "en": {
+                "title": "Width"
+              },
+              "es": {
+                "title": "Ancho"
+              },
+              "fr": {
+                "title": "Largeur"
+              },
+              "nl": {
+                "title": "Breedte"
+              },
+              "uk": {
+                "title": "Ширина"
+              }
+            },
+            "type": "text",
+            "order": 3,
+            "class_name": "col-span-2",
+            "table_config": {
+              "hidden": false
+            }
+          },
+          "type": "number"
+        },
+        "amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Anzahl"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "es": {
+                "title": "Cantidad"
+              },
+              "fr": {
+                "title": "Quantité"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "type": "text",
+            "order": 2,
+            "class_name": "col-span-2",
+            "table_config": {
+              "hidden": false
+            }
+          },
+          "type": "number"
+        },
+        "height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Höhe"
+              },
+              "en": {
+                "title": "Height"
+              },
+              "es": {
+                "title": "Alto"
+              },
+              "fr": {
+                "title": "Hauteur"
+              },
+              "nl": {
+                "title": "Hoogte"
+              },
+              "uk": {
+                "title": "Висота"
+              }
+            },
+            "type": "text",
+            "order": 4,
+            "class_name": "col-span-2",
+            "table_config": {
+              "hidden": false
+            }
+          },
+          "type": "number"
+        },
+        "nest_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nestname"
+              },
+              "en": {
+                "title": "Nest name"
+              },
+              "es": {
+                "title": "Nombre del nest"
+              },
+              "fr": {
+                "title": "Nom du nest"
+              },
+              "nl": {
+                "title": "Nestnaam"
+              },
+              "uk": {
+                "title": "Назва гнізда"
+              }
+            },
+            "type": "text",
+            "order": 0,
+            "class_name": "col-span-3",
+            "table_config": {
+              "hidden": false
+            }
+          }
+        },
+        "state.code": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "State"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "État"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Стан"
+              }
+            },
+            "order": 5,
+            "class_name": "col-span-2",
+            "table_config": {
+              "hidden": true
+            },
+            "hidden": true
+          }
+        },
+        "nested_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nestdatum"
+              },
+              "en": {
+                "title": "Nested date"
+              },
+              "es": {
+                "title": "Fecha del nest"
+              },
+              "fr": {
+                "title": "Date du nest"
+              },
+              "nl": {
+                "title": "Nestdatum"
+              },
+              "uk": {
+                "title": "Дата гнізда"
+              }
+            },
+            "type": "datetime",
+            "order": 1,
+            "class_name": "col-span-4",
+            "table_config": {
+              "hidden": false
+            }
+          },
+          "type": "date"
+        }
+      },
+      "class_name": "grid grid-cols-6 gap-1"
+    }
+  ]
+}

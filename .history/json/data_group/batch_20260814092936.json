@@ -1,0 +1,695 @@
+{
+  "data_group_id": 44,
+  "data_group": "batch",
+  "data_group_json": [
+    {
+      "src": [
+        "get_batch"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "batch_id",
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "batch",
+      "field_config": {
+        "sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "m²"
+              },
+              "en": {
+                "title": "m²"
+              },
+              "es": {
+                "title": "m²"
+              },
+              "fr": {
+                "title": "m²"
+              },
+              "nl": {
+                "title": "m²"
+              },
+              "uk": {
+                "title": "м²"
+              }
+            },
+            "order": 18
+          },
+          "scale": 0
+        },
+        "width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Breite"
+              },
+              "en": {
+                "title": "Width"
+              },
+              "es": {
+                "title": "Ancho"
+              },
+              "fr": {
+                "title": "Largeur"
+              },
+              "nl": {
+                "title": "Breedte"
+              },
+              "uk": {
+                "title": "Ширина"
+              }
+            },
+            "order": 15
+          }
+        },
+        "amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Anzahl"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "es": {
+                "title": "Cantidad"
+              },
+              "fr": {
+                "title": "Nombre"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "order": 3
+          }
+        },
+        "height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Höhe"
+              },
+              "en": {
+                "title": "Height"
+              },
+              "es": {
+                "title": "Alto"
+              },
+              "fr": {
+                "title": "Hauteur"
+              },
+              "nl": {
+                "title": "Hoogte"
+              },
+              "uk": {
+                "title": "Висота"
+              }
+            },
+            "order": 16
+          }
+        },
+        "number": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Auftrag"
+              },
+              "en": {
+                "title": "Order"
+              },
+              "es": {
+                "title": "Pedido"
+              },
+              "fr": {
+                "title": "Commande"
+              },
+              "nl": {
+                "title": "Order"
+              },
+              "uk": {
+                "title": "Замовлення"
+              }
+            },
+            "order": 6
+          }
+        },
+        "source": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Quelle"
+              },
+              "en": {
+                "title": "Source"
+              },
+              "es": {
+                "title": "Fuente"
+              },
+              "fr": {
+                "title": "Source"
+              },
+              "nl": {
+                "title": "Bron"
+              },
+              "uk": {
+                "title": "Джерело"
+              }
+            },
+            "order": 14
+          }
+        },
+        "nest_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "batch_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Batch-Zeitpunkt"
+              },
+              "en": {
+                "title": "Batch time"
+              },
+              "es": {
+                "title": "Hora del lote"
+              },
+              "fr": {
+                "title": "Heure du batch"
+              },
+              "nl": {
+                "title": "Batch tijdstip"
+              },
+              "uk": {
+                "title": "Час батчу"
+              }
+            },
+            "order": 0,
+            "type": "datetime"
+          }
+        },
+        "batch_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "filename": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Dateiname"
+              },
+              "en": {
+                "title": "Filename"
+              },
+              "es": {
+                "title": "Nombre de archivo"
+              },
+              "fr": {
+                "title": "Nom de fichier"
+              },
+              "nl": {
+                "title": "Bestandsnaam"
+              },
+              "uk": {
+                "title": "Ім'я файлу"
+              }
+            },
+            "order": 1
+          }
+        },
+        "order_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "sequence": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "Status"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "Statut"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Статус"
+              }
+            },
+            "order": 7
+          }
+        },
+        "nest_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nest"
+              },
+              "en": {
+                "title": "Nest"
+              },
+              "es": {
+                "title": "Nest"
+              },
+              "fr": {
+                "title": "Nest"
+              },
+              "nl": {
+                "title": "Nest"
+              },
+              "uk": {
+                "title": "Нест"
+              }
+            },
+            "order": 2
+          }
+        },
+        "batch_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Batch"
+              },
+              "en": {
+                "title": "Batch"
+              },
+              "es": {
+                "title": "Lote"
+              },
+              "fr": {
+                "title": "Batch"
+              },
+              "nl": {
+                "title": "Batch"
+              },
+              "uk": {
+                "title": "Батч"
+              }
+            },
+            "order": 1
+          }
+        },
+        "nest_width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nestbreite"
+              },
+              "en": {
+                "title": "Nest width"
+              },
+              "es": {
+                "title": "Ancho del nest"
+              },
+              "fr": {
+                "title": "Largeur du nest"
+              },
+              "nl": {
+                "title": "Nestbreedte"
+              },
+              "uk": {
+                "title": "Ширина несту"
+              }
+            },
+            "order": 4
+          }
+        },
+        "order_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Bestelldatum"
+              },
+              "en": {
+                "title": "Order date"
+              },
+              "es": {
+                "title": "Fecha de pedido"
+              },
+              "fr": {
+                "title": "Date de commande"
+              },
+              "nl": {
+                "title": "Orderdatum"
+              },
+              "uk": {
+                "title": "Дата замовлення"
+              }
+            },
+            "order": 11,
+            "type": "date"
+          },
+          "type": "date"
+        },
+        "nest_height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nesthöhe"
+              },
+              "en": {
+                "title": "Nest height"
+              },
+              "es": {
+                "title": "Alto del nest"
+              },
+              "fr": {
+                "title": "Hauteur du nest"
+              },
+              "nl": {
+                "title": "Nesthoogte"
+              },
+              "uk": {
+                "title": "Висота несту"
+              }
+            },
+            "order": 5
+          }
+        },
+        "order_location": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Bestellstandort"
+              },
+              "en": {
+                "title": "Order location"
+              },
+              "es": {
+                "title": "Ubicación del pedido"
+              },
+              "fr": {
+                "title": "Lieu de commande"
+              },
+              "nl": {
+                "title": "Orderlocatie"
+              },
+              "uk": {
+                "title": "Місце замовлення"
+              }
+            },
+            "order": 13
+          }
+        },
+        "original_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Originalmenge"
+              },
+              "en": {
+                "title": "Original amount"
+              },
+              "es": {
+                "title": "Cantidad original"
+              },
+              "fr": {
+                "title": "Quantité originale"
+              },
+              "nl": {
+                "title": "Origineel aantal"
+              },
+              "uk": {
+                "title": "Оригінальна кількість"
+              }
+            },
+            "order": 17
+          }
+        },
+        "production_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionsdatum"
+              },
+              "en": {
+                "title": "Production date"
+              },
+              "es": {
+                "title": "Fecha de producción"
+              },
+              "fr": {
+                "title": "Date de production"
+              },
+              "nl": {
+                "title": "Productiedatum"
+              },
+              "uk": {
+                "title": "Дата виробництва"
+              }
+            },
+            "order": 10,
+            "type": "date"
+          },
+          "type": "date"
+        },
+        "sales_orderline_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "production_location": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionsstandort"
+              },
+              "en": {
+                "title": "Production location"
+              },
+              "es": {
+                "title": "Ubicación de producción"
+              },
+              "fr": {
+                "title": "Lieu de production"
+              },
+              "nl": {
+                "title": "Productielocatie"
+              },
+              "uk": {
+                "title": "Місце виробництва"
+              }
+            },
+            "order": 12
+          }
+        },
+        "production_order_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "internal_status_code": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Interner Status"
+              },
+              "en": {
+                "title": "Internal status"
+              },
+              "es": {
+                "title": "Estado interno"
+              },
+              "fr": {
+                "title": "Statut interne"
+              },
+              "nl": {
+                "title": "Interne status"
+              },
+              "uk": {
+                "title": "Внутрішній статус"
+              }
+            },
+            "order": 8,
+            "control": "badge",
+            "no_label": true
+          }
+        },
+        "production_company_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "production_order_status": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionsstatus"
+              },
+              "en": {
+                "title": "Production status"
+              },
+              "es": {
+                "title": "Estado de producción"
+              },
+              "fr": {
+                "title": "Statut de production"
+              },
+              "nl": {
+                "title": "Productiestatus"
+              },
+              "uk": {
+                "title": "Статус виробництва"
+              }
+            },
+            "order": 9,
+            "control": "badge",
+            "no_label": true
+          }
+        },
+        "production_orderline_id": {
+          "ui": {
+            "hidden": true
+          }
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-container",
+        "children": [
+          {
+            "layout": "flow-cards",
+            "group_by": [
+              "filename"
+            ],
+            "row_options": {
+              "colexp": false,
+              "checkable": false,
+              "selectable": true
+            },
+            "field_config": {
+              "width": {
+                "ui": {
+                  "order": 7,
+                  "class_name": "col-span-2"
+                }
+              },
+              "height": {
+                "ui": {
+                  "order": 8,
+                  "class_name": "col-span-2"
+                }
+              },
+              "number": {
+                "ui": {
+                  "order": 0,
+                  "class_name": "col-span-3"
+                }
+              },
+              "source": {
+                "ui": {
+                  "order": 5,
+                  "class_name": "col-span-3"
+                }
+              },
+              "filename": {
+                "ui": {
+                  "order": 2,
+                  "class_name": "col-span-6"
+                }
+              },
+              "sequence": {
+                "ui": {
+                  "hidden": true
+                }
+              },
+              "order_location": {
+                "ui": {
+                  "order": 3,
+                  "class_name": "col-span-2"
+                }
+              },
+              "original_amount": {
+                "ui": {
+                  "order": 6,
+                  "class_name": "col-span-2"
+                }
+              },
+              "production_location": {
+                "ui": {
+                  "order": 4,
+                  "class_name": "col-span-2"
+                }
+              },
+              "internal_status_code": {
+                "ui": {
+                  "order": 1,
+                  "control": "badge",
+                  "no_label": true,
+                  "class_name": "col-span-3"
+                }
+              }
+            },
+            "class_name": "grid grid-cols-6 gap-1"
+          }
+        ],
+        "group_by": [
+          "nest_name"
+        ],
+        "row_options": {
+          "colexp": true,
+          "checkable": false,
+          "selectable": true
+        },
+        "field_config": {
+          "amount": {
+            "ui": {
+              "order": 3,
+              "class_name": "col-span-2"
+            }
+          },
+          "batch_at": {
+            "ui": {
+              "order": 1,
+              "class_name": "col-span-3",
+              "type": "datetime"
+            }
+          },
+          "nest_name": {
+            "ui": {
+              "order": 2,
+              "class_name": "col-span-3"
+            }
+          },
+          "batch_name": {
+            "ui": {
+              "order": 0,
+              "class_name": "col-span-6"
+            }
+          },
+          "nest_width": {
+            "ui": {
+              "order": 4,
+              "class_name": "col-span-2"
+            }
+          },
+          "nest_height": {
+            "ui": {
+              "order": 5,
+              "class_name": "col-span-2"
+            }
+          }
+        },
+        "class_name": "grid grid-cols-6 gap-1"
+      },
+      "class_name": "grid grid-cols-6 gap-1"
+    }
+  ]
+}

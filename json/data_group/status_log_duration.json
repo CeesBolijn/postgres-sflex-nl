@@ -1,0 +1,165 @@
+{
+  "data_group_id": 65,
+  "data_group": "status_log_duration",
+  "data_group_json": [
+    {
+      "src": [
+        "get_status_log_duration"
+      ],
+      "layout": "cards",
+      "params": [
+        {
+          "key": "production_orderline_id",
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "status_log_duration",
+      "field_config": {
+        "updated_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Aktualisiert am"
+              },
+              "en": {
+                "title": "Updated at"
+              },
+              "es": {
+                "title": "Actualizado el"
+              },
+              "fr": {
+                "title": "Mis à jour le"
+              },
+              "nl": {
+                "title": "Bijgewerkt op"
+              },
+              "uk": {
+                "title": "Оновлено"
+              }
+            },
+            "order": 0,
+            "class_name": "col-span-3",
+            "type": "datetime"
+          }
+        },
+        "status_log_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "duration_seconds": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Dauer"
+              },
+              "en": {
+                "title": "Duration"
+              },
+              "es": {
+                "title": "Duración"
+              },
+              "fr": {
+                "title": "Durée"
+              },
+              "nl": {
+                "title": "Duur"
+              },
+              "uk": {
+                "title": "Тривалість"
+              }
+            },
+            "type": "hh:mm",
+            "unit": "seconds",
+            "order": 1,
+            "class_name": "col-span-3"
+          }
+        },
+        "production_orderline_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "next_internal_status_code": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nächster status"
+              },
+              "en": {
+                "title": "Next status"
+              },
+              "es": {
+                "title": "Siguiente estado"
+              },
+              "fr": {
+                "title": "Statut suivant"
+              },
+              "nl": {
+                "title": "Volgende status"
+              },
+              "uk": {
+                "title": "Наступний статус"
+              }
+            },
+            "order": 4,
+            "class_name": "col-span-2"
+          }
+        },
+        "update_internal_status_code": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "Status"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "Statut"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Статус"
+              }
+            },
+            "order": 3,
+            "class_name": "col-span-2"
+          }
+        },
+        "previous_internal_status_code": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Vorheriger status"
+              },
+              "en": {
+                "title": "Previous status"
+              },
+              "es": {
+                "title": "Estado anterior"
+              },
+              "fr": {
+                "title": "Statut précédent"
+              },
+              "nl": {
+                "title": "Vorige status"
+              },
+              "uk": {
+                "title": "Попередній статус"
+              }
+            },
+            "order": 2,
+            "class_name": "col-span-2"
+          }
+        }
+      },
+      "class_name": "grid grid-cols-6 gap-1"
+    }
+  ]
+}

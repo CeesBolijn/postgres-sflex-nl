@@ -1,0 +1,996 @@
+{
+  "data_group_id": 56,
+  "data_group": "plan_timeline",
+  "data_group_json": [
+    {
+      "src": [
+        "get_plan_timeline"
+      ],
+      "layout": "timeline",
+      "params": [
+        {
+          "key": "line_type",
+          "default_value": "sheet",
+          "is_query_param": true
+        },
+        {
+          "key": "from",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "resource_uids",
+          "is_optional": true,
+          "is_ident_only": true,
+          "is_query_param": true
+        },
+        {
+          "key": "batch_id",
+          "is_optional": true,
+          "is_ident_only": true,
+          "is_query_param": true
+        },
+        {
+          "key": "material_id",
+          "is_optional": true,
+          "is_ident_only": true,
+          "is_query_param": true
+        },
+        {
+          "key": "action_id",
+          "is_optional": true,
+          "is_ident_only": true,
+          "is_query_param": true
+        },
+        {
+          "key": "action_ids",
+          "is_optional": true,
+          "is_ident_only": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "resource_plan",
+      "row_options": {
+        "nav": {
+          "menu": [
+            {
+              "i18n": {
+                "de": {
+                  "title": "Charge öffnen"
+                },
+                "en": {
+                  "title": "Open batch"
+                },
+                "es": {
+                  "title": "Abrir lote"
+                },
+                "fr": {
+                  "title": "Ouvrir le lot"
+                },
+                "nl": {
+                  "title": "Batch openen"
+                },
+                "uk": {
+                  "title": "Відкрити партію"
+                }
+              },
+              "icon": "Package01",
+              "path": "(sidebar:batch)",
+              "params": [
+                {
+                  "key": "batch_id",
+                  "is_query_param": true
+                }
+              ],
+              "hidden_when": [
+                {
+                  "op": "==",
+                  "value": 0,
+                  "field": "batch_id"
+                }
+              ]
+            },
+            {
+              "i18n": {
+                "de": {
+                  "title": "Nesting-queue öffnen"
+                },
+                "en": {
+                  "title": "Open nesting-queue"
+                },
+                "es": {
+                  "title": "Abrir nesting-queue"
+                },
+                "fr": {
+                  "title": "Ouvrir le nesting"
+                },
+                "nl": {
+                  "title": "Nesting-wachtrij openen"
+                },
+                "uk": {
+                  "title": "Відкрити нестинг"
+                }
+              },
+              "icon": "Grid01",
+              "path": "(sidebar:nesting-queue)",
+              "params": [
+                {
+                  "key": "material_id",
+                  "is_query_param": true
+                },
+                {
+                  "key": "production_date",
+                  "is_query_param": true
+                }
+              ],
+              "hidden_when": [
+                {
+                  "op": "!=",
+                  "value": 0,
+                  "field": "batch_id"
+                }
+              ]
+            }
+          ]
+        },
+        "selectable": true
+      },
+      "field_config": {
+        "name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Name"
+              },
+              "en": {
+                "title": "Name"
+              },
+              "es": {
+                "title": "Nombre"
+              },
+              "fr": {
+                "title": "Nom"
+              },
+              "nl": {
+                "title": "Naam"
+              },
+              "uk": {
+                "title": "Назва"
+              }
+            },
+            "hidden": true,
+            "no_label": true
+          }
+        },
+        "batch_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Charge"
+              },
+              "en": {
+                "title": "Batch"
+              },
+              "es": {
+                "title": "Lote"
+              },
+              "fr": {
+                "title": "Lot"
+              },
+              "nl": {
+                "title": "Batch"
+              },
+              "uk": {
+                "title": "Партія"
+              }
+            },
+            "order": 3,
+            "no_label": true,
+            "class_name": "col-span-6 md:col-span-2",
+            "hidden_when": [
+              {
+                "op": "==",
+                "value": 0,
+                "field": "batch_id"
+              }
+            ]
+          }
+        },
+        "start_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Startzeit"
+              },
+              "en": {
+                "title": "Start time"
+              },
+              "es": {
+                "title": "Hora de inicio"
+              },
+              "fr": {
+                "title": "Heure de début"
+              },
+              "nl": {
+                "title": "Starttijd"
+              },
+              "uk": {
+                "title": "Час початку"
+              }
+            },
+            "hidden": true,
+            "control": "datetime-with-offset",
+            "datetime_with_offset_config": {
+              "offset_unit": "seconds",
+              "offset_field": "offset_in_seconds"
+            }
+          }
+        },
+        "batch_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Chargenname"
+              },
+              "en": {
+                "title": "Batch name"
+              },
+              "es": {
+                "title": "Nombre del lote"
+              },
+              "fr": {
+                "title": "Nom du lot"
+              },
+              "nl": {
+                "title": "Batchnaam"
+              },
+              "uk": {
+                "title": "Назва партії"
+              }
+            },
+            "order": 0,
+            "no_label": true,
+            "class_name": "col-span-6 md:col-span-4",
+            "hidden_when": [
+              {
+                "op": "==",
+                "value": null,
+                "field": "batch_name"
+              }
+            ]
+          }
+        },
+        "data.amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Gesamtmenge"
+              },
+              "en": {
+                "title": "Total amount"
+              },
+              "es": {
+                "title": "Cantidad total"
+              },
+              "fr": {
+                "title": "Quantité totale"
+              },
+              "nl": {
+                "title": "Totaal aantal"
+              },
+              "uk": {
+                "title": "Загальна кількість"
+              }
+            },
+            "hidden": true
+          }
+        },
+        "data.end_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Endzeit"
+              },
+              "en": {
+                "title": "End time"
+              },
+              "es": {
+                "title": "Hora de fin"
+              },
+              "fr": {
+                "title": "Heure de fin"
+              },
+              "nl": {
+                "title": "Eindtijd"
+              },
+              "uk": {
+                "title": "Час завершення"
+              }
+            },
+            "hidden": true,
+            "type": "datetime"
+          }
+        },
+        "material_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Gesamtmenge"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "es": {
+                "title": "Cantidad total"
+              },
+              "fr": {
+                "title": "Quantité totale"
+              },
+              "nl": {
+                "title": "Materiaal"
+              },
+              "uk": {
+                "title": "Загальна кількість"
+              }
+            },
+            "hidden": true
+          }
+        },
+        "just_in_time": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "data.status_json": {
+          "ui": {
+            "order": 5,
+            "hidden": true,
+            "control": "status",
+            "no_label": true,
+            "class_name": "hidden md:col-span-3"
+          }
+        },
+        "data.shifts.first": {
+          "ui": {
+            "order": 0,
+            "hidden": true,
+            "no_label": true
+          }
+        },
+        "data.material.name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "es": {
+                "title": "Material"
+              },
+              "fr": {
+                "title": "Matériau"
+              },
+              "nl": {
+                "title": "Materiaal"
+              },
+              "uk": {
+                "title": "Матеріал"
+              }
+            },
+            "order": 2,
+            "no_label": true,
+            "class_name": "col-span-6 md:col-span-4"
+          }
+        },
+        "data.shifts.second": {
+          "ui": {
+            "order": 0,
+            "hidden": true,
+            "no_label": true
+          }
+        },
+        "data.production_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionsdatum"
+              },
+              "en": {
+                "title": "Production date"
+              },
+              "es": {
+                "title": "Fecha de producción"
+              },
+              "fr": {
+                "title": "Date de production"
+              },
+              "nl": {
+                "title": "Productiedatum"
+              },
+              "uk": {
+                "title": "Дата виробництва"
+              }
+            },
+            "order": 4,
+            "hidden": true,
+            "no_label": true,
+            "class_name": "col-span-6 md:col-span-2",
+            "type": "date"
+          }
+        },
+        "data.vendor_batch_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Charge"
+              },
+              "en": {
+                "title": "Batch"
+              },
+              "es": {
+                "title": "Lote"
+              },
+              "fr": {
+                "title": "Lot"
+              },
+              "nl": {
+                "title": "Batch"
+              },
+              "uk": {
+                "title": "Партія"
+              }
+            },
+            "order": 1,
+            "no_label": true,
+            "class_name": "hidden md:col-span-2",
+            "hidden_when": [
+              {
+                "op": "==",
+                "value": null,
+                "field": "data.vendor_batch_id"
+              }
+            ]
+          }
+        },
+        "data.waste_percentage": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Ausschussanteil"
+              },
+              "en": {
+                "title": "Waste percentage"
+              },
+              "es": {
+                "title": "Porcentaje de desperdicio"
+              },
+              "fr": {
+                "title": "Taux de rebut"
+              },
+              "nl": {
+                "title": "Afval percentage"
+              },
+              "uk": {
+                "title": "Відсоток відходів"
+              }
+            },
+            "hidden": true
+          },
+          "type": "percent"
+        },
+        "data.filled_percentage": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Füllgrad"
+              },
+              "en": {
+                "title": "Filled percentage"
+              },
+              "es": {
+                "title": "Porcentaje de llenado"
+              },
+              "fr": {
+                "title": "Taux de remplissage"
+              },
+              "nl": {
+                "title": "Vulling"
+              },
+              "uk": {
+                "title": "Відсоток заповнення"
+              }
+            },
+            "order": 6,
+            "hidden": true,
+            "no_label": true,
+            "class_name": "hidden md:col-span-1"
+          },
+          "type": "percent"
+        },
+        "param_json.duration_in_seconds": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "data.material_summary.rework_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nacharbeit fläche"
+              },
+              "en": {
+                "title": "Rework sqm"
+              },
+              "es": {
+                "title": "M² de repetición"
+              },
+              "fr": {
+                "title": "M² de reprise"
+              },
+              "nl": {
+                "title": "Rework m2"
+              },
+              "uk": {
+                "title": "М² переробки"
+              }
+            },
+            "order": 15,
+            "no_label": true,
+            "class_name": "hidden md:col-span-2"
+          },
+          "scale": 1
+        },
+        "data.material_summary.needs_dtp_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Dtp fläche"
+              },
+              "en": {
+                "title": "Dtp sqm"
+              },
+              "es": {
+                "title": "M² dtp"
+              },
+              "fr": {
+                "title": "M² dtp"
+              },
+              "nl": {
+                "title": "Dtp m2"
+              },
+              "uk": {
+                "title": "М² dtp"
+              }
+            },
+            "order": 12,
+            "no_label": true,
+            "class_name": "hidden md:col-span-2"
+          },
+          "scale": 1
+        },
+        "data.material_summary.rework_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nacharbeit menge"
+              },
+              "en": {
+                "title": "Rework amount"
+              },
+              "es": {
+                "title": "Cantidad de repetición"
+              },
+              "fr": {
+                "title": "Quantité de reprise"
+              },
+              "nl": {
+                "title": "Rework aantal"
+              },
+              "uk": {
+                "title": "Кількість переробки"
+              }
+            },
+            "order": 14,
+            "no_label": true,
+            "class_name": "hidden md:col-span-2"
+          }
+        },
+        "data.material_summary.needs_dtp_count": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Dtp auftragszeilen"
+              },
+              "en": {
+                "title": "Dtp orderlines"
+              },
+              "es": {
+                "title": "Líneas dtp"
+              },
+              "fr": {
+                "title": "Lignes dtp"
+              },
+              "nl": {
+                "title": "Dtp orderlines"
+              },
+              "uk": {
+                "title": "Рядки dtp"
+              }
+            },
+            "order": 10,
+            "no_label": true,
+            "class_name": "hidden md:col-span-2"
+          }
+        },
+        "data.material_summary.ready_to_nest_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Fertige fläche"
+              },
+              "en": {
+                "title": "Gangrun sqm"
+              },
+              "es": {
+                "title": "M² listos"
+              },
+              "fr": {
+                "title": "M² prêts"
+              },
+              "nl": {
+                "title": "Gangrun m2"
+              },
+              "uk": {
+                "title": "Готові м²"
+              }
+            },
+            "order": 9,
+            "no_label": true,
+            "class_name": "hidden md:col-span-2"
+          },
+          "scale": 1
+        },
+        "data.material_summary.rework_lines_count": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nacharbeit auftragszeilen"
+              },
+              "en": {
+                "title": "Rework orderlines"
+              },
+              "es": {
+                "title": "Líneas de repetición"
+              },
+              "fr": {
+                "title": "Lignes de reprise"
+              },
+              "nl": {
+                "title": "Rework orderlines"
+              },
+              "uk": {
+                "title": "Рядки переробки"
+              }
+            },
+            "order": 13,
+            "no_label": true,
+            "class_name": "hidden md:col-span-2"
+          }
+        },
+        "data.material_summary.ready_to_nest_count": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Fertige auftragszeilen"
+              },
+              "en": {
+                "title": "Gangrun orderlines"
+              },
+              "es": {
+                "title": "Líneas listas"
+              },
+              "fr": {
+                "title": "Lignes prêtes"
+              },
+              "nl": {
+                "title": "Gangrun orderlines"
+              },
+              "uk": {
+                "title": "Готові рядки"
+              }
+            },
+            "order": 7,
+            "no_label": true,
+            "class_name": "hidden md:col-span-2"
+          }
+        },
+        "data.material_summary.needs_dtp_product_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Dtp menge"
+              },
+              "en": {
+                "title": "Dtp amount"
+              },
+              "es": {
+                "title": "Cantidad dtp"
+              },
+              "fr": {
+                "title": "Quantité dtp"
+              },
+              "nl": {
+                "title": "Dtp aantal"
+              },
+              "uk": {
+                "title": "Кількість dtp"
+              }
+            },
+            "order": 11,
+            "no_label": true,
+            "class_name": "hidden md:col-span-2"
+          }
+        },
+        "data.material_summary.ready_to_nest_product_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Fertige menge"
+              },
+              "en": {
+                "title": "Gangrun amount"
+              },
+              "es": {
+                "title": "Cantidad lista"
+              },
+              "fr": {
+                "title": "Quantité prête"
+              },
+              "nl": {
+                "title": "Gangrun aantal"
+              },
+              "uk": {
+                "title": "Готова кількість"
+              }
+            },
+            "order": 8,
+            "no_label": true,
+            "class_name": "hidden md:col-span-2"
+          }
+        }
+      },
+      "filter_match": "all",
+      "filter_fields": [
+        "action_id",
+        "batch_id",
+        "material_id"
+      ],
+      "timeline_config": {
+        "tooltip": {
+          "sections": [
+            {
+              "field_config": {
+                "start_at": {
+                  "ui": {
+                    "order": 1
+                  }
+                },
+                "batch_name": {
+                  "ui": {
+                    "order": 0
+                  }
+                }
+              }
+            },
+            {
+              "field_config": {
+                "nest_name": {
+                  "ui": {
+                    "order": 0
+                  }
+                },
+                "data.material.name": {
+                  "ui": {
+                    "order": 1
+                  }
+                },
+                "data.waste_percentage": {
+                  "ui": {
+                    "order": 3
+                  }
+                },
+                "data.filled_percentage": {
+                  "ui": {
+                    "order": 4
+                  }
+                },
+                "data.stock_material_amount": {
+                  "ui": {
+                    "order": 2
+                  }
+                }
+              }
+            },
+            {
+              "group": {
+                "class_name": "grid grid-cols-6 gap-1",
+                "data_field": "data.nest_status",
+                "field_config": {
+                  "data.nest_status.amount": {
+                    "ui": {
+                      "class_name": "col-span-2  text-right"
+                    }
+                  },
+                  "data.nest_status.internal_status_code": {
+                    "ui": {
+                      "class_name": "col-span-4"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "class_name": "grid grid-cols-6 gap-1",
+              "data_field": "data.material_summary",
+              "field_config": {
+                "data.material_summary.rework_sqm": {
+                  "ui": {
+                    "order": 8,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "data.material_summary.needs_dtp_sqm": {
+                  "ui": {
+                    "order": 5,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "data.material_summary.rework_amount": {
+                  "ui": {
+                    "order": 7,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "data.material_summary.needs_dtp_count": {
+                  "ui": {
+                    "order": 3,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "data.material_summary.ready_to_nest_sqm": {
+                  "ui": {
+                    "order": 2,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "data.material_summary.rework_lines_count": {
+                  "ui": {
+                    "order": 6,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "data.material_summary.ready_to_nest_count": {
+                  "ui": {
+                    "order": 0,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "data.material_summary.needs_dtp_product_amount": {
+                  "ui": {
+                    "order": 4,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "data.material_summary.ready_to_nest_product_amount": {
+                  "ui": {
+                    "order": 1,
+                    "class_name": "col-span-2"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "end_time": "22:00",
+        "no_popup": true,
+        "set_field": "state.group",
+        "start_time": "04:00",
+        "no_timeline": false,
+        "plan_config": {
+          "set": "plan",
+          "links": {
+            "connector": {
+              "from_anchor_offset_field": "next_trigger_type",
+              "from_anchor_offset_source": "param_json"
+            },
+            "parent_field": "parent_action_id",
+            "foreign_field": "action_id"
+          },
+          "evaluate": {
+            "formula_field": "formula"
+          },
+          "draggable": true,
+          "rank_field": "resource_plan_rank",
+          "offset_field": "offset_in_seconds",
+          "params_field": "param_json",
+          "resource_field": "resource_uids",
+          "start_at_field": "start_at",
+          "is_atomic_field": "is_atomic",
+          "is_locked_field": "param_json.is_locked",
+          "valid_resources": {
+            "field": "data.valid_resources",
+            "resource_field": "resource_uid",
+            "speed_factor_field": "speed_factor"
+          },
+          "break_times_field": "data.break_times",
+          "is_fixed_offset_field": "is_fixed_offset"
+        },
+        "offset_field": "offset_in_seconds",
+        "label_options": {
+          "nav": "nav:resource_menu",
+          "selectable": true,
+          "field_config": {
+            "name": {
+              "ui": {
+                "order": 0,
+                "hidden": false,
+                "class_name": "text-xs col-span-4"
+              }
+            },
+            "data.shifts.first": {
+              "ui": {
+                "order": 2,
+                "hidden": false,
+                "class_name": "col-span-4"
+              }
+            },
+            "data.shifts.second": {
+              "ui": {
+                "order": 2,
+                "hidden": false,
+                "class_name": "col-span-4"
+              }
+            },
+            "param_json.duration_in_seconds": {
+              "ui": {
+                "order": 1,
+                "hidden": false,
+                "control": "progress",
+                "no_label": true,
+                "class_name": "col-span-4",
+                "progress_config": {
+                  "value": 64800,
+                  "progress_units": "percent"
+                }
+              },
+              "aggregate_fn": "sum"
+            }
+          },
+          "class_name": "grid grid-cols-4 gap-1",
+          "multi_selectable": true
+        },
+        "duration_field": "param_json.duration_in_seconds",
+        "set_date_field": "start_at",
+        "set_group_field": "resource_uids",
+        "set_order_field": "state.order",
+        "set_title_field": "name",
+        "timeline_seconds": 64800,
+        "class_names_field": "state.class_names",
+        "just_in_time_field": "just_in_time",
+        "group_by": [
+          "line",
+          "step"
+        ],
+        "no_label": false
+      },
+      "class_name": "grid grid-cols-6 gap-1"
+    }
+  ]
+}

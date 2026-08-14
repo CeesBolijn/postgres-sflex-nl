@@ -1,0 +1,446 @@
+{
+  "data_group_id": 67,
+  "data_group": "planning_info",
+  "data_group_json": [
+    {
+      "src": [
+        "get_nest_planning"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "line_type",
+          "is_query_param": true
+        },
+        {
+          "key": "from",
+          "is_query_param": true
+        }
+      ],
+      "children": [],
+      "widget_id": "nest_planning_flow_board",
+      "field_config": {
+        "amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Menge"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "nl": {
+                "title": "Aantal"
+              }
+            },
+            "order": 4
+          },
+          "scale": 0
+        },
+        "batch_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Batch"
+              },
+              "en": {
+                "title": "Batch"
+              },
+              "nl": {
+                "title": "Batch"
+              }
+            },
+            "order": 1
+          }
+        },
+        "bucket_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Bucket"
+              },
+              "en": {
+                "title": "Bucket"
+              },
+              "nl": {
+                "title": "Bucket"
+              }
+            },
+            "order": 0
+          }
+        },
+        "waste_percentage": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Abfall %"
+              },
+              "en": {
+                "title": "Waste %"
+              },
+              "nl": {
+                "title": "Afval %"
+              }
+            },
+            "order": 3
+          },
+          "scale": 2
+        },
+        "batch_status_json": {
+          "ui": {
+            "hidden": true
+          }
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-container",
+        "children": [
+          {
+            "layout": "flow-table",
+            "children": [
+              {
+                "layout": "flow-cards",
+                "group_by": [],
+                "row_options": {
+                  "nav": {
+                    "menu": [
+                      {
+                        "i18n": {
+                          "de": {
+                            "title": "Auftragspositionen"
+                          },
+                          "en": {
+                            "title": "Orderlines"
+                          },
+                          "es": {
+                            "title": "Líneas de pedido"
+                          },
+                          "fr": {
+                            "title": "Lignes de commande"
+                          },
+                          "nl": {
+                            "title": "Orderlijnen"
+                          },
+                          "uk": {
+                            "title": "Рядки замовлення"
+                          }
+                        },
+                        "path": "(detail:plan-batch-orderline)",
+                        "params": [
+                          {
+                            "key": "batch_id",
+                            "is_query_param": true
+                          }
+                        ]
+                      },
+                      {
+                        "i18n": {
+                          "de": {
+                            "title": "Nest info"
+                          },
+                          "en": {
+                            "title": "Nest info"
+                          },
+                          "es": {
+                            "title": "Información de nesting"
+                          },
+                          "fr": {
+                            "title": "Informations de nesting"
+                          },
+                          "nl": {
+                            "title": "Nest informatie"
+                          },
+                          "uk": {
+                            "title": "Інформація про нестинг"
+                          }
+                        },
+                        "path": "(detail:plan-batch-nests)",
+                        "params": [
+                          {
+                            "key": "batch_id",
+                            "is_query_param": true
+                          }
+                        ]
+                      },
+                      {
+                        "i18n": {
+                          "de": {
+                            "title": "Nest-Vorschau"
+                          },
+                          "en": {
+                            "title": "Nest preview"
+                          },
+                          "es": {
+                            "title": "Vista previa del nesting"
+                          },
+                          "fr": {
+                            "title": "Aperçu du nesting"
+                          },
+                          "nl": {
+                            "title": "Nest preview"
+                          },
+                          "uk": {
+                            "title": "Попередній перегляд нестингу"
+                          }
+                        },
+                        "path": "(detail:nest-detail)",
+                        "params": [
+                          {
+                            "key": "batch_id",
+                            "is_query_param": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "checkable": false,
+                  "selectable": true,
+                  "deselectable": true
+                },
+                "field_config": {
+                  "name": {
+                    "ui": {
+                      "order": 0,
+                      "class_name": "col-span-6"
+                    }
+                  },
+                  "amount": {
+                    "ui": {
+                      "order": 3,
+                      "class_name": "col-span-1"
+                    }
+                  },
+                  "batch_id": {
+                    "ui": {
+                      "order": 1,
+                      "class_name": "col-span-3"
+                    }
+                  },
+                  "waste_percentage": {
+                    "ui": {
+                      "order": 4,
+                      "class_name": "col-span-2"
+                    },
+                    "scale": 1
+                  },
+                  "batch_status_json": {
+                    "ui": {
+                      "order": 4,
+                      "hidden": false,
+                      "control": "table",
+                      "no_label": true,
+                      "class_name": "col-span-6",
+                      "table_config": {
+                        "class_name": "grid grid-cols-6 gap-1",
+                        "field_config": {
+                          "code": {
+                            "ui": {
+                              "i18n": {
+                                "nl": {
+                                  "title": "Status"
+                                }
+                              },
+                              "order": 1,
+                              "class_name": "col-span-2"
+                            }
+                          },
+                          "last_moved_at": {
+                            "ui": {
+                              "i18n": {
+                                "nl": {
+                                  "title": "Datum"
+                                }
+                              },
+                              "order": 0,
+                              "class_name": "col-span-3",
+                              "type": "datetime"
+                            }
+                          },
+                          "current_amount": {
+                            "ui": {
+                              "i18n": {
+                                "nl": {
+                                  "title": "Aantal"
+                                }
+                              },
+                              "order": 2,
+                              "class_name": "col-span-1"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "class_name": "grid grid-cols-6 gap-1"
+              }
+            ],
+            "group_by": [
+              "bucket_name"
+            ],
+            "row_options": {
+              "colexp": true,
+              "checkable": false,
+              "selectable": false,
+              "class_names_field": "class_names"
+            },
+            "field_config": {
+              "amount": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Menge"
+                    },
+                    "en": {
+                      "title": "Amount"
+                    },
+                    "nl": {
+                      "title": "Aantal"
+                    }
+                  },
+                  "order": 1,
+                  "class_name": "col-span-1  text-right"
+                },
+                "aggregate_fn": "sum"
+              },
+              "bucket_name": {
+                "ui": {
+                  "order": 0,
+                  "class_name": "col-span-3"
+                }
+              },
+              "waste_percentage": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Abfall % (gem.)"
+                    },
+                    "en": {
+                      "title": "Waste % (avg)"
+                    },
+                    "nl": {
+                      "title": "Afval % (gem.)"
+                    }
+                  },
+                  "order": 2,
+                  "class_name": "col-span-1  text-right"
+                },
+                "scale": 1,
+                "aggregate_fn": "avg"
+              },
+              "waste_percentage_max": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Abfall % (max.)"
+                    },
+                    "en": {
+                      "title": "Waste % (max)"
+                    },
+                    "nl": {
+                      "title": "Afval % (max.)"
+                    }
+                  },
+                  "order": 3,
+                  "class_name": "col-span-1  text-right"
+                },
+                "field": "waste_percentage",
+                "scale": 1,
+                "aggregate_fn": "max"
+              }
+            },
+            "class_name": "grid grid-cols-6 gap-1"
+          }
+        ],
+        "group_by": [
+          "bucket_count"
+        ],
+        "row_options": {
+          "colexp": true,
+          "checkable": false,
+          "selectable": false
+        },
+        "field_config": {
+          "bucket_count": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Buckets"
+                },
+                "en": {
+                  "title": "Buckets"
+                },
+                "nl": {
+                  "title": "Buckets"
+                }
+              },
+              "order": 0,
+              "class_name": "col-span-1"
+            },
+            "field": "bucket_name",
+            "aggregate_fn": "count-distinct"
+          },
+          "batches_count": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Batches"
+                },
+                "en": {
+                  "title": "Batches"
+                },
+                "nl": {
+                  "title": "Batches"
+                }
+              },
+              "order": 1,
+              "class_name": "col-span-1"
+            },
+            "field": "batch_id",
+            "aggregate_fn": "count-distinct"
+          },
+          "waste_percentage": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Abfall % (gem.)"
+                },
+                "en": {
+                  "title": "Waste % (avg)"
+                },
+                "nl": {
+                  "title": "Afval % (gem.)"
+                }
+              },
+              "order": 2,
+              "class_name": "col-span-1"
+            },
+            "scale": 1,
+            "aggregate_fn": "avg"
+          },
+          "waste_percentage_max": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Abfall % (max.)"
+                },
+                "en": {
+                  "title": "Waste % (max)"
+                },
+                "nl": {
+                  "title": "Afval % (max.)"
+                }
+              },
+              "order": 3,
+              "class_name": "col-span-1"
+            },
+            "field": "waste_percentage",
+            "scale": 1,
+            "aggregate_fn": "max"
+          }
+        },
+        "class_name": "grid grid-cols-4 gap-1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "data_group_id": 66,
+  "data_group": "production_forecast",
+  "data_group_json": [
+    {
+      "src": [
+        "get_production_forecast_material"
+      ],
+      "layout": "line-chart",
+      "params": [
+        {
+          "key": "from",
+          "is_query_param": true
+        },
+        {
+          "key": "days",
+          "default_value": 14
+        },
+        {
+          "key": "line_type",
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "production_forecast_material",
+      "field_config": {
+        "date": {
+          "ui": {
+            "type": "date"
+          }
+        },
+        "actual_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "M² aktuell"
+              },
+              "en": {
+                "title": "M² actual"
+              },
+              "nl": {
+                "title": "M² actueel"
+              }
+            },
+            "order": 1
+          }
+        },
+        "budget_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "M² Budget"
+              },
+              "en": {
+                "title": "M² budget"
+              },
+              "nl": {
+                "title": "M² budget"
+              }
+            },
+            "order": 0
+          }
+        },
+        "forecast_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "M² prognostiziert"
+              },
+              "en": {
+                "title": "M² forecast"
+              },
+              "nl": {
+                "title": "M² voorspelt"
+              }
+            },
+            "order": 2
+          }
+        },
+        "material_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "nl": {
+                "title": "Materiaal"
+              }
+            },
+            "order": 0
+          }
+        }
+      },
+      "line_chart_config": {
+        "sets": {
+          "actual_sqm_total": {
+            "field": "actual_sqm",
+            "class_name": "actual",
+            "aggregate_fn": "sum"
+          },
+          "budget_sqm_total": {
+            "field": "budget_sqm",
+            "class_name": "budget",
+            "aggregate_fn": "sum"
+          },
+          "forecast_sqm_total": {
+            "field": "forecast_sqm",
+            "class_name": "forecast",
+            "aggregate_fn": "sum"
+          }
+        },
+        "tooltip": {
+          "sections": [
+            {
+              "field_config": {
+                "date": {
+                  "ui": {
+                    "order": 0
+                  }
+                }
+              }
+            },
+            {
+              "group": {
+                "class_name": "grid grid-cols-5 gap-1",
+                "data_field": "materials",
+                "field_config": {
+                  "actual_sqm": {
+                    "ui": {
+                      "order": 2,
+                      "class_name": " text-right"
+                    }
+                  },
+                  "budget_sqm": {
+                    "ui": {
+                      "order": 1,
+                      "class_name": " text-right"
+                    }
+                  },
+                  "forecast_sqm": {
+                    "ui": {
+                      "order": 3,
+                      "class_name": " text-right"
+                    }
+                  },
+                  "material_name": {
+                    "ui": {
+                      "order": 0,
+                      "class_name": "col-span-2"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "x_field": "date",
+        "group_by": [
+          "date"
+        ]
+      }
+    }
+  ]
+}

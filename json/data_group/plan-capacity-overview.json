@@ -1,0 +1,13 @@
+{
+  "data_group_id": 60,
+  "data_group": "plan-capacity-overview",
+  "data_group_json": [
+    {
+      "src": [
+        "plan-capacity-overview"
+      ],
+      "layout": "plan-capacity-overview",
+      "params": []
+    }
+  ]
+}

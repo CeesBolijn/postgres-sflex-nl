@@ -1,0 +1,601 @@
+{
+  "data_group_id": 49,
+  "data_group": "production_board_detail",
+  "data_group_json": [
+    {
+      "src": [
+        "get_production_orderline_detail"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "production_line_id",
+          "is_query_param": true
+        },
+        {
+          "key": "status_sequences",
+          "value_from": "status_sequence",
+          "is_query_param": true
+        },
+        {
+          "key": "from",
+          "is_query_param": true
+        },
+        {
+          "key": "look_back_days",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "look_ahead_days",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "material_id",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "domain_id",
+          "default_value": 1
+        }
+      ],
+      "children": [],
+      "widget_id": "production_board_detail",
+      "field_config": {
+        "sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "m²"
+              },
+              "en": {
+                "title": "m²"
+              },
+              "nl": {
+                "title": "m²"
+              }
+            },
+            "order": 5
+          },
+          "scale": 1
+        },
+        "number": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Auftrag"
+              },
+              "en": {
+                "title": "Order"
+              },
+              "nl": {
+                "title": "Order"
+              }
+            },
+            "order": 1
+          }
+        },
+        "nest_ids": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "team_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Team"
+              },
+              "en": {
+                "title": "Team"
+              },
+              "nl": {
+                "title": "Team"
+              }
+            },
+            "order": 13
+          }
+        },
+        "customer_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "material_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "nest_counts": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "part_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Teile"
+              },
+              "en": {
+                "title": "Parts"
+              },
+              "nl": {
+                "title": "Parts"
+              }
+            },
+            "order": 10
+          }
+        },
+        "status_json": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "company_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Kunde"
+              },
+              "en": {
+                "title": "Customer"
+              },
+              "nl": {
+                "title": "Klant"
+              }
+            },
+            "order": 2
+          }
+        },
+        "rework_count": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nacharbeit"
+              },
+              "en": {
+                "title": "Rework"
+              },
+              "nl": {
+                "title": "Herstel"
+              }
+            },
+            "order": 11
+          }
+        },
+        "status_title": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "Status"
+              },
+              "nl": {
+                "title": "Status"
+              }
+            },
+            "order": 9
+          }
+        },
+        "material_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "nl": {
+                "title": "Materiaal"
+              }
+            },
+            "order": 0
+          }
+        },
+        "rework_amount": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "logistics_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Logistikdatum"
+              },
+              "en": {
+                "title": "Logistics date"
+              },
+              "nl": {
+                "title": "Logistiek datum"
+              }
+            },
+            "order": 6,
+            "type": "date"
+          }
+        },
+        "product_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Menge"
+              },
+              "en": {
+                "title": "Qty"
+              },
+              "nl": {
+                "title": "Regulier"
+              }
+            },
+            "order": 4
+          },
+          "scale": 0
+        },
+        "produced_amount": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "production_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionsdatum"
+              },
+              "en": {
+                "title": "Production date"
+              },
+              "nl": {
+                "title": "Productiedatum"
+              }
+            },
+            "order": 8,
+            "type": "date"
+          }
+        },
+        "rejected_amount": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "status_sequence": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "part_status_json": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "nest_rework_count": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "part_status_count": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "status_class_name": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "customer_reference": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Referenz"
+              },
+              "en": {
+                "title": "Reference"
+              },
+              "nl": {
+                "title": "Referentie"
+              }
+            },
+            "order": 12
+          }
+        },
+        "logistics_datetime": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Logistikzeit"
+              },
+              "en": {
+                "title": "Logistics time"
+              },
+              "nl": {
+                "title": "Logistiek tijdstip"
+              }
+            },
+            "order": 7,
+            "type": "datetime"
+          }
+        },
+        "nest_rework_amount": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "sales_orderline_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "production_order_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "internal_status_code": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "is_logistics_date_today": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "production_orderline_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "orderline_status_sequence": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "duration_in_seconds_to_logistics_date": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "duration_in_seconds_to_production_date": {
+          "ui": {
+            "hidden": true
+          }
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-container",
+        "children": [
+          {
+            "layout": "flow-container",
+            "children": [
+              {
+                "layout": "flow-cards",
+                "group_by": [
+                  "production_orderline_id"
+                ],
+                "row_options": {
+                  "nav": {
+                    "on_select": {
+                      "path": "(detail:uploader-data)",
+                      "params": [
+                        {
+                          "key": "production_orderline_id",
+                          "is_query_param": true
+                        }
+                      ]
+                    }
+                  },
+                  "colexp": false,
+                  "checkable": false,
+                  "selectable": true
+                },
+                "field_config": {
+                  "sqm": {
+                    "ui": {
+                      "order": 3,
+                      "class_name": "col-span-1"
+                    }
+                  },
+                  "number": {
+                    "ui": {
+                      "order": 0,
+                      "class_name": "col-span-3"
+                    }
+                  },
+                  "part_amount": {
+                    "ui": {
+                      "order": 4,
+                      "class_name": "col-span-1"
+                    }
+                  },
+                  "rework_count": {
+                    "ui": {
+                      "order": 5,
+                      "class_name": "col-span-1"
+                    }
+                  },
+                  "status_title": {
+                    "ui": {
+                      "order": 1,
+                      "class_name": "col-span-3"
+                    }
+                  },
+                  "logistics_date": {
+                    "ui": {
+                      "order": 6,
+                      "class_name": "col-span-3",
+                      "type": "date"
+                    }
+                  },
+                  "product_amount": {
+                    "ui": {
+                      "order": 2,
+                      "class_name": "col-span-1"
+                    }
+                  },
+                  "logistics_datetime": {
+                    "ui": {
+                      "order": 7,
+                      "class_name": "col-span-3",
+                      "type": "datetime"
+                    }
+                  }
+                },
+                "class_name": "grid grid-cols-6 gap-1"
+              }
+            ],
+            "group_by": [
+              "production_order_id",
+              "number"
+            ],
+            "row_options": {
+              "nav": {
+                "menu": [
+                  {
+                    "i18n": {
+                      "de": {
+                        "title": "Produktionslinien"
+                      },
+                      "en": {
+                        "title": "Production lines"
+                      },
+                      "es": {
+                        "title": "Líneas de producción"
+                      },
+                      "fr": {
+                        "title": "Lignes de production"
+                      },
+                      "nl": {
+                        "title": "Productielijnen"
+                      },
+                      "uk": {
+                        "title": "Виробничі лінії"
+                      }
+                    },
+                    "path": "(detail:production-lines)",
+                    "params": [
+                      {
+                        "key": "production_order_id",
+                        "is_query_param": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              "colexp": true,
+              "checkable": false,
+              "selectable": true
+            },
+            "field_config": {
+              "sqm": {
+                "ui": {
+                  "order": 3,
+                  "class_name": "col-span-1  text-right"
+                },
+                "aggregate_fn": "sum"
+              },
+              "number": {
+                "ui": {
+                  "order": 0,
+                  "class_name": "col-span-2"
+                }
+              },
+              "company_name": {
+                "ui": {
+                  "order": 1,
+                  "class_name": "col-span-2"
+                }
+              },
+              "product_amount": {
+                "ui": {
+                  "order": 2,
+                  "class_name": "col-span-1  text-right"
+                },
+                "aggregate_fn": "sum"
+              }
+            },
+            "class_name": "grid grid-cols-6 gap-1"
+          }
+        ],
+        "group_by": [
+          "material_id",
+          "material_name"
+        ],
+        "row_options": {
+          "colexp": true,
+          "checkable": false,
+          "selectable": false
+        },
+        "field_config": {
+          "sqm": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "m²"
+                },
+                "en": {
+                  "title": "m²"
+                },
+                "nl": {
+                  "title": "m²"
+                }
+              },
+              "order": 1,
+              "class_name": "col-span-1 text-right"
+            },
+            "aggregate_fn": "sum"
+          },
+          "rework_count": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Nacharbeit"
+                },
+                "en": {
+                  "title": "Rework"
+                },
+                "nl": {
+                  "title": "Herstel"
+                }
+              },
+              "order": 3,
+              "class_name": "col-span-1 text-right"
+            },
+            "aggregate_fn": "sum"
+          },
+          "material_name": {
+            "ui": {
+              "order": 0,
+              "class_name": "col-span-2"
+            }
+          },
+          "product_amount": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Regulär"
+                },
+                "en": {
+                  "title": "Regular"
+                },
+                "nl": {
+                  "title": "Regulier"
+                }
+              },
+              "order": 2,
+              "class_name": "col-span-1 text-right"
+            },
+            "aggregate_fn": "sum"
+          }
+        },
+        "class_name": "grid grid-cols-5 gap-1"
+      }
+    }
+  ]
+}

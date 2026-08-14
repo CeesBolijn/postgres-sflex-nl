@@ -1,0 +1,354 @@
+{
+  "data_group_id": 45,
+  "data_group": "resource_production_materials",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_weight_history"
+      ],
+      "layout": "stacked-bar-chart",
+      "params": [
+        {
+          "key": "resource_uids",
+          "is_query_param": true
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "days",
+          "is_optional": true,
+          "default_value": 10
+        }
+      ],
+      "widget_id": "resource_production_materials",
+      "field_config": {
+        "sides": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Seiten"
+              },
+              "en": {
+                "title": "Sides"
+              },
+              "es": {
+                "title": "Caras"
+              },
+              "fr": {
+                "title": "Faces"
+              },
+              "nl": {
+                "title": "Zijden"
+              },
+              "uk": {
+                "title": "Сторони"
+              }
+            },
+            "order": 4
+          }
+        },
+        "width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Breite"
+              },
+              "en": {
+                "title": "Width"
+              },
+              "es": {
+                "title": "Ancho"
+              },
+              "fr": {
+                "title": "Largeur"
+              },
+              "nl": {
+                "title": "Breedte"
+              },
+              "uk": {
+                "title": "Ширина"
+              }
+            },
+            "order": 2
+          }
+        },
+        "amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Menge"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "es": {
+                "title": "Cantidad"
+              },
+              "fr": {
+                "title": "Quantité"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "order": 6
+          }
+        },
+        "height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Höhe"
+              },
+              "en": {
+                "title": "Height"
+              },
+              "es": {
+                "title": "Alto"
+              },
+              "fr": {
+                "title": "Hauteur"
+              },
+              "nl": {
+                "title": "Hoogte"
+              },
+              "uk": {
+                "title": "Висота"
+              }
+            },
+            "order": 3
+          }
+        },
+        "weight": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Gewicht"
+              },
+              "en": {
+                "title": "Weight"
+              },
+              "es": {
+                "title": "Peso"
+              },
+              "fr": {
+                "title": "Poids"
+              },
+              "nl": {
+                "title": "Gewicht"
+              },
+              "uk": {
+                "title": "Вага"
+              }
+            },
+            "order": 7
+          },
+          "type": "percent"
+        },
+        "batch_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Datum"
+              },
+              "en": {
+                "title": "Date"
+              },
+              "es": {
+                "title": "Fecha"
+              },
+              "fr": {
+                "title": "Date"
+              },
+              "nl": {
+                "title": "Datum"
+              },
+              "uk": {
+                "title": "Дата"
+              }
+            },
+            "order": 0
+          },
+          "type": "date"
+        },
+        "material_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "resource_uid": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "material_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "es": {
+                "title": "Material"
+              },
+              "fr": {
+                "title": "Matériau"
+              },
+              "nl": {
+                "title": "Materiaal"
+              },
+              "uk": {
+                "title": "Матеріал"
+              }
+            },
+            "order": 5
+          }
+        },
+        "resource_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Maschine"
+              },
+              "en": {
+                "title": "Resource"
+              },
+              "es": {
+                "title": "Máquina"
+              },
+              "fr": {
+                "title": "Machine"
+              },
+              "nl": {
+                "title": "Machine"
+              },
+              "uk": {
+                "title": "Машина"
+              }
+            },
+            "order": 1
+          }
+        }
+      },
+      "class_name": "grid grid-cols-6 gap-1",
+      "stacked_bar_chart_config": {
+        "height": 420,
+        "stacked": true,
+        "tooltip": {
+          "field_config": {},
+          "class_name": "grid grid-cols-6 gap-1",
+          "groups": [
+            {
+              "title": {
+                "i18n": {
+                  "de": {
+                    "title": "Material"
+                  },
+                  "en": {
+                    "title": "Material"
+                  },
+                  "es": {
+                    "title": "Material"
+                  },
+                  "fr": {
+                    "title": "Matériau"
+                  },
+                  "nl": {
+                    "title": "Materiaal"
+                  },
+                  "uk": {
+                    "title": "Матеріал"
+                  }
+                }
+              },
+              "fields": {
+                "sides": {
+                  "ui": {
+                    "order": 3,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "width": {
+                  "ui": {
+                    "order": 1,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "height": {
+                  "ui": {
+                    "order": 2,
+                    "class_name": "col-span-2"
+                  }
+                },
+                "material_name": {
+                  "ui": {
+                    "order": 0,
+                    "class_name": "col-span-6"
+                  }
+                }
+              }
+            },
+            {
+              "title": {
+                "i18n": {
+                  "de": {
+                    "title": "Produktion"
+                  },
+                  "en": {
+                    "title": "Production"
+                  },
+                  "es": {
+                    "title": "Producción"
+                  },
+                  "fr": {
+                    "title": "Production"
+                  },
+                  "nl": {
+                    "title": "Productie"
+                  },
+                  "uk": {
+                    "title": "Виробництво"
+                  }
+                }
+              },
+              "fields": {
+                "amount": {
+                  "ui": {
+                    "order": 0,
+                    "class_name": "col-span-3"
+                  }
+                },
+                "weight": {
+                  "ui": {
+                    "order": 1,
+                    "class_name": "col-span-3"
+                  }
+                }
+              }
+            }
+          ],
+          "sort": {
+            "field": "weight",
+            "direction": "desc"
+          }
+        },
+        "x_field": "batch_date",
+        "y_field": "weight",
+        "show_grid": true,
+        "show_legend": true,
+        "group_by": [
+          "resource_name"
+        ],
+        "template": "${material_name}"
+      }
+    }
+  ]
+}

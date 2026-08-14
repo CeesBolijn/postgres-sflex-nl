@@ -1,0 +1,283 @@
+{
+  "data_group_id": 63,
+  "data_group": "file_inflow",
+  "data_group_json": [
+    {
+      "src": [
+        "get_file_inflow"
+      ],
+      "layout": "track-board",
+      "params": [
+        {
+          "key": "line_type",
+          "is_optional": true,
+          "default_value": "sheet",
+          "is_query_param": true
+        },
+        {
+          "key": "from",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "file_inflow",
+      "row_options": {
+        "colexp": false,
+        "checkable": false,
+        "selectable": false
+      },
+      "field_config": {
+        "threshold": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "total_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "m²"
+              },
+              "en": {
+                "title": "m²"
+              },
+              "es": {
+                "title": "m²"
+              },
+              "fr": {
+                "title": "m²"
+              },
+              "nl": {
+                "title": "m²"
+              },
+              "uk": {
+                "title": "м²"
+              }
+            },
+            "type": "area",
+            "order": 3,
+            "class_name": "hidden md:col-span-1  text-right"
+          }
+        },
+        "total_files": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Dateien"
+              },
+              "en": {
+                "title": "Files"
+              },
+              "es": {
+                "title": "Archivos"
+              },
+              "fr": {
+                "title": "Fichiers"
+              },
+              "nl": {
+                "title": "Bestanden"
+              },
+              "uk": {
+                "title": "Файли"
+              }
+            },
+            "type": "number",
+            "order": 2,
+            "class_name": "col-span-3 md:col-span-1  text-right"
+          }
+        },
+        "total_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Menge"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "es": {
+                "title": "Cantidad"
+              },
+              "fr": {
+                "title": "Quantité"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "type": "number",
+            "order": 4,
+            "class_name": "hidden md:col-span-1  text-right"
+          }
+        },
+        "hour_agg_json": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "delivery_hours": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Lieferzeit"
+              },
+              "en": {
+                "title": "Delivery time"
+              },
+              "es": {
+                "title": "Tiempo de entrega"
+              },
+              "fr": {
+                "title": "Délai de livraison"
+              },
+              "nl": {
+                "title": "Levertijd"
+              },
+              "uk": {
+                "title": "Час доставки"
+              }
+            },
+            "type": "hours",
+            "order": 0,
+            "no_label": true,
+            "class_name": "col-span-3 md:col-span-2"
+          }
+        },
+        "threshold_json": {
+          "ui": {
+            "order": 1,
+            "control": "label",
+            "no_label": true,
+            "class_name": "hidden md:col-span-2"
+          }
+        },
+        "cutoff_window_end_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Cutoff-Zeit"
+              },
+              "en": {
+                "title": "Cutoff"
+              },
+              "es": {
+                "title": "Hora de corte"
+              },
+              "fr": {
+                "title": "Heure limite"
+              },
+              "nl": {
+                "title": "Cutoff"
+              },
+              "uk": {
+                "title": "Час відсічення"
+              }
+            },
+            "hidden": true,
+            "type": "datetime"
+          }
+        },
+        "cutoff_window_start_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Fensterstart"
+              },
+              "en": {
+                "title": "Window start"
+              },
+              "es": {
+                "title": "Inicio de ventana"
+              },
+              "fr": {
+                "title": "Début de fenêtre"
+              },
+              "nl": {
+                "title": "Vensterstart"
+              },
+              "uk": {
+                "title": "Початок вікна"
+              }
+            },
+            "hidden": true,
+            "type": "datetime"
+          }
+        }
+      },
+      "track_board_config": {
+        "layout": "track",
+        "children": [
+          {
+            "layout": "area-chart",
+            "area_chart_config": {
+              "height": 46,
+              "tooltip": {
+                "header": {
+                  "group": {
+                    "class_name": "grid grid-cols-6 gap-1",
+                    "field_config": {
+                      "delivery_hours": {
+                        "ui": {
+                          "type": "hours",
+                          "order": 0,
+                          "class_name": "col-span-3"
+                        }
+                      },
+                      "cutoff_window_end_at": {
+                        "ui": {
+                          "order": 1,
+                          "class_name": "col-span-3",
+                          "type": "datetime"
+                        }
+                      }
+                    }
+                  }
+                },
+                "sections": [
+                  {
+                    "group": {
+                      "class_name": "grid grid-cols-6 gap-1",
+                      "field_config": {
+                        "amount": {
+                          "ui": {
+                            "type": "number",
+                            "order": 1,
+                            "class_name": "col-span-2  text-right"
+                          }
+                        },
+                        "date_time": {
+                          "ui": {
+                            "order": 0,
+                            "class_name": "col-span-4",
+                            "type": "datetime"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "x_field": "date_time",
+              "y_field": "amount",
+              "y_scale": "shared",
+              "now_marker": true,
+              "series_field": "hour_agg_json",
+              "window_end_field": "cutoff_window_end_at",
+              "window_start_field": "cutoff_window_start_at"
+            }
+          }
+        ],
+        "group_by": [
+          "cutoff_window_end_at"
+        ],
+        "label_field": "delivery_hours",
+        "set_order_field": "threshold",
+        "label_suffix_field": "threshold_json"
+      },
+      "class_name": "grid grid-cols-6 gap-1"
+    }
+  ]
+}

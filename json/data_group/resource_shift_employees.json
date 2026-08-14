@@ -1,0 +1,566 @@
+{
+  "data_group_id": 42,
+  "data_group": "resource_shift_employees",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_shift_employees"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "model",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "resource_shift_employees",
+      "field_config": {
+        "infix": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Präfix"
+              },
+              "en": {
+                "title": "Infix"
+              },
+              "es": {
+                "title": "Partícula"
+              },
+              "fr": {
+                "title": "Particule"
+              },
+              "nl": {
+                "title": "Tussenvoegsel"
+              },
+              "uk": {
+                "title": "Префікс"
+              }
+            },
+            "order": 6
+          }
+        },
+        "content": {
+          "ui": {
+            "order": 0,
+            "control": "i18n-text"
+          }
+        },
+        "start_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Startzeit"
+              },
+              "en": {
+                "title": "Start time"
+              },
+              "es": {
+                "title": "Hora de inicio"
+              },
+              "fr": {
+                "title": "Heure de début"
+              },
+              "nl": {
+                "title": "Starttijd"
+              },
+              "uk": {
+                "title": "Час початку"
+              }
+            },
+            "order": 2,
+            "type": "datetime"
+          }
+        },
+        "last_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nachname"
+              },
+              "en": {
+                "title": "Last name"
+              },
+              "es": {
+                "title": "Apellido"
+              },
+              "fr": {
+                "title": "Nom"
+              },
+              "nl": {
+                "title": "Achternaam"
+              },
+              "uk": {
+                "title": "Прізвище"
+              }
+            },
+            "order": 7
+          }
+        },
+        "first_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Vorname"
+              },
+              "en": {
+                "title": "First name"
+              },
+              "es": {
+                "title": "Nombre"
+              },
+              "fr": {
+                "title": "Prénom"
+              },
+              "nl": {
+                "title": "Voornaam"
+              },
+              "uk": {
+                "title": "Ім'я"
+              }
+            },
+            "order": 5
+          }
+        },
+        "group_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Funktion"
+              },
+              "en": {
+                "title": "Role"
+              },
+              "es": {
+                "title": "Función"
+              },
+              "fr": {
+                "title": "Rôle"
+              },
+              "nl": {
+                "title": "Functie"
+              },
+              "uk": {
+                "title": "Роль"
+              }
+            },
+            "order": 3
+          }
+        },
+        "shift_type": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Schicht"
+              },
+              "en": {
+                "title": "Shift"
+              },
+              "es": {
+                "title": "Turno"
+              },
+              "fr": {
+                "title": "Équipe"
+              },
+              "nl": {
+                "title": "Dienst"
+              },
+              "uk": {
+                "title": "Зміна"
+              }
+            },
+            "order": 0
+          }
+        },
+        "employee_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "contract_type": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Vertragstyp"
+              },
+              "en": {
+                "title": "Contract type"
+              },
+              "es": {
+                "title": "Tipo de contrato"
+              },
+              "fr": {
+                "title": "Type de contrat"
+              },
+              "nl": {
+                "title": "Contracttype"
+              },
+              "uk": {
+                "title": "Тип контракту"
+              }
+            },
+            "order": 8,
+            "control": "badge"
+          }
+        },
+        "personnel_number": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Personalnummer"
+              },
+              "en": {
+                "title": "Personnel number"
+              },
+              "es": {
+                "title": "Número de personal"
+              },
+              "fr": {
+                "title": "Numéro de personnel"
+              },
+              "nl": {
+                "title": "Personeelsnummer"
+              },
+              "uk": {
+                "title": "Табельний номер"
+              }
+            },
+            "order": 4
+          }
+        },
+        "department_group_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "resource_data_log_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "department_group_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Abteilung"
+              },
+              "en": {
+                "title": "Department"
+              },
+              "es": {
+                "title": "Departamento"
+              },
+              "fr": {
+                "title": "Département"
+              },
+              "nl": {
+                "title": "Afdeling"
+              },
+              "uk": {
+                "title": "Відділ"
+              }
+            },
+            "order": 1
+          }
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-grid",
+        "children": [
+          {
+            "layout": "flow-container",
+            "children": [
+              {
+                "layout": "flow-cards",
+                "group_by": [
+                  "employee_id"
+                ],
+                "row_options": {
+                  "colexp": false,
+                  "checkable": false,
+                  "selectable": true
+                },
+                "field_config": {
+                  "infix": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Präfix"
+                        },
+                        "en": {
+                          "title": "Infix"
+                        },
+                        "es": {
+                          "title": "Partícula"
+                        },
+                        "fr": {
+                          "title": "Particule"
+                        },
+                        "nl": {
+                          "title": "Tussenvoegsel"
+                        },
+                        "uk": {
+                          "title": "Префікс"
+                        }
+                      },
+                      "order": 1,
+                      "class_name": "col-span-1"
+                    }
+                  },
+                  "last_name": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Nachname"
+                        },
+                        "en": {
+                          "title": "Last name"
+                        },
+                        "es": {
+                          "title": "Apellido"
+                        },
+                        "fr": {
+                          "title": "Nom"
+                        },
+                        "nl": {
+                          "title": "Achternaam"
+                        },
+                        "uk": {
+                          "title": "Прізвище"
+                        }
+                      },
+                      "order": 2,
+                      "class_name": "col-span-3"
+                    }
+                  },
+                  "first_name": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Vorname"
+                        },
+                        "en": {
+                          "title": "First name"
+                        },
+                        "es": {
+                          "title": "Nombre"
+                        },
+                        "fr": {
+                          "title": "Prénom"
+                        },
+                        "nl": {
+                          "title": "Voornaam"
+                        },
+                        "uk": {
+                          "title": "Ім'я"
+                        }
+                      },
+                      "order": 0,
+                      "class_name": "col-span-2"
+                    }
+                  },
+                  "contract_type": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Vertragstyp"
+                        },
+                        "en": {
+                          "title": "Contract type"
+                        },
+                        "es": {
+                          "title": "Tipo de contrato"
+                        },
+                        "fr": {
+                          "title": "Type de contrat"
+                        },
+                        "nl": {
+                          "title": "Contracttype"
+                        },
+                        "uk": {
+                          "title": "Тип контракту"
+                        }
+                      },
+                      "order": 4,
+                      "control": "badge",
+                      "class_name": "col-span-3  text-right"
+                    }
+                  },
+                  "personnel_number": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Personalnummer"
+                        },
+                        "en": {
+                          "title": "Personnel number"
+                        },
+                        "es": {
+                          "title": "Número de personal"
+                        },
+                        "fr": {
+                          "title": "Numéro de personnel"
+                        },
+                        "nl": {
+                          "title": "Personeelsnummer"
+                        },
+                        "uk": {
+                          "title": "Табельний номер"
+                        }
+                      },
+                      "order": 3,
+                      "class_name": "col-span-3"
+                    }
+                  }
+                },
+                "class_name": "grid grid-cols-6 gap-1"
+              }
+            ],
+            "group_by": [
+              "group_name"
+            ],
+            "row_options": {
+              "colexp": true,
+              "checkable": false,
+              "selectable": false
+            },
+            "field_config": {
+              "group_name": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Funktion"
+                    },
+                    "en": {
+                      "title": "Role"
+                    },
+                    "es": {
+                      "title": "Función"
+                    },
+                    "fr": {
+                      "title": "Rôle"
+                    },
+                    "nl": {
+                      "title": "Functie"
+                    },
+                    "uk": {
+                      "title": "Роль"
+                    }
+                  },
+                  "order": 0,
+                  "class_name": "col-span-4"
+                }
+              },
+              "employee_id": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Anzahl"
+                    },
+                    "en": {
+                      "title": "Count"
+                    },
+                    "es": {
+                      "title": "Cantidad"
+                    },
+                    "fr": {
+                      "title": "Nombre"
+                    },
+                    "nl": {
+                      "title": "Aantal"
+                    },
+                    "uk": {
+                      "title": "Кількість"
+                    }
+                  },
+                  "order": 1,
+                  "control": "chip",
+                  "class_name": "col-span-2  text-right"
+                },
+                "aggregate_fn": "count"
+              }
+            },
+            "class_name": "grid grid-cols-6 gap-1"
+          }
+        ],
+        "group_by": [
+          "shift_type"
+        ],
+        "row_options": {
+          "colexp": false,
+          "checkable": false,
+          "selectable": false
+        },
+        "field_config": {
+          "content": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Schicht"
+                },
+                "en": {
+                  "title": "Shift"
+                },
+                "es": {
+                  "title": "Turno"
+                },
+                "fr": {
+                  "title": "Équipe"
+                },
+                "nl": {
+                  "title": "Dienst"
+                },
+                "uk": {
+                  "title": "Зміна"
+                }
+              },
+              "order": 0,
+              "control": "i18n-text",
+              "class_name": "col-span-4"
+            }
+          },
+          "shift_type": {
+            "ui": {
+              "hidden": true
+            }
+          },
+          "employee_id": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Anzahl"
+                },
+                "en": {
+                  "title": "Count"
+                },
+                "es": {
+                  "title": "Cantidad"
+                },
+                "fr": {
+                  "title": "Nombre"
+                },
+                "nl": {
+                  "title": "Aantal"
+                },
+                "uk": {
+                  "title": "Кількість"
+                }
+              },
+              "order": 1,
+              "control": "chip",
+              "class_name": "col-span-2  text-right"
+            },
+            "aggregate_fn": "count"
+          }
+        },
+        "class_name": "grid grid-cols-6 gap-1"
+      }
+    }
+  ]
+}

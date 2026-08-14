@@ -1,0 +1,590 @@
+{
+  "data_group_id": 41,
+  "data_group": "resource_capacity",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_capacity"
+      ],
+      "i18n": {
+        "de": {
+          "title": "Kapazität"
+        },
+        "en": {
+          "title": "Capacity"
+        },
+        "es": {
+          "title": "Capacidad"
+        },
+        "fr": {
+          "title": "Capacité"
+        },
+        "nl": {
+          "title": "Capaciteit"
+        },
+        "uk": {
+          "title": "Потужність"
+        }
+      },
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "model",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "resource_uids",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "resource_capacity",
+      "field_config": {
+        "profile_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Profil"
+              },
+              "en": {
+                "title": "Profile"
+              },
+              "es": {
+                "title": "Perfil"
+              },
+              "fr": {
+                "title": "Profil"
+              },
+              "nl": {
+                "title": "Profiel"
+              },
+              "uk": {
+                "title": "Профіль"
+              }
+            },
+            "order": 1
+          }
+        },
+        "resource_uid": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "capacity_left": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Verfügbar m²"
+              },
+              "en": {
+                "title": "Available sqm"
+              },
+              "es": {
+                "title": "Disponible m²"
+              },
+              "fr": {
+                "title": "Disponible m²"
+              },
+              "nl": {
+                "title": "Beschikbaar m²"
+              },
+              "uk": {
+                "title": "Доступно м²"
+              }
+            },
+            "order": 9
+          }
+        },
+        "resource_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Ressource"
+              },
+              "en": {
+                "title": "Resource"
+              },
+              "es": {
+                "title": "Recurso"
+              },
+              "fr": {
+                "title": "Ressource"
+              },
+              "nl": {
+                "title": "Resource"
+              },
+              "uk": {
+                "title": "Ресурс"
+              }
+            },
+            "order": 0
+          }
+        },
+        "material_names": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Materialien"
+              },
+              "en": {
+                "title": "Materials"
+              },
+              "es": {
+                "title": "Materiales"
+              },
+              "fr": {
+                "title": "Matériaux"
+              },
+              "nl": {
+                "title": "Materialen"
+              },
+              "uk": {
+                "title": "Матеріали"
+              }
+            },
+            "order": 2,
+            "control": "badge"
+          }
+        },
+        "data_json.sides": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Seiten"
+              },
+              "en": {
+                "title": "Sides"
+              },
+              "es": {
+                "title": "Lados"
+              },
+              "fr": {
+                "title": "Côtés"
+              },
+              "nl": {
+                "title": "Zijden"
+              },
+              "uk": {
+                "title": "Сторони"
+              }
+            },
+            "order": 3
+          }
+        },
+        "data_json.width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Breite"
+              },
+              "en": {
+                "title": "Width"
+              },
+              "es": {
+                "title": "Ancho"
+              },
+              "fr": {
+                "title": "Largeur"
+              },
+              "nl": {
+                "title": "Breedte"
+              },
+              "uk": {
+                "title": "Ширина"
+              }
+            },
+            "order": 4
+          }
+        },
+        "data_json.height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Höhe"
+              },
+              "en": {
+                "title": "Height"
+              },
+              "es": {
+                "title": "Altura"
+              },
+              "fr": {
+                "title": "Hauteur"
+              },
+              "nl": {
+                "title": "Hoogte"
+              },
+              "uk": {
+                "title": "Висота"
+              }
+            },
+            "order": 5
+          }
+        },
+        "capacity_sqm_per_day": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Kapazität m²/Tag"
+              },
+              "en": {
+                "title": "Capacity sqm/day"
+              },
+              "es": {
+                "title": "Capacidad m²/día"
+              },
+              "fr": {
+                "title": "Capacité m²/jour"
+              },
+              "nl": {
+                "title": "Capaciteit m²/dag"
+              },
+              "uk": {
+                "title": "Потужність м²/день"
+              }
+            },
+            "order": 7
+          }
+        },
+        "capacity_reserved_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Eingeplant m²"
+              },
+              "en": {
+                "title": "Planned sqm"
+              },
+              "es": {
+                "title": "Planificado m²"
+              },
+              "fr": {
+                "title": "Planifié m²"
+              },
+              "nl": {
+                "title": "Ingepland m²"
+              },
+              "uk": {
+                "title": "Заплановано м²"
+              }
+            },
+            "order": 8
+          }
+        },
+        "data_json.panels_hour": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Platten/Std."
+              },
+              "en": {
+                "title": "Panels/hour"
+              },
+              "es": {
+                "title": "Paneles/hora"
+              },
+              "fr": {
+                "title": "Panneaux/h"
+              },
+              "nl": {
+                "title": "Panelen/uur"
+              },
+              "uk": {
+                "title": "Панелей/год"
+              }
+            },
+            "order": 6
+          }
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-container",
+        "children": [
+          {
+            "layout": "flow-container",
+            "children": [
+              {
+                "layout": "flow-cards",
+                "row_options": {
+                  "colexp": false,
+                  "checkable": false,
+                  "selectable": true
+                },
+                "field_config": {
+                  "material_names": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Materialien"
+                        },
+                        "en": {
+                          "title": "Materials"
+                        },
+                        "es": {
+                          "title": "Materiales"
+                        },
+                        "fr": {
+                          "title": "Matériaux"
+                        },
+                        "nl": {
+                          "title": "Materialen"
+                        },
+                        "uk": {
+                          "title": "Матеріали"
+                        }
+                      },
+                      "order": 0,
+                      "control": "badge",
+                      "no_label": true,
+                      "class_name": "col-span-6"
+                    }
+                  },
+                  "data_json.sides": {
+                    "ui": {
+                      "hidden": true
+                    }
+                  },
+                  "data_json.width": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Breite"
+                        },
+                        "en": {
+                          "title": "Width"
+                        },
+                        "es": {
+                          "title": "Ancho"
+                        },
+                        "fr": {
+                          "title": "Largeur"
+                        },
+                        "nl": {
+                          "title": "Breedte"
+                        },
+                        "uk": {
+                          "title": "Ширина"
+                        }
+                      },
+                      "order": 2,
+                      "class_name": "col-span-2"
+                    }
+                  },
+                  "data_json.height": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Höhe"
+                        },
+                        "en": {
+                          "title": "Height"
+                        },
+                        "es": {
+                          "title": "Altura"
+                        },
+                        "fr": {
+                          "title": "Hauteur"
+                        },
+                        "nl": {
+                          "title": "Hoogte"
+                        },
+                        "uk": {
+                          "title": "Висота"
+                        }
+                      },
+                      "order": 3,
+                      "class_name": "col-span-2"
+                    }
+                  },
+                  "data_json.panels_hour": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Platten/Std."
+                        },
+                        "en": {
+                          "title": "Panels/hour"
+                        },
+                        "es": {
+                          "title": "Paneles/hora"
+                        },
+                        "fr": {
+                          "title": "Panneaux/h"
+                        },
+                        "nl": {
+                          "title": "Panelen/uur"
+                        },
+                        "uk": {
+                          "title": "Панелей/год"
+                        }
+                      },
+                      "order": 4,
+                      "class_name": "col-span-2"
+                    }
+                  }
+                },
+                "class_name": "grid grid-cols-6 gap-1"
+              }
+            ],
+            "group_by": [
+              "profile_name"
+            ],
+            "row_options": {
+              "colexp": false,
+              "checkable": false,
+              "selectable": false
+            },
+            "field_config": {
+              "profile_name": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Profil"
+                    },
+                    "en": {
+                      "title": "Profile"
+                    },
+                    "es": {
+                      "title": "Perfil"
+                    },
+                    "fr": {
+                      "title": "Profil"
+                    },
+                    "nl": {
+                      "title": "Profiel"
+                    },
+                    "uk": {
+                      "title": "Профіль"
+                    }
+                  },
+                  "order": 0,
+                  "class_name": "col-span-6"
+                }
+              }
+            },
+            "class_name": "grid grid-cols-6 gap-1"
+          }
+        ],
+        "group_by": [
+          "resource_name"
+        ],
+        "row_options": {
+          "colexp": true,
+          "checkable": false,
+          "selectable": false
+        },
+        "field_config": {
+          "capacity_left": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Verfügbar"
+                },
+                "en": {
+                  "title": "Available"
+                },
+                "es": {
+                  "title": "Disponible"
+                },
+                "fr": {
+                  "title": "Disponible"
+                },
+                "nl": {
+                  "title": "Beschikbaar"
+                },
+                "uk": {
+                  "title": "Доступно"
+                }
+              },
+              "order": 3,
+              "scale": 0,
+              "class_name": "col-span-1 text-right"
+            }
+          },
+          "resource_name": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Ressource"
+                },
+                "en": {
+                  "title": "Resource"
+                },
+                "es": {
+                  "title": "Recurso"
+                },
+                "fr": {
+                  "title": "Ressource"
+                },
+                "nl": {
+                  "title": "Resource"
+                },
+                "uk": {
+                  "title": "Ресурс"
+                }
+              },
+              "order": 0,
+              "class_name": "col-span-3"
+            }
+          },
+          "capacity_sqm_per_day": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Kapazität"
+                },
+                "en": {
+                  "title": "Capacity"
+                },
+                "es": {
+                  "title": "Capacidad"
+                },
+                "fr": {
+                  "title": "Capacité"
+                },
+                "nl": {
+                  "title": "Capaciteit"
+                },
+                "uk": {
+                  "title": "Потужність"
+                }
+              },
+              "order": 1,
+              "scale": 0,
+              "class_name": "col-span-1 text-right"
+            }
+          },
+          "capacity_reserved_sqm": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Eingeplant"
+                },
+                "en": {
+                  "title": "Planned"
+                },
+                "es": {
+                  "title": "Planificado"
+                },
+                "fr": {
+                  "title": "Planifié"
+                },
+                "nl": {
+                  "title": "Ingepland"
+                },
+                "uk": {
+                  "title": "Заплановано"
+                }
+              },
+              "order": 2,
+              "scale": 0,
+              "class_name": "col-span-1 text-right"
+            }
+          }
+        },
+        "class_name": "grid grid-cols-6 gap-1"
+      }
+    }
+  ]
+}

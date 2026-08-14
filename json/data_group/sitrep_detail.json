@@ -1,0 +1,446 @@
+{
+  "data_group_id": 47,
+  "data_group": "sitrep_detail",
+  "data_group_json": [
+    {
+      "src": [
+        "get_sitrep_detail"
+      ],
+      "layout": "cards",
+      "params": [
+        {
+          "key": "day_offset",
+          "is_query_param": true
+        },
+        {
+          "key": "model",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "models",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "sitrep_detail",
+      "row_options": {
+        "nav": {
+          "on_select": {
+            "path": "(detail:uploader-data)",
+            "params": [
+              {
+                "key": "orderline_id",
+                "is_query_param": true
+              }
+            ]
+          }
+        },
+        "selectable": true
+      },
+      "field_config": {
+        "sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "m²"
+              },
+              "en": {
+                "title": "m²"
+              },
+              "es": {
+                "title": "m²"
+              },
+              "fr": {
+                "title": "m²"
+              },
+              "nl": {
+                "title": "m²"
+              },
+              "uk": {
+                "title": "м²"
+              }
+            },
+            "order": 9,
+            "class_name": "col-span-1"
+          },
+          "scale": 2
+        },
+        "bucket": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "number": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Auftrag"
+              },
+              "en": {
+                "title": "Order"
+              },
+              "es": {
+                "title": "Pedido"
+              },
+              "fr": {
+                "title": "Commande"
+              },
+              "nl": {
+                "title": "Order"
+              },
+              "uk": {
+                "title": "Замовлення"
+              }
+            },
+            "order": 1,
+            "class_name": "col-span-2"
+          },
+          "nav": {
+            "path": "https://v2.proboview.nl/orders/edit/{order_id}"
+          }
+        },
+        "is_open": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "order_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "sequence": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "order_date": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "bucket_date": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "material_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "order_number": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "orderline_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Auftragszeile"
+              },
+              "en": {
+                "title": "Order line"
+              },
+              "es": {
+                "title": "Línea de orden"
+              },
+              "fr": {
+                "title": "Ligne d'ordre"
+              },
+              "nl": {
+                "title": "Orderregel"
+              },
+              "uk": {
+                "title": "Рядок виробничого замовлення"
+              }
+            },
+            "order": 0,
+            "class_name": "col-span-2"
+          },
+          "nav": {
+            "path": "https://v2.proboview.nl/orders/edit/{order_id}/sales-orderlines/{sales_orderline_id}/production-orderlines"
+          }
+        },
+        "material_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "es": {
+                "title": "Material"
+              },
+              "fr": {
+                "title": "Matériau"
+              },
+              "nl": {
+                "title": "Materiaal"
+              },
+              "uk": {
+                "title": "Матеріал"
+              }
+            },
+            "order": 5,
+            "class_name": "col-span-6"
+          }
+        },
+        "product_width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Breite"
+              },
+              "en": {
+                "title": "Width"
+              },
+              "es": {
+                "title": "Ancho"
+              },
+              "fr": {
+                "title": "Largeur"
+              },
+              "nl": {
+                "title": "Breedte"
+              },
+              "uk": {
+                "title": "Ширина"
+              }
+            },
+            "order": 7,
+            "class_name": "col-span-2"
+          }
+        },
+        "order_location": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "product_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Menge"
+              },
+              "en": {
+                "title": "Quantity"
+              },
+              "es": {
+                "title": "Cantidad"
+              },
+              "fr": {
+                "title": "Cantidad"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "order": 6,
+            "class_name": "col-span-1"
+          }
+        },
+        "product_height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Höhe"
+              },
+              "en": {
+                "title": "Height"
+              },
+              "es": {
+                "title": "Altura"
+              },
+              "fr": {
+                "title": "Hauteur"
+              },
+              "nl": {
+                "title": "Hoogte"
+              },
+              "uk": {
+                "title": "Висота"
+              }
+            },
+            "order": 8,
+            "class_name": "col-span-2"
+          }
+        },
+        "production_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionsdatum"
+              },
+              "en": {
+                "title": "Production date"
+              },
+              "es": {
+                "title": "Fecha de producción"
+              },
+              "fr": {
+                "title": "Date de production"
+              },
+              "nl": {
+                "title": "Productiedatum"
+              },
+              "uk": {
+                "title": "Дата виробництва"
+              }
+            },
+            "order": 3,
+            "class_name": "col-span-4",
+            "type": "datetime"
+          },
+          "type": "date"
+        },
+        "production_line": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionslinie"
+              },
+              "en": {
+                "title": "Production line"
+              },
+              "es": {
+                "title": "Línea de producción"
+              },
+              "fr": {
+                "title": "Ligne de production"
+              },
+              "nl": {
+                "title": "Productielijn"
+              },
+              "uk": {
+                "title": "Виробнича лінія"
+              }
+            },
+            "order": 10,
+            "control": "i18n-text",
+            "class_name": "col-span-3"
+          }
+        },
+        "status_sequence": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "product_unit_code": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "sales_orderline_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Verkaufsauftragszeile"
+              },
+              "en": {
+                "title": "Sales orderline"
+              },
+              "es": {
+                "title": "Línea de venta"
+              },
+              "fr": {
+                "title": "Ligne de vente"
+              },
+              "nl": {
+                "title": "Verkoop orderregel"
+              },
+              "uk": {
+                "title": "Рядок продажу"
+              }
+            },
+            "order": 2,
+            "class_name": "col-span-2"
+          }
+        },
+        "production_location": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionsstandort"
+              },
+              "en": {
+                "title": "Production location"
+              },
+              "es": {
+                "title": "Ubicación de producción"
+              },
+              "fr": {
+                "title": "Lieu de production"
+              },
+              "nl": {
+                "title": "Productie locatie"
+              },
+              "uk": {
+                "title": "Місце виробництва"
+              }
+            },
+            "order": 11,
+            "control": "badge",
+            "class_name": "col-span-3"
+          }
+        },
+        "production_order_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "internal_status_code": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "Status"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "Statut"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Статус"
+              }
+            },
+            "order": 4,
+            "control": "badge",
+            "no_label": true,
+            "class_name": "col-span-2"
+          }
+        },
+        "product_unit_quantity": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "production_company_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "production_order_status": {
+          "ui": {
+            "hidden": true
+          }
+        }
+      },
+      "class_name": "grid grid-cols-6 gap-1"
+    }
+  ]
+}

@@ -1,0 +1,402 @@
+{
+  "data_group_id": 62,
+  "data_group": "resource_oee_area_chart",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_state_shift_totals"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "resource_uids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "days",
+          "is_optional": true,
+          "default_value": 42
+        },
+        {
+          "key": "line_type",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "states",
+          "is_optional": true,
+          "default_value": [
+            "running",
+            "breakdown"
+          ],
+          "is_query_param": true
+        },
+        {
+          "key": "include_weekends",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "include_mandatory_days_off",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "include_shifts",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "resource_state_shift_percent",
+      "field_config": {
+        "step": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Schritt"
+              },
+              "en": {
+                "title": "Step"
+              },
+              "es": {
+                "title": "Paso"
+              },
+              "fr": {
+                "title": "Étape"
+              },
+              "nl": {
+                "title": "Stap"
+              },
+              "uk": {
+                "title": "Крок"
+              }
+            },
+            "order": 3,
+            "no_label": true
+          }
+        },
+        "state": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "State"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "État"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Стан"
+              }
+            },
+            "order": 4
+          }
+        },
+        "shift_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Datum"
+              },
+              "en": {
+                "title": "Date"
+              },
+              "es": {
+                "title": "Fecha"
+              },
+              "fr": {
+                "title": "Date"
+              },
+              "nl": {
+                "title": "Datum"
+              },
+              "uk": {
+                "title": "Дата"
+              }
+            },
+            "type": "date",
+            "order": 0
+          }
+        },
+        "sort_order": {
+          "ui": {
+            "order": 4,
+            "hidden": true
+          }
+        },
+        "state_json": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "shift_index": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Schicht"
+              },
+              "en": {
+                "title": "Shift"
+              },
+              "es": {
+                "title": "Turno"
+              },
+              "fr": {
+                "title": "Équipe"
+              },
+              "nl": {
+                "title": "Shift"
+              },
+              "uk": {
+                "title": "Зміна"
+              }
+            },
+            "order": 1
+          }
+        },
+        "resource_uid": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "resource_json": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "resource_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Maschine"
+              },
+              "en": {
+                "title": "Resource"
+              },
+              "es": {
+                "title": "Máquina"
+              },
+              "fr": {
+                "title": "Machine"
+              },
+              "nl": {
+                "title": "Machine"
+              },
+              "uk": {
+                "title": "Машина"
+              }
+            },
+            "order": 2
+          }
+        },
+        "parent_percent": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Relativ"
+              },
+              "en": {
+                "title": "Relative"
+              },
+              "es": {
+                "title": "Relativo"
+              },
+              "fr": {
+                "title": "Relatif"
+              },
+              "nl": {
+                "title": "Relatief"
+              },
+              "uk": {
+                "title": "Відносний"
+              }
+            },
+            "type": "percent",
+            "order": 7
+          },
+          "scale": 1
+        },
+        "duration_percent": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Anteil"
+              },
+              "en": {
+                "title": "Share"
+              },
+              "es": {
+                "title": "Proporción"
+              },
+              "fr": {
+                "title": "Part"
+              },
+              "nl": {
+                "title": "Aandeel"
+              },
+              "uk": {
+                "title": "Частка"
+              }
+            },
+            "type": "percent",
+            "order": 6
+          },
+          "scale": 1
+        },
+        "duration_seconds": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Dauer"
+              },
+              "en": {
+                "title": "Duration"
+              },
+              "es": {
+                "title": "Duración"
+              },
+              "fr": {
+                "title": "Durée"
+              },
+              "nl": {
+                "title": "Duur"
+              },
+              "uk": {
+                "title": "Тривалість"
+              }
+            },
+            "type": "duration",
+            "order": 5
+          }
+        },
+        "total_duration_seconds": {
+          "ui": {
+            "hidden": true
+          }
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-grid",
+        "children": [
+          {
+            "layout": "stacked-area-chart",
+            "stacked_area_chart_config": {
+              "height": 420,
+              "stacked": true,
+              "tooltip": {
+                "header": {
+                  "group": {
+                    "class_name": "grid grid-cols-5 gap-1",
+                    "field_config": {
+                      "step": {
+                        "ui": {
+                          "order": 1,
+                          "class_name": "col-span-2"
+                        }
+                      },
+                      "shift_date": {
+                        "ui": {
+                          "order": 0,
+                          "class_name": "col-span-3"
+                        }
+                      }
+                    }
+                  }
+                },
+                "sections": [
+                  {
+                    "group": {
+                      "class_name": "grid grid-cols-9 gap-1",
+                      "field_config": {
+                        "state": {
+                          "ui": {
+                            "order": 0,
+                            "class_name": "col-span-3"
+                          }
+                        },
+                        "parent_percent": {
+                          "ui": {
+                            "order": 3,
+                            "class_name": "col-span-2"
+                          },
+                          "type": "percent"
+                        },
+                        "duration_percent": {
+                          "ui": {
+                            "order": 2,
+                            "class_name": "col-span-2"
+                          },
+                          "type": "percent"
+                        },
+                        "duration_seconds": {
+                          "ui": {
+                            "order": 1,
+                            "class_name": "col-span-2"
+                          },
+                          "type": "duration",
+                          "format": "hh:mm"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "set_order_field": "sort_order",
+                "sort": {
+                  "direction": "desc"
+                }
+              },
+              "x_field": "shift_date",
+              "y_field": "duration_percent",
+              "y_height": 100,
+              "set_field": "state",
+              "show_grid": true,
+              "normalized": true,
+              "color_field": "state_json.color",
+              "show_legend": true,
+              "set_overrides": {
+                "planned": {
+                  "type": "line",
+                  "stacked": false
+                }
+              },
+              "set_order_field": "sort_order",
+              "set_title_field": "${line} ${step} ${resource_name}",
+              "optional_group_fields": [
+                "shift_index"
+              ],
+              "group_by": [
+                "line",
+                "step",
+                "resource_uid"
+              ]
+            }
+          }
+        ],
+        "group_by": [
+          "shift_index"
+        ],
+        "row_options": {
+          "colexp": false,
+          "checkable": false,
+          "selectable": false
+        }
+      },
+      "window_class_name": "p-8",
+      "class_name": "grid grid-cols-6 gap-1"
+    }
+  ]
+}

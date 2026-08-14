@@ -1,0 +1,35 @@
+{
+  "data_group_id": 23,
+  "data_group": "resource_quality_management",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_quality_management"
+      ],
+      "layout": "form",
+      "params": [
+        {
+          "key": "resource_uids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "model",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "from",
+          "is_optional": true,
+          "is_query_param": false
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": false
+        }
+      ],
+      "widget_id": "resource_quality_management"
+    }
+  ]
+}

@@ -1,0 +1,1197 @@
+{
+  "data_group_id": 59,
+  "data_group": "nesting_queue",
+  "data_group_json": [
+    {
+      "src": [
+        "get_nest_queue"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "material_id",
+          "is_query_param": true
+        }
+      ],
+      "children": [],
+      "widget_id": "job_nest_queue",
+      "field_config": {
+        "nest_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nest"
+              },
+              "en": {
+                "title": "Nest"
+              },
+              "es": {
+                "title": "Nido"
+              },
+              "fr": {
+                "title": "Imbrication"
+              },
+              "nl": {
+                "title": "Nest"
+              },
+              "uk": {
+                "title": "Вкладення"
+              }
+            },
+            "order": 11
+          }
+        },
+        "spec_id": {
+          "ui": {
+            "order": 100,
+            "control": "select",
+            "input_data": {
+              "src": [
+                "get_stock"
+              ],
+              "params": [
+                {
+                  "key": "material_id",
+                  "is_query_param": true
+                },
+                {
+                  "key": "bucket_width",
+                  "is_query_param": false
+                }
+              ],
+              "template": "{amount}x{width} - {vendor_batch_id}",
+              "value_field": "spec_id"
+            }
+          }
+        },
+        "job_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Job"
+              },
+              "en": {
+                "title": "Job"
+              },
+              "es": {
+                "title": "Trabajo"
+              },
+              "fr": {
+                "title": "Travail"
+              },
+              "nl": {
+                "title": "Job"
+              },
+              "uk": {
+                "title": "Завдання"
+              }
+            },
+            "order": 4
+          }
+        },
+        "job_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Menge"
+              },
+              "en": {
+                "title": "Qty"
+              },
+              "es": {
+                "title": "Cant."
+              },
+              "fr": {
+                "title": "Qté"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "order": 5
+          },
+          "scale": 0
+        },
+        "queue_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Warteschlange"
+              },
+              "en": {
+                "title": "Queue"
+              },
+              "es": {
+                "title": "Cola"
+              },
+              "fr": {
+                "title": "File"
+              },
+              "nl": {
+                "title": "Wachtrij"
+              },
+              "uk": {
+                "title": "Черга"
+              }
+            },
+            "order": 1
+          }
+        },
+        "waste_perc": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Abfall %"
+              },
+              "en": {
+                "title": "Waste %"
+              },
+              "es": {
+                "title": "Desperdicio %"
+              },
+              "fr": {
+                "title": "Déchet %"
+              },
+              "nl": {
+                "title": "Afval %"
+              },
+              "uk": {
+                "title": "Відходи %"
+              }
+            },
+            "type": "percent",
+            "order": 6,
+            "hidden_when": [
+              {
+                "op": "==",
+                "value": 0,
+                "field": "waste_perc"
+              }
+            ]
+          },
+          "scale": 1
+        },
+        "bucket_size": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Abmessung"
+              },
+              "en": {
+                "title": "Dimension"
+              },
+              "es": {
+                "title": "Dimensión"
+              },
+              "fr": {
+                "title": "Dimension"
+              },
+              "nl": {
+                "title": "Afmeting"
+              },
+              "uk": {
+                "title": "Розмір"
+              }
+            },
+            "order": 4,
+            "control": "template",
+            "template": "{bucket_width}x{bucket_min_height}-{bucket_max_height}"
+          }
+        },
+        "deadline_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Frist"
+              },
+              "en": {
+                "title": "Deadline"
+              },
+              "es": {
+                "title": "Fecha límite"
+              },
+              "fr": {
+                "title": "Échéance"
+              },
+              "nl": {
+                "title": "Deadline"
+              },
+              "uk": {
+                "title": "Дедлайн"
+              }
+            },
+            "order": 8,
+            "type": "date"
+          }
+        },
+        "nest_job_id": {
+          "ui": {
+            "order": 100,
+            "hidden": true
+          }
+        },
+        "bucket_width": {
+          "ui": {
+            "order": 100,
+            "hidden": true
+          }
+        },
+        "remarks_json": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Anmerkungen"
+              },
+              "en": {
+                "title": "Remarks"
+              },
+              "es": {
+                "title": "Observaciones"
+              },
+              "fr": {
+                "title": "Remarques"
+              },
+              "nl": {
+                "title": "Opmerkingen"
+              },
+              "uk": {
+                "title": "Примітки"
+              }
+            },
+            "order": 9,
+            "hidden": true
+          }
+        },
+        "resource_json": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Maschinen"
+              },
+              "en": {
+                "title": "Machines"
+              },
+              "es": {
+                "title": "Máquinas"
+              },
+              "fr": {
+                "title": "Machines"
+              },
+              "nl": {
+                "title": "Machines"
+              },
+              "uk": {
+                "title": "Машини"
+              }
+            },
+            "order": 3,
+            "control": "multi-select",
+            "input_data": {
+              "src": [
+                "get_nest_bucket_resources"
+              ],
+              "params": [
+                {
+                  "key": "nest_bucket_id",
+                  "is_query_param": false
+                }
+              ],
+              "text_field": "resource_name",
+              "value_field": "resource_uid"
+            }
+          }
+        },
+        "document_width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Breite"
+              },
+              "en": {
+                "title": "Width"
+              },
+              "es": {
+                "title": "Ancho"
+              },
+              "fr": {
+                "title": "Largeur"
+              },
+              "nl": {
+                "title": "Breedte"
+              },
+              "uk": {
+                "title": "Ширина"
+              }
+            },
+            "order": 13
+          },
+          "scale": 0
+        },
+        "nest_bucket_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nest"
+              },
+              "en": {
+                "title": "Nest"
+              },
+              "es": {
+                "title": "Nido"
+              },
+              "fr": {
+                "title": "Imbrication"
+              },
+              "nl": {
+                "title": "Nest"
+              },
+              "uk": {
+                "title": "Вкладення"
+              }
+            },
+            "order": 11,
+            "hidden": true
+          }
+        },
+        "document_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Menge"
+              },
+              "en": {
+                "title": "Qty"
+              },
+              "es": {
+                "title": "Cant."
+              },
+              "fr": {
+                "title": "Qté"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "order": 12
+          },
+          "scale": 0
+        },
+        "document_height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Höhe"
+              },
+              "en": {
+                "title": "Height"
+              },
+              "es": {
+                "title": "Alto"
+              },
+              "fr": {
+                "title": "Hauteur"
+              },
+              "nl": {
+                "title": "Hoogte"
+              },
+              "uk": {
+                "title": "Висота"
+              }
+            },
+            "order": 14
+          },
+          "scale": 0
+        },
+        "bucket_max_height": {
+          "ui": {
+            "order": 100,
+            "hidden": true
+          }
+        },
+        "bucket_min_height": {
+          "ui": {
+            "order": 100,
+            "hidden": true
+          }
+        },
+        "deadline_fill_perc": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Füllung %"
+              },
+              "en": {
+                "title": "Fill %"
+              },
+              "es": {
+                "title": "Llenado %"
+              },
+              "fr": {
+                "title": "Remplissage %"
+              },
+              "nl": {
+                "title": "Vulling %"
+              },
+              "uk": {
+                "title": "Заповнення %"
+              }
+            },
+            "type": "percent",
+            "order": 7,
+            "hidden_when": [
+              {
+                "op": "==",
+                "value": 0,
+                "field": "deadline_fill_perc"
+              }
+            ]
+          },
+          "scale": 0
+        },
+        "production_location": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Standort"
+              },
+              "en": {
+                "title": "Location"
+              },
+              "es": {
+                "title": "Ubicación"
+              },
+              "fr": {
+                "title": "Emplacement"
+              },
+              "nl": {
+                "title": "Locatie"
+              },
+              "uk": {
+                "title": "Місцезнаходження"
+              }
+            },
+            "order": 2,
+            "no_label": true
+          }
+        },
+        "production_orderline_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Auftragsposition"
+              },
+              "en": {
+                "title": "Order line"
+              },
+              "es": {
+                "title": "Línea de pedido"
+              },
+              "fr": {
+                "title": "Ligne de commande"
+              },
+              "nl": {
+                "title": "Orderregel"
+              },
+              "uk": {
+                "title": "Рядок замовлення"
+              }
+            },
+            "order": 10
+          }
+        },
+        "remarks_json.class_name": {
+          "ui": {
+            "hidden": true
+          }
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-grid",
+        "children": [
+          {
+            "layout": "flow-container",
+            "children": [
+              {
+                "layout": "flow-cards",
+                "children": [
+                  {
+                    "layout": "flow-table",
+                    "group_by": [
+                      "production_orderline_id"
+                    ],
+                    "row_options": {
+                      "colexp": false,
+                      "checkable": true,
+                      "selectable": true
+                    },
+                    "field_config": {
+                      "nest_id": {
+                        "ui": {
+                          "i18n": {
+                            "de": {
+                              "title": "Nest"
+                            },
+                            "en": {
+                              "title": "Nest"
+                            },
+                            "es": {
+                              "title": "Nido"
+                            },
+                            "fr": {
+                              "title": "Imbrication"
+                            },
+                            "nl": {
+                              "title": "Nest"
+                            },
+                            "uk": {
+                              "title": "Вкладення"
+                            }
+                          },
+                          "order": 1,
+                          "no_label": true,
+                          "class_name": "col-span-2"
+                        }
+                      },
+                      "document_width": {
+                        "ui": {
+                          "i18n": {
+                            "de": {
+                              "title": "Breite"
+                            },
+                            "en": {
+                              "title": "Width"
+                            },
+                            "es": {
+                              "title": "Ancho"
+                            },
+                            "fr": {
+                              "title": "Largeur"
+                            },
+                            "nl": {
+                              "title": "Breedte"
+                            },
+                            "uk": {
+                              "title": "Ширина"
+                            }
+                          },
+                          "order": 3,
+                          "class_name": "col-span-1"
+                        },
+                        "scale": 0
+                      },
+                      "document_amount": {
+                        "ui": {
+                          "i18n": {
+                            "de": {
+                              "title": "Menge"
+                            },
+                            "en": {
+                              "title": "Qty"
+                            },
+                            "es": {
+                              "title": "Cant."
+                            },
+                            "fr": {
+                              "title": "Qté"
+                            },
+                            "nl": {
+                              "title": "Aantal"
+                            },
+                            "uk": {
+                              "title": "Кількість"
+                            }
+                          },
+                          "order": 2,
+                          "class_name": "col-span-1"
+                        },
+                        "scale": 0
+                      },
+                      "document_height": {
+                        "ui": {
+                          "i18n": {
+                            "de": {
+                              "title": "Höhe"
+                            },
+                            "en": {
+                              "title": "Height"
+                            },
+                            "es": {
+                              "title": "Alto"
+                            },
+                            "fr": {
+                              "title": "Hauteur"
+                            },
+                            "nl": {
+                              "title": "Hoogte"
+                            },
+                            "uk": {
+                              "title": "Висота"
+                            }
+                          },
+                          "order": 4,
+                          "class_name": "col-span-1"
+                        },
+                        "scale": 0
+                      },
+                      "production_orderline_id": {
+                        "ui": {
+                          "i18n": {
+                            "de": {
+                              "title": "Auftragsposition"
+                            },
+                            "en": {
+                              "title": "Order line"
+                            },
+                            "es": {
+                              "title": "Línea de pedido"
+                            },
+                            "fr": {
+                              "title": "Ligne de commande"
+                            },
+                            "nl": {
+                              "title": "Orderregel"
+                            },
+                            "uk": {
+                              "title": "Рядок замовлення"
+                            }
+                          },
+                          "order": 0,
+                          "class_name": "col-span-2"
+                        }
+                      }
+                    },
+                    "class_name": "grid grid-cols-7 gap-1"
+                  }
+                ],
+                "group_by": [
+                  "nest_job_id"
+                ],
+                "row_options": {
+                  "nav": {
+                    "on_select": {
+                      "path": "(detail:nest-detail)",
+                      "params": [
+                        {
+                          "key": "nest_id",
+                          "is_query_param": true
+                        }
+                      ]
+                    }
+                  },
+                  "colexp": true,
+                  "checkable": true,
+                  "selectable": true,
+                  "class_names_field": "remarks_json.class_name"
+                },
+                "field_config": {
+                  "job_name": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Job"
+                        },
+                        "en": {
+                          "title": "Job"
+                        },
+                        "es": {
+                          "title": "Trabajo"
+                        },
+                        "fr": {
+                          "title": "Travail"
+                        },
+                        "nl": {
+                          "title": "Job"
+                        },
+                        "uk": {
+                          "title": "Завдання"
+                        }
+                      },
+                      "order": 0,
+                      "class_name": "col-span-2"
+                    }
+                  },
+                  "job_amount": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Menge"
+                        },
+                        "en": {
+                          "title": "Qty"
+                        },
+                        "es": {
+                          "title": "Cant."
+                        },
+                        "fr": {
+                          "title": "Qté"
+                        },
+                        "nl": {
+                          "title": "Aantal"
+                        },
+                        "uk": {
+                          "title": "Кількість"
+                        }
+                      },
+                      "order": 1,
+                      "class_name": "col-span-1"
+                    },
+                    "scale": 0,
+                    "aggregate_fn": "min"
+                  },
+                  "waste_perc": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Abfall %"
+                        },
+                        "en": {
+                          "title": "Waste %"
+                        },
+                        "es": {
+                          "title": "Desperdicio %"
+                        },
+                        "fr": {
+                          "title": "Déchet %"
+                        },
+                        "nl": {
+                          "title": "Afval %"
+                        },
+                        "uk": {
+                          "title": "Відходи %"
+                        }
+                      },
+                      "order": 3,
+                      "class_name": "col-span-1",
+                      "hidden_when": [
+                        {
+                          "op": "==",
+                          "value": 0,
+                          "field": "waste_perc"
+                        }
+                      ]
+                    },
+                    "scale": 1,
+                    "aggregate_fn": "min"
+                  },
+                  "deadline_at": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Frist"
+                        },
+                        "en": {
+                          "title": "Deadline"
+                        },
+                        "es": {
+                          "title": "Fecha límite"
+                        },
+                        "fr": {
+                          "title": "Échéance"
+                        },
+                        "nl": {
+                          "title": "Deadline"
+                        },
+                        "uk": {
+                          "title": "Дедлайн"
+                        }
+                      },
+                      "order": 7,
+                      "class_name": "col-span-2",
+                      "type": "date"
+                    },
+                    "aggregate_fn": "min"
+                  },
+                  "cutting_time": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Schnittzeit"
+                        },
+                        "en": {
+                          "title": "Cut time"
+                        },
+                        "es": {
+                          "title": "Tiempo de corte"
+                        },
+                        "fr": {
+                          "title": "Temps de découpe"
+                        },
+                        "nl": {
+                          "title": "Snijtijd"
+                        },
+                        "uk": {
+                          "title": "Час різання"
+                        }
+                      },
+                      "order": 6,
+                      "class_name": "col-span-1"
+                    },
+                    "aggregate_fn": "min"
+                  },
+                  "remarks_json": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Anmerkungen"
+                        },
+                        "en": {
+                          "title": "Remarks"
+                        },
+                        "es": {
+                          "title": "Observaciones"
+                        },
+                        "fr": {
+                          "title": "Remarques"
+                        },
+                        "nl": {
+                          "title": "Opmerkingen"
+                        },
+                        "uk": {
+                          "title": "Примітки"
+                        }
+                      },
+                      "order": 8,
+                      "hidden": true,
+                      "class_name": "col-span-2  text-right"
+                    }
+                  },
+                  "printing_time": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Druckzeit"
+                        },
+                        "en": {
+                          "title": "Print time"
+                        },
+                        "es": {
+                          "title": "Tiempo de impresión"
+                        },
+                        "fr": {
+                          "title": "Temps d'impression"
+                        },
+                        "nl": {
+                          "title": "Printtijd"
+                        },
+                        "uk": {
+                          "title": "Час друку"
+                        }
+                      },
+                      "order": 5,
+                      "class_name": "col-span-1"
+                    },
+                    "aggregate_fn": "min"
+                  },
+                  "deadline_fill_perc": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Füllung %"
+                        },
+                        "en": {
+                          "title": "Fill %"
+                        },
+                        "es": {
+                          "title": "Llenado %"
+                        },
+                        "fr": {
+                          "title": "Remplissage %"
+                        },
+                        "nl": {
+                          "title": "Vulling %"
+                        },
+                        "uk": {
+                          "title": "Заповнення %"
+                        }
+                      },
+                      "order": 4,
+                      "class_name": "col-span-1"
+                    },
+                    "scale": 0,
+                    "aggregate_fn": "min"
+                  },
+                  "production_orderline_id": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Aufträge"
+                        },
+                        "en": {
+                          "title": "Orders"
+                        },
+                        "es": {
+                          "title": "Pedidos"
+                        },
+                        "fr": {
+                          "title": "Commandes"
+                        },
+                        "nl": {
+                          "title": "Orders"
+                        },
+                        "uk": {
+                          "title": "Замовлення"
+                        }
+                      },
+                      "order": 2,
+                      "class_name": "col-span-1"
+                    },
+                    "aggregate_fn": "count"
+                  }
+                },
+                "filter_fields": [
+                  "nest_id"
+                ],
+                "class_name": "grid grid-cols-6 gap-1"
+              }
+            ],
+            "group_by": [
+              "queue_name",
+              "nest_bucket_id",
+              "bucket_size",
+              "spec_id"
+            ],
+            "row_options": {
+              "colexp": true,
+              "checkable": false,
+              "selectable": false
+            },
+            "field_config": {
+              "spec_id": {
+                "ui": {
+                  "order": 3,
+                  "class_name": "col-span-3"
+                }
+              },
+              "queue_name": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Warteschlange"
+                    },
+                    "en": {
+                      "title": "Queue"
+                    },
+                    "es": {
+                      "title": "Cola"
+                    },
+                    "fr": {
+                      "title": "File"
+                    },
+                    "nl": {
+                      "title": "Wachtrij"
+                    },
+                    "uk": {
+                      "title": "Черга"
+                    }
+                  },
+                  "order": 0,
+                  "class_name": "col-span-3"
+                }
+              },
+              "bucket_size": {
+                "ui": {
+                  "order": 2,
+                  "class_name": "col-span-3"
+                }
+              },
+              "resource_json": {
+                "ui": {
+                  "order": 1,
+                  "class_name": "col-span-3"
+                }
+              }
+            },
+            "class_name": "grid grid-cols-6 gap-1"
+          }
+        ],
+        "group_by": [
+          {
+            "i18n": {
+              "de": {
+                "title": "Dokkum"
+              },
+              "en": {
+                "title": "Dokkum"
+              },
+              "es": {
+                "title": "Dokkum"
+              },
+              "fr": {
+                "title": "Dokkum"
+              },
+              "nl": {
+                "title": "Dokkum"
+              },
+              "uk": {
+                "title": "Dokkum"
+              }
+            },
+            "navs": [
+              {
+                "data": [
+                  {
+                    "field": "production_location",
+                    "value": "BH"
+                  }
+                ],
+                "i18n": {
+                  "de": {
+                    "title": "Nach BH"
+                  },
+                  "en": {
+                    "title": "To BH"
+                  },
+                  "es": {
+                    "title": "A BH"
+                  },
+                  "fr": {
+                    "title": "Vers BH"
+                  },
+                  "nl": {
+                    "title": "Naar BH"
+                  },
+                  "uk": {
+                    "title": "До BH"
+                  }
+                },
+                "type": "button",
+                "nav_item_id": "move-to-bh"
+              },
+              {
+                "i18n": {
+                  "de": {
+                    "title": "Bucket kopieren"
+                  },
+                  "en": {
+                    "title": "Copy bucket"
+                  },
+                  "es": {
+                    "title": "Copiar bucket"
+                  },
+                  "fr": {
+                    "title": "Copier le bucket"
+                  },
+                  "nl": {
+                    "title": "Kopieer bucket"
+                  },
+                  "uk": {
+                    "title": "Копіювати bucket"
+                  }
+                },
+                "type": "button",
+                "nav_item_id": "copy-bucket"
+              }
+            ],
+            "filter": [
+              [
+                {
+                  "op": "==",
+                  "field": "production_location",
+                  "value": "DK"
+                }
+              ]
+            ]
+          },
+          {
+            "i18n": {
+              "de": {
+                "title": "Bad hersfeld"
+              },
+              "en": {
+                "title": "Bad hersfeld"
+              },
+              "es": {
+                "title": "Bad hersfeld"
+              },
+              "fr": {
+                "title": "Bad hersfeld"
+              },
+              "nl": {
+                "title": "Bad hersfeld"
+              },
+              "uk": {
+                "title": "Bad hersfeld"
+              }
+            },
+            "navs": [
+              {
+                "data": [
+                  {
+                    "field": "production_location",
+                    "value": "DK"
+                  }
+                ],
+                "i18n": {
+                  "de": {
+                    "title": "Nach DK"
+                  },
+                  "en": {
+                    "title": "To DK"
+                  },
+                  "es": {
+                    "title": "A DK"
+                  },
+                  "fr": {
+                    "title": "Vers DK"
+                  },
+                  "nl": {
+                    "title": "Naar DK"
+                  },
+                  "uk": {
+                    "title": "До DK"
+                  }
+                },
+                "type": "button",
+                "nav_item_id": "move-to-dk"
+              },
+              {
+                "i18n": {
+                  "de": {
+                    "title": "Bucket kopieren"
+                  },
+                  "en": {
+                    "title": "Copy bucket"
+                  },
+                  "es": {
+                    "title": "Copiar bucket"
+                  },
+                  "fr": {
+                    "title": "Copier le bucket"
+                  },
+                  "nl": {
+                    "title": "Kopieer bucket"
+                  },
+                  "uk": {
+                    "title": "Копіювати bucket"
+                  }
+                },
+                "type": "button",
+                "nav_item_id": "copy-bucket"
+              }
+            ],
+            "filter": [
+              [
+                {
+                  "op": "==",
+                  "field": "production_location",
+                  "value": "BH"
+                }
+              ]
+            ]
+          }
+        ],
+        "row_options": {
+          "colexp": false,
+          "checkable": false,
+          "selectable": false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "data_group_id": 57,
+  "data_group": "test_get_schedule",
+  "data_group_json": [
+    {
+      "src": [
+        "test_get_schedule"
+      ],
+      "layout": "plan",
+      "params": [],
+      "widget_id": "test_get_schedule"
+    }
+  ]
+}

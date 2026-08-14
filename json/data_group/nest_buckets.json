@@ -1,0 +1,460 @@
+{
+  "data_group_id": 71,
+  "data_group": "nest_buckets",
+  "data_group_json": [
+    {
+      "src": [
+        "get_nest_buckets"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "nest_ids",
+          "is_query_param": true
+        },
+        {
+          "key": "nest_id",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "batch_id",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "children": [],
+      "widget_id": "nest_buckets_flow_board",
+      "field_config": {
+        "width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Breite"
+              },
+              "en": {
+                "title": "Width"
+              },
+              "nl": {
+                "title": "Breedte"
+              }
+            },
+            "order": 4
+          }
+        },
+        "amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Menge"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "nl": {
+                "title": "Aantal"
+              }
+            },
+            "order": 3
+          },
+          "scale": 0
+        },
+        "height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Höhe"
+              },
+              "en": {
+                "title": "Height"
+              },
+              "nl": {
+                "title": "Hoogte"
+              }
+            },
+            "order": 5
+          }
+        },
+        "batch_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Batch"
+              },
+              "en": {
+                "title": "Batch"
+              },
+              "nl": {
+                "title": "Batch"
+              }
+            },
+            "order": 2
+          }
+        },
+        "nest_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nest"
+              },
+              "en": {
+                "title": "Nest"
+              },
+              "nl": {
+                "title": "Nest"
+              }
+            },
+            "order": 1
+          }
+        },
+        "nested_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Genestet am"
+              },
+              "en": {
+                "title": "Nested at"
+              },
+              "nl": {
+                "title": "Genest op"
+              }
+            },
+            "order": 11,
+            "type": "datetime"
+          }
+        },
+        "bucket_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Bucket"
+              },
+              "en": {
+                "title": "Bucket"
+              },
+              "nl": {
+                "title": "Bucket"
+              }
+            },
+            "order": 0
+          }
+        },
+        "material_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "job_thumbnail": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "material_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "nl": {
+                "title": "Materiaal"
+              }
+            },
+            "order": 6
+          }
+        },
+        "material_width": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Materialbreite"
+              },
+              "en": {
+                "title": "Material width"
+              },
+              "nl": {
+                "title": "Materiaalbreedte"
+              }
+            },
+            "order": 9
+          }
+        },
+        "material_height": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Materialhöhe"
+              },
+              "en": {
+                "title": "Material height"
+              },
+              "nl": {
+                "title": "Materiaalhoogte"
+              }
+            },
+            "order": 10
+          }
+        },
+        "waste_percentage": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Abfall %"
+              },
+              "en": {
+                "title": "Waste %"
+              },
+              "nl": {
+                "title": "Afval %"
+              }
+            },
+            "order": 7
+          },
+          "scale": 2
+        },
+        "commercial_waste_percentage": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Kommerzieller Abfall %"
+              },
+              "en": {
+                "title": "Commercial waste %"
+              },
+              "nl": {
+                "title": "Commercieel afval %"
+              }
+            },
+            "order": 8
+          },
+          "scale": 2
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-container",
+        "children": [
+          {
+            "layout": "flow-cards",
+            "group_by": [],
+            "row_options": {
+              "nav": {
+                "menu": [
+                  {
+                    "i18n": {
+                      "de": {
+                        "title": "Auftragspositionen"
+                      },
+                      "en": {
+                        "title": "Orderlines"
+                      },
+                      "es": {
+                        "title": "Líneas de pedido"
+                      },
+                      "fr": {
+                        "title": "Lignes de commande"
+                      },
+                      "nl": {
+                        "title": "Orderlijnen"
+                      },
+                      "uk": {
+                        "title": "Рядки замовлення"
+                      }
+                    },
+                    "path": "(detail:plan-batch-orderline)",
+                    "params": [
+                      {
+                        "key": "batch_id",
+                        "is_query_param": true
+                      }
+                    ],
+                    "hidden_when": [
+                      {
+                        "op": "==",
+                        "value": null,
+                        "field": "batch_id"
+                      }
+                    ]
+                  },
+                  {
+                    "i18n": {
+                      "de": {
+                        "title": "Nest info"
+                      },
+                      "en": {
+                        "title": "Nest info"
+                      },
+                      "es": {
+                        "title": "Información de nesting"
+                      },
+                      "fr": {
+                        "title": "Informations de nesting"
+                      },
+                      "nl": {
+                        "title": "Nest informatie"
+                      },
+                      "uk": {
+                        "title": "Інформація про нестинг"
+                      }
+                    },
+                    "path": "(detail:plan-batch-nests)",
+                    "params": [
+                      {
+                        "key": "batch_id",
+                        "is_query_param": true
+                      }
+                    ],
+                    "hidden_when": [
+                      {
+                        "op": "==",
+                        "value": null,
+                        "field": "batch_id"
+                      }
+                    ]
+                  },
+                  {
+                    "i18n": {
+                      "de": {
+                        "title": "Nest-Vorschau"
+                      },
+                      "en": {
+                        "title": "Nest preview"
+                      },
+                      "es": {
+                        "title": "Vista previa del nesting"
+                      },
+                      "fr": {
+                        "title": "Aperçu du nesting"
+                      },
+                      "nl": {
+                        "title": "Nest preview"
+                      },
+                      "uk": {
+                        "title": "Попередній перегляд нестингу"
+                      }
+                    },
+                    "path": "(detail:nest-detail)",
+                    "params": [
+                      {
+                        "key": "nest_id",
+                        "is_query_param": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              "checkable": false,
+              "selectable": true,
+              "deselectable": true
+            },
+            "field_config": {
+              "specs": {
+                "ui": {
+                  "i18n": {
+                    "nl": {
+                      "title": "Afmeting"
+                    }
+                  },
+                  "field": "${amount}x ${width} x ${height}",
+                  "order": 1,
+                  "class_name": "col-span-4"
+                }
+              },
+              "nest_id": {
+                "ui": {
+                  "hidden": true
+                }
+              },
+              "nest_name": {
+                "ui": {
+                  "order": 0,
+                  "class_name": "col-span-2"
+                }
+              },
+              "waste_percentage": {
+                "ui": {
+                  "order": 2,
+                  "class_name": "col-span-3"
+                },
+                "scale": 1
+              },
+              "commercial_waste_percentage": {
+                "ui": {
+                  "order": 3,
+                  "class_name": "col-span-3"
+                },
+                "scale": 1
+              }
+            },
+            "class_name": "grid grid-cols-6 gap-1"
+          }
+        ],
+        "group_by": [
+          "bucket_name"
+        ],
+        "row_options": {
+          "colexp": true,
+          "checkable": false,
+          "selectable": false
+        },
+        "field_config": {
+          "amount": {
+            "ui": {
+              "order": 1,
+              "class_name": "col-span-1  text-right"
+            },
+            "aggregate_fn": "sum"
+          },
+          "bucket_name": {
+            "ui": {
+              "order": 0,
+              "class_name": "col-span-3"
+            }
+          },
+          "waste_percentage": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Abfall % (gem.)"
+                },
+                "en": {
+                  "title": "Waste % (avg)"
+                },
+                "nl": {
+                  "title": "Afval % (gem.)"
+                }
+              },
+              "order": 2,
+              "class_name": "col-span-1  text-right"
+            },
+            "scale": 1,
+            "aggregate_fn": "avg"
+          },
+          "waste_percentage_max": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Abfall % (max.)"
+                },
+                "en": {
+                  "title": "Waste % (max)"
+                },
+                "nl": {
+                  "title": "Afval % (max.)"
+                }
+              },
+              "order": 3,
+              "class_name": "col-span-1  text-right"
+            },
+            "field": "waste_percentage",
+            "scale": 1,
+            "aggregate_fn": "max"
+          }
+        },
+        "class_name": "grid grid-cols-6 gap-1"
+      }
+    }
+  ]
+}

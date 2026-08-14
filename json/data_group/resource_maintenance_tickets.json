@@ -1,0 +1,114 @@
+{
+  "data_group_id": 24,
+  "data_group": "resource_maintenance_tickets",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_maintenance_tickets"
+      ],
+      "layout": "content",
+      "params": [
+        {
+          "key": "resource_uids",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "resource_maintenance_tickets",
+      "field_config": {
+        "content": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Inhalt"
+              },
+              "en": {
+                "title": "Content"
+              },
+              "es": {
+                "title": "Contenido"
+              },
+              "fr": {
+                "title": "Contenu"
+              },
+              "nl": {
+                "title": "Inhoud"
+              },
+              "uk": {
+                "title": "Зміст"
+              }
+            },
+            "type": "content",
+            "order": 2,
+            "class_name": "col-span-12",
+            "table_config": {
+              "hidden": false
+            }
+          },
+          "type": "content"
+        },
+        "start_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Datum"
+              },
+              "en": {
+                "title": "Date"
+              },
+              "es": {
+                "title": "Fecha"
+              },
+              "fr": {
+                "title": "Date"
+              },
+              "nl": {
+                "title": "Datum"
+              },
+              "uk": {
+                "title": "Дата"
+              }
+            },
+            "type": "datetime",
+            "order": 1,
+            "class_name": "col-span-6",
+            "table_config": {
+              "hidden": false
+            }
+          },
+          "type": "date"
+        },
+        "action_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "ID"
+              },
+              "en": {
+                "title": "ID"
+              },
+              "es": {
+                "title": "ID"
+              },
+              "fr": {
+                "title": "ID"
+              },
+              "nl": {
+                "title": "ID"
+              },
+              "uk": {
+                "title": "ID"
+              }
+            },
+            "type": "text",
+            "order": 0,
+            "class_name": "col-span-6",
+            "table_config": {
+              "hidden": false
+            }
+          }
+        }
+      }
+    }
+  ]
+}

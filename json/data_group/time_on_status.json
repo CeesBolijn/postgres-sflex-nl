@@ -1,0 +1,407 @@
+{
+  "data_group_id": 46,
+  "data_group": "time_on_status",
+  "data_group_json": [
+    {
+      "src": [
+        "get_time_on_status"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "model",
+          "is_query_param": true
+        },
+        {
+          "key": "from",
+          "is_query_param": true
+        },
+        {
+          "key": "days",
+          "default_value": 10
+        },
+        {
+          "key": "production_order_id",
+          "is_query_param": true,
+          "is_ident_only": true
+        }
+      ],
+      "widget_id": "time_on_status",
+      "field_config": {
+        "sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "m²"
+              },
+              "en": {
+                "title": "m²"
+              },
+              "es": {
+                "title": "m²"
+              },
+              "fr": {
+                "title": "m²"
+              },
+              "nl": {
+                "title": "m²"
+              },
+              "uk": {
+                "title": "м²"
+              }
+            },
+            "order": 3
+          },
+          "scale": 2
+        },
+        "color": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "level": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "bucket": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "order_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "bucket_date": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "status_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "Status"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "Statut"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Статус"
+              }
+            },
+            "order": 4
+          }
+        },
+        "count_warning": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "3–5 Std."
+              },
+              "en": {
+                "title": "3–5 hrs"
+              },
+              "es": {
+                "title": "3–5 h"
+              },
+              "fr": {
+                "title": "3–5 h"
+              },
+              "nl": {
+                "title": "3–5 uur"
+              },
+              "uk": {
+                "title": "3–5 год"
+              }
+            },
+            "order": 0,
+            "control": "badge",
+            "class_name": "col-span-2",
+            "color_field": "color"
+          }
+        },
+        "material_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "es": {
+                "title": "Material"
+              },
+              "fr": {
+                "title": "Matériau"
+              },
+              "nl": {
+                "title": "Materiaal"
+              },
+              "uk": {
+                "title": "Матеріал"
+              }
+            },
+            "order": 2
+          }
+        },
+        "count_critical": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "> 5 Std."
+              },
+              "en": {
+                "title": "> 5 hrs"
+              },
+              "es": {
+                "title": "> 5 h"
+              },
+              "fr": {
+                "title": "> 5 h"
+              },
+              "nl": {
+                "title": "> 5 uur"
+              },
+              "uk": {
+                "title": "> 5 год"
+              }
+            },
+            "order": 0,
+            "control": "badge",
+            "class_name": "col-span-2",
+            "color_field": "color"
+          }
+        },
+        "logistics_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Logistikdatum"
+              },
+              "en": {
+                "title": "Logistics date"
+              },
+              "es": {
+                "title": "Fecha logística"
+              },
+              "fr": {
+                "title": "Date logistique"
+              },
+              "nl": {
+                "title": "Logistieke datum"
+              },
+              "uk": {
+                "title": "Дата логістики"
+              }
+            },
+            "order": 0,
+            "type": "date"
+          }
+        },
+        "effective_model": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "status_sequence": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "production_order": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionsauftrag"
+              },
+              "en": {
+                "title": "Production order"
+              },
+              "es": {
+                "title": "Orden de producción"
+              },
+              "fr": {
+                "title": "Ordre de production"
+              },
+              "nl": {
+                "title": "Productieorder"
+              },
+              "uk": {
+                "title": "Виробниче замовлення"
+              }
+            },
+            "order": 1
+          },
+          "nav": {
+            "path": "https://v2.proboview.nl/orders/edit/{order_id}"
+          }
+        },
+        "effective_line_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "component_specs_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "production_order_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "time_on_status_hours": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Stunden im Status"
+              },
+              "en": {
+                "title": "Hours on status"
+              },
+              "es": {
+                "title": "Horas en estado"
+              },
+              "fr": {
+                "title": "Heures sur statut"
+              },
+              "nl": {
+                "title": "Uren op status"
+              },
+              "uk": {
+                "title": "Годин у статусі"
+              }
+            },
+            "order": 5
+          },
+          "scale": 0
+        },
+        "production_orderline_id": {
+          "ui": {
+            "hidden": true
+          }
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-container",
+        "search": [
+          "material_name",
+          "status_name"
+        ],
+        "children": [
+          {
+            "layout": "flow-table",
+            "group_by": [
+              "production_order"
+            ],
+            "row_options": {
+              "nav": {
+                "on_select": {
+                  "path": "(detail:orderlines)",
+                  "params": [
+                    {
+                      "key": "order_id",
+                      "is_query_param": true
+                    }
+                  ]
+                }
+              },
+              "colexp": false,
+              "checkable": false,
+              "selectable": true,
+              "color_field": "color"
+            },
+            "field_config": {
+              "sqm": {
+                "ui": {
+                  "order": 2,
+                  "class_name": "col-span-2"
+                },
+                "scale": 0
+              },
+              "status_name": {
+                "ui": {
+                  "order": 3,
+                  "class_name": "col-span-3"
+                }
+              },
+              "material_name": {
+                "ui": {
+                  "order": 1,
+                  "class_name": "col-span-3"
+                }
+              },
+              "production_order": {
+                "ui": {
+                  "order": 0,
+                  "class_name": "col-span-3"
+                },
+                "nav": {
+                  "path": "https://v2.proboview.nl/orders/edit/{order_id}"
+                }
+              },
+              "time_on_status_hours": {
+                "ui": {
+                  "order": 4,
+                  "class_name": "col-span-1"
+                },
+                "scale": 0
+              }
+            },
+            "class_name": "grid grid-cols-12 gap-1"
+          }
+        ],
+        "group_by": [
+          "logistics_date"
+        ],
+        "row_options": {
+          "colexp": true,
+          "checkable": false,
+          "selectable": false
+        },
+        "field_config": {
+          "count_warning": {
+            "ui": {
+              "order": 1,
+              "control": "badge",
+              "class_name": "col-span-2",
+              "color_field": "color_warning"
+            },
+            "aggregate_fn": "max"
+          },
+          "count_critical": {
+            "ui": {
+              "order": 2,
+              "control": "badge",
+              "class_name": "col-span-2",
+              "color_field": "color_critical"
+            },
+            "aggregate_fn": "max"
+          },
+          "logistics_date": {
+            "ui": {
+              "order": 0,
+              "class_name": "col-span-2",
+              "type": "date"
+            }
+          }
+        },
+        "class_name": "grid grid-cols-6 gap-1"
+      }
+    }
+  ]
+}

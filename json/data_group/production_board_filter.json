@@ -1,0 +1,54 @@
+{
+  "data_group_id": 72,
+  "data_group": "production_board_filter",
+  "data_group_json": [
+    {
+      "layout": "filter",
+      "params": [
+        {
+          "key": "status_levels",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "children": [],
+      "widget_id": "production_board_filter",
+      "field_config": {
+        "status_levels": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Statusgruppe"
+              },
+              "en": {
+                "title": "Status group"
+              },
+              "es": {
+                "title": "Grupo de estado"
+              },
+              "fr": {
+                "title": "Groupe de statut"
+              },
+              "nl": {
+                "title": "Statusgroep"
+              },
+              "uk": {
+                "title": "Група статусу"
+              }
+            },
+            "order": 0,
+            "control": "multi-select",
+            "input_data": {
+              "src": [
+                "get_internal_status_levels"
+              ],
+              "params": [],
+              "text_field": "level",
+              "value_field": "level"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

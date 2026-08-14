@@ -1,0 +1,96 @@
+{
+  "data_group_id": 74,
+  "data_group": "test_form_save_types",
+  "data_group_json": [
+    {
+      "src": [
+        "testFormAddr"
+      ],
+      "edit": {
+        "update_mutations": "direct"
+      },
+      "layout": "form",
+      "params": [
+        {
+          "key": "id",
+          "is_ident_only": true
+        }
+      ],
+      "widget_id": "product-direct"
+    },
+    {
+      "src": [
+        "testFormAddr"
+      ],
+      "layout": "form",
+      "params": [
+        {
+          "key": "id",
+          "is_ident_only": true
+        }
+      ],
+      "widget_id": "product-save",
+      "row_options": {
+        "nav": {
+          "func": "save-local-data",
+          "i18n": {
+            "en": {
+              "title": "Save"
+            },
+            "nl": {
+              "title": "Opslaan"
+            }
+          }
+        }
+      }
+    },
+    {
+      "src": [
+        "testFormAddr"
+      ],
+      "edit": {
+        "update_mutations": "batch"
+      },
+      "footer": {
+        "navs": [
+          {
+            "func": "add-row",
+            "i18n": {
+              "en": {
+                "title": "Add row"
+              },
+              "nl": {
+                "title": "Add row"
+              }
+            }
+          },
+          {
+            "func": "discard",
+            "i18n": {
+              "en": {
+                "title": "Discard"
+              },
+              "nl": {
+                "title": "Discard"
+              }
+            }
+          },
+          {
+            "func": "save-local-data",
+            "i18n": {
+              "en": {
+                "title": "Save changes"
+              },
+              "nl": {
+                "title": "Save changes"
+              }
+            }
+          }
+        ]
+      },
+      "layout": "table",
+      "params": [],
+      "widget_id": "product-batch"
+    }
+  ]
+}

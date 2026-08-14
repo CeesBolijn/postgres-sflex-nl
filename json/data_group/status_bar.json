@@ -1,0 +1,64 @@
+{
+  "data_group_id": 43,
+  "data_group": "status_bar",
+  "data_group_json": [
+    {
+      "src": [
+        "get_status_bar"
+      ],
+      "layout": "status-bar",
+      "params": [
+        {
+          "key": "model",
+          "is_query_param": true
+        },
+        {
+          "key": "production_line_id",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "status_bar",
+      "field_config": {
+        "nav": {
+          "ui": {
+            "order": 2,
+            "hidden": true
+          }
+        },
+        "code": {
+          "ui": {
+            "order": 0,
+            "hidden": true
+          }
+        },
+        "data": {
+          "ui": {
+            "order": 3
+          }
+        },
+        "i18n": {
+          "ui": {
+            "order": 1,
+            "control": "i18n-text"
+          }
+        }
+      },
+      "status_bar_config": {
+        "items": {
+          "data_field": "data",
+          "color_field": "color",
+          "label_field": "i18n",
+          "value_field": "value"
+        },
+        "group_nav": "nav",
+        "group_label": "i18n"
+      }
+    }
+  ]
+}

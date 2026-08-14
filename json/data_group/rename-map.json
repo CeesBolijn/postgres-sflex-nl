@@ -1,0 +1,302 @@
+{
+  "note": "Old -> new keys and values after the data_group normalisation. Apply to the React side.",
+  "generated_from": "json/data_group/*.json",
+  "structural": [
+    {
+      "change": "field_config.class_name moved to block level",
+      "count": 55,
+      "detail": "class_name is now a sibling of field_config, so field_config holds field names only"
+    },
+    {
+      "change": "field_config.groups moved to block level",
+      "count": 1,
+      "detail": "resource_production_materials tooltip groups"
+    },
+    {
+      "change": "children: object -> array",
+      "count": 28,
+      "detail": "children is always a list, also with one element"
+    },
+    {
+      "change": "hidden_when: object -> array",
+      "count": 64,
+      "detail": "hidden_when is always a list of conditions"
+    },
+    {
+      "change": "src: string -> array",
+      "count": 65,
+      "detail": "src is always a list of source functions"
+    },
+    {
+      "change": "condition shape",
+      "count": 67,
+      "detail": "{key,op,value} and {key,op,val} are now {field,op,value}"
+    },
+    {
+      "change": "sort object",
+      "count": 9,
+      "detail": "sort_by / sort_field / order_field / sort_order(string) are now sort:{field,direction}"
+    },
+    {
+      "change": "group_by array",
+      "count": 18,
+      "detail": "group_field / group_fields / group_by_field are now group_by, always an array"
+    }
+  ],
+  "keys": [
+    {
+      "from": "deselect",
+      "to": "deselectable",
+      "count": 8,
+      "where": "row_options, label_options"
+    },
+    {
+      "from": "no_labels",
+      "to": "no_label",
+      "count": 4,
+      "where": "timeline_config"
+    },
+    {
+      "from": "hide_column_when_empty",
+      "to": "hidden_when_column_empty",
+      "count": 2,
+      "where": "flow_board_config"
+    },
+    {
+      "from": "aggregation",
+      "to": "aggregate_fn",
+      "count": 2,
+      "where": "combo_chart_config.header_metric"
+    },
+    {
+      "from": "stack",
+      "to": "stacked",
+      "count": 1,
+      "where": "stacked_area_chart_config.set_overrides"
+    },
+    {
+      "from": "is_ident",
+      "to": "is_ident_only",
+      "count": 1,
+      "where": "params[]"
+    },
+    {
+      "from": "multi_select",
+      "to": "multi_selectable",
+      "count": 2,
+      "where": "row_options, label_options"
+    },
+    {
+      "from": "val",
+      "to": "value",
+      "count": 10,
+      "where": "conditions"
+    },
+    {
+      "from": "val",
+      "to": "default_value",
+      "count": 2,
+      "where": "params[]"
+    },
+    {
+      "from": "key",
+      "to": "field",
+      "count": 66,
+      "where": "conditions"
+    },
+    {
+      "from": "filter_field",
+      "to": "value_field",
+      "count": 1,
+      "where": "condition comparing two fields"
+    },
+    {
+      "from": "ui.table",
+      "to": "ui.table_config",
+      "count": 9,
+      "where": "ui"
+    },
+    {
+      "from": "stacked_bar_config",
+      "to": "stacked_bar_chart_config",
+      "count": 1,
+      "where": "block"
+    },
+    {
+      "from": "area_chart_stacked_config",
+      "to": "stacked_area_chart_config",
+      "count": 1,
+      "where": "block"
+    },
+    {
+      "from": "name",
+      "to": "template",
+      "count": 1,
+      "where": "stacked_bar_chart_config, it holds a template string"
+    },
+    {
+      "from": "old_group_by",
+      "to": null,
+      "count": 1,
+      "where": "removed, dead key"
+    }
+  ],
+  "ui_control_type": {
+    "rule": "type says what the value is, control says how it is rendered",
+    "moved_to_type": [
+      {
+        "value": "datetime",
+        "count": 24
+      },
+      {
+        "value": "date",
+        "count": 20
+      },
+      {
+        "value": "duration",
+        "count": 6
+      },
+      {
+        "value": "time",
+        "count": 2
+      }
+    ],
+    "dropped_control": [
+      {
+        "detail": "control date/datetime next to a type, type wins",
+        "count": 9
+      }
+    ],
+    "moved_to_control": [
+      {
+        "from": "ui.type img",
+        "to": "ui.control img",
+        "count": 3
+      }
+    ],
+    "other": [
+      {
+        "from": "ui.type hidden",
+        "to": "ui.hidden true",
+        "count": 1
+      }
+    ],
+    "type_values": [
+      "number",
+      "percent",
+      "date",
+      "datetime",
+      "boolean",
+      "duration",
+      "text",
+      "hours",
+      "hh:mm",
+      "content"
+    ],
+    "control_values": [
+      "badge",
+      "chip",
+      "toggle",
+      "select",
+      "multi-select",
+      "img",
+      "i18n-text",
+      "distribution-bar",
+      "progress",
+      "template",
+      "label",
+      "icon-map",
+      "status",
+      "dropdown-list",
+      "table",
+      "time-scale",
+      "datetime-with-offset"
+    ]
+  },
+  "values": [
+    {
+      "key": "layout",
+      "from": "flow-card",
+      "to": "flow-cards",
+      "count": 2
+    },
+    {
+      "key": "layout",
+      "from": "stacked-bar",
+      "to": "stacked-bar-chart",
+      "count": 1
+    },
+    {
+      "key": "layout",
+      "from": "area-chart-stacked",
+      "to": "stacked-area-chart",
+      "count": 1
+    },
+    {
+      "key": "layout",
+      "from": "planCapacityOverview",
+      "to": "plan-capacity-overview",
+      "count": 1
+    },
+    {
+      "key": "layout",
+      "from": "planCapacity",
+      "to": "plan-capacity",
+      "count": 1
+    },
+    {
+      "key": "layout",
+      "from": "three_d",
+      "to": "three-d",
+      "count": 1
+    },
+    {
+      "key": "control",
+      "from": "multiselect",
+      "to": "multi-select",
+      "count": 4
+    },
+    {
+      "key": "control",
+      "from": "datetime_with_offset",
+      "to": "datetime-with-offset",
+      "count": 1
+    },
+    {
+      "key": "control",
+      "from": "time_scale",
+      "to": "time-scale",
+      "count": 1
+    },
+    {
+      "key": "func",
+      "from": "saveLocalData",
+      "to": "save-local-data",
+      "count": 2
+    },
+    {
+      "key": "func",
+      "from": "addRow",
+      "to": "add-row",
+      "count": 1
+    },
+    {
+      "key": "op",
+      "from": "<>",
+      "to": "!=",
+      "count": 1
+    }
+  ],
+  "i18n": [
+    {
+      "from": "i18n.<lang>.text",
+      "to": "i18n.<lang>.title",
+      "count": 110
+    },
+    {
+      "from": "i18n.<lang>.label",
+      "to": "i18n.<lang>.title",
+      "count": 37
+    }
+  ]
+}

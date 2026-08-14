@@ -1,0 +1,42 @@
+{
+  "data_group_id": 30,
+  "data_group": "resource_ink",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_ink"
+      ],
+      "layout": "ink-gauge",
+      "params": [
+        {
+          "key": "resource_uids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "model",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "from",
+          "is_optional": true,
+          "is_query_param": false
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": false
+        }
+      ],
+      "widget_id": "resource_ink_heads",
+      "ink_gauge_config": {
+        "ink_field": "ink",
+        "color_field": "color",
+        "level_field": "level",
+        "level_relative_to": "full",
+        "expiration_date_field": "expiration_date"
+      }
+    }
+  ]
+}

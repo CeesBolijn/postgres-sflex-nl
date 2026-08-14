@@ -1,0 +1,67 @@
+{
+  "data_group_id": 29,
+  "data_group": "resource_oee_chart",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_oee_aggregate"
+      ],
+      "layout": "donut-chart",
+      "params": [
+        {
+          "key": "resource_uids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "line_type",
+          "default_value": null
+        },
+        {
+          "key": "from",
+          "is_optional": true,
+          "is_query_param": false
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "resource_oee",
+      "field_config": {
+        "state.producing": {
+          "ui": {
+            "i18n": {
+              "en": {
+                "title": "Production"
+              },
+              "nl": {
+                "title": "Productie"
+              }
+            }
+          }
+        },
+        "state.block.i18n": {
+          "ui": {
+            "control": "i18n-text"
+          }
+        }
+      },
+      "donut_chart_config": {
+        "mode": "duration",
+        "code_field": "state.code",
+        "color_field": "state.color",
+        "show_legend": true,
+        "aggregate_fn": "sum",
+        "center_field": "state.producing",
+        "filter_field": "type",
+        "content_field": "state.block.i18n",
+        "aggregate_field": "duration_seconds",
+        "group_by": [
+          "state.code"
+        ]
+      }
+    }
+  ]
+}
