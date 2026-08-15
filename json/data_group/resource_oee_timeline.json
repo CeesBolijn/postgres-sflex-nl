@@ -397,7 +397,7 @@
             },
             {
               "group": {
-                "class_name": "grid grid-cols-6 gap-1",
+                "fields_class_name": "grid grid-cols-6 gap-1",
                 "data_field": "data.nest_status",
                 "field_config": {
                   "data.nest_status.amount": {

@@ -1,4 +1,4 @@
-create function get_production_orderline_detail(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_dates boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_is_open boolean DEFAULT true, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, ship_separately boolean, production_line_id integer, internal_status_code text, status_sequence integer, status_level text, status_title text, status_json jsonb, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, rework_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[])
+create or replace function mapping.get_production_orderline_detail(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_dates boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_is_open boolean DEFAULT true, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, ship_separately boolean, production_line_id integer, internal_status_code text, status_sequence integer, status_level text, status_title text, status_json jsonb, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, rework_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[])
 	stable
 	SET plan_cache_mode=force_custom_plan
 	language plpgsql
@@ -7,6 +7,8 @@ as $$
 declare
     v_zone  constant text     := 'Europe/Amsterdam';
     v_alert constant interval := interval '2 hours';
+    -- below this sequence an orderline is not nested yet
+    v_nested_sequence constant integer := 450;
     v_day   date      := (p_from at time zone 'Europe/Amsterdam')::date;
     v_now   timestamp := (now()  at time zone 'Europe/Amsterdam');
     v_from  date;
@@ -16,28 +18,12 @@ declare
                          when p_nest_ids  is not null then 'nest'
                          else 'window' end;
 begin
-    -- Window edges counted on action.dates, so look ahead 5 lands on the fifth
-    -- day that is in scope, not on the fifth calendar day. p_include_* true
-    -- means the column is not filtered on. Everything between the two edges is
-    -- returned, so the filter below stays a plain range on one column.
-    -- A NULL count means no days on that side; both NULL means no window.
-    if v_scope = 'window'
-       and (p_look_back_days is not null or p_look_ahead_days is not null) then
-        v_from := coalesce((
-            select d.date from action.dates d
-            where d.date <= v_day
-              and (p_include_weekend         or not d.is_weekend)
-              and (p_include_mandatory_dates or not d.is_mandatory_day_off)
-            order by d.date desc offset coalesce(p_look_back_days, 0) limit 1
-        ), v_day);
-
-        v_until := coalesce((
-            select d.date from action.dates d
-            where d.date >= v_day
-              and (p_include_weekend         or not d.is_weekend)
-              and (p_include_mandatory_dates or not d.is_mandatory_day_off)
-            order by d.date offset coalesce(p_look_ahead_days, 0) limit 1
-        ), v_day) + 1;   -- half open
+    -- Everything between the two edges is returned, so the filter below stays
+    -- a plain range on one column. No window means both edges stay NULL.
+    if v_scope = 'window' then
+        select w.from_date, w.until_date into v_from, v_until
+        from action.get_date_window(p_from, p_look_back_days, p_look_ahead_days,
+                                    p_include_weekend, p_include_mandatory_dates) w;
     end if;
 
     return query
@@ -150,7 +136,7 @@ begin
                jsonb_agg(jsonb_build_object(
                    'sequence',             s.sequence,
                    'internal_status_code', si.code,
-                   'class_names',          jsonb_build_array(si.class_name),
+                   'class_names',          to_jsonb(array_remove(array[si.class_name], null)),
                    'i18n',                 si.i18n,
                    'duration_in_seconds',  pg.status_times[s.ord]
                ) order by s.ord) as status_json
@@ -167,7 +153,7 @@ begin
                jsonb_agg(jsonb_build_object(
                    'sequence',             pc.part_status,
                    'internal_status_code', si.code,
-                   'class_names',          jsonb_build_array(si.class_name),
+                   'class_names',          to_jsonb(array_remove(array[si.class_name], null)),
                    'i18n',                 si.i18n,
                    'amount',               pc.amount
                ) order by pc.part_status) as part_status_json
@@ -257,7 +243,7 @@ begin
         -- is order sensitive.
         array(select distinct c from unnest(array[
             case when ob.logistics_date::date < v_day then 'state-delayed' end,
-            case when ob.status_sequence < 450 then
+            case when ob.status_sequence < v_nested_sequence then
                 case when (ob.nest_date at time zone v_zone) - v_now <= v_alert
                      then 'plan-alert' else 'plan-signal' end
             end,
@@ -282,5 +268,5 @@ begin
 end;
 $$;
 
-alter function get_production_orderline_detail(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], integer, integer[], integer[], bigint[], boolean, integer, integer) owner to xfw3;
+alter function mapping.get_production_orderline_detail(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], integer, integer[], integer[], bigint[], boolean, integer, integer) owner to xfw3;
 

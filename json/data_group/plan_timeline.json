@@ -820,7 +820,7 @@
             },
             {
               "group": {
-                "class_name": "grid grid-cols-6 gap-1",
+                "fields_class_name": "grid grid-cols-6 gap-1",
                 "data_field": "data.nest_status",
                 "field_config": {
                   "data.nest_status.amount": {
@@ -837,7 +837,7 @@
               }
             },
             {
-              "class_name": "grid grid-cols-6 gap-1",
+              "fields_class_name": "grid grid-cols-6 gap-1",
               "data_field": "data.material_summary",
               "field_config": {
                 "data.material_summary.rework_sqm": {
@@ -973,7 +973,7 @@
               "aggregate_fn": "sum"
             }
           },
-          "class_name": "grid grid-cols-4 gap-1",
+          "fields_class_name": "grid grid-cols-4 gap-1",
           "multi_selectable": true
         },
         "duration_field": "param_json.duration_in_seconds",
@@ -990,7 +990,7 @@
         ],
         "no_label": false
       },
-      "class_name": "grid grid-cols-6 gap-1"
+      "fields_class_name": "grid grid-cols-6 gap-1"
     }
   ]
 }

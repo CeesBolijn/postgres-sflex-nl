@@ -175,7 +175,7 @@
                     }
                   }
                 },
-                "class_name": "grid grid-cols-6 gap-1"
+                "fields_class_name": "grid grid-cols-6 gap-1"
               }
             ],
             "group_by": [
@@ -204,7 +204,7 @@
                 }
               }
             },
-            "class_name": "grid grid-cols-3 gap-1"
+            "fields_class_name": "grid grid-cols-3 gap-1"
           }
         ],
         "group_by": [
@@ -242,7 +242,7 @@
         "filter_fields": [
           "nest_id"
         ],
-        "class_name": "grid grid-cols-5 gap-1"
+        "fields_class_name": "grid grid-cols-5 gap-1"
       }
     }
   ]

@@ -153,25 +153,26 @@
           "ui": {
             "i18n": {
               "de": {
-                "title": "Zu nesten"
+                "title": "Zulauf"
               },
               "en": {
-                "title": "To nest"
+                "title": "Inflow"
               },
               "es": {
-                "title": "A anidar"
+                "title": "Entrada"
               },
               "fr": {
-                "title": "À imbriquer"
+                "title": "Flux entrant"
               },
               "nl": {
-                "title": "Te nesten"
+                "title": "Inflow"
               },
               "uk": {
-                "title": "До нестингу"
+                "title": "Надходження"
               }
             },
-            "hidden": true
+            "order": 1,
+            "class_name": "col-span-2 text-right"
           },
           "scale": 0
         },
@@ -198,7 +199,7 @@
               }
             },
             "order": 0,
-            "class_name": "col-span-4",
+            "class_name": "col-span-6 @xs:col-span-2",
             "type": "date"
           }
         },
@@ -216,95 +217,6 @@
           "ui": {
             "hidden": true
           }
-        },
-        "actual_sqm": {
-          "ui": {
-            "i18n": {
-              "de": {
-                "title": "Zulauf"
-              },
-              "en": {
-                "title": "Inflow"
-              },
-              "es": {
-                "title": "Entrada"
-              },
-              "fr": {
-                "title": "Flux entrant"
-              },
-              "nl": {
-                "title": "Inflow"
-              },
-              "uk": {
-                "title": "Надходження"
-              }
-            },
-            "order": 1,
-            "class_name": "col-span-2"
-          },
-          "scale": 0
-        },
-        "max_panels": {
-          "ui": {
-            "i18n": {
-              "de": {
-                "title": "Max. anzahl platten"
-              },
-              "en": {
-                "title": "Max. panels"
-              },
-              "es": {
-                "title": "Máx. paneles"
-              },
-              "fr": {
-                "title": "Max. panneaux"
-              },
-              "nl": {
-                "title": "Max. aantal panelen"
-              },
-              "uk": {
-                "title": "Макс. панелей"
-              }
-            },
-            "order": 3,
-            "hidden": true,
-            "class_name": "col-span-3"
-          },
-          "field": "param_json.specs.forecast_panels",
-          "scale": 0,
-          "data_field": "param_json.specs",
-          "aggregate_fn": "max"
-        },
-        "min_panels": {
-          "ui": {
-            "i18n": {
-              "de": {
-                "title": "Min. anzahl platten"
-              },
-              "en": {
-                "title": "Min. panels"
-              },
-              "es": {
-                "title": "Mín. paneles"
-              },
-              "fr": {
-                "title": "Min. panneaux"
-              },
-              "nl": {
-                "title": "Min. aantal panelen"
-              },
-              "uk": {
-                "title": "Мін. панелей"
-              }
-            },
-            "order": 5,
-            "hidden": true,
-            "class_name": "col-span-3"
-          },
-          "field": "param_json.specs.forecast_panels",
-          "scale": 0,
-          "data_field": "param_json.specs",
-          "aggregate_fn": "min"
         },
         "sort_order": {
           "ui": {
@@ -370,7 +282,7 @@
               }
             },
             "order": 2,
-            "class_name": "col-span-2"
+            "class_name": "col-span-2 text-right"
           },
           "scale": 0
         },
@@ -607,62 +519,36 @@
             "suffix": "cm"
           }
         },
+        "param_json.specs.amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Anzahl"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "es": {
+                "title": "Cantidad"
+              },
+              "fr": {
+                "title": "Nombre"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "hidden": true
+          },
+          "scale": 0
+        },
         "start_offset_in_seconds": {
           "ui": {
             "hidden": true
           }
-        },
-        "param_json.specs.actual_panels": {
-          "ui": {
-            "i18n": {
-              "de": {
-                "title": "Platten zulauf"
-              },
-              "en": {
-                "title": "Inflow panels"
-              },
-              "es": {
-                "title": "Paneles de entrada"
-              },
-              "fr": {
-                "title": "Panneaux entrants"
-              },
-              "nl": {
-                "title": "Panelen inflow"
-              },
-              "uk": {
-                "title": "Панелі надходження"
-              }
-            },
-            "hidden": true
-          },
-          "scale": 0
-        },
-        "param_json.specs.forecast_panels": {
-          "ui": {
-            "i18n": {
-              "de": {
-                "title": "Platten prognose"
-              },
-              "en": {
-                "title": "Forecast panels"
-              },
-              "es": {
-                "title": "Paneles previstos"
-              },
-              "fr": {
-                "title": "Panneaux prévus"
-              },
-              "nl": {
-                "title": "Panelen forecast"
-              },
-              "uk": {
-                "title": "Прогноз панелей"
-              }
-            },
-            "hidden": true
-          },
-          "scale": 0
         },
         "param_json.fast_production_impact_in_seconds": {
           "ui": {
@@ -719,6 +605,270 @@
             "class_name": "col-span-3",
             "type": "duration"
           }
+        },
+        "orderline_count": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Auftragszeilen"
+              },
+              "en": {
+                "title": "Orderlines"
+              },
+              "es": {
+                "title": "Líneas de pedido"
+              },
+              "fr": {
+                "title": "Lignes de commande"
+              },
+              "nl": {
+                "title": "Orderregels"
+              },
+              "uk": {
+                "title": "Рядки замовлення"
+              }
+            },
+            "hidden": true
+          }
+        },
+        "product_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Einheiten"
+              },
+              "en": {
+                "title": "Units"
+              },
+              "es": {
+                "title": "Unidades"
+              },
+              "fr": {
+                "title": "Unités"
+              },
+              "nl": {
+                "title": "Units"
+              },
+              "uk": {
+                "title": "Одиниці"
+              }
+            },
+            "hidden": true
+          },
+          "scale": 0
+        },
+        "part_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Teile"
+              },
+              "en": {
+                "title": "Parts"
+              },
+              "es": {
+                "title": "Partes"
+              },
+              "fr": {
+                "title": "Pièces"
+              },
+              "nl": {
+                "title": "Parts"
+              },
+              "uk": {
+                "title": "Частини"
+              }
+            },
+            "hidden": true
+          },
+          "scale": 0
+        },
+        "amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Anzahl"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "es": {
+                "title": "Cantidad"
+              },
+              "fr": {
+                "title": "Nombre"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "order": 3,
+            "class_name": "col-span-2 text-right"
+          },
+          "scale": 0
+        },
+        "rework_count": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nacharbeit"
+              },
+              "en": {
+                "title": "Rework"
+              },
+              "es": {
+                "title": "Retrabajo"
+              },
+              "fr": {
+                "title": "Reprise"
+              },
+              "nl": {
+                "title": "Herstel"
+              },
+              "uk": {
+                "title": "Переробка"
+              }
+            },
+            "order": 4,
+            "class_name": "col-span-2 text-right",
+            "hidden_when": [
+              {
+                "field": "rework_count",
+                "op": "==",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "rework_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "H. m²"
+              },
+              "en": {
+                "title": "Rw m²"
+              },
+              "es": {
+                "title": "Retr. m²"
+              },
+              "fr": {
+                "title": "Repr. m²"
+              },
+              "nl": {
+                "title": "H. m²"
+              },
+              "uk": {
+                "title": "Пер. м²"
+              }
+            },
+            "hidden": true
+          },
+          "scale": 0
+        },
+        "gross_sqm": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Brutto m²"
+              },
+              "en": {
+                "title": "Gross m²"
+              },
+              "es": {
+                "title": "m² brutos"
+              },
+              "fr": {
+                "title": "m² bruts"
+              },
+              "nl": {
+                "title": "Bruto m²"
+              },
+              "uk": {
+                "title": "Брутто м²"
+              }
+            },
+            "hidden": true
+          },
+          "scale": 0
+        },
+        "nest_ids": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "nest_count": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nests"
+              },
+              "en": {
+                "title": "Nests"
+              },
+              "es": {
+                "title": "Nests"
+              },
+              "fr": {
+                "title": "Nests"
+              },
+              "nl": {
+                "title": "Nests"
+              },
+              "uk": {
+                "title": "Нести"
+              }
+            },
+            "hidden": true
+          }
+        },
+        "part_status_json": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "Status"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "Statut"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Статус"
+              }
+            },
+            "order": 5,
+            "control": "distribution-bar",
+            "class_name": "col-span-6",
+            "distribution_bar_config": {
+              "i18n_field": "i18n",
+              "value_field": "amount",
+              "class_names_field": "class_names",
+              "sort": {
+                "field": "sequence"
+              }
+            }
+          }
+        },
+        "seconds_to_logistics_date": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "unit_class_names": {
+          "ui": {
+            "hidden": true
+          }
         }
       },
       "filter_match": "all",
@@ -752,56 +902,97 @@
               }
             },
             {
-              "class_name": "grid grid-cols-6 gap-1",
+              "fields_class_name": "@container grid grid-cols-6 gap-1",
               "field_config": {
                 "sqm": {
                   "ui": {
-                    "order": 2,
-                    "hidden": false,
-                    "class_name": "col-span-3"
-                  }
-                },
-                "actual_sqm": {
-                  "ui": {
                     "order": 0,
-                    "class_name": "col-span-3"
+                    "class_name": "col-span-3 @sm:col-span-2 text-right"
                   }
                 },
                 "forecast_sqm": {
                   "ui": {
                     "order": 1,
-                    "class_name": "col-span-3"
+                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                  }
+                },
+                "gross_sqm": {
+                  "ui": {
+                    "order": 2,
+                    "hidden": false,
+                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                  }
+                },
+                "orderline_count": {
+                  "ui": {
+                    "order": 3,
+                    "hidden": false,
+                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                  }
+                },
+                "amount": {
+                  "ui": {
+                    "order": 4,
+                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                  }
+                },
+                "nest_count": {
+                  "ui": {
+                    "order": 5,
+                    "hidden": false,
+                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                  }
+                },
+                "rework_count": {
+                  "ui": {
+                    "order": 6,
+                    "hidden": false,
+                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                  }
+                },
+                "rework_sqm": {
+                  "ui": {
+                    "order": 7,
+                    "hidden": false,
+                    "class_name": "col-span-3 @sm:col-span-2 text-right"
                   }
                 },
                 "delivery_hours": {
                   "ui": {
-                    "order": 3,
-                    "class_name": "col-span-3"
+                    "order": 8,
+                    "class_name": "col-span-3 @sm:col-span-2"
                   }
                 },
                 "min_delivery_hours": {
                   "ui": {
-                    "order": 4,
-                    "class_name": "col-span-3"
-                  }
-                },
-                "param_json.fast_production_impact_in_seconds": {
-                  "ui": {
-                    "order": 6,
-                    "class_name": "col-span-3"
+                    "order": 9,
+                    "class_name": "col-span-3 @sm:col-span-2"
                   }
                 },
                 "param_json.standard_production_impact_in_seconds": {
                   "ui": {
-                    "order": 5,
-                    "class_name": "col-span-3"
+                    "order": 10,
+                    "class_name": "col-span-3 @sm:col-span-2"
+                  }
+                },
+                "param_json.fast_production_impact_in_seconds": {
+                  "ui": {
+                    "order": 11,
+                    "class_name": "col-span-3 @sm:col-span-2"
+                  }
+                },
+                "part_status_json": {
+                  "ui": {
+                    "order": 12,
+                    "hidden": false,
+                    "class_name": "col-span-6"
                   }
                 }
               }
             },
             {
               "group": {
-                "class_name": "grid grid-cols-8 gap-1",
+                "fields_class_name": "grid grid-cols-6 gap-1",
                 "data_field": "param_json.specs",
                 "field_config": {
                   "param_json.specs.width": {
@@ -822,16 +1013,7 @@
                       "class_name": "col-span-2"
                     }
                   },
-                  "param_json.specs.actual_panels": {
-                    "ui": {
-                      "order": 3,
-                      "hidden": false,
-                      "no_label": true,
-                      "class_name": "col-span-2 text-right"
-                    },
-                    "scale": 0
-                  },
-                  "param_json.specs.forecast_panels": {
+                  "param_json.specs.amount": {
                     "ui": {
                       "order": 2,
                       "hidden": false,
@@ -877,7 +1059,7 @@
                 }
               },
               {
-                "class_name": "grid grid-cols-6 gap-1",
+                "fields_class_name": "grid grid-cols-6 gap-1",
                 "field_config": {
                   "delivery_hours": {
                     "ui": {
@@ -895,7 +1077,7 @@
               },
               {
                 "group": {
-                  "class_name": "grid grid-cols-4 gap-1",
+                  "fields_class_name": "grid grid-cols-4 gap-1",
                   "data_field": "param_json.specs",
                   "field_config": {
                     "param_json.specs.width": {
@@ -1245,7 +1427,7 @@
           ],
           "is_fixed_group_field": "is_fixed_group",
           "next_start_offset_in_seconds_field": "next_start_offset_in_seconds",
-          "class_name": "grid grid-cols-4 gap-1",
+          "fields_class_name": "grid grid-cols-4 gap-1",
           "group_by": [
             "tenant_name"
           ],
@@ -1307,7 +1489,7 @@
         ],
         "no_label": false
       },
-      "class_name": "grid grid-cols-8 gap-1"
+      "fields_class_name": "@container grid grid-cols-6 gap-1"
     }
   ]
 }

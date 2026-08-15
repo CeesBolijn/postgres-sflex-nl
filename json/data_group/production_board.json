@@ -684,7 +684,7 @@
                       "logistics_date",
                       "logistics_datetime"
                     ],
-                    "class_name": "grid grid-cols-6 gap-1"
+                    "fields_class_name": "grid grid-cols-6 gap-1"
                   }
                 ],
                 "group_by": [
@@ -870,7 +870,7 @@
                     "aggregate_fn": "sum"
                   }
                 },
-                "class_name": "grid grid-cols-6 gap-1"
+                "fields_class_name": "grid grid-cols-6 gap-1"
               }
             ],
             "group_by": [
@@ -1049,7 +1049,7 @@
                 "aggregate_fn": "sum"
               }
             },
-            "class_name": "grid grid-cols-6 gap-1"
+            "fields_class_name": "grid grid-cols-6 gap-1"
           }
         ],
         "group_by": [
@@ -1076,7 +1076,7 @@
         },
         "column_max_width": 300,
         "column_min_width": 300,
-        "class_name": "grid grid-cols-1",
+        "fields_class_name": "grid grid-cols-1",
         "hidden_when_column_empty": true
       }
     }

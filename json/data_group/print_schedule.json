@@ -685,7 +685,7 @@
               }
             },
             {
-              "class_name": "grid grid-cols-6 gap-1",
+              "fields_class_name": "grid grid-cols-6 gap-1",
               "field_config": {
                 "actual_sqm": {
                   "ui": {
@@ -727,7 +727,7 @@
             },
             {
               "group": {
-                "class_name": "grid grid-cols-8 gap-1",
+                "fields_class_name": "grid grid-cols-8 gap-1",
                 "data_field": "param_json.specs",
                 "field_config": {
                   "param_json.specs.width": {
@@ -803,7 +803,7 @@
                 }
               },
               {
-                "class_name": "grid grid-cols-6 gap-1",
+                "fields_class_name": "grid grid-cols-6 gap-1",
                 "field_config": {
                   "delivery_hours": {
                     "ui": {
@@ -821,7 +821,7 @@
               },
               {
                 "group": {
-                  "class_name": "grid grid-cols-4 gap-1",
+                  "fields_class_name": "grid grid-cols-4 gap-1",
                   "data_field": "param_json.specs",
                   "field_config": {
                     "param_json.specs.width": {
@@ -1161,7 +1161,7 @@
           ],
           "is_fixed_group_field": "is_fixed_group",
           "next_start_offset_in_seconds_field": "next_start_offset_in_seconds",
-          "class_name": "grid grid-cols-4 gap-1",
+          "fields_class_name": "grid grid-cols-4 gap-1",
           "group_by": [
             "tenant_name"
           ],
@@ -1222,7 +1222,7 @@
         ],
         "no_label": false
       },
-      "class_name": "grid grid-cols-8 gap-1"
+      "fields_class_name": "grid grid-cols-8 gap-1"
     }
   ]
 }

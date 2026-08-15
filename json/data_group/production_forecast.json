@@ -124,7 +124,7 @@
             },
             {
               "group": {
-                "class_name": "grid grid-cols-5 gap-1",
+                "fields_class_name": "grid grid-cols-5 gap-1",
                 "data_field": "materials",
                 "field_config": {
                   "actual_sqm": {

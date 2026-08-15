@@ -3,9 +3,9 @@
   "generated_from": "json/data_group/*.json",
   "structural": [
     {
-      "change": "field_config.class_name moved to block level",
+      "change": "field_config.class_name moved to block level as fields_class_name",
       "count": 55,
-      "detail": "class_name is now a sibling of field_config, so field_config holds field names only"
+      "detail": "the grid of the rendered fields is now fields_class_name, a sibling of field_config, so field_config holds field names only; class_name stays the class of the element itself (ui.class_name on a field, row_options.class_name)"
     },
     {
       "change": "field_config.groups moved to block level",
@@ -44,6 +44,12 @@
     }
   ],
   "keys": [
+    {
+      "from": "class_name",
+      "to": "fields_class_name",
+      "count": 79,
+      "where": "next to field_config: block, tooltip section, group, label_options"
+    },
     {
       "from": "deselect",
       "to": "deselectable",

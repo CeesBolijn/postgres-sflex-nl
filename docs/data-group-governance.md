@@ -17,7 +17,7 @@ readable in `json/data_group/rename-map.json`; the database side is `sql/update_
 
 | Change | Count |
 |---|---|
-| `field_config.class_name` moved to block level | 55 |
+| `field_config.class_name` moved to block level as `fields_class_name` | 55 |
 | `field_config.groups` moved to block level | 1 |
 | `children` object -> array | 28 |
 | `hidden_when` object -> array | 64 |

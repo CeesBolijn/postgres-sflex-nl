@@ -194,7 +194,7 @@
                 "scale": 1
               }
             },
-            "class_name": "grid grid-cols-6 gap-1"
+            "fields_class_name": "grid grid-cols-6 gap-1"
           }
         ],
         "group_by": [
@@ -215,7 +215,7 @@
         },
         "column_max_width": 250,
         "column_min_width": 250,
-        "class_name": "grid grid-cols-1 gap-1"
+        "fields_class_name": "grid grid-cols-1 gap-1"
       }
     }
   ]

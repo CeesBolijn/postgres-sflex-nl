@@ -13,7 +13,7 @@ declare
     -- print seconds per gross sqm at standard and at high speed; a lookup later
     v_standard_seconds_per_sqm constant numeric := 45;
     v_fast_seconds_per_sqm     constant numeric := 15;
-beginIk heb 
+begin
     return query
     with base as (
         select b.material_id, b.material_name, b.production_line_id,

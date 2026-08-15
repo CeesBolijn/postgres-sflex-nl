@@ -9,6 +9,16 @@ Stack: PostgreSQL (owner `xfw3`), React 19.2, Tailwind 4.2, UntitledUI/react, Fi
 - geen kolom of key genaamd `id` — altijd beschrijvend (`nest_group_id`, `resource_uid`, ...)
 - geen aannames — vragen bij twijfel
 
+## database-toegang
+- ik heb directe verbinding met postgres, maar alleen om te lezen:
+  `select`, `explain`, catalogus/definities opvragen — dat doe ik zelf
+- alles wat iets verandert voer ik nooit zelf uit: ddl, dml, `create/alter/drop`,
+  grants, `vacuum`, functies en views — ook niet via een omweg of hulpscript
+- wijzigen gaat altijd zo: ik lever het volledige script, jij controleert en draait het
+- ik wacht met verder werken tot jij zegt dat het gedraaid is, en verzin nooit
+  een uitslag van iets dat nog niet is uitgevoerd
+- twijfel of iets leest of schrijft? dan lever ik het als script
+
 ## sql
 - functies altijd met schema-naam (`mapping.crud_ticket`), ook bij `ALTER FUNCTION ... OWNER TO xfw3`
 - crud-functies altijd set-based: geen FOR loop, geen temp table
@@ -39,7 +49,8 @@ zie `docs/data-group-governance.md` voor de volledige analyse
 - een key heeft overal dezelfde vorm — een lijst blijft een lijst, ook met één element
   (`children`, `hidden_when`, `src` zijn altijd een array)
 - config-keys staan nooit tussen veldnamen: `field_config` bevat alleen velden,
-  layout-keys als `class_name` staan ernaast
+  de grid van de velden heet `fields_class_name` en staat ernaast;
+  `class_name` is altijd de class van het element zelf (`ui.class_name` op een veld)
 - `ui.type` zegt wat de waarde ís, `ui.control` hoe hij getoond wordt
 - één tekst-slot in `i18n`: `title` (niet `text` of `label`); `subtitle` alleen bij een echte tweede regel
 - `<naam>_field` betekent "de naam van een veld", zonder suffix is het de waarde zelf

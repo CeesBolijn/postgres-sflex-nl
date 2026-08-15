@@ -419,7 +419,7 @@
                     }
                   }
                 },
-                "class_name": "grid grid-cols-6 gap-1"
+                "fields_class_name": "grid grid-cols-6 gap-1"
               }
             ],
             "group_by": [
@@ -486,7 +486,7 @@
                 "aggregate_fn": "count"
               }
             },
-            "class_name": "grid grid-cols-6 gap-1"
+            "fields_class_name": "grid grid-cols-6 gap-1"
           }
         ],
         "group_by": [
@@ -559,7 +559,7 @@
             "aggregate_fn": "count"
           }
         },
-        "class_name": "grid grid-cols-6 gap-1"
+        "fields_class_name": "grid grid-cols-6 gap-1"
       }
     }
   ]
