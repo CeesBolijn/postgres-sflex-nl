@@ -1,0 +1,309 @@
+[
+  {
+    "code": "30",
+    "day_offset": 0,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "12:00:00",
+          "start_offset_in_seconds": 43200
+        },
+        "print_time": {
+          "time": "12:30:00",
+          "start_offset_in_seconds": 45000
+        }
+      }
+    ],
+    "is_fixed_group": "30"
+  },
+  {
+    "code": "24",
+    "day_offset": 0,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "16:45:00",
+          "start_offset_in_seconds": 60300
+        },
+        "print_time": {
+          "time": "17:00:00",
+          "start_offset_in_seconds": 61200
+        }
+      }
+    ],
+    "is_fixed_group": "24"
+  },
+  {
+    "code": "18",
+    "day_offset": 0,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ],
+    "is_fixed_group": "18"
+  },
+  {
+    "code": "48",
+    "day_offset": 0,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "48+",
+    "day_offset": 1,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "72",
+    "day_offset": 1,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "96+",
+    "day_offset": 1,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "96",
+    "day_offset": 2,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "120",
+    "day_offset": 3,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "144",
+    "day_offset": 4,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "168",
+    "day_offset": 5,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "192",
+    "day_offset": 6,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "216",
+    "day_offset": 7,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "240",
+    "day_offset": 8,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "264",
+    "day_offset": 9,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "288",
+    "day_offset": 10,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "312",
+    "day_offset": 11,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "336",
+    "day_offset": 12,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  },
+  {
+    "code": "360",
+    "day_offset": 13,
+    "nest_moments": [
+      {
+        "nest_time": {
+          "time": "21:45:00",
+          "start_offset_in_seconds": 78300
+        },
+        "print_time": {
+          "time": "22:00:00",
+          "start_offset_in_seconds": 79200
+        }
+      }
+    ]
+  }
+]

@@ -25,6 +25,14 @@ Stack: PostgreSQL (owner `xfw3`), React 19.2, Tailwind 4.2, UntitledUI/react, Fi
 - `template` (niet `text_formula`) voor template strings
 - bij "code" als hoofd-key: property `content` voor alle tekst, plus een property voor wat je maakt
 
+## lookup json
+- de inhoud van een lookup staat in `json/lookup/<schema>/<lookup>.json`
+- de map is het schema, de bestandsnaam is de lookup-naam, het bestand bevat de `lookup_json` zelf
+- voorbeeld: `SELECT lookup_json FROM production.lookup WHERE lookup = 'lookup_nest_moments'`
+  staat in `json/lookup/production/lookup_nest_moments.json`
+- schrijf of herschrijf je een functie die `lookup_json` leest en het bestand staat er niet:
+  vraag of het toegevoegd wordt, nooit zelf de inhoud verzinnen
+
 ## data_group json
 zie `docs/data-group-governance.md` voor de volledige analyse
 

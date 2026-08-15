@@ -1,4 +1,7 @@
-create function get_print_schedule(p_until timestamp with time zone DEFAULT now(), p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_only_starting_today boolean DEFAULT false) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, date date, start_offset_in_seconds integer, duration_in_seconds integer, class_names text[], actual_sqm numeric, forecast_sqm numeric, param_json jsonb)
+-- the return type gains nest_moment_code, so create or replace cannot do it
+drop function if exists mock.get_print_schedule(timestamp with time zone, text, integer[], boolean);
+
+create function mock.get_print_schedule(p_until timestamp with time zone DEFAULT now(), p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_only_starting_today boolean DEFAULT false) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, date date, nest_moment_code text, day_offset integer, start_offset_in_seconds integer, duration_in_seconds integer, class_names text[], actual_sqm numeric, forecast_sqm numeric, param_json jsonb)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -76,9 +79,10 @@ BEGIN
             WHERE l.lookup = 'lookup_tenants'
         ),
         nest_moment AS (
-            -- the code links the offset to a material, the offset itself is
-            -- all that reaches the output
-            SELECT v.value ->> 'code'                              AS nest_moment_code,
+            -- the code carries its own day offset, and both reach the output:
+            -- the offset moves the date, the code keeps two moments that share
+            -- an offset apart
+            SELECT v.value ->> 'code'                               AS nest_moment_code,
                    coalesce((v.value ->> 'day_offset')::integer, 0) AS day_offset
             FROM production.lookup l
                      CROSS JOIN LATERAL jsonb_array_elements(l.lookup_json) AS v(value)
@@ -141,10 +145,11 @@ BEGIN
                      JOIN workday w ON w.date = i.interval_date
         ),
         card AS (
-            -- step two: every day offset of the material's nest moments turns
-            -- the production day into a row that keeps the column and moves the
-            -- date that many workdays forward, so offsets 0,1,1,1,2 give three
-            -- rows on one column
+            -- step two: every nest moment CODE of the material turns the
+            -- production day into a row that keeps the column and moves the
+            -- date its own offset of workdays forward. The code is part of the
+            -- grain, so codes 24, 48+, 72+ and 96+ give four rows on one
+            -- column, one on the production day and three on the next workday.
             SELECT (row_number() OVER ())::integer AS row_id,
                    c.*
             FROM (SELECT DISTINCT
@@ -155,6 +160,7 @@ BEGIN
                          p.interval_days,
                          p.production_date,
                          p.production_day_index,
+                         nm.nest_moment_code,
                          nm.day_offset,
                          w.date
                   FROM production_day p
@@ -228,6 +234,8 @@ BEGIN
                r.tenant_id,
                r.tenant_name,
                r.date,
+               r.nest_moment_code,
+               r.day_offset,
                -- the column is the production day, every offset of that day
                -- shares this value and only the date moves
                r.production_day_index * 86400,
@@ -250,8 +258,8 @@ BEGIN
                        'fast_production_impact_in_seconds', c.fast_impact)
         FROM row_base r
                  LEFT JOIN calc c ON c.row_id = r.row_id
-        ORDER BY r.tenant_name, r.material_name, r.production_day_index, r.date;
+        ORDER BY r.tenant_name, r.material_name, r.production_day_index, r.date, r.nest_moment_code;
 END;
 $$;
 
-alter function get_print_schedule(unknown, unknown, unknown, unknown) owner to xfw3;
+alter function mock.get_print_schedule(timestamp with time zone, text, integer[], boolean) owner to xfw3;
