@@ -2,7 +2,6 @@
 -- run from the repo root with psql, the json files stay the single source of truth:
 --   psql -v ON_ERROR_STOP=1 -f sql/update_data_group.sql
 --
--- TODO confirm the schema and table name, the export is called xfw3_site_data_group
 
 \set payload `cat json/data_group/xfw3_site_data_group.json`
 
@@ -19,7 +18,7 @@ src AS (
     FROM payload
              CROSS JOIN LATERAL jsonb_array_elements(payload.doc) AS el
 )
-UPDATE site_data_group t
+UPDATE site.data_group t
 SET data_group_json = s.data_group_json
 FROM src s
 WHERE t.data_group_id = s.data_group_id
@@ -38,7 +37,7 @@ src AS (
 )
 SELECT s.data_group_id, s.data_group AS missing_in_table
 FROM src s
-         LEFT JOIN site_data_group t ON t.data_group_id = s.data_group_id
+         LEFT JOIN site.data_group t ON t.data_group_id = s.data_group_id
 WHERE t.data_group_id IS NULL;
 
 COMMIT;

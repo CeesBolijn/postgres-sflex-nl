@@ -1,7 +1,7 @@
 -- return type changes, so the old signature has to go first
 drop function if exists mock.get_nest_schedule(timestamp with time zone, text, text, integer[], boolean, integer, integer, integer);
 
-create function mock.get_nest_schedule(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_only_starting_today boolean DEFAULT false, p_look_back_days integer DEFAULT 0, p_look_ahead_days integer DEFAULT 0, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, production_company_id integer, resource_uid text, resource_name text, delivery_hours integer, min_delivery_hours integer, sort_order numeric, param_json jsonb, occurence integer, is_fixed_group text, is_pinned boolean, start_offset_in_seconds integer, next_start_offset_in_seconds integer, duration_in_seconds integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, gross_sqm numeric, part_status_json jsonb, nest_ids bigint[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
+create function mock.get_nest_schedule(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_only_starting_today boolean DEFAULT false, p_look_back_days integer DEFAULT 0, p_look_ahead_days integer DEFAULT 0, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, production_company_id integer, resource_uid text, resource_name text, delivery_hours integer, min_delivery_hours integer, sort_order numeric, param_json jsonb, occurence integer, is_fixed_group text, is_pinned boolean, start_offset_in_seconds integer, next_start_offset_in_seconds integer, duration_in_seconds integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, gross_sqm numeric, part_status_json jsonb, nest_ids bigint[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
 	stable
 	language plpgsql
 as $$
@@ -53,7 +53,7 @@ begin
     row_data as (
         select b.*, ln.nest_ids,
                o.orderline_count, o.product_amount, o.part_amount, o.amount,
-               o.sqm, o.forecast_sqm, o.rework_count, o.rework_sqm, o.impact_json, o.gross_sqm,
+               o.sqm, o.forecast_sqm, o.rework_count, o.rework_sqm, o.gross_sqm,
                o.specs_json, o.part_status_json, o.seconds_to_logistics_date,
                o.class_names, o.unit_class_names
         from base b
@@ -63,7 +63,7 @@ begin
         -- today only); noop rows have no material and skip the call
         left join lateral (
             select a.orderline_count, a.product_amount, a.part_amount, a.amount,
-                   a.sqm, a.forecast_sqm, a.rework_count, a.rework_sqm, a.impact_json, a.gross_sqm,
+                   a.sqm, a.forecast_sqm, a.rework_count, a.rework_sqm, a.gross_sqm,
                    a.specs_json, a.part_status_json, a.seconds_to_logistics_date,
                    a.class_names, a.unit_class_names
             from mapping.get_production_orderline_aggregate(
@@ -99,7 +99,7 @@ begin
                 else ceil(coalesce(r.gross_sqm, 0) * v_standard_seconds_per_sqm)::integer
            end as duration_in_seconds,
            r.orderline_count, r.product_amount, r.part_amount, r.amount,
-           r.sqm, r.forecast_sqm, r.rework_count, r.rework_sqm, r.impact_json, r.gross_sqm,
+           r.sqm, r.forecast_sqm, r.rework_count, r.rework_sqm, r.gross_sqm,
            coalesce(r.part_status_json, '[]'::jsonb),
            -- the nests of the lane items, not the ones the orderlines sit on
            coalesce(r.nest_ids, '{}'::bigint[]),

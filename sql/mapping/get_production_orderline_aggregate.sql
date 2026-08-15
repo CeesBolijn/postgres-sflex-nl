@@ -1,7 +1,7 @@
 -- return type changes, so the old signature has to go first
-drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], integer[], bigint[], integer, integer[], boolean, numeric, integer, integer);
+drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer);
 
-create function mapping.get_production_orderline_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_dates boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_tenant_ids integer[] DEFAULT NULL::integer[], p_is_open boolean DEFAULT true, p_waste_percentage numeric DEFAULT 20, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, material_media_type_id integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, rejected_amount numeric, produced_amount numeric, waste_percentage numeric, gross_sqm numeric, specs_json jsonb, status_json jsonb, part_status_json jsonb, nest_ids bigint[], delivery_class_names text[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
+create function mapping.get_production_orderline_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_dates boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_tenant_ids integer[] DEFAULT NULL::integer[], p_is_open boolean DEFAULT true, p_waste_percentage numeric DEFAULT 20, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, material_media_type_id integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, rejected_amount numeric, produced_amount numeric, waste_percentage numeric, gross_sqm numeric, specs_json jsonb, status_json jsonb, part_status_json jsonb, nest_ids bigint[], delivery_class_names text[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
 	stable
 	language sql
 as $$
@@ -38,10 +38,9 @@ as $$
             sum(d.rejected_amount)      as rejected_amount,
             sum(d.produced_amount)      as produced_amount,
             -- own rework plus the number of reruns of the nests it sits on
-            sum(coalesce((d.rework_json ->> 'count')::integer, 0)
-              + coalesce((d.rework_json ->> 'nest_count')::integer, 0))::integer as rework_count,
-            sum(coalesce((d.rework_json ->> 'sqm')::numeric, 0)
-              + coalesce((d.rework_json ->> 'nest_sqm')::numeric, 0)) as rework_sqm,
+            sum((d.impact_json ->> 'rework_count')::integer)  as rework_count,
+            sum((d.impact_json ->> 'rework_amount')::numeric) as rework_amount,
+            sum((d.impact_json ->> 'rework_sqm')::numeric)    as rework_sqm,
             -- how much time the tightest orderline of the group still has
             floor(extract(epoch from (min(d.logistics_at)
                                       - (p_from at time zone 'Europe/Amsterdam'))))::integer
@@ -90,6 +89,7 @@ as $$
                coalesce(g.sqm, 0)                                      as sqm,
                fc.forecast_sqm,
                coalesce(g.rework_count, 0)                             as rework_count,
+               coalesce(g.rework_amount, 0)                            as rework_amount,
                coalesce(g.rework_sqm, 0)                               as rework_sqm,
                coalesce(g.rejected_amount, 0)                          as rejected_amount,
                coalesce(g.produced_amount, 0)                          as produced_amount,
@@ -174,6 +174,14 @@ as $$
         round(g.forecast_sqm, 2),
         g.rework_count,
         round(g.rework_sqm, 2),
+        -- the same shape as on the orderline, summed over the group
+        jsonb_build_object(
+            'count',         g.orderline_count,
+            'amount',        g.product_amount,
+            'sqm',           round(g.sqm, 2),
+            'rework_count',  g.rework_count,
+            'rework_amount', g.rework_amount,
+            'rework_sqm',    round(g.rework_sqm, 2)),
         round(g.rejected_amount, 2),
         round(g.produced_amount, 2),
         p_waste_percentage,

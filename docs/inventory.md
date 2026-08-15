@@ -32,7 +32,7 @@ Gesorteerd nieuw naar oud. Vink af zodra de functie/json in de repo staat en de 
 | 2026-07-31 09:12 | OEE `lookup_resource_state` json-ontwerp | json-structuur (nog geen sql) | [ ] |
 | 2026-07-31 07:43 | resource allocation ledger | `core.line_item_resource`, `catalog.crud_line_item_resource`, `relation.resource` DDL, `line_item_resource.md` | [ ] |
 | 2026-07-31 06:07 | get_nest_planning uitbreiden | `legacy.get_nest_planning` (met production_line_id, resource_uid/name, material_id) | [ ] |
-| 2026-07-30 17:02 | library options normaliseren + xbom pipeline | `mapping.crud_spec_unit_manifest`, `mapping.get_unit_manifest_aggregate`, `mapping.get_component_specs_with_manifest`, `mapping.crud_sales_orderline_option` | [ ] |
+| 2026-07-30 17:02 | library options normaliseren + xbom pipeline | `mapping.crud_spec_unit_manifest`, `mapping.get_unit_manifest_aggregate`, ~~`mapping.get_component_specs_with_manifest`~~ (vervangen door `mapping.get_production_orderline_manifest`), `mapping.crud_sales_orderline_option` | [ ] |
 | 2026-07-29 09:46 | nest time scale, uurlijkse intervallen | `get_timeline_view_segments` (vroege versie) + `lookup_timeline_views` json | ⚠️ waarschijnlijk vervangen door 08-01/08-02 versies |
 | 2026-08-03 06:00 | get_file_inflow timezone bug | `legacy.get_file_inflow` (gefixt) | [ ] |
 

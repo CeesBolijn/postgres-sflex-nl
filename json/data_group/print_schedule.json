@@ -1014,6 +1014,11 @@
                 "class_name": "text-xs col-span-2"
               }
             },
+            "is_fixed_group": {
+              "ui": {
+                "hidden": true
+              }
+            },
             "param_json.specs": {
               "ui": {
                 "i18n": {
@@ -1146,6 +1151,11 @@
                 },
                 "hidden": true
               }
+            },
+            "next_start_offset_in_seconds": {
+              "ui": {
+                "hidden": true
+              }
             }
           },
           "drag_order_type": "rank",
@@ -1169,6 +1179,7 @@
         },
         "duration_field": "duration_in_seconds",
         "set_date_field": "date",
+        "is_pinned_field": "is_pinned",
         "no_timeline_now": true,
         "column_min_width": 150,
         "set_group_fields": [

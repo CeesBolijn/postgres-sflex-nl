@@ -1,4 +1,7 @@
-create or replace function mapping.get_production_orderline_detail(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_dates boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_is_open boolean DEFAULT true, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, ship_separately boolean, production_line_id integer, internal_status_code text, status_sequence integer, status_level text, status_title text, status_json jsonb, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, rework_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[])
+-- return type changes, so the old signature has to go first
+drop function if exists mapping.get_production_orderline_detail(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], integer, integer[], integer[], bigint[], boolean, integer, integer);
+
+create function mapping.get_production_orderline_detail(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_dates boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_is_open boolean DEFAULT true, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, product_width numeric, product_height numeric, ship_separately boolean, production_line_id integer, production_company_id integer, internal_status_code text, status_sequence integer, status_level text, status_title text, status_json jsonb, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, impact_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[])
 	stable
 	SET plan_cache_mode=force_custom_plan
 	language plpgsql
@@ -34,8 +37,9 @@ begin
         select cs.number, cs.order_sequence, cs.order_id, cs.production_order_id,
                cs.production_orderline_id, cs.sales_orderline_id,
                cs.customer_id, cs.company_name, cs.customer_reference, cs.team_name,
-               cs.material_id, cs.product_amount, cs.sqm, cs.ship_separately,
-               cs.first_production_line_id, cs.internal_status_code,
+               cs.material_id, cs.product_amount, cs.sqm, cs.product_width, cs.product_height,
+               cs.ship_separately, cs.first_production_line_id, cs.production_company_id,
+               cs.internal_status_code,
                cs.nest_date, cs.production_date, cs.logistics_date, cs.shipment_date,
                cs.order_date, cs.production_order_amount,
                ist.sequence as status_sequence, ist.level as status_level,
@@ -110,8 +114,7 @@ begin
     orderline_rework as (
         select ir.production_orderline_id,
                count(*)::integer                  as rework_count,
-               coalesce(sum(ir.object_amount), 0) as rework_amount,
-               array_remove(array_agg(ir.order_log_id), null::integer) as order_log_ids
+               coalesce(sum(ir.object_amount), 0) as rework_amount
         from mapping.internal_rework ir
         join orderline_base ob on ob.production_orderline_id = ir.production_orderline_id
         where ir.object_type is distinct from 'nest'
@@ -199,8 +202,11 @@ begin
         mn.material_name,
         ob.product_amount,
         ob.sqm,
+        ob.product_width,
+        ob.product_height,
         coalesce(ob.ship_separately, false),
         ob.first_production_line_id,
+        ob.production_company_id,
         ob.internal_status_code,
         ob.status_sequence,
         ob.status_level,
@@ -220,15 +226,18 @@ begin
             'production_at', ob.production_date,
             'shipment_at',   ob.shipment_date
         ),
+        -- The one shape every overview sums: the regular work of this
+        -- orderline and its rework, booked on the orderline itself plus the
+        -- reruns of its nests. Sqm of rework follows the sqm per product.
         jsonb_build_object(
-            'count',         coalesce(orw.rework_count, 0),
-            'amount',        coalesce(orw.rework_amount, 0),
-            'sqm',           ob.sqm / nullif(ob.product_amount, 0) * coalesce(orw.rework_amount, 0),
-            'nest_count',    coalesce(na.nest_rework_count, 0),
-            'nest_amount',   coalesce(na.nest_rework_amount, 0),
-            'nest_sqm',      ob.sqm / nullif(ob.product_amount, 0)
-                             * coalesce(na.nest_rework_amount, 0),
-            'order_log_ids', orw.order_log_ids
+            'count',                   1,
+            'amount',                  ob.product_amount,
+            'sqm',                     ob.sqm,
+            'rework_count',            coalesce(orw.rework_count, 0) + coalesce(na.nest_rework_count, 0),
+            'rework_amount',           coalesce(orw.rework_amount, 0) + coalesce(na.nest_rework_amount, 0),
+            'rework_sqm',              ob.sqm / nullif(ob.product_amount, 0)
+                                       * (coalesce(orw.rework_amount, 0) + coalesce(na.nest_rework_amount, 0)),
+            'production_order_amount', ob.production_order_amount
         ),
         -- Redone pieces: booked on the orderline plus the reruns of its nests.
         coalesce(orw.rework_amount, 0) + coalesce(na.nest_rework_amount, 0),

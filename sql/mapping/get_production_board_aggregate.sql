@@ -1,4 +1,4 @@
-create function get_production_board_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_look_back_days integer DEFAULT 10, p_look_ahead_days integer DEFAULT 5, p_production_line_id integer DEFAULT NULL::integer, p_domain_id integer DEFAULT 1, p_status_levels text[] DEFAULT NULL::text[]) returns TABLE(status_sequence integer, internal_status_code text, status_title text, logistics_date date, logistics_datetime timestamp without time zone, is_logistics_date_today boolean, delivery_class_names text[], order_count bigint, regular_amount numeric, regular_sqm numeric, rework_count numeric, rework_amount numeric, rework_sqm numeric, day_distribution_json jsonb, distribution_json jsonb, material_id integer, material_name text, material_order_count bigint, material_product_amount numeric, material_sqm numeric, material_rework_count numeric, material_rework_amount numeric, material_rework_sqm numeric, material_distribution_json jsonb, nest_ids bigint[])
+create or replace function mapping.get_production_board_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_look_back_days integer DEFAULT 10, p_look_ahead_days integer DEFAULT 5, p_production_line_id integer DEFAULT NULL::integer, p_domain_id integer DEFAULT 1, p_status_levels text[] DEFAULT NULL::text[]) returns TABLE(status_sequence integer, internal_status_code text, status_title text, logistics_date date, logistics_datetime timestamp without time zone, is_logistics_date_today boolean, delivery_class_names text[], order_count bigint, regular_amount numeric, regular_sqm numeric, rework_count numeric, rework_amount numeric, rework_sqm numeric, day_distribution_json jsonb, distribution_json jsonb, material_id integer, material_name text, material_order_count bigint, material_product_amount numeric, material_sqm numeric, material_rework_count numeric, material_rework_amount numeric, material_rework_sqm numeric, material_distribution_json jsonb, nest_ids bigint[])
 	stable
 	language plpgsql
 as $$
@@ -38,8 +38,7 @@ begin
                count(distinct d.production_order_id) as material_order_count,
                sum(d.product_amount)                 as material_product_amount,
                sum(d.sqm)                            as material_sqm,
-               sum(coalesce((d.rework_json ->> 'count')::integer, 0)
-                 + coalesce((d.rework_json ->> 'nest_count')::integer, 0))::numeric
+               sum((d.impact_json ->> 'rework_count')::integer)::numeric
                                                      as material_rework_count,
                sum(d.rejected_amount)                as material_rework_amount,
                sum(d.sqm / nullif(d.product_amount, 0) * d.rejected_amount)
@@ -196,5 +195,5 @@ begin
 end;
 $$;
 
-alter function get_production_board_aggregate(timestamp with time zone, integer, integer, integer, integer, text[]) owner to xfw3;
+alter function mapping.get_production_board_aggregate(timestamp with time zone, integer, integer, integer, integer, text[]) owner to xfw3;
 

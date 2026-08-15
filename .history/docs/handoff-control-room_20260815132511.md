@@ -4,7 +4,7 @@ Alles wat de React-kant moet weten over de vorm van de data_group-json na de
 normalisatie (augustus 2026). Dit gaat over de **conventies die voor alle
 data_groups gelden**, niet over de velden van één data_group. Bron van
 waarheid: `json/data_group/*.json`; de export `xfw3_site_data_group.json`
-gaat met `sql/update_data_group_inline.sql` naar `site.data_group`.
+gaat met `sql/update_data_group_inline.sql` naar `site_data_group`.
 
 ## 1. structuur
 
@@ -123,4 +123,4 @@ Volledige uitleg met breakpoint-tabellen: `docs/data-group-layout.md`.
 
 ## bron
 
-De machine-leesbare versie van 1–5 is `rename-map.json`.
+De machine-leesbare versie van 1–5 is `json/data_group/rename-map.json`.

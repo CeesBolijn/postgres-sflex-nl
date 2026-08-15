@@ -1,4 +1,7 @@
-create function get_production_orderline_graph(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_production_line_id integer DEFAULT NULL::integer, p_domain_id integer DEFAULT 1, p_status_levels text[] DEFAULT NULL::text[]) returns TABLE(internal_status_code text, status_title text, regular_class_names jsonb, rework_class_names jsonb, orderline_status_sequence integer, total_orders bigint, total_product_amount numeric, total_sqm numeric, production_date date, total_nest_count integer, total_nest_sqm numeric, total_rework_count bigint, total_rework_amount numeric, total_nest_rework_count bigint, total_nest_rework_amount numeric, total_rejected_amount numeric, total_rejected_sqm numeric, total_produced_amount numeric)
+-- return type changes, so the old signature has to go first
+drop function if exists mapping.get_production_orderline_graph(timestamp with time zone, integer, integer, text[]);
+
+create function mapping.get_production_orderline_graph(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_production_line_id integer DEFAULT NULL::integer, p_domain_id integer DEFAULT 1, p_status_levels text[] DEFAULT NULL::text[]) returns TABLE(internal_status_code text, status_title text, regular_class_names jsonb, rework_class_names jsonb, orderline_status_sequence integer, total_orders bigint, total_product_amount numeric, total_sqm numeric, production_date date, total_nest_count integer, total_nest_sqm numeric, total_rework_count bigint, total_rework_amount numeric, total_rejected_amount numeric, total_rejected_sqm numeric, total_produced_amount numeric)
 	stable
 	language sql
 as $$
@@ -43,10 +46,9 @@ as $$
                sum(d.product_amount)                 as total_product_amount,
                sum(d.sqm)                            as total_sqm,
                min(d.production_date)                as production_date,
-               sum(coalesce((d.rework_json ->> 'count')::integer, 0))::bigint      as total_rework_count,
-               sum(coalesce((d.rework_json ->> 'amount')::numeric, 0))             as total_rework_amount,
-               sum(coalesce((d.rework_json ->> 'nest_count')::integer, 0))::bigint as total_nest_rework_count,
-               sum(coalesce((d.rework_json ->> 'nest_amount')::numeric, 0))        as total_nest_rework_amount,
+               -- rework on the orderline itself plus the reruns of its nests
+               sum((d.impact_json ->> 'rework_count')::integer)::bigint           as total_rework_count,
+               sum((d.impact_json ->> 'rework_amount')::numeric)                  as total_rework_amount,
                sum(d.rejected_amount)                                              as total_rejected_amount,
                -- Rejected sqm per orderline, using that orderline's own sqm per product.
                sum(d.sqm / nullif(d.product_amount, 0) * d.rejected_amount)        as total_rejected_sqm,
@@ -69,8 +71,6 @@ as $$
         ns.total_nest_sqm,
         g.total_rework_count,
         g.total_rework_amount,
-        g.total_nest_rework_count,
-        g.total_nest_rework_amount,
         g.total_rejected_amount,
         g.total_rejected_sqm,
         g.total_produced_amount
@@ -82,5 +82,5 @@ as $$
     order by g.orderline_status_sequence;
 $$;
 
-alter function get_production_orderline_graph(timestamp with time zone, integer, integer, text[]) owner to xfw3;
+alter function mapping.get_production_orderline_graph(timestamp with time zone, integer, integer, text[]) owner to xfw3;
 

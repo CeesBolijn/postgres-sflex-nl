@@ -52,7 +52,8 @@ zie `docs/data-group-governance.md` voor de volledige analyse
   de grid van de velden heet `fields_class_name` en staat ernaast;
   `class_name` is altijd de class van het element zelf (`ui.class_name` op een veld)
 - `ui.type` zegt wat de waarde ís, `ui.control` hoe hij getoond wordt
-- één tekst-slot in `i18n`: `title` (niet `text` of `label`); `subtitle` alleen bij een echte tweede regel
+- `title` is het standaard tekst-slot in `i18n` (niet `text` of `label`); andere slots
+  (`subtitle`, `abb`, ...) alleen als het echt iets anders is dan de titel
 - `<naam>_field` betekent "de naam van een veld", zonder suffix is het de waarde zelf
 - eenheid in de key, niet in een aparte property: `duration_in_seconds`, niet `duration` + `unit`
 - percentages altijd `_percentage` (niet `_perc`, `_pct`, `_percent`)
