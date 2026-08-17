@@ -102,7 +102,8 @@ front-end source, so a class used only there is **not generated** unless it is
 safelisted in the front-end css:
 
 ```css
-@source inline("{@md:,@2xl:,}col-span-{1..12}");
+@source inline("{@xs:,@sm:,@md:,@2xl:,}col-span-{1..12}");
+@source inline("col-start-{1..12}");
 ```
 
 Rule: only use classes that are already in use (below) or that are safelisted.
@@ -111,8 +112,10 @@ Never build class names from data.
 ### classes in use today
 
 `grid` `gap-1` `grid-cols-{1,3,4,5,6,7,8,9,12}` `col-span-{1..6,12}`
-`col-span-full` `md:col-span-{1,2,3,4}` `@container` `@2xl:col-span-{1,2,3}`
-`hidden` `text-xs` `text-right` `font-medium` `font-semibold`
+`col-span-full` `col-start-{1,3}` (an empty column in a tooltip grid)
+`md:col-span-{1,2,3,4}` `@container` `@xs:col-span-2` `@sm:col-span-2`
+`@2xl:col-span-{1,2,3}` `hidden` `text-xs` `text-right` `font-medium`
+`font-semibold`
 
 ## how to lay out a section
 

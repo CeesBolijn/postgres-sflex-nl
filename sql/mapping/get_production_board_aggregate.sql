@@ -21,12 +21,10 @@ begin
                  p_look_back_days     => p_look_back_days,
                  p_look_ahead_days    => p_look_ahead_days,
                  p_production_line_id => p_production_line_id,
+                 -- filtered at the scan, not on the rows coming back
+                 p_status_levels      => p_status_levels,
                  p_is_open            => true,
                  p_domain_id          => p_domain_id) d
-        -- the detail filters on status sequences, the board on status levels
-        where p_status_levels is null
-           or cardinality(p_status_levels) = 0
-           or d.status_level = any (p_status_levels)
     ),
     -- One row per (cell, material). Every other level in this function is
     -- derived from this grain, so cell totals always equal the sum of their

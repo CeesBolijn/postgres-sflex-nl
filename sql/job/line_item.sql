@@ -10,6 +10,10 @@ create table line_item
 			on delete set null,
 	option_tree_id bigint
 		references catalog.option_tree,
+	linked_cart_id bigint
+		references cart
+			on delete set null,
+	link_type text,
 	product_json jsonb default '{}'::jsonb not null,
 	sales_price numeric(14,4),
 	purchase_price numeric(14,4),
@@ -17,10 +21,22 @@ create table line_item
 	updated_at timestamp with time zone default now() not null
 );
 
+comment on column line_item.linked_cart_id is 'The cart this line item is linked to, e.g. the purchase order at a supplier when it is outsourced. NULL when there is no link. At most one link at a time; the line item itself is never duplicated and keeps its own cart_id.';
+
+comment on column line_item.link_type is 'What the link to linked_cart_id means, data-driven: outsource, replacement, rework, transfer, ... NULL when linked_cart_id is NULL.';
+
+alter table line_item
+	add constraint line_item_link_type_with_cart_check
+		check ((linked_cart_id is null) = (link_type is null));
+
 alter table line_item owner to xfw3;
 
 create index idx_line_item_cart_id
 	on line_item (cart_id);
+
+create index idx_line_item_linked_cart_id
+	on line_item (linked_cart_id)
+	where (linked_cart_id IS NOT NULL);
 
 create index idx_line_item_parent_line_item_id
 	on line_item (parent_line_item_id);

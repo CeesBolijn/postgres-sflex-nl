@@ -24,6 +24,12 @@
           "is_query_param": true
         },
         {
+          "key": "only_starting_today",
+          "is_optional": true,
+          "default_value": false,
+          "is_query_param": true
+        },
+        {
           "key": "date",
           "is_optional": true,
           "is_ident_only": true,
@@ -55,24 +61,25 @@
             {
               "i18n": {
                 "de": {
-                  "title": "Auftragspositionen"
+                  "title": "Nesting-queue öffnen"
                 },
                 "en": {
-                  "title": "Orderlines"
+                  "title": "Open nesting-queue"
                 },
                 "es": {
-                  "title": "Abrir líneas de pedido"
+                  "title": "Abrir nesting-queue"
                 },
                 "fr": {
-                  "title": "Ouvrir les lignes de commande"
+                  "title": "Ouvrir le nesting"
                 },
                 "nl": {
-                  "title": "Orderlijnen"
+                  "title": "Nesting-wachtrij openen"
                 },
                 "uk": {
-                  "title": "Відкрити позиції замовлення"
+                  "title": "Відкрити нестинг"
                 }
               },
+              "icon": "Grid01",
               "path": "(sidebar:nest-schedule-queue)",
               "params": [
                 {
@@ -865,32 +872,6 @@
           "ui": {
             "hidden": true
           }
-        },
-        "nest_date": {
-          "ui": {
-            "i18n": {
-              "de": {
-                "title": "Nestdatum"
-              },
-              "en": {
-                "title": "Nest date"
-              },
-              "es": {
-                "title": "Fecha de anidado"
-              },
-              "fr": {
-                "title": "Date d'imbrication"
-              },
-              "nl": {
-                "title": "Nestdatum"
-              },
-              "uk": {
-                "title": "Дата нестингу"
-              }
-            },
-            "type": "date",
-            "hidden": true
-          }
         }
       },
       "filter_match": "all",
@@ -921,89 +902,90 @@
               }
             },
             {
-              "fields_class_name": "grid grid-cols-2 gap-1",
+              "fields_class_name": "grid grid-cols-6 gap-1",
               "field_config": {
                 "sqm": {
                   "ui": {
                     "order": 0,
                     "hidden": false,
-                    "class_name": "text-right"
+                    "class_name": "col-span-2 text-right"
                   }
                 },
                 "forecast_sqm": {
                   "ui": {
                     "order": 1,
                     "hidden": false,
-                    "class_name": "text-right"
+                    "class_name": "col-span-2 text-right"
                   }
                 },
                 "orderline_count": {
                   "ui": {
                     "order": 2,
                     "hidden": false,
-                    "class_name": "text-right"
+                    "class_name": "col-span-2 text-right"
                   }
                 },
                 "amount": {
                   "ui": {
                     "order": 3,
                     "hidden": false,
-                    "class_name": "text-right"
+                    "class_name": "col-span-2 text-right"
                   }
                 },
                 "gross_sqm": {
                   "ui": {
                     "order": 4,
                     "hidden": false,
-                    "class_name": "text-right"
+                    "class_name": "col-span-2 text-right"
                   }
                 },
                 "rework_count": {
                   "ui": {
                     "order": 5,
                     "hidden": false,
-                    "class_name": "col-start-1 text-right"
+                    "class_name": "col-start-1 col-span-2 text-right"
                   }
                 },
                 "rework_sqm": {
                   "ui": {
                     "order": 6,
                     "hidden": false,
-                    "class_name": "text-right"
+                    "class_name": "col-span-2 text-right"
                   }
                 },
                 "nest_count": {
                   "ui": {
                     "order": 7,
                     "hidden": false,
-                    "class_name": "text-right"
+                    "class_name": "col-span-2 text-right"
                   }
                 },
                 "delivery_hours": {
                   "ui": {
                     "order": 8,
                     "hidden": false,
-                    "class_name": "col-start-1"
+                    "class_name": "col-start-3 col-span-2"
                   }
                 },
                 "min_delivery_hours": {
                   "ui": {
                     "order": 9,
-                    "hidden": false
+                    "hidden": false,
+                    "class_name": "col-span-2"
                   }
                 },
                 "param_json.standard_production_impact_in_seconds": {
                   "ui": {
                     "order": 10,
                     "hidden": false,
-                    "class_name": "col-span-2"
+                    "class_name": "col-span-6"
                   }
                 },
                 "param_json.fast_production_impact_in_seconds": {
                   "ui": {
                     "order": 11,
                     "hidden": false,
-                    "class_name": "col-span-2"
+                    "class_name": "col-span-6"
                   }
                 }
               }
@@ -1143,7 +1125,8 @@
               },
               {
                 "key": "only_starting_today",
-                "default_value": true,
+                "is_optional": true,
+                "default_value": false,
                 "is_query_param": true
               }
             ],

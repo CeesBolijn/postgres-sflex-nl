@@ -304,5 +304,22 @@
       "to": "i18n.<lang>.title",
       "count": 37
     }
+  ],
+  "new_keys": [
+    {
+      "key": "timeline_config.chain_scope",
+      "values": [
+        "plan",
+        "lane"
+      ],
+      "detail": "how far a shift chains: across the lanes of the plan, or within the lane",
+      "where": "nest_schedule (plan), nest_resource_schedule (lane)"
+    },
+    {
+      "key": "timeline_config.column_max_width",
+      "values": "px",
+      "detail": "upper bound of the column width, counterpart of column_min_width",
+      "where": "nest_resource_schedule"
+    }
   ]
 }

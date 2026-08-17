@@ -15,13 +15,11 @@ as $$
             p_look_back_days     => 0,
             p_look_ahead_days    => 0,
             p_production_line_id => p_production_line_id,
+            -- filtered at the scan, not on the rows coming back
+            p_status_levels      => p_status_levels,
             p_is_open            => true,
             p_domain_id          => p_domain_id
         ) d
-        -- the detail filters on status sequences, the graph on status levels
-        where p_status_levels is null
-           or cardinality(p_status_levels) = 0
-           or d.status_level = any (p_status_levels)
     ),
     nest_status as (
         -- Distinct nests per status, with the balance in that status from

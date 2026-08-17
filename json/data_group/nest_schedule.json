@@ -24,12 +24,6 @@
           "is_query_param": true
         },
         {
-          "key": "only_starting_today",
-          "is_optional": true,
-          "default_value": false,
-          "is_query_param": true
-        },
-        {
           "key": "date",
           "is_optional": true,
           "is_ident_only": true,
@@ -171,8 +165,11 @@
                 "title": "Надходження"
               }
             },
-            "order": 1,
-            "class_name": "col-span-2 text-right"
+            "hidden": false,
+            "order": 0,
+            "no_label": true,
+            "suffix": "m²",
+            "class_name": "col-span-6 text-right"
           },
           "scale": 0
         },
@@ -198,9 +195,8 @@
                 "title": "Дата"
               }
             },
-            "order": 0,
-            "class_name": "col-span-6 @xs:col-span-2",
-            "type": "date"
+            "type": "date",
+            "hidden": true
           }
         },
         "is_pinned": {
@@ -281,8 +277,7 @@
                 "title": "Прогноз"
               }
             },
-            "order": 2,
-            "class_name": "col-span-2 text-right"
+            "hidden": true
           },
           "scale": 0
         },
@@ -705,8 +700,7 @@
                 "title": "Кількість"
               }
             },
-            "order": 3,
-            "class_name": "col-span-2 text-right"
+            "hidden": true
           },
           "scale": 0
         },
@@ -732,15 +726,7 @@
                 "title": "Переробка"
               }
             },
-            "order": 4,
-            "class_name": "col-span-2 text-right",
-            "hidden_when": [
-              {
-                "field": "rework_count",
-                "op": "==",
-                "value": 0
-              }
-            ]
+            "hidden": true
           }
         },
         "rework_sqm": {
@@ -847,9 +833,7 @@
                 "title": "Статус"
               }
             },
-            "order": 5,
             "control": "distribution-bar",
-            "class_name": "col-span-6",
             "distribution_bar_config": {
               "i18n_field": "i18n",
               "value_field": "amount",
@@ -857,7 +841,8 @@
               "sort": {
                 "field": "sequence"
               }
-            }
+            },
+            "hidden": true
           }
         },
         "seconds_to_logistics_date": {
@@ -867,6 +852,32 @@
         },
         "unit_class_names": {
           "ui": {
+            "hidden": true
+          }
+        },
+        "nest_date": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nestdatum"
+              },
+              "en": {
+                "title": "Nest date"
+              },
+              "es": {
+                "title": "Fecha de anidado"
+              },
+              "fr": {
+                "title": "Date d'imbrication"
+              },
+              "nl": {
+                "title": "Nestdatum"
+              },
+              "uk": {
+                "title": "Дата нестингу"
+              }
+            },
+            "type": "date",
             "hidden": true
           }
         }
@@ -884,108 +895,104 @@
           "sections": [
             {
               "field_config": {
-                "date": {
-                  "ui": {
-                    "order": 2
-                  }
-                },
                 "tenant_name": {
                   "ui": {
-                    "order": 1
+                    "order": 1,
+                    "hidden": false
                   }
                 },
                 "material_name": {
                   "ui": {
-                    "order": 0
+                    "order": 0,
+                    "hidden": false
                   }
                 }
               }
             },
             {
-              "fields_class_name": "@container grid grid-cols-6 gap-1",
+              "fields_class_name": "grid grid-cols-2 gap-1",
               "field_config": {
                 "sqm": {
                   "ui": {
                     "order": 0,
-                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                    "hidden": false,
+                    "class_name": "text-right"
                   }
                 },
                 "forecast_sqm": {
                   "ui": {
                     "order": 1,
-                    "class_name": "col-span-3 @sm:col-span-2 text-right"
-                  }
-                },
-                "gross_sqm": {
-                  "ui": {
-                    "order": 2,
                     "hidden": false,
-                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                    "class_name": "text-right"
                   }
                 },
                 "orderline_count": {
                   "ui": {
-                    "order": 3,
+                    "order": 2,
                     "hidden": false,
-                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                    "class_name": "text-right"
                   }
                 },
                 "amount": {
                   "ui": {
-                    "order": 4,
-                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                    "order": 3,
+                    "hidden": false,
+                    "class_name": "text-right"
                   }
                 },
-                "nest_count": {
+                "gross_sqm": {
                   "ui": {
-                    "order": 5,
+                    "order": 4,
                     "hidden": false,
-                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                    "class_name": "text-right"
                   }
                 },
                 "rework_count": {
                   "ui": {
-                    "order": 6,
+                    "order": 5,
                     "hidden": false,
-                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                    "class_name": "col-start-1 text-right"
                   }
                 },
                 "rework_sqm": {
                   "ui": {
+                    "order": 6,
+                    "hidden": false,
+                    "class_name": "text-right"
+                  }
+                },
+                "nest_count": {
+                  "ui": {
                     "order": 7,
                     "hidden": false,
-                    "class_name": "col-span-3 @sm:col-span-2 text-right"
+                    "class_name": "text-right"
                   }
                 },
                 "delivery_hours": {
                   "ui": {
                     "order": 8,
-                    "class_name": "col-span-3 @sm:col-span-2"
+                    "hidden": false,
+                    "class_name": "col-start-1"
                   }
                 },
                 "min_delivery_hours": {
                   "ui": {
                     "order": 9,
-                    "class_name": "col-span-3 @sm:col-span-2"
+                    "hidden": false
                   }
                 },
                 "param_json.standard_production_impact_in_seconds": {
                   "ui": {
                     "order": 10,
-                    "class_name": "col-span-3 @sm:col-span-2"
+                    "hidden": false,
+                    "class_name": "col-span-2"
                   }
                 },
                 "param_json.fast_production_impact_in_seconds": {
                   "ui": {
                     "order": 11,
-                    "class_name": "col-span-3 @sm:col-span-2"
-                  }
-                },
-                "part_status_json": {
-                  "ui": {
-                    "order": 12,
                     "hidden": false,
-                    "class_name": "col-span-6"
+                    "class_name": "col-span-2"
                   }
                 }
               }
@@ -1125,8 +1132,7 @@
               },
               {
                 "key": "only_starting_today",
-                "is_optional": true,
-                "default_value": false,
+                "default_value": true,
                 "is_query_param": true
               }
             ],
@@ -1437,7 +1443,7 @@
         "set_date_field": "date",
         "is_pinned_field": "is_pinned",
         "no_timeline_now": false,
-        "column_min_width": 150,
+        "column_min_width": 0,
         "set_group_fields": [
           "tenant_id",
           "material_id",
@@ -1445,6 +1451,7 @@
         ],
         "timeline_seconds": 864000,
         "class_names_field": "class_names",
+        "chain_scope": "plan",
         "time_scale_config": {
           "mode": "relative",
           "type": "time",

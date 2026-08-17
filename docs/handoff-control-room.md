@@ -105,10 +105,12 @@ zijn daarnaar hernoemd. `subtitle` alleen bij een echte tweede regel.
 
   ```css
   @source inline("{@xs:,@sm:,@md:,@2xl:,}col-span-{1..12}");
+  @source inline("col-start-{1..12}");
   ```
 
   Nu in gebruik: `grid` `gap-1` `grid-cols-{1,3,4,5,6,7,8,9,12}`
-  `col-span-{1..6,12}` `col-span-full` `md:col-span-{1,2,3,4}` `@container`
+  `col-span-{1..6,12}` `col-span-full` `col-start-{1,3}` (lege kolom in een tooltip-grid)
+  `md:col-span-{1,2,3,4}` `@container`
   `@xs:col-span-2` `@sm:col-span-2` `@2xl:col-span-{1,2,3}` `hidden`
   `text-xs` `text-right` `font-medium` `font-semibold`
 
@@ -120,6 +122,17 @@ Volledige uitleg met breakpoint-tabellen: `docs/data-group-layout.md`.
   class_names_field, sort {field}}` over een json-lijst van
   `{sequence, internal_status_code, class_names, i18n, amount}`
 - `hidden_when` op een veld: lijst van `{field, op, value}`
+
+## 8. nieuwe keys op `timeline_config`
+
+| key | waarde | betekent | waar |
+|---|---|---|---|
+| `chain_scope` | `plan` \| `lane` | hoe ver een verschuiving doorketent: over alle lanes van het plan, of alleen binnen de eigen lane | `nest_schedule` (plan), `nest_resource_schedule` (lane) |
+| `column_max_width` | px | bovengrens van de kolombreedte, tegenhanger van `column_min_width` | `nest_resource_schedule` (400, met `column_min_width` 26) |
+
+Beide staan naast de bestaande timeline-keys (`column_min_width`,
+`class_names_field`, `time_scale_config`); `time_scale_config.mode` kent
+`relative` en `fixed`.
 
 ## bron
 

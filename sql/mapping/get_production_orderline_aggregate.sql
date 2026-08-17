@@ -1,7 +1,8 @@
 -- return type changes, so the old signature has to go first
 drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer);
+drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer);
 
-create function mapping.get_production_orderline_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_dates boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_tenant_ids integer[] DEFAULT NULL::integer[], p_is_open boolean DEFAULT true, p_waste_percentage numeric DEFAULT 20, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, material_media_type_id integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, rejected_amount numeric, produced_amount numeric, waste_percentage numeric, gross_sqm numeric, specs_json jsonb, status_json jsonb, part_status_json jsonb, nest_ids bigint[], delivery_class_names text[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
+create function mapping.get_production_orderline_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_dates boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_tenant_ids integer[] DEFAULT NULL::integer[], p_is_open boolean DEFAULT true, p_waste_percentage numeric DEFAULT 20, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, material_media_type_id integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, rejected_amount numeric, produced_amount numeric, waste_percentage numeric, gross_sqm numeric, specs_json jsonb, status_json jsonb, part_status_json jsonb, nest_ids bigint[], delivery_class_names text[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
 	stable
 	language sql
 as $$
@@ -15,6 +16,7 @@ as $$
             p_include_weekend         => p_include_weekend,
             p_include_mandatory_dates => p_include_mandatory_dates,
             p_status_sequences        => p_status_sequences,
+            p_status_levels           => p_status_levels,
             p_production_line_id      => p_production_line_id,
             p_material_ids            => p_material_ids,
             p_batch_ids               => p_batch_ids,
@@ -148,18 +150,20 @@ as $$
         group by p.material_id, p.production_line_id
     ),
     flag as (
-        -- every marker and nest of the group, each one once
-        select d.material_id, d.production_line_id,
-               array_agg(distinct dc.name)   filter (where dc.name   is not null) as delivery_class_names,
-               array_agg(distinct c.name)    filter (where c.name    is not null) as class_names,
-               array_agg(distinct u.name)    filter (where u.name    is not null) as unit_class_names,
-               array_agg(distinct n.nest_id) filter (where n.nest_id is not null) as nest_ids
-        from detail d
-        left join lateral unnest(d.delivery_class_names) as dc(name) on true
-        left join lateral unnest(d.class_names)      as c(name)    on true
-        left join lateral unnest(d.unit_class_names) as u(name)    on true
-        left join lateral unnest(d.nest_ids)         as n(nest_id) on true
-        group by d.material_id, d.production_line_id
+        -- every marker and nest of the group, each one once. One unnest per
+        -- array, summed per group: joining the four unnests side by side
+        -- multiplies the row estimate (1000 x 10 x 10 x 10 x 10), which drove
+        -- the plan cost past the JIT thresholds and cost seconds per call.
+        select k.material_id, k.production_line_id,
+               (select array_agg(distinct x order by x) from detail d, unnest(d.delivery_class_names) x
+                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id) as delivery_class_names,
+               (select array_agg(distinct x order by x) from detail d, unnest(d.class_names) x
+                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id) as class_names,
+               (select array_agg(distinct x order by x) from detail d, unnest(d.unit_class_names) x
+                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id) as unit_class_names,
+               (select array_agg(distinct x order by x) from detail d, unnest(d.nest_ids) x
+                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id) as nest_ids
+        from (select distinct d.material_id, d.production_line_id from detail d) k
     )
     select
         g.material_id,
@@ -230,4 +234,4 @@ as $$
     order by g.material_id, g.production_line_id;
 $$;
 
-alter function mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer) owner to xfw3;
+alter function mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer) owner to xfw3;

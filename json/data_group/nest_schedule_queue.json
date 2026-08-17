@@ -13,7 +13,7 @@
           "is_query_param": true
         },
         {
-          "key": "from",
+          "key": "date",
           "is_optional": true,
           "is_query_param": true
         },

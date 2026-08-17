@@ -129,11 +129,6 @@
             "order": 10
           }
         },
-        "status_json": {
-          "ui": {
-            "hidden": true
-          }
-        },
         "company_name": {
           "ui": {
             "i18n": {
