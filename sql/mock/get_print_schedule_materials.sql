@@ -1,4 +1,7 @@
-create function get_print_schedule_materials(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_only_starting_today boolean DEFAULT false) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, resource_uid text, resource_name text, delivery_hours integer, min_delivery_hours integer, sort_order numeric, param_json jsonb, occurence integer, is_fixed_group text, is_pinned boolean, start_offset_in_seconds integer, next_start_offset_in_seconds integer)
+-- return type changes (occurence -> copy_index), so the old signature has to go first
+drop function if exists mock.get_print_schedule_materials(timestamp with time zone, text, text, integer[], boolean);
+
+create function mock.get_print_schedule_materials(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_only_starting_today boolean DEFAULT false) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, resource_uid text, resource_name text, delivery_hours integer, min_delivery_hours integer, sort_order numeric, param_json jsonb, copy_index integer, is_fixed_group text, is_pinned boolean, start_offset_in_seconds integer, next_start_offset_in_seconds integer)
 	stable
 	language plpgsql
 as $$
@@ -54,7 +57,7 @@ BEGIN
                    FROM jsonb_array_elements(coalesce(mpl.line_json -> 'specs', '[]'::jsonb))
                         WITH ORDINALITY AS spec(value, ord)
                ), '[]'::jsonb)) AS param_json,
-               m.occurence,
+               m.copy_index,
                v_fixed -> mps.delivery_hours::text ->> 'group' AS is_fixed_group,
                m.is_pinned,
                -- fixed rows take the lookup moment, the rest their pinned time
@@ -117,5 +120,5 @@ BEGIN
 END;
 $$;
 
-alter function get_print_schedule_materials(timestamp with time zone, text, text, integer[], boolean) owner to xfw3;
+alter function mock.get_print_schedule_materials(timestamp with time zone, text, text, integer[], boolean) owner to xfw3;
 

@@ -145,6 +145,66 @@
       "to": null,
       "count": 1,
       "where": "removed, dead key"
+    },
+    {
+      "from": "drag_sort",
+      "to": "drop.sort",
+      "count": 3,
+      "where": "row_options, label_options (docs/contracts/drag-and-drop.md)"
+    },
+    {
+      "from": "drag_order_field",
+      "to": "order_field",
+      "count": 3,
+      "where": "row_options, label_options"
+    },
+    {
+      "from": "set_order_field",
+      "to": "order_field",
+      "count": 3,
+      "where": "row_options, label_options: one column, one key"
+    },
+    {
+      "from": "drag_order_type",
+      "to": "drop.order_type",
+      "count": 3,
+      "where": "row_options, label_options"
+    },
+    {
+      "from": "drag_group_fields",
+      "to": "drop.within_fields",
+      "count": 2,
+      "where": "INVERTED: was the levels a drag may cross, now the levels it may not; every entry is a group_by level"
+    },
+    {
+      "from": "drag_value_fields",
+      "to": "drop.value_fields",
+      "count": 3,
+      "where": "row_options, label_options"
+    },
+    {
+      "from": "drag_commit",
+      "to": "drop.commit",
+      "count": 0,
+      "where": "true -> \"mutation\", absent -> \"local\""
+    },
+    {
+      "from": "occurence_field",
+      "to": "copy_index_field",
+      "count": 3,
+      "where": "row_options, label_options; the column itself is copy_index (was occurence)"
+    },
+    {
+      "from": "instance_field",
+      "to": null,
+      "count": 0,
+      "where": "legacy alias of copy_index_field, dropped"
+    },
+    {
+      "from": "is_fixed_field",
+      "to": null,
+      "count": 0,
+      "where": "legacy alias of is_fixed_group_field, dropped"
     }
   ],
   "ui_control_type": {
@@ -291,6 +351,13 @@
       "from": "<>",
       "to": "!=",
       "count": 1
+    },
+    {
+      "key": "column",
+      "from": "occurence",
+      "to": "copy_index",
+      "count": 2,
+      "detail": "mock.material_resource_plan, get_print_schedule_materials, get_nest_schedule"
     }
   ],
   "i18n": [
@@ -320,6 +387,18 @@
       "values": "px",
       "detail": "upper bound of the column width, counterpart of column_min_width",
       "where": "nest_resource_schedule"
+    },
+    {
+      "key": "group_title_fields",
+      "values": "string[]",
+      "detail": "the display column per group_by level, same order, position for position; group_by itself holds ids only",
+      "where": "timeline_config, label_options (75, 76, 78)"
+    },
+    {
+      "key": "drop",
+      "values": "{sort, order_type, within_fields, value_fields, commit}",
+      "detail": "everything only the drop reads; see docs/contracts/drag-and-drop.md",
+      "where": "row_options, label_options"
     }
   ]
 }

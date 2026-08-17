@@ -1,0 +1,171 @@
+# Contract: drag & drop configuration
+
+The data_group keys that drive dragging and dropping in the timeline, and the rules the
+data side must keep. Canonical source for both sides: this file lives with the code that
+reads it.
+
+The block is **identical on `row_options` (lane_items) and `label_options` (labels)** — a
+drop is the same operation on both hosts: reposition an item inside a boundary, write a
+rank, copy identity from a neighbour.
+
+---
+
+## The placement rule
+
+A key sits **inside `drop`** when the drop is the only thing that reads it. It sits
+**outside** when the layout or the lane identity reads it too — otherwise a non-drag code
+path ends up reading a block named `drop`.
+
+Absent key = behaviour off. No `*_field` key is ever defaulted to a canonical column name.
+
+---
+
+## Host level — `row_options` / `label_options`
+
+| key | type | meaning | also read by |
+|---|---|---|---|
+| `draggable` | `boolean` | the item can be picked up | — |
+| `order_field` | `string` | column the new rank is written to | the lane sort; the fixed-group roll-out order |
+| `copy_index_field` | `string` | `0` = the original, `n` = the nth copy | the lane key (a copy is its own lane); the ✕ delete affordance |
+
+## `drop` object — on either host
+
+| key | type | default | meaning |
+|---|---|---|---|
+| `sort` | `boolean` | `false` | the drop also **reorders** (writes `order_field`). Without it a drag only moves between groups |
+| `order_type` | `"rank"` | — | `rank` = midpoint of the neighbours: `(before + after) / 2`, `±10` past an edge, `null` when alone |
+| `within_fields` | `string[]` | `[]` | the drag may **not** cross a change in these columns. **Every entry must also be a `group_by` level** |
+| `value_fields` | `string[]` | `[]` | columns copied from the neighbour the item lands beside |
+| `commit` | `"mutation" \| "local"` | `"local"` | `mutation` posts the changed row to the source and refetches; `local` stays in the query cache |
+
+## Board level — `timeline_config`
+
+| key | type | meaning | also read by |
+|---|---|---|---|
+| `is_pinned_field` | `string` | the pinned flag a Shift+drop toggles | the initial derivation (pinned items keep their served offset); the lane order; the repack |
+
+---
+
+## Gestures
+
+The **column's presence is the switch** — there are no enable flags.
+
+| gesture | effect | requires |
+|---|---|---|
+| drag | move; reorder as well when `drop.sort` | `draggable` |
+| **Shift**+drag | flips the pinned flag (`false → true`, `true → false`) | `is_pinned_field` |
+| **Ctrl**+drag | drops a **copy**, `copy_index` + 1 | `copy_index_field` |
+| **Ctrl+Shift**+drag | copy, pinned | both |
+
+Without `is_pinned_field` Shift does nothing. Without `copy_index_field` Ctrl degrades to a
+plain move.
+
+---
+
+## What a drop writes
+
+Columns the source must accept on update when `commit: "mutation"`:
+
+| column | when | value |
+|---|---|---|
+| `order_field` | `drop.sort` | the computed rank |
+| each `drop.value_fields` entry | crossing into another group | copied from a neighbour row |
+| each `group_by` level crossed | crossing | the target group's value |
+| `is_pinned_field` | Shift | the flipped boolean |
+| `copy_index_field` | Ctrl | previous max within the same identity, + 1 |
+
+---
+
+## Rules for the data side
+
+1. **`within_fields` ⊆ `group_by`.** A boundary the drag may not cross has to be a group
+   level, or there is no boundary to enforce. For `label_options` that is
+   `label_options.group_by`; for `row_options`, `timeline_config.group_by`.
+2. **Every `*_field` column must be served by the source.** A key naming a column the
+   source does not return silently disables the behaviour — this is the single most common
+   defect. It has already cost: `filter_fields` naming `date` on `get_nest_schedule` (no
+   such column) made lane_items unselectable, and a menu item's `hidden_when` on
+   `forecast_sqm` (no such column) hid that item on every row.
+3. **`primary_keys` must be served too.** `get_nest_schedule` declares
+   `production_orderline_id`, which is absent from its own schema.
+4. **`order_field` must be numeric and writable.** The rank method computes a midpoint, so
+   the column needs room between neighbours — integer steps of 10 or 100, not 1.
+5. **`copy_index_field`**: integer, `0` on originals, never null.
+6. **`is_pinned_field`**: boolean or null; null counts as not pinned.
+7. **`commit: "mutation"` requires a mutation procedure on the source.** Without one the
+   POST fails and the optimistic reorder silently reverts.
+8. **Use id columns in `within_fields`**, not display names — two resources sharing a name
+   would otherwise be treated as one group.
+
+---
+
+## Migration from the current keys
+
+| was | is now |
+|---|---|
+| `drag_sort` | `drop.sort` |
+| `drag_order_field` | `order_field` (host level) |
+| `set_order_field` | `order_field` — one column, one key |
+| `drag_order_type` | `drop.order_type` |
+| `drag_group_fields` | `drop.within_fields` — **inverted**, see below |
+| `drag_value_fields` | `drop.value_fields` |
+| `drag_commit: true` | `drop.commit: "mutation"` |
+| `occurence_field` | `copy_index_field` |
+| `instance_field` | `copy_index_field` (legacy alias, drop it) |
+| `is_fixed_field` | `is_fixed_group_field` (legacy alias, drop it) |
+| `is_pinned_field` | unchanged, stays on `timeline_config` |
+
+**`drag_group_fields` inverts.** It currently names the levels a drag **may cross**;
+`within_fields` names the levels it **may not**. On `print_schedule` the old key happens to
+behave as intended only by accident: `group_by` is `["tenant_name"]` and
+`drag_group_fields` is `["resource_name"]`, which is not a group level, so nothing is
+unlocked and the tenant stays locked.
+
+---
+
+## Target configuration
+
+`label_options` — same on `nest_schedule` and `print_schedule`:
+
+```json
+"draggable": true,
+"order_field": "sort_order",
+"copy_index_field": "occurence",
+"drop": {
+  "sort": true,
+  "order_type": "rank",
+  "within_fields": ["tenant_name"],
+  "value_fields": ["resource_uid"],
+  "commit": "mutation"
+}
+```
+
+`row_options` — only `within_fields` differs per board:
+
+| data_group | `within_fields` | effect |
+|---|---|---|
+| `nest_resource_schedule` | `["tenant_id", "resource_uid"]` | a card stays on its own resource lane |
+| `nest_schedule` | `["tenant_id"]` | may move between material lanes, never between tenants |
+| `print_schedule` | `["tenant_id"]` | same |
+
+On `nest_resource_schedule`, `within_fields` already pins a card to its lane, so
+`value_fields` has nothing to copy — leave it out.
+
+`timeline_config` on all three:
+
+```json
+"is_pinned_field": "is_pinned"
+```
+
+---
+
+## Related contracts
+
+- `label_options.next_start_offset_in_seconds_field` — the axis step for the free chain.
+  Its single home is `label_options`. It does **not** space a fixed group: those items run
+  back-to-back by `duration_in_seconds` in `order_field` order.
+- `label_options.is_fixed_group_field` — a nullable group **number**, not a boolean. Every
+  row of group `"18"` shares the value. The layout only treats a board as scheduled when a
+  lane actually carries the column, not merely because the key is named.
+- `timeline_config.chain_scope` — `"plan"` (one chain per main group) or `"lane"` (one per
+  lane, lanes run in parallel).

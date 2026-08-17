@@ -50,6 +50,20 @@
       ],
       "widget_id": "get_nest_schedule",
       "row_options": {
+        "draggable": true,
+        "order_field": "sort_order",
+        "copy_index_field": "copy_index",
+        "drop": {
+          "sort": true,
+          "order_type": "rank",
+          "within_fields": [
+            "tenant_id"
+          ],
+          "value_fields": [
+            "resource_uid"
+          ],
+          "commit": "mutation"
+        },
         "nav": {
           "menu": [
             {
@@ -204,7 +218,7 @@
             "hidden": true
           }
         },
-        "occurence": {
+        "copy_index": {
           "ui": {
             "hidden": true
           }
@@ -884,7 +898,6 @@
       },
       "filter_match": "all",
       "filter_fields": [
-        "date",
         "start_offset_in_seconds",
         "material_id",
         "tenant_id",
@@ -1108,8 +1121,20 @@
               }
             ]
           },
-          "drag_sort": true,
           "draggable": true,
+          "order_field": "sort_order",
+          "copy_index_field": "copy_index",
+          "drop": {
+            "sort": true,
+            "order_type": "rank",
+            "within_fields": [
+              "tenant_id"
+            ],
+            "value_fields": [
+              "resource_uid"
+            ],
+            "commit": "mutation"
+          },
           "input_data": {
             "src": [
               "get_print_schedule_materials"
@@ -1420,21 +1445,14 @@
               }
             }
           },
-          "drag_order_type": "rank",
-          "occurence_field": "occurence",
-          "set_order_field": "sort_order",
           "column_min_width": 200,
-          "drag_order_field": "sort_order",
-          "drag_group_fields": [
-            "resource_name"
-          ],
-          "drag_value_fields": [
-            "resource_uid"
-          ],
           "is_fixed_group_field": "is_fixed_group",
           "next_start_offset_in_seconds_field": "next_start_offset_in_seconds",
           "fields_class_name": "grid grid-cols-4 gap-1",
           "group_by": [
+            "tenant_id"
+          ],
+          "group_title_fields": [
             "tenant_name"
           ],
           "deselectable": true
@@ -1492,6 +1510,9 @@
           }
         },
         "group_by": [
+          "tenant_id"
+        ],
+        "group_title_fields": [
           "tenant_name"
         ],
         "no_label": false

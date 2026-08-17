@@ -129,10 +129,32 @@ Volledige uitleg met breakpoint-tabellen: `docs/data-group-layout.md`.
 |---|---|---|---|
 | `chain_scope` | `plan` \| `lane` | hoe ver een verschuiving doorketent: over alle lanes van het plan, of alleen binnen de eigen lane | `nest_schedule` (plan), `nest_resource_schedule` (lane) |
 | `column_max_width` | px | bovengrens van de kolombreedte, tegenhanger van `column_min_width` | `nest_resource_schedule` (400, met `column_min_width` 26) |
+| `group_title_fields` | string[] | de titelkolom per `group_by`-niveau, zelfde volgorde, positie voor positie; `group_by` zelf bevat alleen id's | `timeline_config` én `label_options` op 75, 76, 78 |
 
 Beide staan naast de bestaande timeline-keys (`column_min_width`,
 `class_names_field`, `time_scale_config`); `time_scale_config.mode` kent
 `relative` en `fixed`.
+
+## 9. drag & drop
+
+Het contract staat in `docs/contracts/drag-and-drop.md`; de json van 75, 76 en 78
+volgt het. Kort:
+
+- op `row_options` en `label_options` hetzelfde blok: `draggable`,
+  `order_field`, `copy_index_field`, en `drop {sort, order_type,
+  within_fields, value_fields, commit}` — alles wat alleen de drop leest zit
+  in `drop`
+- `within_fields` ⊆ `group_by` en altijd id-kolommen; daarom groepeert
+  `group_by` nu op `tenant_id` (78 rijen: `tenant_id, resource_uid`) en komt
+  de titel uit `group_title_fields`
+- de kolom `occurence` heet `copy_index` (bron én json); `0` = origineel
+- weg: `drag_sort`, `drag_order_field`, `set_order_field`, `drag_order_type`,
+  `drag_group_fields` (omgekeerd naar `within_fields`), `drag_value_fields`,
+  `occurence_field` — zie `rename-map.json`
+- `commit: "mutation"` staat er al; de mutatie-procedure op de bron volgt
+  nog (tot dan draait een drop stil terug)
+- `print_schedule` (75) heeft het blok alleen op `label_options`: de rijen
+  van `get_print_schedule` dragen geen `sort_order`/`copy_index`/`is_pinned`
 
 ## bron
 
