@@ -32,7 +32,7 @@ BEGIN
         -- the newest plan of this date, step and line type wins
         SELECT plan_id
         FROM action.plan
-        WHERE plan_date = v_date AND step = p_step
+        WHERE plan_date = v_date AND p_step = ANY (steps)
           AND type = 'material-resource-plan'
           AND (p_line_type IS NULL OR line_type = p_line_type)
         ORDER BY plan_id DESC

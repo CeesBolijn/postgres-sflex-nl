@@ -2,7 +2,7 @@
 drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer);
 drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer);
 
-create function mapping.get_production_orderline_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_dates boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_tenant_ids integer[] DEFAULT NULL::integer[], p_is_open boolean DEFAULT true, p_waste_percentage numeric DEFAULT 20, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, material_media_type_id integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, rejected_amount numeric, produced_amount numeric, waste_percentage numeric, gross_sqm numeric, specs_json jsonb, status_json jsonb, part_status_json jsonb, nest_ids bigint[], delivery_class_names text[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
+create function mapping.get_production_orderline_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_dates boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_tenant_ids integer[] DEFAULT NULL::integer[], p_is_open boolean DEFAULT true, p_waste_percentage numeric DEFAULT 20, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, delivery_hours integer, material_media_type_id integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, rejected_amount numeric, produced_amount numeric, waste_percentage numeric, gross_sqm numeric, specs_json jsonb, status_json jsonb, part_status_json jsonb, nest_ids bigint[], delivery_class_names text[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
 	stable
 	language sql
 as $$
@@ -31,6 +31,7 @@ as $$
             d.material_id,
             d.material_name,
             d.production_line_id,
+            d.delivery_hours,
             count(*)::integer           as orderline_count,
             sum(d.product_amount)       as product_amount,
             sum(d.part_amount)::integer as part_amount,
@@ -48,7 +49,7 @@ as $$
                                       - (p_from at time zone 'Europe/Amsterdam'))))::integer
                 as seconds_to_logistics_date
         from detail d
-        group by d.material_id, d.material_name, d.production_line_id
+        group by d.material_id, d.material_name, d.production_line_id, d.delivery_hours
     ),
     -- The days the detail looks at; a batch or nest scope has no window and
     -- takes the day of p_from. min() over the zero-or-one row of the helper.
@@ -79,17 +80,27 @@ as $$
                      and (v.value ->> 'tenant_id')::integer = any (p_tenant_ids)))
         group by f.material_id, f.production_line_id
     ),
-    -- A material with a forecast but no open orderlines still gets a row.
+    -- A material with a forecast but no open orderlines still gets a row
+    -- (delivery_hours null). The forecast is per material and line: with
+    -- inflow it is split over the delivery-hours groups pro rata to their
+    -- sqm; without sqm anywhere it goes to the longest delivery time.
     combined as (
         select coalesce(g.material_id, fc.material_id)                 as material_id,
                coalesce(g.production_line_id, fc.production_line_id)   as production_line_id,
+               g.delivery_hours,
                g.material_name,
                coalesce(g.orderline_count, 0)                          as orderline_count,
                coalesce(g.product_amount, 0)                           as product_amount,
                coalesce(g.part_amount, 0)                              as part_amount,
                coalesce(g.amount, 0)                                   as amount,
                coalesce(g.sqm, 0)                                      as sqm,
-               fc.forecast_sqm,
+               case when g.material_id is null then fc.forecast_sqm
+                    when sum(g.sqm) over w > 0
+                         then fc.forecast_sqm * g.sqm / sum(g.sqm) over w
+                    when g.delivery_hours is not distinct from max(g.delivery_hours) over w
+                         then fc.forecast_sqm
+                    else 0
+               end                                                     as forecast_sqm,
                coalesce(g.rework_count, 0)                             as rework_count,
                coalesce(g.rework_amount, 0)                            as rework_amount,
                coalesce(g.rework_sqm, 0)                               as rework_sqm,
@@ -98,10 +109,11 @@ as $$
                g.seconds_to_logistics_date
         from grouped g
         full join forecast fc on fc.material_id = g.material_id and fc.production_line_id = g.production_line_id
+        window w as (partition by g.material_id, g.production_line_id)
     ),
     status as (
         -- how the orderlines are spread over their own status
-        select s.material_id, s.production_line_id,
+        select s.material_id, s.production_line_id, s.delivery_hours,
                jsonb_agg(jsonb_build_object(
                    'sequence',             s.status_sequence,
                    'internal_status_code', s.internal_status_code,
@@ -113,23 +125,23 @@ as $$
                    'product_amount',       s.product_amount,
                    'sqm',                  s.sqm) order by s.status_sequence) as status_json
         from (
-            select d.material_id, d.production_line_id, d.status_sequence,
+            select d.material_id, d.production_line_id, d.delivery_hours, d.status_sequence,
                    d.internal_status_code, d.status_title, d.status_level,
                    count(*)::integer     as orderline_count,
                    sum(d.product_amount) as product_amount,
                    round(sum(d.sqm), 2)  as sqm
             from detail d
-            group by d.material_id, d.production_line_id, d.status_sequence,
+            group by d.material_id, d.production_line_id, d.delivery_hours, d.status_sequence,
                      d.internal_status_code, d.status_title, d.status_level
         ) s
         -- colour and titles of the status live in the lookup, not in code
         left join mapping.internal_status si
                on si.code = s.internal_status_code and si.domain_id = p_domain_id
-        group by s.material_id, s.production_line_id
+        group by s.material_id, s.production_line_id, s.delivery_hours
     ),
     part as (
         -- how the product parts are spread over their status
-        select p.material_id, p.production_line_id,
+        select p.material_id, p.production_line_id, p.delivery_hours,
                jsonb_agg(jsonb_build_object(
                    'sequence',             p.sequence,
                    'internal_status_code', p.internal_status_code,
@@ -137,7 +149,7 @@ as $$
                    'i18n',                 p.i18n,
                    'amount',               p.amount) order by p.sequence) as part_status_json
         from (
-            select d.material_id, d.production_line_id,
+            select d.material_id, d.production_line_id, d.delivery_hours,
                    (e.value ->> 'sequence')::integer              as sequence,
                    e.value ->> 'internal_status_code'             as internal_status_code,
                    e.value -> 'class_names'                       as class_names,
@@ -145,30 +157,31 @@ as $$
                    round(sum((e.value ->> 'amount')::numeric), 2) as amount
             from detail d
             cross join lateral jsonb_array_elements(d.part_status_json) as e(value)
-            group by d.material_id, d.production_line_id, 3, 4, 5, 6
+            group by d.material_id, d.production_line_id, d.delivery_hours, 4, 5, 6, 7
         ) p
-        group by p.material_id, p.production_line_id
+        group by p.material_id, p.production_line_id, p.delivery_hours
     ),
     flag as (
         -- every marker and nest of the group, each one once. One unnest per
         -- array, summed per group: joining the four unnests side by side
         -- multiplies the row estimate (1000 x 10 x 10 x 10 x 10), which drove
         -- the plan cost past the JIT thresholds and cost seconds per call.
-        select k.material_id, k.production_line_id,
+        select k.material_id, k.production_line_id, k.delivery_hours,
                (select array_agg(distinct x order by x) from detail d, unnest(d.delivery_class_names) x
-                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id) as delivery_class_names,
+                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id and d.delivery_hours is not distinct from k.delivery_hours) as delivery_class_names,
                (select array_agg(distinct x order by x) from detail d, unnest(d.class_names) x
-                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id) as class_names,
+                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id and d.delivery_hours is not distinct from k.delivery_hours) as class_names,
                (select array_agg(distinct x order by x) from detail d, unnest(d.unit_class_names) x
-                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id) as unit_class_names,
+                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id and d.delivery_hours is not distinct from k.delivery_hours) as unit_class_names,
                (select array_agg(distinct x order by x) from detail d, unnest(d.nest_ids) x
-                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id) as nest_ids
-        from (select distinct d.material_id, d.production_line_id from detail d) k
+                 where d.material_id = k.material_id and d.production_line_id = k.production_line_id and d.delivery_hours is not distinct from k.delivery_hours) as nest_ids
+        from (select distinct d.material_id, d.production_line_id, d.delivery_hours from detail d) k
     )
     select
         g.material_id,
         coalesce(g.material_name, m.material_name),
         g.production_line_id,
+        g.delivery_hours,
         m.material_media_type_id,
         g.orderline_count,
         g.product_amount,
@@ -217,9 +230,9 @@ as $$
         where mpl.material_id        = g.material_id
           and mpl.production_line_id = g.production_line_id
     ) m on true
-    left join status   s  on s.material_id  = g.material_id and s.production_line_id  = g.production_line_id
-    left join part     pt on pt.material_id = g.material_id and pt.production_line_id = g.production_line_id
-    left join flag     f  on f.material_id  = g.material_id and f.production_line_id  = g.production_line_id
+    left join status   s  on s.material_id  = g.material_id and s.production_line_id  = g.production_line_id and s.delivery_hours  is not distinct from g.delivery_hours
+    left join part     pt on pt.material_id = g.material_id and pt.production_line_id = g.production_line_id and pt.delivery_hours is not distinct from g.delivery_hours
+    left join flag     f  on f.material_id  = g.material_id and f.production_line_id  = g.production_line_id and f.delivery_hours  is not distinct from g.delivery_hours
     cross join lateral (
         -- computed from the rounded values, so the column adds up with the
         -- sqm and rework_sqm shown next to it; without inflow the forecast
@@ -231,7 +244,7 @@ as $$
                                * (1 + p_waste_percentage / 100), 2)
                end as gross_sqm
     ) c
-    order by g.material_id, g.production_line_id;
+    order by g.material_id, g.production_line_id, g.delivery_hours;
 $$;
 
 alter function mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer) owner to xfw3;

@@ -4,9 +4,7 @@ create table cutoff_time
 		primary key,
 	type text not null,
 	code text not null,
-	rule_path text not null
-		constraint cutoff_time_path_ck
-			check (rule_path ~ '^[0-9]+(\.[0-9]+)*$'::text),
+	rule_path ltree not null,
 	weekday smallint not null
 		constraint cutoff_time_weekday_ck
 			check ((weekday >= 1) AND (weekday <= 7)),
@@ -19,14 +17,17 @@ create table cutoff_time
 		unique (type, code, rule_path, weekday, moved_at)
 );
 
-comment on table cutoff_time is 'Append-only cutoff times. Newest moved_at per key wins. rule_path is a drilldown path: tenant, tenant.line, tenant.line.material. Most specific matching path wins.';
+comment on table cutoff_time is 'Append-only cutoff times. Newest moved_at per key wins. rule_path is an ltree drilldown path of ids: tenant, tenant.line, tenant.line.material. Most specific matching path wins.';
 
-comment on column cutoff_time.rule_path is 'Dot-separated id path, most specific level last. Match with equality only, never with LIKE or a prefix operator.';
+comment on column cutoff_time.rule_path is 'ltree id path, most specific level last (tenant.line.material). Not the resource tree of relation.resource.resource_path. A cutoff applies to everything under its path: match with <@, the winner is the deepest match (max nlevel(rule_path)).';
 
 comment on column cutoff_time.cutoff_seconds is 'Seconds since local midnight. Values above 86399 mean the following day.';
 
 alter table cutoff_time owner to xfw3;
 
 create index cutoff_time_lookup_idx
-	on cutoff_time (type collate "C" asc, code collate "C" asc, rule_path collate "C" asc, weekday asc, moved_at desc) include (cutoff_seconds);
+	on cutoff_time (type collate "C" asc, code collate "C" asc, rule_path asc, weekday asc, moved_at desc) include (cutoff_seconds);
+
+create index cutoff_time_rule_path_gist
+	on cutoff_time using gist (rule_path);
 

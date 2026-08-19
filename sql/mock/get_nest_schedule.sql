@@ -41,7 +41,7 @@ begin
         -- the newest plan of this date, step and line type wins
         select plan_id
         from action.plan
-        where plan_date = v_date and step = p_step
+        where plan_date = v_date and p_step = any (steps)
           and type = 'material-resource-plan'
           and (p_line_type is null or line_type = p_line_type)
         order by plan_id desc
@@ -100,8 +100,17 @@ begin
                o.class_names, o.unit_class_names
         from base b
         left join lane_nest ln on ln.sort_order = b.sort_order
-        -- the aggregate row of this material on this line: from the nest set
-        -- when the lane items carry nests, otherwise from the window call
+        -- the longest delivery time this material has on the board
+        left join lateral (
+            select max(x.delivery_hours) as max_delivery_hours
+            from base x
+            where x.tenant_id = b.tenant_id and x.material_id = b.material_id
+              and x.production_line_id = b.production_line_id
+        ) lm on true
+        -- the aggregate row of this material on this line and with the lane's
+        -- delivery hours: from the nest set when the lane items carry nests,
+        -- otherwise from the window call. A forecast-only row has no delivery
+        -- hours and goes to the lane with the longest delivery time.
         left join lateral (
             select na.orderline_count, na.product_amount, na.part_amount, na.amount,
                    na.sqm, na.forecast_sqm, na.rework_count, na.rework_sqm, na.impact_json, na.gross_sqm,
@@ -112,6 +121,8 @@ begin
               and na.lane_nest_ids = ln.nest_ids
               and na.material_id = b.material_id
               and na.production_line_id = b.production_line_id
+              and (na.delivery_hours = b.delivery_hours
+                   or (na.delivery_hours is null and b.delivery_hours = lm.max_delivery_hours))
             union all
             select wa.orderline_count, wa.product_amount, wa.part_amount, wa.amount,
                    wa.sqm, wa.forecast_sqm, wa.rework_count, wa.rework_sqm, wa.impact_json, wa.gross_sqm,
@@ -121,6 +132,8 @@ begin
             where ln.nest_ids is null
               and wa.material_id = b.material_id
               and wa.production_line_id = b.production_line_id
+              and (wa.delivery_hours = b.delivery_hours
+                   or (wa.delivery_hours is null and b.delivery_hours = lm.max_delivery_hours))
         ) o on true
     )
     select r.material_id, r.material_name, r.production_line_id,

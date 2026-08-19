@@ -6,8 +6,9 @@ create table xbom
 	option_code text,
 	item_code text
 		references item (item_code),
-	formula_id text
-		references formula,
+	-- the formula by code, not by row: the version that applies is picked
+	-- at read time by date (catalog.get_formula)
+	formula_code text,
 	scope text default 'unit'::text not null,
 	param_json jsonb default '{}'::jsonb not null,
 	config_json jsonb default '{}'::jsonb not null,
@@ -22,8 +23,8 @@ alter table xbom owner to xfw3;
 create index idx_catalog_xbom_item_code
 	on xbom (item_code);
 
-create index idx_catalog_xbom_formula_id
-	on xbom (formula_id);
+create index idx_catalog_xbom_formula_code
+	on xbom (formula_code);
 
 create unique index uq_catalog_xbom
 	on xbom (option_code, item_code, scope);

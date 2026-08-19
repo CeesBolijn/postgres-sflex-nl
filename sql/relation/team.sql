@@ -1,20 +1,30 @@
--- Team hierarchy, tied to a production line and tenant so it can be used
--- as the third segment in a non_working_times rule_path:
--- tenant_id.production_line_id.team_id
-create table relation.team
+create table team
 (
-    team_id            integer generated always as identity
-        constraint pk_team
-            primary key,
-    parent_team_id     integer
-        constraint fk_team_parent_team
-            references relation.team
-            on update cascade on delete restrict,
-    description        text not null,
-    production_line_id integer,
-    tenant_id          integer,
-    constraint ck_team_no_self_parent
-        check (parent_team_id IS DISTINCT FROM team_id)
+	team_id integer generated always as identity
+		constraint pk_team
+			primary key,
+	parent_team_id integer
+		constraint fk_team_parent_team
+			references team
+				on update cascade on delete restrict,
+	description text not null,
+	production_line_id integer,
+	tenant_id integer,
+	steps text[],
+	constraint ck_team_no_self_parent
+		check (parent_team_id IS DISTINCT FROM team_id)
+);
+
+comment on table team is 'Teams, optionally nested through parent_team_id.';
+
+comment on column team.parent_team_id is 'Parent team; NULL marks a root team.';
+
+alter table team owner to xfw3;
+
+create index ix_team_parent_team_id
+	on team (parent_team_id);
+
+am_id)
 );
 
 comment on table relation.team is 'Teams, optionally nested through parent_team_id.';

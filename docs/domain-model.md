@@ -1007,3 +1007,28 @@ because the rest of the document depends on them.
 7. **A usage report on the legacy orderline path** — `order_lane_item`,
    `production_orderline_lane_item`, `single_item`,
    `internal_status_code_sequence` — showing where they are still relied on.
+
+## 13. Open decisions (2026-08-19)
+
+Recorded, not decided. Each of these blocks a piece of the configurator/spec
+work; decide before building that piece.
+
+1. **Quantity and size in the spec.** `job.spec` has `amount` and
+   `spec_json` (width, height, …). How exactly do quantity and size enter the
+   spec — dedicated columns, keys in `spec_json`, or both — and what does the
+   configurator write?
+2. **Bundles.** Ordering in steps (5, 10, 15, 25, …). Is that a property of
+   the option tree (allowed quantities per product), of the spec, or a
+   pricing concern only?
+3. **Print-coverage and print-method.** Merging them is — for now —
+   technically awkward and cannot be mapped back from Probo. Two options
+   discussed:
+   - multiple `option_code`s selected at once in the tree: solves it
+     technically, semantically bad (and worse for AI);
+   - keep them separate, rename the coverage values for the buyer
+     ("print-coverage.single-sided" presents as "enkelzijdig full color") and
+     auto-select the print-method through a `depends_on`, with the content
+     override on the presentation. Semantically the best route. **Leaning:
+     this one.**
+4. **structure_direction.** Same approach: a content override on the
+   presentation.

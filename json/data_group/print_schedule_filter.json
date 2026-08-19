@@ -1,6 +1,6 @@
 {
   "data_group_id": 73,
-  "data_group": "schedule_filter",
+  "data_group": "print_schedule_filter",
   "data_group_json": [
     {
       "layout": "filter",
@@ -35,7 +35,7 @@
         }
       ],
       "children": [],
-      "widget_id": "schedule_filter",
+      "widget_id": "print_schedule_filter",
       "field_config": {
         "look_back": {
           "ui": {

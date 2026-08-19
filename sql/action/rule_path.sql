@@ -63,8 +63,10 @@ alter function action.rule_path_ancestors(text) owner to xfw3;
 -- with a rule_path column, and can be used in an expression index if
 -- the best-match query ever becomes a hot path.
 
--- Note: ltree was evaluated and rejected in favour of these text-based
--- functions, to stay table-agnostic and avoid a migration. Recommended:
+-- Note: these text-based functions predate the ltree columns. Since
+-- 2026-08-18 relation.resource.resource_path and action.cutoff_time.rule_path
+-- are ltree: there use <@ / @> and nlevel() instead of these functions.
+-- non_working_times.rule_path is still text and still uses them. Recommended:
 -- add a per-table CHECK constraint since ltree's format validation is
 -- lost, e.g.:
 --   alter table mapping.some_table

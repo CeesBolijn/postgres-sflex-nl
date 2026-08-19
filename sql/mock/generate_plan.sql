@@ -1,4 +1,4 @@
-create function generate_plan(p_date date, p_step text, p_line_type text) returns TABLE(plan_id bigint, lane_id bigint, material_resource_plan_id bigint)
+create or replace function mock.generate_plan(p_date date, p_step text, p_line_type text) returns TABLE(plan_id bigint, lane_id bigint, material_resource_plan_id bigint)
 	language sql
 as $$
     WITH pattern AS (
@@ -14,8 +14,8 @@ as $$
         ORDER BY m.sort_order, m.moved_at DESC, m.material_resource_plan_id DESC
     ),
     new_plan AS (
-        INSERT INTO action.plan (plan_date, step, type, line_type)
-        VALUES (p_date, p_step, 'material-resource-plan', p_line_type)
+        INSERT INTO action.plan (plan_date, steps, type, line_type)
+        VALUES (p_date, array[p_step], 'material-resource-plan', p_line_type)
         RETURNING plan_id
     ),
     new_lane AS (
@@ -32,5 +32,5 @@ as $$
     RETURNING (SELECT plan_id FROM new_plan), lane_id, material_resource_plan_id;
 $$;
 
-alter function generate_plan(date, text, text) owner to xfw3;
+alter function mock.generate_plan(date, text, text) owner to xfw3;
 

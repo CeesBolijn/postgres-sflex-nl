@@ -8,6 +8,37 @@ The block is **identical on `row_options` (lane_items) and `label_options` (labe
 drop is the same operation on both hosts: reposition an item inside a boundary, write a
 rank, copy identity from a neighbour.
 
+## How this file is maintained — read this first (Claude Code, both repos)
+
+The same file lives in two repos: `postgres-sflex-nl/docs/contracts/` (data side) and
+control-room (client side). It is edited in **one direction per change**, never in both
+at once:
+
+1. A change that starts with a **column** (a new flag, a renamed field, a rule for what
+   the source serves) is written on the data side first, in the shape of this contract.
+   The user hands the file to control-room.
+2. **Control-room Claude Code** implements it and may correct the text where the client
+   turns out to work differently (a gesture, a default, a limitation). It edits *this
+   file* in the control-room repo, keeps every section, and does not reword what it did
+   not change.
+3. The user pastes the control-room version back; the data side overwrites its copy
+   verbatim. From that moment both copies are identical again.
+4. A change that starts on the **client** (a new gesture, a new host) goes the other way
+   round: control-room writes it, the data side implements the columns and confirms.
+
+Open items for control-room in the current version — implement, then confirm or
+correct here:
+
+- `no_split_field` (board level): new. Which gesture triggers a split is not stated;
+  add it to the gestures table when it exists.
+- `group_title_fields`: `group_by` holds ids only, the display column per level comes
+  from `group_title_fields`, same order (see `docs/handoff-control-room.md` §8).
+- `copy_index_field` on `label_options` is served by `get_print_schedule_materials`
+  (column `copy_index`); on `row_options` of `nest_schedule` / `nest_resource_schedule`
+  by `get_nest_schedule`. `print_schedule` rows do not carry it — no `drop` block there.
+- `commit: "mutation"` is set on all three boards; the mutation procedure on the source
+  does not exist yet, so a drop reverts on refetch until it does.
+
 ---
 
 ## The placement rule
@@ -43,6 +74,7 @@ Absent key = behaviour off. No `*_field` key is ever defaulted to a canonical co
 | key | type | meaning | also read by |
 |---|---|---|---|
 | `is_pinned_field` | `string` | the pinned flag a Shift+drop toggles | the initial derivation (pinned items keep their served offset); the lane order; the repack |
+| `no_split_field` | `string` | the flag that forbids splitting the item into two items | the split action: refused when the column is true |
 
 ---
 
@@ -58,7 +90,7 @@ The **column's presence is the switch** — there are no enable flags.
 | **Ctrl+Shift**+drag | copy, pinned | both |
 
 Without `is_pinned_field` Shift does nothing. Without `copy_index_field` Ctrl degrades to a
-plain move.
+plain move. Without `no_split_field` every item may be split.
 
 ---
 
@@ -92,6 +124,8 @@ Columns the source must accept on update when `commit: "mutation"`:
    the column needs room between neighbours — integer steps of 10 or 100, not 1.
 5. **`copy_index_field`**: integer, `0` on originals, never null.
 6. **`is_pinned_field`**: boolean or null; null counts as not pinned.
+6b. **`no_split_field`**: boolean, default false; the source serves it from
+   `action.lane_item.no_split` (was `is_atomic` on the old plan).
 7. **`commit: "mutation"` requires a mutation procedure on the source.** Without one the
    POST fails and the optimistic reorder silently reverts.
 8. **Use id columns in `within_fields`**, not display names — two resources sharing a name
@@ -114,6 +148,7 @@ Columns the source must accept on update when `commit: "mutation"`:
 | `instance_field` | `copy_index_field` (legacy alias, drop it) |
 | `is_fixed_field` | `is_fixed_group_field` (legacy alias, drop it) |
 | `is_pinned_field` | unchanged, stays on `timeline_config` |
+| `plan_config.is_atomic_field` | `no_split_field` on `timeline_config` |
 
 **`drag_group_fields` inverts.** It currently names the levels a drag **may cross**;
 `within_fields` names the levels it **may not**. On `print_schedule` the old key happens to
@@ -154,8 +189,13 @@ On `nest_resource_schedule`, `within_fields` already pins a card to its lane, so
 `timeline_config` on all three:
 
 ```json
-"is_pinned_field": "is_pinned"
+"is_pinned_field": "is_pinned",
+"no_split_field": "no_split"
 ```
+
+(`no_split_field` only where the source serves the column: the boards on
+`action.lane_item` — the production schedule — not the nest boards until
+`get_nest_schedule` carries it.)
 
 ---
 

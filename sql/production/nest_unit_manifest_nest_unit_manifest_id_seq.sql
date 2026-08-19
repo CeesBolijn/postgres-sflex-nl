@@ -1,0 +1,6 @@
+create sequence nest_unit_manifest_nest_unit_manifest_id_seq;
+
+alter sequence nest_unit_manifest_nest_unit_manifest_id_seq owner to xfw3;
+
+alter sequence nest_unit_manifest_nest_unit_manifest_id_seq owned by imposition_unit_manifest.imposition_unit_manifest_id;
+

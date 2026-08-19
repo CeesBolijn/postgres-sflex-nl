@@ -28,6 +28,8 @@ Stack: PostgreSQL (owner `xfw3`), React 19.2, Tailwind 4.2, UntitledUI/react, Fi
 - comments in sql altijd in het engels
 - breaks/non-working-time rekken de job op (nooit losse spacer-rows)
 - non_working_times gaan als JSON naar de frontend/timeline; nooit server-side start/duur berekenen
+- resources: `resource_uid` is de sleutel, `resource_path` (ltree) de boom —
+  `site.line_type.role.vendor.model.width.serial`, zie `docs/resource-path.md`
 
 ## json
 - snake_case voor keys, kebab-case voor code-waardes

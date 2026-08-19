@@ -38,10 +38,12 @@ src AS (
 ),
 updated AS (
     UPDATE site.data_group t
-    SET data_group_json = s.data_group_json
+    SET data_group      = s.data_group,
+        data_group_json = s.data_group_json
     FROM src s
     WHERE t.data_group_id = s.data_group_id
-      AND t.data_group_json IS DISTINCT FROM s.data_group_json
+      AND (t.data_group_json IS DISTINCT FROM s.data_group_json
+           OR t.data_group IS DISTINCT FROM s.data_group)
     RETURNING t.data_group_id
 )
 INSERT INTO site.data_group (data_group_id, data_group, data_group_json)
