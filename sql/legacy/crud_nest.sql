@@ -25,7 +25,7 @@ BEGIN
         te.status,
         te.possible_states,
         te.possible_multiple_states,
-        te.nest_date, 
+        te.nest_date,
         te.updated_at
     FROM jsonb_array_elements(p_param_json) AS t(element)
     CROSS JOIN LATERAL jsonb_to_record(t.element) AS te(
@@ -62,7 +62,10 @@ BEGIN
                 status_json, possible_states, possible_multiple_states, nested_at, updated_at
             ) VALUES (
                 v_batch_uid, rec.domain_id, rec.nest_id, rec.nest_counter, rec.reproduced_counter,
-                rec.nest_name, rec.amount, rec.width, rec.height, rec.nest_json, rec.sort_order,
+                rec.nest_name, rec.amount, rec.width, rec.height,
+                -- never insert a bare NULL into nest_json
+                COALESCE(rec.nest_json, '{}'::jsonb),
+                rec.sort_order,
                 rec.status, rec.possible_states, rec.possible_multiple_states, rec.nest_date, rec.updated_at
             )
             ON CONFLICT ON CONSTRAINT uq_nest_id DO UPDATE
@@ -71,7 +74,12 @@ BEGIN
                     amount                   = EXCLUDED.amount,
                     width                    = EXCLUDED.width,
                     height                   = EXCLUDED.height,
-                    nest_json                = EXCLUDED.nest_json,
+                    -- merge instead of replace: keys not present in the incoming
+                    -- payload (e.g. commercial_waste_percentage, which is
+                    -- computed elsewhere and not part of this event) are kept.
+                    -- Incoming keys still win over existing ones on conflict.
+                    nest_json                = COALESCE(legacy.nest.nest_json, '{}'::jsonb)
+                                                || COALESCE(EXCLUDED.nest_json, '{}'::jsonb),
                     sort_order               = EXCLUDED.sort_order,
                     status_json              = EXCLUDED.status_json,
                     possible_states          = EXCLUDED.possible_states,
@@ -95,13 +103,15 @@ BEGIN
                  jsonb_to_recordset(rl.lookup_json) AS l(step text, sequence int)
             WHERE n.nest_id = rec.nest_id
               AND rl.lookup = 'lookup_step_category'
-              AND l.step = 'rip';
+              AND l.step = 'ripped';
 
         ELSIF rec.crud = 'update' THEN
             UPDATE legacy.nest n
             SET
                 batch_uid                = v_batch_uid,
-                nest_json                = rec.nest_json,
+                -- merge instead of replace, same reasoning as the create/merge branch above
+                nest_json                = COALESCE(n.nest_json, '{}'::jsonb)
+                                            || COALESCE(rec.nest_json, '{}'::jsonb),
                 sort_order               = rec.sort_order,
                 status_json              = rec.status,
                 possible_states          = rec.possible_states,
