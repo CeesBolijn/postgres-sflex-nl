@@ -8,7 +8,7 @@ as $$
            l.cart_id,
            case when l.valid_till is not null and p_at > l.valid_till then l.after_status else l.status end,
            case when l.valid_till is not null and p_at > l.valid_till then l.valid_till   else l.moved_at end
-    from job.cart_log l
+    from job.cart_event l
     where l.cart_id = any (p_cart_ids)
       and l.moved_at <= p_at
     order by l.cart_id, l.moved_at desc;

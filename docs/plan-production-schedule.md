@@ -141,7 +141,7 @@ is unique per lane), in two steps so the constraint never trips.
 `log.get_resource_produced` for the lanes' resources. A writer that folds
 them into level-1 lane items can come later; the board will not notice.
 
-`action.lane_item_log` has no role in this; drop it once nothing reads it.
+`action.lane_item_event` has no role in this; drop it once nothing reads it.
 
 ## 5. `plan_config` (56) versus `timeline_config` (78) — what to keep
 

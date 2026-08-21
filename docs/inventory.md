@@ -14,7 +14,7 @@ Gesorteerd nieuw naar oud. Vink af zodra de functie/json in de repo staat en de 
 | 2026-08-08 14:56 | shift employees refactor | `log.get_resource_shift_employees` | ⚠️ gedeeltelijk in repo — functie-body afgekapt in bron, zie TODO in bestand |
 | 2026-08-08 11:09 | orderline detail debug | geen resultaat, niets te oogsten | [ ] |
 | 2026-08-08 09:42 | production_order_amount | `mapping.crud_component_specs_orderline` (+ update statement) | [ ] |
-| 2026-08-08 07:58 | multi-step production planning | `action.lane`, `lane_item`, `lane_item_dependency`, `order_lane_item`, `nest_lane_item`, `lane_item_log`, `mock.material_resource_plan_lane` | ⚠️ grotendeels in repo (`sql/action/lane_item.sql`) — `action.lane` zelf en `mock.material_resource_plan_lane` nog niet gevonden |
+| 2026-08-08 07:58 | multi-step production planning | `action.lane`, `lane_item`, `lane_item_dependency`, `order_lane_item`, `nest_lane_item`, `lane_item_event`, `mock.material_resource_plan_lane` | ⚠️ grotendeels in repo (`sql/action/lane_item.sql`) — `action.lane` zelf en `mock.material_resource_plan_lane` nog niet gevonden |
 | 2026-08-07 07:57 | overlapping break times | geen structurele sql/json, eenmalige check | [ ] |
 | 2026-08-07 06:12 | tenant hierarchy + rule_path | `relation.tenant`, `tenant_domain`, `action.rule_path_matches`, `action.rule_path_ancestors` | ⚠️ gedeeltelijk — de twee functies staan in `sql/action/rule_path.sql`, `relation.tenant`/`tenant_domain` DDL nog niet gevonden |
 | 2026-08-06 10:49 | team/contact tabellen | `relation.team`, `relation.team_contact` | ⚠️ `relation.team` + `action.week_team` in repo (`sql/relation/team.sql`) — `team_contact` staat als voorstel in commentaar, nog niet bevestigd |
@@ -43,7 +43,7 @@ Zoek in oudere chats op onderwerp met `conversation_search`:
 - OEE / state_shift_agg / get_resource_state
 - catalog.xbom / library_option / configurator json
 - PrintFactory / Zünd / Durst integraties
-- cart / outsourcing multi-tenant (`core.cart_relation`, `core.cart_log`)
+- cart / outsourcing multi-tenant (`core.cart_relation`, `core.cart_event`)
 - resource allocation ledger (`core.line_item_resource`)
 
 ## let op — mogelijke versieconflicten

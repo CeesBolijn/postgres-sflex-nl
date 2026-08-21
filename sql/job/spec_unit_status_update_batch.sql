@@ -15,7 +15,7 @@ BEGIN
         v_specs := p_updates;
     END IF;
 
-    INSERT INTO job.spec_log (spec_id, from_status_sequence, to_status_sequence, amount, remaining_impact_delta, resource_uids)
+    INSERT INTO job.spec_event (spec_id, from_status_sequence, to_status_sequence, amount, remaining_impact_delta, resource_uids)
     SELECT el.spec_id,
            p_current_status_sequence,
            p_new_status_sequence,

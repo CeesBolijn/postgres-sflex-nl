@@ -1,11 +1,11 @@
-create function crud_spec_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, spec_id bigint, spec_log_id bigint)
+create function crud_spec_event(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, spec_id bigint, spec_event_id bigint)
 	language plpgsql
 as $$
 declare
   rec jsonb;
   v_data jsonb;
   v_spec_id bigint;
-  v_spec_log_id bigint;
+  v_spec_event_id bigint;
   v_from_seq integer;
   v_to_seq integer;
 begin
@@ -19,7 +19,7 @@ begin
 
     v_data := rec -> 'data';
     v_spec_id := null;
-    v_spec_log_id := null;
+    v_spec_event_id := null;
 
     if v_data ->> 'to_status' = 'stock' then
 
@@ -50,7 +50,7 @@ begin
         continue;
       end if;
 
-      insert into log.spec_log as sl (
+      insert into log.spec_event as sl (
         spec_id, from_status_sequence, to_status_sequence,
         amount, remaining_impact_delta, resource_uids, moved_at
       )
@@ -60,7 +60,7 @@ begin
         array[v_data ->> 'resource_uid'],
         (v_data ->> 'moved_at')::timestamptz
       )
-      returning sl.spec_log_id into v_spec_log_id;
+      returning sl.spec_event_id into v_spec_event_id;
 
     end if;
 
@@ -69,7 +69,7 @@ begin
         (rec ->> 'track_by')::integer,
         rec ->> 'crud',
         v_spec_id,
-        v_spec_log_id;
+        v_spec_event_id;
     end if;
 
   end loop;
@@ -77,5 +77,5 @@ begin
 end;
 $$;
 
-alter function crud_spec_log(jsonb, boolean) owner to xfw3;
+alter function crud_spec_event(jsonb, boolean) owner to xfw3;
 

@@ -52,7 +52,7 @@ cart                       commercial container (order / bundle)
         ├── spec_json      amount, width, height, ...
         ├── file_json      artwork
         ├── spec_unit_manifest   xbom with evaluated formulas
-        └── spec_log       append-only status movements
+        └── spec_event       append-only status movements
 
 catalog                    the recipe side
 ├── option_tree            configurator definition
@@ -65,7 +65,7 @@ production                 the physical side
 ├── imposition             sheet layout (type: nest | step_and_repeat)
 │   ├── placement_json     which specs sit where on the sheet
 │   ├── imposition_unit_manifest
-│   └── imposition_log     append-only status movements
+│   └── imposition_event     append-only status movements
 └── ...
 
 action                     the planning side
@@ -73,7 +73,7 @@ action                     the planning side
     └── lane               one ordered strip of time
         └── lane_item      one block of work
             ├── lane_item_dependency   from_ → to_ edges
-            ├── lane_item_log          append-only status movements
+            ├── lane_item_event          append-only status movements
             ├── imposition_lane_item   membership, written on change only
             └── order_lane_item        legacy, orderline-based
 ```
@@ -435,14 +435,14 @@ with sequences such as 600 rip/ripped, 700 print/printed, 790 coat/coated,
 > sequences the same numbering, or two parallel systems? This matters for
 > anything joining production logs to job statuses.
 
-### 7.2 `job.spec_log`
+### 7.2 `job.spec_event`
 
 An **event log, not a counter table**. Never `UPDATE`, never `DELETE` per row —
 only `INSERT`.
 
 | column | meaning |
 |---|---|
-| `spec_log_id` | bigint, pk |
+| `spec_event_id` | bigint, pk |
 | `spec_id` | |
 | `from_status_sequence` | where the units come from; `NULL` = entry into the system |
 | `to_status_sequence` | where the units go; `NULL` = exit |
@@ -453,7 +453,7 @@ only `INSERT`.
 One movement is one insert:
 
 ```sql
-INSERT INTO job.spec_log (spec_id, from_status_sequence, to_status_sequence, amount)
+INSERT INTO job.spec_event (spec_id, from_status_sequence, to_status_sequence, amount)
 VALUES ($1, 700, 710, 1);
 ```
 
@@ -464,9 +464,9 @@ Amount per status = incoming minus outgoing.
 ```sql
 SELECT status, SUM(amount) AS amount
 FROM (
-  SELECT to_status_sequence   AS status,  amount FROM job.spec_log WHERE spec_id = $1
+  SELECT to_status_sequence   AS status,  amount FROM job.spec_event WHERE spec_id = $1
   UNION ALL
-  SELECT from_status_sequence AS status, -amount FROM job.spec_log
+  SELECT from_status_sequence AS status, -amount FROM job.spec_event
    WHERE spec_id = $1 AND from_status_sequence IS NOT NULL
 ) m
 GROUP BY status
@@ -499,13 +499,13 @@ bloat. Append-only turns those updates into inserts (no dead tuples), gives full
 history and traceability for free, and keeps the position always derivable and
 balanced.
 
-### 7.6 `production.imposition_log`
+### 7.6 `production.imposition_event`
 
 Same pattern one level up.
 
 | column | notes |
 |---|---|
-| `imposition_log_id` | bigint, pk |
+| `imposition_event_id` | bigint, pk |
 | `imposition_id` | |
 | `from_status_sequence`, `to_status_sequence` | |
 | `amount` | run quantity of the imposition |
@@ -554,10 +554,10 @@ moment.
 -- Position per status for a spec, as it was at $as_of
 SELECT status, SUM(amount) AS amount
 FROM (
-  SELECT to_status_sequence   AS status,  amount FROM job.spec_log
+  SELECT to_status_sequence   AS status,  amount FROM job.spec_event
    WHERE spec_id = $1 AND moved_at <= $as_of
   UNION ALL
-  SELECT from_status_sequence AS status, -amount FROM job.spec_log
+  SELECT from_status_sequence AS status, -amount FROM job.spec_event
    WHERE spec_id = $1 AND from_status_sequence IS NOT NULL AND moved_at <= $as_of
 ) m
 GROUP BY status
@@ -566,7 +566,7 @@ HAVING SUM(amount) <> 0;
 
 ### 8.2 The two shapes
 
-**Summing ledgers** (`spec_log`, `imposition_log`, stock): sum all rows up to
+**Summing ledgers** (`spec_event`, `imposition_event`, stock): sum all rows up to
 `$as_of`. The `SUM = constant` invariant holds at every point in time, so the
 reconstruction is self-checking.
 
@@ -593,9 +593,10 @@ exactly this.
 2. **Naming is consistent.** `moved_at` on movement logs; `line_item_resource`
    currently uses `updated_at` for the same concept.
    → *Decide: rename to `moved_at`, or accept the exception and document it.*
-3. **No `UPDATE` or `DELETE` touches a log row.** Any function that does breaks
-   reconstruction silently. Claude Code should grep for `UPDATE ... _log` and
-   `DELETE FROM ... _log` across all functions and report every hit.
+3. **No `UPDATE` or `DELETE` touches an event row.** Any function that does breaks
+   reconstruction silently. Claude Code should grep for `UPDATE ... _event` and
+   `DELETE FROM ... _event` (and legacy `... _log`) across all functions and
+   report every hit.
 4. **Denormalized snapshots are consistent with the log.** `imposition.status_json`,
    `imposition.remaining_impact`, `batch.remaining_impact` and `nest.status_json`
    are current-state caches. They cannot be rewound. Either they are always
@@ -703,7 +704,7 @@ This is the point that is easiest to get wrong when reading the rest of this
 document.
 
 An **order** moves through the production process, going from status to status —
-that is what `spec_log` and `imposition_log` record. A **lane item** does not
+that is what `spec_event` and `imposition_event` record. A **lane item** does not
 move through anything. It *is* one step in that process: nest, rip, print, coat,
 route, cut. The impositions hanging under a lane item normally pass through all
 the steps, which is exactly what `lane_item_dependency` expresses.
@@ -713,7 +714,7 @@ way is a category error. What does need history is **which impositions were
 sitting under which lane item at a given moment** — because impositions get
 **split and merged** across lane items during planning.
 
-> **Verify:** an `action.lane_item_log` table with a bare `status` column
+> **Verify:** an `action.lane_item_event` table with a bare `status` column
 > appears in the schema dump. Establish what it is currently used for. If it
 > only ever recorded membership or step lifecycle, it is superseded by 9.6 and
 > should be dropped or migrated. If it carries a genuine lane-item lifecycle
@@ -890,11 +891,11 @@ CROSS JOIN LATERAL jsonb_to_recordset(i.placement_json -> 'specs')
 ```
 
 From there, `job.spec_unit_manifest` gives the items and
-`production_impact_per_unit` per spec, and `job.spec_log` gives the position of
+`production_impact_per_unit` per spec, and `job.spec_event` gives the position of
 those specs in the production flow. That is the full chain:
 
 ```
-lane_item → imposition → placement_json → spec → spec_unit_manifest → spec_log
+lane_item → imposition → placement_json → spec → spec_unit_manifest → spec_event
 ```
 
 > **Legacy:** `action.order_lane_item` / `production_orderline_lane_item`,
@@ -974,7 +975,7 @@ because the rest of the document depends on them.
 | 3 | `nest` → `imposition` rename | Did it run? Dump still shows `production.nest`, `nest_log`. Both may now exist. |
 | 4 | `imposition.type` | Does the `nest \| step_and_repeat` column exist? |
 | 5 | `action.plan` columns | Dump: `step`, `type`, `line_type`, `plan_date`. Design: `tenant_id`, `type`, `plan_date` with unique constraint. |
-| 6 | `lane_item_log` purpose | A lane item is a step, not something with a status. What is this table used for now, and is it superseded by the membership ledger? See 9.5. |
+| 6 | `lane_item_event` purpose | A lane item is a step, not something with a status. What is this table used for now, and is it superseded by the membership ledger? See 9.5. |
 | 6b | `nest_lane_item` → `imposition_lane_item` | Rename plus the change-only semantics of 9.6. Existing rows migrate as-is (they become the set for their lane item); redundant rows for steps that never split can be dropped. |
 | 7 | Status text vs sequence | `from_status`/`to_status` (early design) vs `from_status_sequence`/`to_status_sequence` (dump). |
 | 8 | `job.status.sequence` vs `lookup_step_category` | One numbering or two? |

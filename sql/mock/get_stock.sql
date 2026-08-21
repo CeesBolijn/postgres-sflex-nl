@@ -16,7 +16,7 @@ begin
                )::integer,
                (s.spec_json ->> 'width')::numeric
         from   mock.spec s
-        join   mock.spec_log sl on sl.spec_id = s.spec_id
+        join   mock.spec_event sl on sl.spec_id = s.spec_id
         where  (s.spec_json ->> 'material_id')::integer = p_material_id
         and    (p_bucket_width is null or (s.spec_json ->> 'width')::numeric <= p_bucket_width)
         group  by s.spec_id,

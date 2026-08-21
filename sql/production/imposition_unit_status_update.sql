@@ -13,7 +13,7 @@ BEGIN
 
     -- Imposition-level movement: one append-only row.
     -- remaining_impact_delta = qty * ( R(to) - R(from) ), R(S) from the frozen imposition manifest.
-    INSERT INTO production.imposition_log (
+    INSERT INTO production.imposition_event (
         imposition_id, from_status_sequence, to_status_sequence,
         amount, remaining_impact_delta, resource_uids
     )

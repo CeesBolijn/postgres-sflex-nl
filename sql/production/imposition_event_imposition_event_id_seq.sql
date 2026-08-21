@@ -1,0 +1,6 @@
+create sequence imposition_event_imposition_event_id_seq;
+
+alter sequence imposition_event_imposition_event_id_seq owner to xfw3;
+
+alter sequence imposition_event_imposition_event_id_seq owned by imposition_event.imposition_event_id;
+

@@ -28,8 +28,8 @@ erDiagram
         integer lag_seconds
     }
 
-    action_lane_item_log {
-        bigint lane_item_log_id PK
+    action_lane_item_event {
+        bigint lane_item_event_id PK
         bigint lane_item_id FK
         text status
         timestamptz moved_at
@@ -79,7 +79,7 @@ erDiagram
 
     action_lane_item ||--o{ action_lane_item_dependency : "from"
     action_lane_item ||--o{ action_lane_item_dependency : "to"
-    action_lane_item ||--o{ action_lane_item_log : "history"
+    action_lane_item ||--o{ action_lane_item_event : "history"
     action_lane_item ||--o{ action_order_lane_item : "order"
     action_lane_item ||--o{ action_nest_lane_item : "nest"
     relation_team ||--o{ relation_team : "parent of"

@@ -5,7 +5,7 @@ Cowork heeft geen toegang tot de Claude.ai chatgeschiedenis. Alle content die er
 ## Volledig klaar, niets aan doen
 - `sql/relation/get_resource_printer_settings.sql`
 - `sql/action/cutoff_time.sql` (tabel + index)
-- `sql/action/lane_item.sql` (lane_item, lane_item_dependency, lane_item_log, order_lane_item, nest_lane_item)
+- `sql/action/lane_item.sql` (lane_item, lane_item_dependency, lane_item_event, order_lane_item, nest_lane_item)
 - `sql/action/rule_path.sql` (rule_path_matches, rule_path_ancestors)
 - `sql/relation/team.sql` (relation.team, action.week_team)
 
