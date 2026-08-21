@@ -1,4 +1,4 @@
-create function get_status_bar_capacity(p_model text, p_until timestamp with time zone, p_line_id integer, p_steps jsonb) returns jsonb
+create function mapping.get_status_bar_capacity(p_model text, p_until timestamp with time zone, p_line_id integer, p_steps jsonb) returns jsonb
 	stable
 	language plpgsql
 as $$
@@ -23,5 +23,5 @@ BEGIN
 END;
 $$;
 
-alter function get_status_bar_capacity(text, timestamp with time zone, integer, jsonb) owner to xfw3;
+alter function mapping.get_status_bar_capacity(text, timestamp with time zone, integer, jsonb) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function crud_single_product(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(r_param_id integer, r_track_by integer, r_crud text, r_nestline_id integer, r_nest_id integer, r_production_orderline_id integer, r_filename text, r_amount integer, r_vertical_position jsonb, r_horizontal_position jsonb, r_width numeric, r_height numeric)
+create function legacy.crud_single_product(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(r_param_id integer, r_track_by integer, r_crud text, r_nestline_id integer, r_nest_id integer, r_production_orderline_id integer, r_filename text, r_amount integer, r_vertical_position jsonb, r_horizontal_position jsonb, r_width numeric, r_height numeric)
 	language plpgsql
 as $$
     #variable_conflict use_column
@@ -170,5 +170,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_single_product(jsonb, boolean) owner to xfw3;
+alter function legacy.crud_single_product(jsonb, boolean) owner to xfw3;
 

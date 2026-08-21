@@ -1,4 +1,4 @@
-create function get_orderlines(p_order_id integer) returns TABLE(production_orderline_id integer, sales_orderline_id integer, production_order_id integer, order_id integer, order_number integer, number text, sequence integer, material_id integer, material_name text, product_width numeric, product_height numeric, product_amount numeric, product_unit_code text, product_unit_quantity numeric, sqm numeric, internal_status_code text, production_order_status text, production_company_id integer, production_date date, order_date date, production_location text, order_location text)
+create function mapping.get_orderlines(p_order_id integer) returns TABLE(production_orderline_id integer, sales_orderline_id integer, production_order_id integer, order_id integer, order_number integer, number text, sequence integer, material_id integer, material_name text, product_width numeric, product_height numeric, product_amount numeric, product_unit_code text, product_unit_quantity numeric, sqm numeric, internal_status_code text, production_order_status text, production_company_id integer, production_date date, order_date date, production_location text, order_location text)
 	stable
 	language plpgsql
 as $$
@@ -36,5 +36,5 @@ BEGIN
 END;
 $$;
 
-alter function get_orderlines(integer) owner to xfw3;
+alter function mapping.get_orderlines(integer) owner to xfw3;
 

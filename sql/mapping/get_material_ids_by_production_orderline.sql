@@ -1,4 +1,4 @@
-create function get_material_ids_by_production_orderline(p_production_orderline_id integer) returns integer[]
+create function mapping.get_material_ids_by_production_orderline(p_production_orderline_id integer) returns integer[]
 	stable
 	language sql
 as $$
@@ -19,5 +19,5 @@ as $$
     ) m;
 $$;
 
-alter function get_material_ids_by_production_orderline(integer) owner to xfw3;
+alter function mapping.get_material_ids_by_production_orderline(integer) owner to xfw3;
 

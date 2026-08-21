@@ -1,4 +1,4 @@
-create function get_production_line_production_faults() returns TABLE(error_count integer, stops integer)
+create function relation.get_production_line_production_faults() returns TABLE(error_count integer, stops integer)
 	stable
 	language plpgsql
 as $$
@@ -10,5 +10,5 @@ BEGIN
 END;
 $$;
 
-alter function get_production_line_production_faults() owner to xfw3;
+alter function relation.get_production_line_production_faults() owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_file_inflow(p_from timestamp with time zone, p_line_type text) returns TABLE(delivery_hours integer, threshold integer, threshold_json jsonb, cutoff_window_start_at timestamp with time zone, cutoff_window_end_at timestamp with time zone, hour_agg_json jsonb, total_files integer, total_sqm numeric, total_amount integer)
+create function legacy.get_file_inflow(p_from timestamp with time zone, p_line_type text) returns TABLE(delivery_hours integer, threshold integer, threshold_json jsonb, cutoff_window_start_at timestamp with time zone, cutoff_window_end_at timestamp with time zone, hour_agg_json jsonb, total_files integer, total_sqm numeric, total_amount integer)
 	stable
 	language plpgsql
 as $$
@@ -129,5 +129,5 @@ BEGIN
 END;
 $$;
 
-alter function get_file_inflow(timestamp with time zone, text) owner to xfw3;
+alter function legacy.get_file_inflow(timestamp with time zone, text) owner to xfw3;
 

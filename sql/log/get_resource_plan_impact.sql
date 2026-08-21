@@ -1,4 +1,4 @@
-create function get_resource_plan_impact(p_resource_uids text[] DEFAULT NULL::text[], p_from timestamp with time zone DEFAULT NULL::timestamp with time zone, p_until timestamp with time zone DEFAULT now(), p_line_type text DEFAULT NULL::text) returns TABLE(resource_uid text, state jsonb, group_state jsonb, layout_name text, step text, name text, nest_name text, filename text, page_number integer, batch_id integer, batch_name text, data jsonb, start_at timestamp with time zone, offset_seconds numeric, duration_seconds numeric)
+create function log.get_resource_plan_impact(p_resource_uids text[] DEFAULT NULL::text[], p_from timestamp with time zone DEFAULT NULL::timestamp with time zone, p_until timestamp with time zone DEFAULT now(), p_line_type text DEFAULT NULL::text) returns TABLE(resource_uid text, state jsonb, group_state jsonb, layout_name text, step text, name text, nest_name text, filename text, page_number integer, batch_id integer, batch_name text, data jsonb, start_at timestamp with time zone, offset_seconds numeric, duration_seconds numeric)
 	stable
 	language sql
 as $$
@@ -74,5 +74,5 @@ as $$
         grpb.offset_seconds;
 $$;
 
-alter function get_resource_plan_impact(text[], timestamp with time zone, timestamp with time zone, text) owner to xfw3;
+alter function log.get_resource_plan_impact(text[], timestamp with time zone, timestamp with time zone, text) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_status_log_duration(p_production_orderline_id integer) returns TABLE(status_log_id integer, production_orderline_id integer, previous_internal_status_code character varying, update_internal_status_code character varying, next_internal_status_code character varying, updated_at timestamp without time zone, duration_seconds numeric)
+create function mapping.get_status_log_duration(p_production_orderline_id integer) returns TABLE(status_log_id integer, production_orderline_id integer, previous_internal_status_code character varying, update_internal_status_code character varying, next_internal_status_code character varying, updated_at timestamp without time zone, duration_seconds numeric)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -28,5 +28,5 @@ BEGIN
 END;
 $$;
 
-alter function get_status_log_duration(integer) owner to xfw3;
+alter function mapping.get_status_log_duration(integer) owner to xfw3;
 

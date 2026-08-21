@@ -1,4 +1,4 @@
-create function crud_uploader_source_file(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(uploader_source_file_id bigint, uploader_data_id bigint, production_filename text, converted_preview_medium_url text)
+create function mapping.crud_uploader_source_file(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(uploader_source_file_id bigint, uploader_data_id bigint, production_filename text, converted_preview_medium_url text)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -50,5 +50,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_uploader_source_file(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_uploader_source_file(jsonb, boolean) owner to xfw3;
 

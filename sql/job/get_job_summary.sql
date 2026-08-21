@@ -1,4 +1,4 @@
-create function get_job_summary(p_user_company_id integer, p_user_domain_id integer) returns TABLE(container_id integer, job text, title text, job_date_time timestamp with time zone, employee text, customer text, delivery_date text, delivery_type text, status jsonb)
+create function job.get_job_summary(p_user_company_id integer, p_user_domain_id integer) returns TABLE(container_id integer, job text, title text, job_date_time timestamp with time zone, employee text, customer text, delivery_date text, delivery_type text, status jsonb)
 	language sql
 as $$
 SELECT
@@ -32,5 +32,5 @@ SELECT
     }'::jsonb AS status;
 $$;
 
-alter function get_job_summary(integer, integer) owner to xfw3;
+alter function job.get_job_summary(integer, integer) owner to xfw3;
 

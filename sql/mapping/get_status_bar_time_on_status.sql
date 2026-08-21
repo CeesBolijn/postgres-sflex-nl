@@ -1,4 +1,4 @@
-create function get_status_bar_time_on_status(p_model text, p_until timestamp with time zone, p_line_id integer) returns jsonb
+create function mapping.get_status_bar_time_on_status(p_model text, p_until timestamp with time zone, p_line_id integer) returns jsonb
 	stable
 	language plpgsql
 as $$
@@ -41,5 +41,5 @@ BEGIN
 END;
 $$;
 
-alter function get_status_bar_time_on_status(text, timestamp with time zone, integer) owner to xfw3;
+alter function mapping.get_status_bar_time_on_status(text, timestamp with time zone, integer) owner to xfw3;
 

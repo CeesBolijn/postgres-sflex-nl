@@ -1,4 +1,4 @@
-create function crud_hr_data_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, hr_data_log_id integer, employee_id integer, department_id integer, department_group_id integer, business_date date, shift text, start_at timestamp with time zone, end_at timestamp with time zone, source text, source_ref text, ingested_at timestamp with time zone, updated_at timestamp with time zone)
+create function log.crud_hr_data_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, hr_data_log_id integer, employee_id integer, department_id integer, department_group_id integer, business_date date, shift text, start_at timestamp with time zone, end_at timestamp with time zone, source text, source_ref text, ingested_at timestamp with time zone, updated_at timestamp with time zone)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -70,5 +70,5 @@ begin
 end;
 $$;
 
-alter function crud_hr_data_log(jsonb, boolean) owner to xfw3;
+alter function log.crud_hr_data_log(jsonb, boolean) owner to xfw3;
 

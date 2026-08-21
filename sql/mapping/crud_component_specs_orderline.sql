@@ -1,4 +1,4 @@
-create function crud_component_specs_orderline(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, production_orderline_id integer)
+create function mapping.crud_component_specs_orderline(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, production_orderline_id integer)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -232,5 +232,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_component_specs_orderline(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_component_specs_orderline(jsonb, boolean) owner to xfw3;
 

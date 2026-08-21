@@ -1,4 +1,4 @@
-create function imposition_unit_status_update(p_imposition_id bigint, p_current_status_sequence integer, p_new_status_sequence integer, p_resource_uids text[] DEFAULT NULL::text[]) returns void
+create function production.imposition_unit_status_update(p_imposition_id bigint, p_current_status_sequence integer, p_new_status_sequence integer, p_resource_uids text[] DEFAULT NULL::text[]) returns void
 	language plpgsql
 as $$
 DECLARE
@@ -39,5 +39,5 @@ BEGIN
 END;
 $$;
 
-alter function imposition_unit_status_update(bigint, integer, integer, text[]) owner to xfw3;
+alter function production.imposition_unit_status_update(bigint, integer, integer, text[]) owner to xfw3;
 

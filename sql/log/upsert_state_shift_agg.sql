@@ -1,4 +1,4 @@
-create function upsert_state_shift_agg(p_date date DEFAULT (CURRENT_DATE - 1)) returns integer
+create function log.upsert_state_shift_agg(p_date date DEFAULT (CURRENT_DATE - 1)) returns integer
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -146,5 +146,5 @@ begin
 end;
 $$;
 
-alter function upsert_state_shift_agg(date) owner to xfw3;
+alter function log.upsert_state_shift_agg(date) owner to xfw3;
 

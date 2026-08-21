@@ -1,4 +1,4 @@
-create function create_data_table_sync_json(p_data_table character varying) returns void
+create function site.create_data_table_sync_json(p_data_table character varying) returns void
 	language plpgsql
 as $$
 DECLARE
@@ -43,5 +43,5 @@ BEGIN
 END;
 $$;
 
-alter function create_data_table_sync_json(varchar) owner to xfw3;
+alter function site.create_data_table_sync_json(varchar) owner to xfw3;
 

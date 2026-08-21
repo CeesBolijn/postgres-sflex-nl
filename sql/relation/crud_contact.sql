@@ -1,4 +1,4 @@
-create function crud_contact(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud character varying, company_id integer, employee_id integer, first_name character varying, last_name character varying, last_name_prefix character varying, gender character varying, email character varying, config jsonb)
+create function relation.crud_contact(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud character varying, company_id integer, employee_id integer, first_name character varying, last_name character varying, last_name_prefix character varying, gender character varying, email character varying, config jsonb)
 	language plpgsql
 as $$
 DECLARE
@@ -84,5 +84,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_contact(jsonb, boolean) owner to xfw3;
+alter function relation.crud_contact(jsonb, boolean) owner to xfw3;
 

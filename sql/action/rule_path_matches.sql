@@ -1,4 +1,4 @@
-create function rule_path_matches(entry_rule_path text, scope_rule_paths text[]) returns boolean
+create function action.rule_path_matches(entry_rule_path text, scope_rule_paths text[]) returns boolean
 	immutable
 	strict
 	parallel safe
@@ -20,5 +20,5 @@ as $$
   );
 $$;
 
-alter function rule_path_matches(text, text[]) owner to xfw3;
+alter function action.rule_path_matches(text, text[]) owner to xfw3;
 

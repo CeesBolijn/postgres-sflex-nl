@@ -1,4 +1,4 @@
-create function crud_specs_log(p_param_json jsonb) returns TABLE(specs_id integer, crud text, resource_uid text, printer_system_name text, fetched_at text, batch_no text, result text)
+create function job.crud_specs_log(p_param_json jsonb) returns TABLE(specs_id integer, crud text, resource_uid text, printer_system_name text, fetched_at text, batch_no text, result text)
 	language plpgsql
 as $$
 DECLARE
@@ -63,5 +63,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_specs_log(jsonb) owner to xfw3;
+alter function job.crud_specs_log(jsonb) owner to xfw3;
 

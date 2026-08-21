@@ -1,4 +1,4 @@
-create function get_lanes(p_lane_id bigint[], p_rule_path text, p_plan_date date, p_start_offset_in_seconds integer DEFAULT 79200, p_work_during_breaks boolean DEFAULT false) returns TABLE(lane_id bigint, sort_order numeric, duration_in_seconds integer, non_working_time_in_seconds integer, start_in_seconds integer, end_in_seconds integer)
+create function action.get_lanes(p_lane_id bigint[], p_rule_path text, p_plan_date date, p_start_offset_in_seconds integer DEFAULT 79200, p_work_during_breaks boolean DEFAULT false) returns TABLE(lane_id bigint, sort_order numeric, duration_in_seconds integer, non_working_time_in_seconds integer, start_in_seconds integer, end_in_seconds integer)
 	stable
 	language sql
 as $$
@@ -40,5 +40,5 @@ as $$
     ORDER BY n.sort_order, n.lane_id;
 $$;
 
-alter function get_lanes(bigint[], text, date, integer, boolean) owner to xfw3;
+alter function action.get_lanes(bigint[], text, date, integer, boolean) owner to xfw3;
 

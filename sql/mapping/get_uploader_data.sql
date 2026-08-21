@@ -1,4 +1,4 @@
-create function get_uploader_data(p_production_orderline_id integer) returns TABLE(uploader_data_id integer, production_orderline_id integer, order_id integer, sales_orderline_id integer, status text, amount integer, front_file_name text, front_preview_url text, front_width numeric, front_height numeric, back_file_name text, back_preview_url text, back_width numeric, back_height numeric)
+create function mapping.get_uploader_data(p_production_orderline_id integer) returns TABLE(uploader_data_id integer, production_orderline_id integer, order_id integer, sales_orderline_id integer, status text, amount integer, front_file_name text, front_preview_url text, front_width numeric, front_height numeric, back_file_name text, back_preview_url text, back_width numeric, back_height numeric)
 	stable
 	language plpgsql
 as $$
@@ -28,5 +28,5 @@ begin
 end;
 $$;
 
-alter function get_uploader_data(integer) owner to xfw3;
+alter function mapping.get_uploader_data(integer) owner to xfw3;
 

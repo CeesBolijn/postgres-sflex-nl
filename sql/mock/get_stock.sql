@@ -1,4 +1,4 @@
-create function get_stock(p_material_id integer, p_bucket_width numeric DEFAULT NULL::numeric) returns TABLE(spec_id bigint, vendor_batch_id text, amount integer, width numeric)
+create function mock.get_stock(p_material_id integer, p_bucket_width numeric DEFAULT NULL::numeric) returns TABLE(spec_id bigint, vendor_batch_id text, amount integer, width numeric)
 	stable
 	language plpgsql
 as $$
@@ -29,5 +29,5 @@ begin
 end;
 $$;
 
-alter function get_stock(integer, numeric) owner to xfw3;
+alter function mock.get_stock(integer, numeric) owner to xfw3;
 

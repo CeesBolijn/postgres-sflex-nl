@@ -1,4 +1,4 @@
-create function crud_material_resource_plan(p_data jsonb, p_cascade boolean DEFAULT true) returns SETOF mock.material_resource_plan
+create function mock.crud_material_resource_plan(p_data jsonb, p_cascade boolean DEFAULT true) returns SETOF mock.material_resource_plan
 	language sql
 as $$
     WITH input AS (
@@ -55,5 +55,5 @@ as $$
     SELECT * FROM inserted UNION ALL SELECT * FROM absorbed;
 $$;
 
-alter function crud_material_resource_plan(jsonb, boolean) owner to xfw3;
+alter function mock.crud_material_resource_plan(jsonb, boolean) owner to xfw3;
 

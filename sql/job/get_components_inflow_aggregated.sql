@@ -1,4 +1,4 @@
-create function get_components_inflow_aggregated(p_from date, p_line_type text, p_domain_id integer, p_look_ahead_days integer DEFAULT 10, p_threshold integer DEFAULT 1) returns TABLE(threshold integer, production_line_id integer, line text, material_ids integer[], material_names text[], class_name jsonb, totals_json jsonb, cards_json jsonb)
+create function job.get_components_inflow_aggregated(p_from date, p_line_type text, p_domain_id integer, p_look_ahead_days integer DEFAULT 10, p_threshold integer DEFAULT 1) returns TABLE(threshold integer, production_line_id integer, line text, material_ids integer[], material_names text[], class_name jsonb, totals_json jsonb, cards_json jsonb)
 	stable
 	language plpgsql
 as $$
@@ -142,5 +142,5 @@ BEGIN
 END;
 $$;
 
-alter function get_components_inflow_aggregated(date, text, integer, integer, integer) owner to xfw3;
+alter function job.get_components_inflow_aggregated(date, text, integer, integer, integer) owner to xfw3;
 

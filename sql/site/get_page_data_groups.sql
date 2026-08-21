@@ -1,4 +1,4 @@
-create function get_page_data_groups(p_page_id integer) returns jsonb
+create function site.get_page_data_groups(p_page_id integer) returns jsonb
 	language plpgsql
 as $$
 DECLARE
@@ -33,5 +33,5 @@ BEGIN
 END;
 $$;
 
-alter function get_page_data_groups(integer) owner to xfw3;
+alter function site.get_page_data_groups(integer) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_nest_queue(p_material_id integer) returns TABLE(queue_name text, production_location text, nest_bucket_id integer, bucket_width numeric, bucket_min_height numeric, bucket_max_height numeric, nest_job_id integer, resource_json jsonb, job_name text, job_amount integer, waste_perc numeric, deadline_fill_perc numeric, deadline_at timestamp with time zone, remarks_json jsonb, production_orderline_id integer, nest_id integer, document_amount numeric, document_width numeric, document_height numeric)
+create function mock.get_nest_queue(p_material_id integer) returns TABLE(queue_name text, production_location text, nest_bucket_id integer, bucket_width numeric, bucket_min_height numeric, bucket_max_height numeric, nest_job_id integer, resource_json jsonb, job_name text, job_amount integer, waste_perc numeric, deadline_fill_perc numeric, deadline_at timestamp with time zone, remarks_json jsonb, production_orderline_id integer, nest_id integer, document_amount numeric, document_width numeric, document_height numeric)
 	stable
 	language plpgsql
 as $$
@@ -34,5 +34,5 @@ BEGIN
 END;
 $$;
 
-alter function get_nest_queue(integer) owner to xfw3;
+alter function mock.get_nest_queue(integer) owner to xfw3;
 

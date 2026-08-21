@@ -1,4 +1,4 @@
-create function get_nest_bucket_resources(p_nest_bucket_id integer) returns TABLE(resource_uid text, resource_name text, step text)
+create function mock.get_nest_bucket_resources(p_nest_bucket_id integer) returns TABLE(resource_uid text, resource_name text, step text)
 	stable
 	language sql
 as $$
@@ -13,5 +13,5 @@ as $$
     ORDER  BY (e.elem ->> 'status_sequence')::int, r.resource_json ->> 'name';
 $$;
 
-alter function get_nest_bucket_resources(integer) owner to xfw3;
+alter function mock.get_nest_bucket_resources(integer) owner to xfw3;
 

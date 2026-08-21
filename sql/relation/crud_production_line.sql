@@ -1,4 +1,4 @@
-create function crud_production_line(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, production_line_id integer, name text)
+create function relation.crud_production_line(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, production_line_id integer, name text)
 	language plpgsql
 as $$
 DECLARE
@@ -80,5 +80,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_production_line(jsonb, boolean) owner to xfw3;
+alter function relation.crud_production_line(jsonb, boolean) owner to xfw3;
 

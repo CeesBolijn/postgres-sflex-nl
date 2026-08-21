@@ -1,4 +1,4 @@
-create function get_nest_relevant_steps(p_nest_name text) returns TABLE(step text)
+create function legacy.get_nest_relevant_steps(p_nest_name text) returns TABLE(step text)
 	language sql
 as $$
     SELECT 'rip' step;
@@ -16,5 +16,5 @@ as $$
 --     WHERE n.nest_name = p_nest_name;
 $$;
 
-alter function get_nest_relevant_steps(text) owner to xfw3;
+alter function legacy.get_nest_relevant_steps(text) owner to xfw3;
 

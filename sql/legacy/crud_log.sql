@@ -1,4 +1,4 @@
-create function crud_log(p_param_json jsonb DEFAULT '[]'::jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud character varying, log_json jsonb, original_json jsonb, log_type character varying, content_id character varying)
+create function legacy.crud_log(p_param_json jsonb DEFAULT '[]'::jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud character varying, log_json jsonb, original_json jsonb, log_type character varying, content_id character varying)
 	language plpgsql
 as $$
 DECLARE
@@ -62,5 +62,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_log(jsonb, boolean) owner to xfw3;
+alter function legacy.crud_log(jsonb, boolean) owner to xfw3;
 

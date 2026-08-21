@@ -1,4 +1,4 @@
-create function get_all_formula_graphs() returns TABLE(formula_graph_id integer, formula_graph_name character varying)
+create function site.get_all_formula_graphs() returns TABLE(formula_graph_id integer, formula_graph_name character varying)
 	language plpgsql
 as $$
 BEGIN
@@ -11,5 +11,5 @@ BEGIN
 END;
 $$;
 
-alter function get_all_formula_graphs() owner to xfw3;
+alter function site.get_all_formula_graphs() owner to xfw3;
 

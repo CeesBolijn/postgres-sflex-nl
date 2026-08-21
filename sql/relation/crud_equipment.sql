@@ -1,4 +1,4 @@
-create function crud_equipment(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud character varying, something text, last_batch_id integer)
+create function relation.crud_equipment(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud character varying, something text, last_batch_id integer)
 	language plpgsql
 as $$
 DECLARE
@@ -47,5 +47,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_equipment(jsonb, boolean) owner to xfw3;
+alter function relation.crud_equipment(jsonb, boolean) owner to xfw3;
 

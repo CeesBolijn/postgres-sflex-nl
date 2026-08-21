@@ -1,4 +1,4 @@
-create function crud_resource(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, resource_uid text, resource_json jsonb)
+create function relation.crud_resource(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, resource_uid text, resource_json jsonb)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -31,5 +31,5 @@ begin
 end;
 $$;
 
-alter function crud_resource(jsonb, boolean) owner to xfw3;
+alter function relation.crud_resource(jsonb, boolean) owner to xfw3;
 

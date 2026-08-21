@@ -1,4 +1,4 @@
-create function crud_product(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(product_id integer, material_id integer, production_start_date date, production_interval integer)
+create function mapping.crud_product(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(product_id integer, material_id integer, production_start_date date, production_interval integer)
 	language plpgsql
 as $$
 BEGIN
@@ -37,5 +37,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_product(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_product(jsonb, boolean) owner to xfw3;
 

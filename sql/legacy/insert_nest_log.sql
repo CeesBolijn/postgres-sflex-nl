@@ -1,4 +1,4 @@
-create function insert_nest_log(p_nest_name text) returns void
+create function legacy.insert_nest_log(p_nest_name text) returns void
 	language sql
 as $$
     WITH status_ordered AS (
@@ -35,5 +35,5 @@ as $$
       );
 $$;
 
-alter function insert_nest_log(text) owner to xfw3;
+alter function legacy.insert_nest_log(text) owner to xfw3;
 

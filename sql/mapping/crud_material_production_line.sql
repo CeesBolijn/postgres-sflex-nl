@@ -1,4 +1,4 @@
-create function crud_material_production_line(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(domain_id integer, material_id integer, production_line_id integer, line_json jsonb)
+create function mapping.crud_material_production_line(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(domain_id integer, material_id integer, production_line_id integer, line_json jsonb)
 	language plpgsql
 as $$
 BEGIN
@@ -25,5 +25,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_material_production_line(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_material_production_line(jsonb, boolean) owner to xfw3;
 

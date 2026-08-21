@@ -1,4 +1,4 @@
-create function test_get_schedule() returns TABLE(date text, unavailable_resource_ids integer[], info text, timeslots jsonb, resources jsonb)
+create function site.test_get_schedule() returns TABLE(date text, unavailable_resource_ids integer[], info text, timeslots jsonb, resources jsonb)
 	language sql
 as $$
 SELECT *
@@ -98,5 +98,5 @@ FROM (VALUES
 
 $$;
 
-alter function test_get_schedule() owner to xfw3;
+alter function site.test_get_schedule() owner to xfw3;
 

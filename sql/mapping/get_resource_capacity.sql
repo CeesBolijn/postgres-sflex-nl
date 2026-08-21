@@ -1,4 +1,4 @@
-create function get_resource_capacity(p_model text, p_resource_uids text[] DEFAULT NULL::text[], p_until timestamp with time zone DEFAULT now()) returns TABLE(resource_uid text, resource_name text, profile_name text, material_names jsonb, data_json jsonb, capacity_sqm_per_day numeric, capacity_reserved_sqm numeric, capacity_left numeric)
+create function mapping.get_resource_capacity(p_model text, p_resource_uids text[] DEFAULT NULL::text[], p_until timestamp with time zone DEFAULT now()) returns TABLE(resource_uid text, resource_name text, profile_name text, material_names jsonb, data_json jsonb, capacity_sqm_per_day numeric, capacity_reserved_sqm numeric, capacity_left numeric)
 	stable
 	language plpgsql
 as $$
@@ -71,5 +71,5 @@ BEGIN
 END;
 $$;
 
-alter function get_resource_capacity(text, text[], timestamp with time zone) owner to xfw3;
+alter function mapping.get_resource_capacity(text, text[], timestamp with time zone) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_resource_status(p_resource_id integer) returns TABLE(resource_id integer, status text, error text, task text)
+create function relation.get_resource_status(p_resource_id integer) returns TABLE(resource_id integer, status text, error text, task text)
 	stable
 	language plpgsql
 as $$
@@ -12,5 +12,5 @@ BEGIN
 END;
 $$;
 
-alter function get_resource_status(integer) owner to xfw3;
+alter function relation.get_resource_status(integer) owner to xfw3;
 

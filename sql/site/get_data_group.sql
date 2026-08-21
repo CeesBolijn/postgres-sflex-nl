@@ -1,4 +1,4 @@
-create function get_data_group(p_data_group text) returns TABLE(data_group_json jsonb)
+create function site.get_data_group(p_data_group text) returns TABLE(data_group_json jsonb)
 	stable
 	language sql
 as $$
@@ -7,5 +7,5 @@ as $$
     WHERE data_group = p_data_group;
 $$;
 
-alter function get_data_group(text) owner to xfw3;
+alter function site.get_data_group(text) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_material_buckets(p_production_line_id integer DEFAULT NULL::integer, p_material_id integer DEFAULT NULL::integer) returns TABLE(production_line_id integer, material_id integer, bucket_name text)
+create function legacy.get_material_buckets(p_production_line_id integer DEFAULT NULL::integer, p_material_id integer DEFAULT NULL::integer) returns TABLE(production_line_id integer, material_id integer, bucket_name text)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -18,5 +18,5 @@ BEGIN
 END;
 $$;
 
-alter function get_material_buckets(integer, integer) owner to xfw3;
+alter function legacy.get_material_buckets(integer, integer) owner to xfw3;
 

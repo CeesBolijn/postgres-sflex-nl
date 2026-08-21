@@ -1,4 +1,4 @@
-create function search_phone(p_search_txt character varying) returns TABLE(code text, text text, description text, company_name text, company_type text, filejson jsonb)
+create function site.search_phone(p_search_txt character varying) returns TABLE(code text, text text, description text, company_name text, company_type text, filejson jsonb)
 	language plpgsql
 as $$
 BEGIN
@@ -43,5 +43,5 @@ BEGIN
 END;
 $$;
 
-alter function search_phone(varchar) owner to xfw3;
+alter function site.search_phone(varchar) owner to xfw3;
 

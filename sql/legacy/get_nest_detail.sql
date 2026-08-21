@@ -1,4 +1,4 @@
-create function get_nest_detail(p_nest_id bigint DEFAULT NULL::bigint, p_batch_id integer DEFAULT NULL::integer) returns TABLE(batch_id integer, nest_id bigint, nest_name text, nest_json jsonb, nested_at timestamp with time zone, updated_at timestamp with time zone, start_at timestamp with time zone)
+create function legacy.get_nest_detail(p_nest_id bigint DEFAULT NULL::bigint, p_batch_id integer DEFAULT NULL::integer) returns TABLE(batch_id integer, nest_id bigint, nest_name text, nest_json jsonb, nested_at timestamp with time zone, updated_at timestamp with time zone, start_at timestamp with time zone)
 	language plpgsql
 as $$
     #variable_conflict use_column
@@ -33,5 +33,5 @@ BEGIN
 END;
 $$;
 
-alter function get_nest_detail(bigint, integer) owner to xfw3;
+alter function legacy.get_nest_detail(bigint, integer) owner to xfw3;
 

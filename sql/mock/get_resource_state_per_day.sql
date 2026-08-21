@@ -1,4 +1,4 @@
-create function get_resource_state_per_day(p_from date DEFAULT '2026-05-01'::date, p_to timestamp with time zone DEFAULT now(), p_tz text DEFAULT 'Europe/Amsterdam'::text) returns TABLE(resource_uid text, resource_name text, line text, day date, state text, time_in_state bigint)
+create function mock.get_resource_state_per_day(p_from date DEFAULT '2026-05-01'::date, p_to timestamp with time zone DEFAULT now(), p_tz text DEFAULT 'Europe/Amsterdam'::text) returns TABLE(resource_uid text, resource_name text, line text, day date, state text, time_in_state bigint)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -55,5 +55,5 @@ begin
 end;
 $$;
 
-alter function get_resource_state_per_day(date, timestamp with time zone, text) owner to xfw3;
+alter function mock.get_resource_state_per_day(date, timestamp with time zone, text) owner to xfw3;
 

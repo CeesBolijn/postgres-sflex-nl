@@ -1,4 +1,4 @@
-create function rule_path_ancestors(entry_rule_path text) returns text[]
+create function action.rule_path_ancestors(entry_rule_path text) returns text[]
 	immutable
 	strict
 	parallel safe
@@ -13,5 +13,5 @@ as $$
   from parts, generate_subscripts(part, 1) as i;
 $$;
 
-alter function rule_path_ancestors(text) owner to xfw3;
+alter function action.rule_path_ancestors(text) owner to xfw3;
 

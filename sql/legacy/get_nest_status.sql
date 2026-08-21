@@ -1,4 +1,4 @@
-create function get_nest_status(p_nest_ids bigint[], p_domain_id integer DEFAULT 1) returns TABLE(nest_id bigint, code text, status_sequence integer, current_amount bigint, last_moved_at timestamp with time zone, last_resource_uids text[])
+create function legacy.get_nest_status(p_nest_ids bigint[], p_domain_id integer DEFAULT 1) returns TABLE(nest_id bigint, code text, status_sequence integer, current_amount bigint, last_moved_at timestamp with time zone, last_resource_uids text[])
 	stable
 	language sql
 as $$
@@ -36,5 +36,5 @@ as $$
     ORDER BY m.nest_id, m.status_sequence;
 $$;
 
-alter function get_nest_status(bigint[], integer) owner to xfw3;
+alter function legacy.get_nest_status(bigint[], integer) owner to xfw3;
 

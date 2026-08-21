@@ -1,4 +1,4 @@
-create function crud_status_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(status_log_id integer, domain_id integer, object_id integer, line_json jsonb)
+create function mapping.crud_status_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(status_log_id integer, domain_id integer, object_id integer, line_json jsonb)
 	language plpgsql
 as $$
 DECLARE
@@ -91,5 +91,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_status_log(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_status_log(jsonb, boolean) owner to xfw3;
 

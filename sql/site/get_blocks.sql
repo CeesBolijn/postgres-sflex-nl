@@ -1,4 +1,4 @@
-create function get_blocks(p_path character varying, p_user_domain_id integer, p_user_company_id integer, p_roles jsonb) returns TABLE(status_code integer, company_id integer, page_id integer, block_id integer, block_json jsonb, sort_order integer, environment jsonb, ml_nav_json jsonb, languages jsonb, data_groups jsonb, navs jsonb, css_variables jsonb)
+create function site.get_blocks(p_path character varying, p_user_domain_id integer, p_user_company_id integer, p_roles jsonb) returns TABLE(status_code integer, company_id integer, page_id integer, block_id integer, block_json jsonb, sort_order integer, environment jsonb, ml_nav_json jsonb, languages jsonb, data_groups jsonb, navs jsonb, css_variables jsonb)
 	language plpgsql
 as $$
 DECLARE
@@ -161,5 +161,5 @@ BEGIN
 END;
 $$;
 
-alter function get_blocks(varchar, integer, integer, jsonb) owner to xfw3;
+alter function site.get_blocks(varchar, integer, integer, jsonb) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function crud_calculated_package(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, calculated_package_id bigint, domain_id integer, order_id bigint, address_country character varying, deleted_at timestamp with time zone, updated_at timestamp with time zone)
+create function mapping.crud_calculated_package(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, calculated_package_id bigint, domain_id integer, order_id bigint, address_country character varying, deleted_at timestamp with time zone, updated_at timestamp with time zone)
 	language plpgsql
 as $$
 DECLARE
@@ -60,5 +60,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_calculated_package(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_calculated_package(jsonb, boolean) owner to xfw3;
 

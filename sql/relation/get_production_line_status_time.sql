@@ -1,4 +1,4 @@
-create function get_production_line_status_time() returns TABLE(key text, value integer)
+create function relation.get_production_line_status_time() returns TABLE(key text, value integer)
 	language plpgsql
 as $$
 BEGIN
@@ -17,5 +17,5 @@ BEGIN
 END;
 $$;
 
-alter function get_production_line_status_time() owner to xfw3;
+alter function relation.get_production_line_status_time() owner to xfw3;
 

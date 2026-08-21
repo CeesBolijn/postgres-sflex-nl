@@ -1,4 +1,4 @@
-create function get_components_inflow(p_from date, p_line_type text, p_domain_id integer, p_look_ahead_days integer DEFAULT 10, p_threshold integer DEFAULT 1) returns TABLE(production_line_id integer, line text, material_ids integer[], material_name text, order_id integer, production_orderline_id integer, ship_separately boolean, group_key text, nest_date date, nest_time time with time zone, nest_day_offset integer, production_hours integer, cutoff_time time with time zone, sequence integer, internal_status_code text, nest_status text, is_rework boolean, product_amount integer, sqm numeric, piece_code text, class_name jsonb)
+create function job.get_components_inflow(p_from date, p_line_type text, p_domain_id integer, p_look_ahead_days integer DEFAULT 10, p_threshold integer DEFAULT 1) returns TABLE(production_line_id integer, line text, material_ids integer[], material_name text, order_id integer, production_orderline_id integer, ship_separately boolean, group_key text, nest_date date, nest_time time with time zone, nest_day_offset integer, production_hours integer, cutoff_time time with time zone, sequence integer, internal_status_code text, nest_status text, is_rework boolean, product_amount integer, sqm numeric, piece_code text, class_name jsonb)
 	stable
 	language plpgsql
 as $$
@@ -159,5 +159,5 @@ BEGIN
 END;
 $$;
 
-alter function get_components_inflow(date, text, integer, integer, integer) owner to xfw3;
+alter function job.get_components_inflow(date, text, integer, integer, integer) owner to xfw3;
 

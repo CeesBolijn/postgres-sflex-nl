@@ -1,4 +1,4 @@
-create function crud_state_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, state_log_id bigint, resource_uid text, state text, reason text, start_at timestamp with time zone, detail jsonb, source text, source_ref text, source_ts timestamp with time zone)
+create function log.crud_state_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, state_log_id bigint, resource_uid text, state text, reason text, start_at timestamp with time zone, detail jsonb, source text, source_ref text, source_ts timestamp with time zone)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -121,5 +121,5 @@ begin
 end;
 $$;
 
-alter function crud_state_log(jsonb, boolean) owner to xfw3;
+alter function log.crud_state_log(jsonb, boolean) owner to xfw3;
 

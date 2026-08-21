@@ -1,4 +1,4 @@
-create function get_resource_queue(p_resource_uids text[] DEFAULT NULL::text[], p_from timestamp with time zone DEFAULT NULL::timestamp with time zone, p_until timestamp with time zone DEFAULT NULL::timestamp with time zone) returns TABLE(nest_name text, amount integer, width numeric, height numeric, state jsonb, nested_date timestamp with time zone)
+create function legacy.get_resource_queue(p_resource_uids text[] DEFAULT NULL::text[], p_from timestamp with time zone DEFAULT NULL::timestamp with time zone, p_until timestamp with time zone DEFAULT NULL::timestamp with time zone) returns TABLE(nest_name text, amount integer, width numeric, height numeric, state jsonb, nested_date timestamp with time zone)
 	stable
 	language plpgsql
 as $$
@@ -40,5 +40,5 @@ BEGIN
 END;
 $$;
 
-alter function get_resource_queue(text[], timestamp with time zone, timestamp with time zone) owner to xfw3;
+alter function legacy.get_resource_queue(text[], timestamp with time zone, timestamp with time zone) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function crud_production_forecast(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text)
+create function mapping.crud_production_forecast(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text)
 	language plpgsql
 as $$
 BEGIN
@@ -61,5 +61,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_production_forecast(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_production_forecast(jsonb, boolean) owner to xfw3;
 

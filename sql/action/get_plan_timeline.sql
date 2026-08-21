@@ -1,4 +1,4 @@
-create function get_plan_timeline(p_line_type text DEFAULT NULL::text, p_from timestamp with time zone DEFAULT NULL::timestamp with time zone, p_until timestamp with time zone DEFAULT now()) returns TABLE(action_id integer, line text, resource_uids text[], state jsonb, group_state jsonb, layout_name text, type text, name text, nest_name text, job_name text, page_number integer, batch_id integer, batch_name text, data jsonb, start_at timestamp with time zone, offset_in_seconds integer, next_trigger_type text, just_in_time boolean, param_json jsonb, formula jsonb, resource_plan_rank numeric, is_fixed_offset boolean, is_atomic boolean, parent_action_id integer, material_id integer, step text)
+create function action.get_plan_timeline(p_line_type text DEFAULT NULL::text, p_from timestamp with time zone DEFAULT NULL::timestamp with time zone, p_until timestamp with time zone DEFAULT now()) returns TABLE(action_id integer, line text, resource_uids text[], state jsonb, group_state jsonb, layout_name text, type text, name text, nest_name text, job_name text, page_number integer, batch_id integer, batch_name text, data jsonb, start_at timestamp with time zone, offset_in_seconds integer, next_trigger_type text, just_in_time boolean, param_json jsonb, formula jsonb, resource_plan_rank numeric, is_fixed_offset boolean, is_atomic boolean, parent_action_id integer, material_id integer, step text)
 	stable
 	language plpgsql
 as $$
@@ -207,5 +207,5 @@ BEGIN
 END;
 $$;
 
-alter function get_plan_timeline(text, timestamp with time zone, timestamp with time zone) owner to xfw3;
+alter function action.get_plan_timeline(text, timestamp with time zone, timestamp with time zone) owner to xfw3;
 

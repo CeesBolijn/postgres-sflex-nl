@@ -1,4 +1,4 @@
-create function spec_unit_status_update_batch(p_nest_id bigint, p_current_status_sequence integer, p_new_status_sequence integer, p_updates jsonb DEFAULT NULL::jsonb, p_resource_uids text[] DEFAULT NULL::text[]) returns void
+create function job.spec_unit_status_update_batch(p_nest_id bigint, p_current_status_sequence integer, p_new_status_sequence integer, p_updates jsonb DEFAULT NULL::jsonb, p_resource_uids text[] DEFAULT NULL::text[]) returns void
 	language plpgsql
 as $$
 DECLARE
@@ -31,5 +31,5 @@ BEGIN
 END;
 $$;
 
-alter function spec_unit_status_update_batch(bigint, integer, integer, jsonb, text[]) owner to xfw3;
+alter function job.spec_unit_status_update_batch(bigint, integer, integer, jsonb, text[]) owner to xfw3;
 

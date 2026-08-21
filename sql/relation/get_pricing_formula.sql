@@ -1,4 +1,4 @@
-create function get_pricing_formula(p_item_code character varying) returns jsonb
+create function relation.get_pricing_formula(p_item_code character varying) returns jsonb
 	language plpgsql
 as $$
 DECLARE
@@ -20,5 +20,5 @@ BEGIN
 END;
 $$;
 
-alter function get_pricing_formula(varchar) owner to xfw3;
+alter function relation.get_pricing_formula(varchar) owner to xfw3;
 

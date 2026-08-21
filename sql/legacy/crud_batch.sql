@@ -1,4 +1,4 @@
-create function crud_batch(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, batch_id bigint, batch_counter integer, batch_at timestamp with time zone, batch_name text, x_bom text, width numeric, height numeric, batch_json jsonb, status jsonb, year_week_day_timeslot_index integer)
+create function legacy.crud_batch(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, batch_id bigint, batch_counter integer, batch_at timestamp with time zone, batch_name text, x_bom text, width numeric, height numeric, batch_json jsonb, status jsonb, year_week_day_timeslot_index integer)
 	language plpgsql
 as $$
     #variable_conflict use_column
@@ -135,5 +135,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_batch(jsonb, boolean) owner to xfw3;
+alter function legacy.crud_batch(jsonb, boolean) owner to xfw3;
 

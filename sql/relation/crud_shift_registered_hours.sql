@@ -1,4 +1,4 @@
-create function crud_shift_registered_hours(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(o_param_id integer, o_track_by integer, o_crud text, o_content_id text, o_log_type text, o_resource_uid text, o_shift_type text, o_start_at timestamp with time zone, o_end_at timestamp with time zone, o_resource_data_json jsonb, o_original_json jsonb)
+create function relation.crud_shift_registered_hours(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(o_param_id integer, o_track_by integer, o_crud text, o_content_id text, o_log_type text, o_resource_uid text, o_shift_type text, o_start_at timestamp with time zone, o_end_at timestamp with time zone, o_resource_data_json jsonb, o_original_json jsonb)
 	language plpgsql
 as $$
   DECLARE
@@ -92,5 +92,5 @@ as $$
   END;
   $$;
 
-alter function crud_shift_registered_hours(jsonb, boolean) owner to xfw3;
+alter function relation.crud_shift_registered_hours(jsonb, boolean) owner to xfw3;
 

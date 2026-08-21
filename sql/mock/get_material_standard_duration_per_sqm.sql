@@ -1,4 +1,4 @@
-create function get_material_standard_duration_per_sqm(p_material_id integer) returns numeric
+create function mock.get_material_standard_duration_per_sqm(p_material_id integer) returns numeric
 	stable
 	language plpgsql
 as $$
@@ -28,5 +28,5 @@ BEGIN
 END;
 $$;
 
-alter function get_material_standard_duration_per_sqm(integer) owner to xfw3;
+alter function mock.get_material_standard_duration_per_sqm(integer) owner to xfw3;
 

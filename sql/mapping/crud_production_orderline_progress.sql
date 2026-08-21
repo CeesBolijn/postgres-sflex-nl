@@ -1,4 +1,4 @@
-create function crud_production_orderline_progress(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, production_orderline_id integer, status_path integer[], status_times integer[], part_statuses integer[], part_amount integer[], operation_progress_status_sequences integer[], operation_progress_remaining_amounts integer[], updated_at timestamp with time zone)
+create function mapping.crud_production_orderline_progress(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, production_orderline_id integer, status_path integer[], status_times integer[], part_statuses integer[], part_amount integer[], operation_progress_status_sequences integer[], operation_progress_remaining_amounts integer[], updated_at timestamp with time zone)
 	language plpgsql
 as $$
 DECLARE
@@ -94,5 +94,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_production_orderline_progress(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_production_orderline_progress(jsonb, boolean) owner to xfw3;
 

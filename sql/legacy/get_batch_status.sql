@@ -1,4 +1,4 @@
-create function get_batch_status(p_batch_id integer) returns jsonb
+create function legacy.get_batch_status(p_batch_id integer) returns jsonb
 	language sql
 as $$
     -- current amount per status summed across the batch's nests,
@@ -36,5 +36,5 @@ as $$
     WHERE b.current_amount > 0;
 $$;
 
-alter function get_batch_status(integer) owner to xfw3;
+alter function legacy.get_batch_status(integer) owner to xfw3;
 

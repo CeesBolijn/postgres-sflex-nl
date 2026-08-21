@@ -1,4 +1,4 @@
-create function get_interval_dates(p_reference_date date, p_current_date date, p_interval integer, p_look_ahead_days integer, p_include_weekends boolean DEFAULT false, p_include_mandatory_days_off boolean DEFAULT true, p_day_offset integer DEFAULT 0) returns TABLE(interval_date date)
+create function action.get_interval_dates(p_reference_date date, p_current_date date, p_interval integer, p_look_ahead_days integer, p_include_weekends boolean DEFAULT false, p_include_mandatory_days_off boolean DEFAULT true, p_day_offset integer DEFAULT 0) returns TABLE(interval_date date)
 	stable
 	language sql
 as $$
@@ -27,5 +27,5 @@ as $$
     ORDER BY s.date;
 $$;
 
-alter function get_interval_dates(date, date, integer, integer, boolean, boolean, integer) owner to xfw3;
+alter function action.get_interval_dates(date, date, integer, integer, boolean, boolean, integer) owner to xfw3;
 

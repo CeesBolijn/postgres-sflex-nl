@@ -1,4 +1,4 @@
-create function get_batch(p_batch_id integer) returns TABLE(batch_at timestamp with time zone, batch_id integer, nest_id integer, nest_name text, amount integer, nest_width integer, nest_height integer, batch_name text, source text, width numeric, height numeric, original_amount integer, filename text, production_orderline_id integer, sales_orderline_id integer, production_order_id integer, order_id integer, number text, sequence integer, sqm numeric, internal_status_code text, production_order_status text, production_company_id integer, production_date date, order_date date, production_location text, order_location text)
+create function legacy.get_batch(p_batch_id integer) returns TABLE(batch_at timestamp with time zone, batch_id integer, nest_id integer, nest_name text, amount integer, nest_width integer, nest_height integer, batch_name text, source text, width numeric, height numeric, original_amount integer, filename text, production_orderline_id integer, sales_orderline_id integer, production_order_id integer, order_id integer, number text, sequence integer, sqm numeric, internal_status_code text, production_order_status text, production_company_id integer, production_date date, order_date date, production_location text, order_location text)
 	stable
 	language sql
 as $$
@@ -40,5 +40,5 @@ as $$
     WHERE b.batch_id = p_batch_id;
 $$;
 
-alter function get_batch(integer) owner to xfw3;
+alter function legacy.get_batch(integer) owner to xfw3;
 

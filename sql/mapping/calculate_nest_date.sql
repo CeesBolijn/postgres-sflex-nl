@@ -1,4 +1,4 @@
-create function calculate_nest_date(p_order_date date, p_production_hours integer) returns timestamp with time zone
+create function mapping.calculate_nest_date(p_order_date date, p_production_hours integer) returns timestamp with time zone
 	stable
 	parallel safe
 	language sql
@@ -34,5 +34,5 @@ as $$
     LIMIT 1;
 $$;
 
-alter function calculate_nest_date(date, integer) owner to xfw3;
+alter function mapping.calculate_nest_date(date, integer) owner to xfw3;
 

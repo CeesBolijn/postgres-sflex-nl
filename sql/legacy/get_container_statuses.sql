@@ -1,4 +1,4 @@
-create function get_container_statuses(p_container_id integer DEFAULT NULL::integer) returns TABLE(lijnen jsonb)
+create function legacy.get_container_statuses(p_container_id integer DEFAULT NULL::integer) returns TABLE(lijnen jsonb)
 	language plpgsql
 as $$
 BEGIN
@@ -34,5 +34,5 @@ BEGIN
 END;
 $$;
 
-alter function get_container_statuses(integer) owner to xfw3;
+alter function legacy.get_container_statuses(integer) owner to xfw3;
 

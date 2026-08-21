@@ -1,4 +1,4 @@
-create function get_numbers(p_numbers integer[]) returns TABLE(number integer)
+create function site.get_numbers(p_numbers integer[]) returns TABLE(number integer)
 	language plpgsql
 as $$
 BEGIN
@@ -6,5 +6,5 @@ BEGIN
 END;
 $$;
 
-alter function get_numbers(integer[]) owner to xfw3;
+alter function site.get_numbers(integer[]) owner to xfw3;
 

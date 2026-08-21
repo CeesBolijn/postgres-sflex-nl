@@ -1,4 +1,4 @@
-create function get_nest_status_by_bucket(p_bucket_name text, p_from date) returns TABLE(bucket_name text, batch_id integer, nest_id integer, nest_name text, waste_percentage numeric, nest_status_json jsonb)
+create function legacy.get_nest_status_by_bucket(p_bucket_name text, p_from date) returns TABLE(bucket_name text, batch_id integer, nest_id integer, nest_name text, waste_percentage numeric, nest_status_json jsonb)
 	stable
 	language sql
 as $$
@@ -55,5 +55,5 @@ as $$
     ORDER BY n.nest_id;
 $$;
 
-alter function get_nest_status_by_bucket(text, date) owner to xfw3;
+alter function legacy.get_nest_status_by_bucket(text, date) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function crud_hr_shift_planning_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, shift_planning_id integer, department_group_id integer, business_date date, shift_json jsonb, updated_at timestamp with time zone)
+create function log.crud_hr_shift_planning_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, shift_planning_id integer, department_group_id integer, business_date date, shift_json jsonb, updated_at timestamp with time zone)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -41,5 +41,5 @@ begin
 end;
 $$;
 
-alter function crud_hr_shift_planning_log(jsonb, boolean) owner to xfw3;
+alter function log.crud_hr_shift_planning_log(jsonb, boolean) owner to xfw3;
 

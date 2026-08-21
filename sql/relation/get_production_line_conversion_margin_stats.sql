@@ -1,4 +1,4 @@
-create function get_production_line_conversion_margin_stats() returns TABLE(x_value integer, y1 integer, y2 integer, y3 integer)
+create function relation.get_production_line_conversion_margin_stats() returns TABLE(x_value integer, y1 integer, y2 integer, y3 integer)
 	language plpgsql
 as $$
 BEGIN
@@ -24,5 +24,5 @@ BEGIN
 END;
 $$;
 
-alter function get_production_line_conversion_margin_stats() owner to xfw3;
+alter function relation.get_production_line_conversion_margin_stats() owner to xfw3;
 

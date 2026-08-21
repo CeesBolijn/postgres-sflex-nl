@@ -1,4 +1,4 @@
-create function get_unit_manifest_aggregate(p_production_orderline_ids integer[], p_scope text DEFAULT NULL::text) returns TABLE(production_orderline_id integer, scope text, option_codes text[], i18n jsonb)
+create function mapping.get_unit_manifest_aggregate(p_production_orderline_ids integer[], p_scope text DEFAULT NULL::text) returns TABLE(production_orderline_id integer, scope text, option_codes text[], i18n jsonb)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -24,5 +24,5 @@ BEGIN
 END;
 $$;
 
-alter function get_unit_manifest_aggregate(integer[], text) owner to xfw3;
+alter function mapping.get_unit_manifest_aggregate(integer[], text) owner to xfw3;
 

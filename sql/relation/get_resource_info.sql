@@ -1,4 +1,4 @@
-create function get_resource_info(p_resource_id integer) returns TABLE(type text, serial text, resource_id integer, brand text, location text)
+create function relation.get_resource_info(p_resource_id integer) returns TABLE(type text, serial text, resource_id integer, brand text, location text)
 	stable
 	language plpgsql
 as $$
@@ -15,5 +15,5 @@ BEGIN
 END;
 $$;
 
-alter function get_resource_info(integer) owner to xfw3;
+alter function relation.get_resource_info(integer) owner to xfw3;
 

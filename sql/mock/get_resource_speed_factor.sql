@@ -1,4 +1,4 @@
-create function get_resource_speed_factor(p_material_id integer, p_resource_uid text) returns numeric
+create function mock.get_resource_speed_factor(p_material_id integer, p_resource_uid text) returns numeric
 	stable
 	language plpgsql
 as $$
@@ -20,5 +20,5 @@ BEGIN
 END;
 $$;
 
-alter function get_resource_speed_factor(integer, text) owner to xfw3;
+alter function mock.get_resource_speed_factor(integer, text) owner to xfw3;
 

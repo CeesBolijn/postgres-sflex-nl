@@ -1,4 +1,4 @@
-create function get_production_line_model() returns TABLE(glb_url text)
+create function relation.get_production_line_model() returns TABLE(glb_url text)
 	stable
 	language plpgsql
 as $$
@@ -9,5 +9,5 @@ BEGIN
 END;
 $$;
 
-alter function get_production_line_model() owner to xfw3;
+alter function relation.get_production_line_model() owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_equipment() returns TABLE(equipment_id integer)
+create function relation.get_equipment() returns TABLE(equipment_id integer)
 	language plpgsql
 as $$
 BEGIN
@@ -9,5 +9,5 @@ BEGIN
 END;
 $$;
 
-alter function get_equipment() owner to xfw3;
+alter function relation.get_equipment() owner to xfw3;
 

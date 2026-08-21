@@ -1,4 +1,4 @@
-create function noop_function() returns TABLE(dummy integer)
+create function site.noop_function() returns TABLE(dummy integer)
 	language plpgsql
 as $$
 BEGIN
@@ -6,5 +6,5 @@ BEGIN
 END;
 $$;
 
-alter function noop_function() owner to xfw3;
+alter function site.noop_function() owner to xfw3;
 

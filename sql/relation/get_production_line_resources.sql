@@ -1,4 +1,4 @@
-create function get_production_line_resources() returns TABLE(resource_id integer, color text)
+create function relation.get_production_line_resources() returns TABLE(resource_id integer, color text)
 	language plpgsql
 as $$
 BEGIN
@@ -12,5 +12,5 @@ BEGIN
 END;
 $$;
 
-alter function get_production_line_resources() owner to xfw3;
+alter function relation.get_production_line_resources() owner to xfw3;
 

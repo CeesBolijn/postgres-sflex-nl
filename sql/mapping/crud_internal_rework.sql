@@ -1,4 +1,4 @@
-create function crud_internal_rework(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, rework_id bigint, domain_id integer, order_id integer, order_log_id integer, object_type text, object_id integer, object_sequence integer, object_reference text, object_amount integer, production_unit_id integer, production_line_id integer, internal_status_code text, side text, rework_incident_date timestamp with time zone, created_at timestamp with time zone, updated_at timestamp with time zone, deleted_at timestamp with time zone, production_orderline_id integer)
+create function mapping.crud_internal_rework(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, rework_id bigint, domain_id integer, order_id integer, order_log_id integer, object_type text, object_id integer, object_sequence integer, object_reference text, object_amount integer, production_unit_id integer, production_line_id integer, internal_status_code text, side text, rework_incident_date timestamp with time zone, created_at timestamp with time zone, updated_at timestamp with time zone, deleted_at timestamp with time zone, production_orderline_id integer)
 	language plpgsql
 as $$
 DECLARE
@@ -95,5 +95,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_internal_rework(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_internal_rework(jsonb, boolean) owner to xfw3;
 

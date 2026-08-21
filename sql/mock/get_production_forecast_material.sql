@@ -1,4 +1,4 @@
-create function get_production_forecast_material(p_from timestamp with time zone, p_days integer, p_line_type text) returns TABLE(date date, production_line_id integer, production_company_id integer, material_id integer, material_name text, budget_sqm numeric, actual_sqm numeric, forecast_sqm numeric, param_json jsonb)
+create function mock.get_production_forecast_material(p_from timestamp with time zone, p_days integer, p_line_type text) returns TABLE(date date, production_line_id integer, production_company_id integer, material_id integer, material_name text, budget_sqm numeric, actual_sqm numeric, forecast_sqm numeric, param_json jsonb)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -45,5 +45,5 @@ BEGIN
 END;
 $$;
 
-alter function get_production_forecast_material(unknown, unknown, unknown) owner to xfw3;
+alter function mock.get_production_forecast_material(unknown, unknown, unknown) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_resource_state_shift_totals(p_resource_uids text[] DEFAULT NULL::text[], p_until timestamp with time zone DEFAULT CURRENT_TIMESTAMP, p_days integer DEFAULT 42, p_line_type text DEFAULT NULL::text, p_states text[] DEFAULT NULL::text[], p_include_weekends boolean DEFAULT false, p_include_mandatory_days_off boolean DEFAULT false, p_include_shifts boolean DEFAULT true, p_group_by text DEFAULT NULL::text) returns TABLE(shift_date date, shift_index integer, shift_start timestamp with time zone, shift_end timestamp with time zone, resource_uid text, resource_name text, resource_uids jsonb, line text, step text, state text, state_json jsonb, duration_seconds numeric, total_duration_seconds numeric, duration_percent numeric, parent_percent numeric, count_resources integer, sort_order integer)
+create function log.get_resource_state_shift_totals(p_resource_uids text[] DEFAULT NULL::text[], p_until timestamp with time zone DEFAULT CURRENT_TIMESTAMP, p_days integer DEFAULT 42, p_line_type text DEFAULT NULL::text, p_states text[] DEFAULT NULL::text[], p_include_weekends boolean DEFAULT false, p_include_mandatory_days_off boolean DEFAULT false, p_include_shifts boolean DEFAULT true, p_group_by text DEFAULT NULL::text) returns TABLE(shift_date date, shift_index integer, shift_start timestamp with time zone, shift_end timestamp with time zone, resource_uid text, resource_name text, resource_uids jsonb, line text, step text, state text, state_json jsonb, duration_seconds numeric, total_duration_seconds numeric, duration_percent numeric, parent_percent numeric, count_resources integer, sort_order integer)
 	stable
 	parallel safe
 	language plpgsql
@@ -220,5 +220,5 @@ begin
 end;
 $$;
 
-alter function get_resource_state_shift_totals(text[], timestamp with time zone, integer, text, text[], boolean, boolean, boolean, text) owner to xfw3;
+alter function log.get_resource_state_shift_totals(text[], timestamp with time zone, integer, text, text[], boolean, boolean, boolean, text) owner to xfw3;
 

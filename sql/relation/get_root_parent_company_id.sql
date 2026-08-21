@@ -1,4 +1,4 @@
-create function get_root_parent_company_id(p_company_id integer, p_domain_id integer) returns integer
+create function relation.get_root_parent_company_id(p_company_id integer, p_domain_id integer) returns integer
 	language sql
 as $$
     SELECT company_id
@@ -8,5 +8,5 @@ as $$
     LIMIT 1;
 $$;
 
-alter function get_root_parent_company_id(integer, integer) owner to xfw3;
+alter function relation.get_root_parent_company_id(integer, integer) owner to xfw3;
 

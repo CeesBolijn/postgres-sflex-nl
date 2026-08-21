@@ -1,4 +1,4 @@
-create function crud_spec_event(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, spec_id bigint, spec_event_id bigint)
+create function log.crud_spec_event(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, spec_id bigint, spec_event_id bigint)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -97,4 +97,4 @@ begin
 end;
 $$;
 
-alter function crud_spec_event(jsonb, boolean) owner to xfw3;
+alter function log.crud_spec_event(jsonb, boolean) owner to xfw3;

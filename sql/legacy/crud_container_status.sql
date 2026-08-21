@@ -1,4 +1,4 @@
-create function crud_container_status(p_param_json jsonb DEFAULT '[]'::jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud character varying, container_id integer, new_state boolean)
+create function legacy.crud_container_status(p_param_json jsonb DEFAULT '[]'::jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud character varying, container_id integer, new_state boolean)
 	language plpgsql
 as $$
 DECLARE
@@ -60,5 +60,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_container_status(jsonb, boolean) owner to xfw3;
+alter function legacy.crud_container_status(jsonb, boolean) owner to xfw3;
 

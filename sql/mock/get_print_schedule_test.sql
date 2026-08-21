@@ -1,4 +1,4 @@
-create function get_print_schedule_test(p_until timestamp with time zone DEFAULT now(), p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_only_starting_today boolean DEFAULT false) returns TABLE(material_id integer, tenant_id integer, production_line_id integer, date date, start_offset_in_seconds integer, duration_in_seconds integer, class_names text[], actual_sqm numeric, forecast_sqm numeric, param_json jsonb)
+create function mock.get_print_schedule_test(p_until timestamp with time zone DEFAULT now(), p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_only_starting_today boolean DEFAULT false) returns TABLE(material_id integer, tenant_id integer, production_line_id integer, date date, start_offset_in_seconds integer, duration_in_seconds integer, class_names text[], actual_sqm numeric, forecast_sqm numeric, param_json jsonb)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -230,5 +230,5 @@ BEGIN
 END;
 $$;
 
-alter function get_print_schedule_test(unknown, unknown, unknown, unknown) owner to xfw3;
+alter function mock.get_print_schedule_test(unknown, unknown, unknown, unknown) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_production_lines() returns TABLE(models_json jsonb)
+create function relation.get_production_lines() returns TABLE(models_json jsonb)
 	stable
 	language plpgsql
 as $$
@@ -32,5 +32,5 @@ BEGIN
 END;
 $$;
 
-alter function get_production_lines() owner to xfw3;
+alter function relation.get_production_lines() owner to xfw3;
 

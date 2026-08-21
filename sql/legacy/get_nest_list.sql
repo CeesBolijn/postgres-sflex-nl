@@ -1,4 +1,4 @@
-create function get_nest_list(p_production_line_id integer DEFAULT NULL::integer, p_resource_uids text[] DEFAULT NULL::text[], p_internal_status text[] DEFAULT ARRAY['printed'::text], p_require_thumbnail boolean DEFAULT true) returns TABLE(nest_name text, nest_id bigint, nested_at timestamp with time zone, printed_at timestamp with time zone, nest_json jsonb, sqm numeric, material_name text)
+create function legacy.get_nest_list(p_production_line_id integer DEFAULT NULL::integer, p_resource_uids text[] DEFAULT NULL::text[], p_internal_status text[] DEFAULT ARRAY['printed'::text], p_require_thumbnail boolean DEFAULT true) returns TABLE(nest_name text, nest_id bigint, nested_at timestamp with time zone, printed_at timestamp with time zone, nest_json jsonb, sqm numeric, material_name text)
 	stable
 	language sql
 as $$
@@ -34,5 +34,5 @@ as $$
     ORDER BY n.nest_name, n.nested_at DESC NULLS LAST;
 $$;
 
-alter function get_nest_list(integer, text[], text[], boolean) owner to xfw3;
+alter function legacy.get_nest_list(integer, text[], text[], boolean) owner to xfw3;
 

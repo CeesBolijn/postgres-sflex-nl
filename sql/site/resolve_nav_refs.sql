@@ -1,4 +1,4 @@
-create function resolve_nav_refs(p_node jsonb) returns jsonb
+create function site.resolve_nav_refs(p_node jsonb) returns jsonb
 	stable
 	language plpgsql
 as $$
@@ -47,5 +47,5 @@ BEGIN
 END;
 $$;
 
-alter function resolve_nav_refs(jsonb) owner to xfw3;
+alter function site.resolve_nav_refs(jsonb) owner to xfw3;
 

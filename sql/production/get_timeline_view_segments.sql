@@ -1,4 +1,4 @@
-create function get_timeline_view_segments(p_code text, p_until timestamp with time zone DEFAULT now(), p_look_back integer DEFAULT 0, p_look_ahead integer DEFAULT 0) returns TABLE(code text, i18n jsonb, class_names jsonb, "time" time with time zone, duration_in_seconds integer, segment_size_in_seconds integer, start_offset_in_seconds integer, end_offset_in_seconds integer, sort_order integer, is_current boolean, date date, start_at timestamp with time zone, end_at timestamp with time zone)
+create function production.get_timeline_view_segments(p_code text, p_until timestamp with time zone DEFAULT now(), p_look_back integer DEFAULT 0, p_look_ahead integer DEFAULT 0) returns TABLE(code text, i18n jsonb, class_names jsonb, "time" time with time zone, duration_in_seconds integer, segment_size_in_seconds integer, start_offset_in_seconds integer, end_offset_in_seconds integer, sort_order integer, is_current boolean, date date, start_at timestamp with time zone, end_at timestamp with time zone)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -117,5 +117,5 @@ BEGIN
 END;
 $$;
 
-alter function get_timeline_view_segments(text, timestamp with time zone, integer, integer) owner to xfw3;
+alter function production.get_timeline_view_segments(text, timestamp with time zone, integer, integer) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_search_nav() returns TABLE(search_navs jsonb)
+create function site.get_search_nav() returns TABLE(search_navs jsonb)
 	language plpgsql
 as $$
 BEGIN
@@ -7,5 +7,5 @@ BEGIN
 END;
 $$;
 
-alter function get_search_nav() owner to xfw3;
+alter function site.get_search_nav() owner to xfw3;
 

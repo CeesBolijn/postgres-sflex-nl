@@ -1,4 +1,4 @@
-create function get_print_duration_according_to_specs(p_resource_uid text, p_nest_name text) returns numeric
+create function legacy.get_print_duration_according_to_specs(p_resource_uid text, p_nest_name text) returns numeric
 	stable
 	parallel safe
 	language sql
@@ -60,5 +60,5 @@ as $$
   limit 1;
 $$;
 
-alter function get_print_duration_according_to_specs(text, text) owner to xfw3;
+alter function legacy.get_print_duration_according_to_specs(text, text) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_material_line_specs(p_material_id integer) returns TABLE(width numeric, height numeric, sides integer)
+create function mock.get_material_line_specs(p_material_id integer) returns TABLE(width numeric, height numeric, sides integer)
 	stable
 	language plpgsql
 as $$
@@ -16,5 +16,5 @@ BEGIN
 END;
 $$;
 
-alter function get_material_line_specs(integer) owner to xfw3;
+alter function mock.get_material_line_specs(integer) owner to xfw3;
 

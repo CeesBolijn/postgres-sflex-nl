@@ -1,4 +1,4 @@
-create function get_resource_tickets(p_resource_uids text[] DEFAULT NULL::text[]) returns TABLE(action_id integer, content jsonb, start_at timestamp with time zone)
+create function action.get_resource_tickets(p_resource_uids text[] DEFAULT NULL::text[]) returns TABLE(action_id integer, content jsonb, start_at timestamp with time zone)
 	stable
 	language sql
 as $$
@@ -15,5 +15,5 @@ as $$
     ORDER BY o.start_at DESC;
 $$;
 
-alter function get_resource_tickets(text[]) owner to xfw3;
+alter function action.get_resource_tickets(text[]) owner to xfw3;
 

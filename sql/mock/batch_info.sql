@@ -1,4 +1,4 @@
-create function batch_info(p_batch_id integer) returns jsonb
+create function mock.batch_info(p_batch_id integer) returns jsonb
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -57,5 +57,5 @@ BEGIN
 END;
 $$;
 
-alter function batch_info(integer) owner to xfw3;
+alter function mock.batch_info(integer) owner to xfw3;
 

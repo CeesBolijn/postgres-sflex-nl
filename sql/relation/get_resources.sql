@@ -1,4 +1,4 @@
-create function get_resources(p_line_type text) returns TABLE(resource_uid text, resource_name text)
+create function relation.get_resources(p_line_type text) returns TABLE(resource_uid text, resource_name text)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -15,5 +15,5 @@ BEGIN
 END;
 $$;
 
-alter function get_resources(text) owner to xfw3;
+alter function relation.get_resources(text) owner to xfw3;
 

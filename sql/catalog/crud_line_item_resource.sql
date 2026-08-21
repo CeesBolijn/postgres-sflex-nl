@@ -1,4 +1,4 @@
-create function crud_line_item_resource(p_param_json jsonb, p_no_results boolean DEFAULT false) returns jsonb
+create function catalog.crud_line_item_resource(p_param_json jsonb, p_no_results boolean DEFAULT false) returns jsonb
 	language plpgsql
 as $$
 -- ============================================================
@@ -91,5 +91,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_line_item_resource(jsonb, boolean) owner to xfw3;
+alter function catalog.crud_line_item_resource(jsonb, boolean) owner to xfw3;
 

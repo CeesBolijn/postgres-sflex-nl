@@ -1,4 +1,4 @@
-create function get_resource_shift_employees(p_model text, p_until timestamp with time zone) returns TABLE(shift_planning_id integer, shift_type text, content jsonb, department_group_id integer, start_at timestamp with time zone, group_name text, employee_id integer, personnel_number text, first_name text, infix text, last_name text, contract_type text)
+create function legacy.get_resource_shift_employees(p_model text, p_until timestamp with time zone) returns TABLE(shift_planning_id integer, shift_type text, content jsonb, department_group_id integer, start_at timestamp with time zone, group_name text, employee_id integer, personnel_number text, first_name text, infix text, last_name text, contract_type text)
 	stable
 	language sql
 as $$
@@ -56,5 +56,5 @@ LEFT JOIN shift_lookup sl ON sl.code = hd.shift
 ORDER BY p.department_group_id, group_name, last_name, first_name;
 $$;
 
-alter function get_resource_shift_employees(text, timestamp with time zone) owner to xfw3;
+alter function legacy.get_resource_shift_employees(text, timestamp with time zone) owner to xfw3;
 

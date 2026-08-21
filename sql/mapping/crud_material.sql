@@ -1,4 +1,4 @@
-create function crud_material(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, material_id integer, material_name text)
+create function mapping.crud_material(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, material_id integer, material_name text)
 	language plpgsql
 as $$
 DECLARE
@@ -75,5 +75,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_material(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_material(jsonb, boolean) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_panel_production_impact(p_material_id integer, p_from date, p_until date, p_speed_m_second numeric, p_velocity_m_s2 numeric, p_waste_perc numeric DEFAULT 0.22) returns jsonb
+create function mock.get_panel_production_impact(p_material_id integer, p_from date, p_until date, p_speed_m_second numeric, p_velocity_m_s2 numeric, p_waste_perc numeric DEFAULT 0.22) returns jsonb
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -64,5 +64,5 @@ BEGIN
 END;
 $$;
 
-alter function get_panel_production_impact(integer, date, date, numeric, numeric, numeric) owner to xfw3;
+alter function mock.get_panel_production_impact(integer, date, date, numeric, numeric, numeric) owner to xfw3;
 

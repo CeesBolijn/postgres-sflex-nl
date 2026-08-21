@@ -1,4 +1,4 @@
-create function crud_data_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, data_log_id bigint, resource_uid text, filename text, nest_id integer, spec_id integer, amount numeric, sub_set text, start_at timestamp with time zone, end_at timestamp with time zone, metrics_json jsonb, source text, source_ref text, source_ts timestamp with time zone, nest_name text, production_time_seconds integer, page_number integer, data_json jsonb)
+create function log.crud_data_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, data_log_id bigint, resource_uid text, filename text, nest_id integer, spec_id integer, amount numeric, sub_set text, start_at timestamp with time zone, end_at timestamp with time zone, metrics_json jsonb, source text, source_ref text, source_ts timestamp with time zone, nest_name text, production_time_seconds integer, page_number integer, data_json jsonb)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -83,5 +83,5 @@ begin
 end;
 $$;
 
-alter function crud_data_log(jsonb, boolean) owner to xfw3;
+alter function log.crud_data_log(jsonb, boolean) owner to xfw3;
 

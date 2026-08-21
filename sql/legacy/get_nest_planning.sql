@@ -1,4 +1,4 @@
-create function get_nest_planning(p_from timestamp with time zone DEFAULT NULL::timestamp with time zone, p_line_type text DEFAULT NULL::text) returns TABLE(bucket_name text, production_line_id integer, resource_uid text, resource_name text, batch_id integer, material_id integer, name text, waste_percentage numeric, amount numeric, start_at timestamp with time zone, duration_seconds integer, interval_date date, class_names text[], batch_status_json jsonb)
+create function legacy.get_nest_planning(p_from timestamp with time zone DEFAULT NULL::timestamp with time zone, p_line_type text DEFAULT NULL::text) returns TABLE(bucket_name text, production_line_id integer, resource_uid text, resource_name text, batch_id integer, material_id integer, name text, waste_percentage numeric, amount numeric, start_at timestamp with time zone, duration_seconds integer, interval_date date, class_names text[], batch_status_json jsonb)
 	stable
 	language sql
 as $$
@@ -219,5 +219,5 @@ as $$
     ORDER BY bn.production_line_id, bn.resource_uid, bn.bucket_name, bn.batch_id;
 $$;
 
-alter function get_nest_planning(timestamp with time zone, text) owner to xfw3;
+alter function legacy.get_nest_planning(timestamp with time zone, text) owner to xfw3;
 

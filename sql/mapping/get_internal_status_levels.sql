@@ -1,4 +1,4 @@
-create function get_internal_status_levels() returns TABLE(level text)
+create function mapping.get_internal_status_levels() returns TABLE(level text)
 	stable
 	language sql
 as $$
@@ -8,5 +8,5 @@ as $$
     ORDER BY min(sequence);
 $$;
 
-alter function get_internal_status_levels() owner to xfw3;
+alter function mapping.get_internal_status_levels() owner to xfw3;
 

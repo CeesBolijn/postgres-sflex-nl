@@ -1,4 +1,4 @@
-create function get_page_navs(p_page_id integer, p_user_company_id integer) returns jsonb
+create function site.get_page_navs(p_page_id integer, p_user_company_id integer) returns jsonb
 	language plpgsql
 as $$
 DECLARE
@@ -59,5 +59,5 @@ BEGIN
 END;
 $$;
 
-alter function get_page_navs(integer, integer) owner to xfw3;
+alter function site.get_page_navs(integer, integer) owner to xfw3;
 

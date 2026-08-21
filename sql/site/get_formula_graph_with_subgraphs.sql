@@ -1,4 +1,4 @@
-create function get_formula_graph_with_subgraphs(p_graph_id integer) returns TABLE(formula_graph_id integer, formula_graph_name text, formula_graph_json jsonb)
+create function site.get_formula_graph_with_subgraphs(p_graph_id integer) returns TABLE(formula_graph_id integer, formula_graph_name text, formula_graph_json jsonb)
 	language plpgsql
 as $$
 BEGIN
@@ -12,5 +12,5 @@ BEGIN
 END;
 $$;
 
-alter function get_formula_graph_with_subgraphs(integer) owner to xfw3;
+alter function site.get_formula_graph_with_subgraphs(integer) owner to xfw3;
 

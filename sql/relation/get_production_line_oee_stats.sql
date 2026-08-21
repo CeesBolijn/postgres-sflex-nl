@@ -1,4 +1,4 @@
-create function get_production_line_oee_stats() returns TABLE(key text, x_value integer, y_value integer)
+create function relation.get_production_line_oee_stats() returns TABLE(key text, x_value integer, y_value integer)
 	language plpgsql
 as $$
 BEGIN
@@ -22,5 +22,5 @@ BEGIN
 END;
 $$;
 
-alter function get_production_line_oee_stats() owner to xfw3;
+alter function relation.get_production_line_oee_stats() owner to xfw3;
 

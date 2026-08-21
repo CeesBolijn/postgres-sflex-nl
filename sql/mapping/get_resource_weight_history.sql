@@ -1,4 +1,4 @@
-create function get_resource_weight_history(p_resource_uids text[], p_until timestamp with time zone DEFAULT CURRENT_DATE, p_days integer DEFAULT 10) returns TABLE(batch_date date, resource_uid text, resource_name text, material_id integer, material_name text, amount bigint, weight numeric, sizes jsonb)
+create function mapping.get_resource_weight_history(p_resource_uids text[], p_until timestamp with time zone DEFAULT CURRENT_DATE, p_days integer DEFAULT 10) returns TABLE(batch_date date, resource_uid text, resource_name text, material_id integer, material_name text, amount bigint, weight numeric, sizes jsonb)
 	stable
 	language sql
 as $$
@@ -26,5 +26,5 @@ as $$
     ORDER BY vc.batch_date, vc.resource_uid, weight DESC;
 $$;
 
-alter function get_resource_weight_history(text[], timestamp with time zone, integer) owner to xfw3;
+alter function mapping.get_resource_weight_history(text[], timestamp with time zone, integer) owner to xfw3;
 

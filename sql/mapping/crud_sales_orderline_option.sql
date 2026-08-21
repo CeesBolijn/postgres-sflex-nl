@@ -1,4 +1,4 @@
-create function crud_sales_orderline_option(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, id integer, sales_orderline_id integer, option_type_code text, option_title_base text, option_internal_description text, option_input_value text, parent_type_code text, parent_title_base text, option_codes text[], updated_at timestamp without time zone)
+create function mapping.crud_sales_orderline_option(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, id integer, sales_orderline_id integer, option_type_code text, option_title_base text, option_internal_description text, option_input_value text, parent_type_code text, parent_title_base text, option_codes text[], updated_at timestamp without time zone)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -91,5 +91,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_sales_orderline_option(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_sales_orderline_option(jsonb, boolean) owner to xfw3;
 

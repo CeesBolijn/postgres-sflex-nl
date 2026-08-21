@@ -1,4 +1,4 @@
-create function create_spec_unit_manifest(p_production_orderline_ids integer[]) returns TABLE(production_orderline_id integer, row_count bigint)
+create function mapping.create_spec_unit_manifest(p_production_orderline_ids integer[]) returns TABLE(production_orderline_id integer, row_count bigint)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -104,5 +104,5 @@ BEGIN
 END;
 $$;
 
-alter function create_spec_unit_manifest(integer[]) owner to xfw3;
+alter function mapping.create_spec_unit_manifest(integer[]) owner to xfw3;
 

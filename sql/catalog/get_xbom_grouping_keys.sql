@@ -1,4 +1,4 @@
-create function get_xbom_grouping_keys(option_codes text[]) returns TABLE(scope text, grouping_key text[])
+create function catalog.get_xbom_grouping_keys(option_codes text[]) returns TABLE(scope text, grouping_key text[])
 	stable
 	parallel safe
 	language sql
@@ -108,5 +108,5 @@ as $$
     GROUP BY x.scope;
 $$;
 
-alter function get_xbom_grouping_keys(text[]) owner to xfw3;
+alter function catalog.get_xbom_grouping_keys(text[]) owner to xfw3;
 

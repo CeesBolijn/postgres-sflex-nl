@@ -1,4 +1,4 @@
-create function crud_formula_graph(p_param_json jsonb) returns TABLE(crud character varying, track_by integer, formula_graph_id integer, result jsonb, nodes jsonb, connections jsonb)
+create function site.crud_formula_graph(p_param_json jsonb) returns TABLE(crud character varying, track_by integer, formula_graph_id integer, result jsonb, nodes jsonb, connections jsonb)
 	language plpgsql
 as $$
 DECLARE
@@ -75,5 +75,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_formula_graph(jsonb) owner to xfw3;
+alter function site.crud_formula_graph(jsonb) owner to xfw3;
 

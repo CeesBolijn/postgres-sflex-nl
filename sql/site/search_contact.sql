@@ -1,4 +1,4 @@
-create function search_contact(p_user_domain_id integer, p_search_txt character varying DEFAULT NULL::character varying) returns TABLE(_contact_id integer, text character varying)
+create function site.search_contact(p_user_domain_id integer, p_search_txt character varying DEFAULT NULL::character varying) returns TABLE(_contact_id integer, text character varying)
 	language plpgsql
 as $$
 BEGIN
@@ -22,5 +22,5 @@ BEGIN
 END;
 $$;
 
-alter function search_contact(integer, varchar) owner to xfw3;
+alter function site.search_contact(integer, varchar) owner to xfw3;
 

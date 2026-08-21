@@ -1,4 +1,4 @@
-create function search_company(p_user_domain_id integer, p_search_txt character varying DEFAULT NULL::character varying) returns TABLE(company_id integer, text character varying)
+create function site.search_company(p_user_domain_id integer, p_search_txt character varying DEFAULT NULL::character varying) returns TABLE(company_id integer, text character varying)
 	language plpgsql
 as $$
 BEGIN
@@ -16,5 +16,5 @@ BEGIN
 END;
 $$;
 
-alter function search_company(integer, varchar) owner to xfw3;
+alter function site.search_company(integer, varchar) owner to xfw3;
 

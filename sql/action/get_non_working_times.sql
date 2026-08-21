@@ -1,4 +1,4 @@
-create function get_non_working_times(p_rule_path text, p_plan_date date) returns TABLE(type text, start_offset_in_seconds integer, duration_in_seconds integer)
+create function action.get_non_working_times(p_rule_path text, p_plan_date date) returns TABLE(type text, start_offset_in_seconds integer, duration_in_seconds integer)
 	stable
 	language sql
 as $$
@@ -17,5 +17,5 @@ as $$
     WHERE specificity = winning AND duration_in_seconds > 0;
 $$;
 
-alter function get_non_working_times(text, date) owner to xfw3;
+alter function action.get_non_working_times(text, date) owner to xfw3;
 

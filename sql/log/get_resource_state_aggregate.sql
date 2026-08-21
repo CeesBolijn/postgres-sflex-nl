@@ -1,4 +1,4 @@
-create function get_resource_state_aggregate(p_resource_uids text[] DEFAULT NULL::text[], p_from timestamp with time zone DEFAULT NULL::timestamp with time zone, p_until timestamp with time zone DEFAULT now(), p_line_type text DEFAULT NULL::text) returns TABLE(resource_uid text, step text, state jsonb, duration_seconds numeric, start_at timestamp with time zone, until timestamp with time zone)
+create function log.get_resource_state_aggregate(p_resource_uids text[] DEFAULT NULL::text[], p_from timestamp with time zone DEFAULT NULL::timestamp with time zone, p_until timestamp with time zone DEFAULT now(), p_line_type text DEFAULT NULL::text) returns TABLE(resource_uid text, step text, state jsonb, duration_seconds numeric, start_at timestamp with time zone, until timestamp with time zone)
 	stable
 	language plpgsql
 as $$
@@ -139,5 +139,5 @@ begin
 end;
 $$;
 
-alter function get_resource_state_aggregate(text[], timestamp with time zone, timestamp with time zone, text) owner to xfw3;
+alter function log.get_resource_state_aggregate(text[], timestamp with time zone, timestamp with time zone, text) owner to xfw3;
 

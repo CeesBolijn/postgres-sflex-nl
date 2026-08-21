@@ -1,4 +1,4 @@
-create function get_nest_buckets(p_nest_ids integer[]) returns TABLE(nest_id integer, bucket_name text, batch_id integer, nested_at timestamp with time zone, nest_name text, amount integer, width numeric, height numeric, material_id integer, material_name text, waste_percentage numeric, commercial_waste_percentage numeric, material_width numeric, material_height numeric, job_thumbnail jsonb)
+create function legacy.get_nest_buckets(p_nest_ids integer[]) returns TABLE(nest_id integer, bucket_name text, batch_id integer, nested_at timestamp with time zone, nest_name text, amount integer, width numeric, height numeric, material_id integer, material_name text, waste_percentage numeric, commercial_waste_percentage numeric, material_width numeric, material_height numeric, job_thumbnail jsonb)
 	stable
 	language sql
 as $$
@@ -31,5 +31,5 @@ as $$
     WHERE nest.nest_id = ANY (p_nest_ids);
 $$;
 
-alter function get_nest_buckets(integer[]) owner to xfw3;
+alter function legacy.get_nest_buckets(integer[]) owner to xfw3;
 

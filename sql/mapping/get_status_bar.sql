@@ -1,4 +1,4 @@
-create function get_status_bar(p_model text DEFAULT NULL::text, p_until timestamp with time zone DEFAULT (CURRENT_DATE)::timestamp with time zone, p_production_line_id integer DEFAULT NULL::integer) returns TABLE(status_json jsonb)
+create function mapping.get_status_bar(p_model text DEFAULT NULL::text, p_until timestamp with time zone DEFAULT (CURRENT_DATE)::timestamp with time zone, p_production_line_id integer DEFAULT NULL::integer) returns TABLE(status_json jsonb)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -45,5 +45,5 @@ BEGIN
 END;
 $$;
 
-alter function get_status_bar(text, timestamp with time zone, integer) owner to xfw3;
+alter function mapping.get_status_bar(text, timestamp with time zone, integer) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_sitrep(p_model text DEFAULT NULL::text, p_models text[] DEFAULT NULL::text[], p_production_line_id integer DEFAULT NULL::integer) returns TABLE(content jsonb, nav jsonb, bucket_index integer, bucket_date date, production_line jsonb, order_count bigint, order_open bigint, order_done bigint, order_pct_done numeric, order_printed bigint, order_pct_printed numeric, order_cut bigint, order_pct_cut numeric, customer_count bigint, sqm_total numeric, sqm_open numeric, sqm_done numeric, sqm_pct_done numeric, sqm_printed numeric, sqm_pct_printed numeric, sqm_cut numeric, sqm_pct_cut numeric, current_time_epoch numeric, sqm_color_index numeric, order_color_index numeric)
+create function mapping.get_sitrep(p_model text DEFAULT NULL::text, p_models text[] DEFAULT NULL::text[], p_production_line_id integer DEFAULT NULL::integer) returns TABLE(content jsonb, nav jsonb, bucket_index integer, bucket_date date, production_line jsonb, order_count bigint, order_open bigint, order_done bigint, order_pct_done numeric, order_printed bigint, order_pct_printed numeric, order_cut bigint, order_pct_cut numeric, customer_count bigint, sqm_total numeric, sqm_open numeric, sqm_done numeric, sqm_pct_done numeric, sqm_printed numeric, sqm_pct_printed numeric, sqm_cut numeric, sqm_pct_cut numeric, current_time_epoch numeric, sqm_color_index numeric, order_color_index numeric)
 	stable
 	language plpgsql
 as $$
@@ -137,5 +137,5 @@ BEGIN
 END;
 $$;
 
-alter function get_sitrep(text, text[], integer) owner to xfw3;
+alter function mapping.get_sitrep(text, text[], integer) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_ticket_trend_by_production_line(p_until timestamp with time zone, p_weeks integer, p_production_line_id integer) returns TABLE(r_week_start date, r_year integer, r_week integer, r_ticket_count bigint, r_orderline_count bigint, r_ticket_percentage numeric, r_trend_direction text, r_trend_block jsonb)
+create function mapping.get_ticket_trend_by_production_line(p_until timestamp with time zone, p_weeks integer, p_production_line_id integer) returns TABLE(r_week_start date, r_year integer, r_week integer, r_ticket_count bigint, r_orderline_count bigint, r_ticket_percentage numeric, r_trend_direction text, r_trend_block jsonb)
 	language sql
 as $$
     WITH params AS (
@@ -88,5 +88,5 @@ as $$
     ORDER BY w.week_start;
 $$;
 
-alter function get_ticket_trend_by_production_line(timestamp with time zone, integer, integer) owner to xfw3;
+alter function mapping.get_ticket_trend_by_production_line(timestamp with time zone, integer, integer) owner to xfw3;
 

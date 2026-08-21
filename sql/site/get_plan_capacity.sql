@@ -1,4 +1,4 @@
-create function get_plan_capacity() returns TABLE(week integer, day_name text, day integer, month_name text, year integer, info text, resources jsonb)
+create function site.get_plan_capacity() returns TABLE(week integer, day_name text, day integer, month_name text, year integer, info text, resources jsonb)
 	language sql
 as $$
     SELECT
@@ -65,5 +65,5 @@ as $$
         ) AS resources;
 $$;
 
-alter function get_plan_capacity() owner to xfw3;
+alter function site.get_plan_capacity() owner to xfw3;
 

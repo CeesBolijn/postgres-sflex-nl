@@ -1,4 +1,4 @@
-create function get_resource_state_current(p_until timestamp with time zone DEFAULT now(), p_model text DEFAULT NULL::text) returns TABLE(resource_uid text, state jsonb, layout_name text, type text, resource_name text, nest_name text, job_name text, page_number integer, start_at timestamp with time zone, offset_seconds numeric, duration_seconds numeric, capacity_sqm_per_day numeric, capacity_reserved_sqm numeric, capacity_left numeric, production_line_id integer)
+create function log.get_resource_state_current(p_until timestamp with time zone DEFAULT now(), p_model text DEFAULT NULL::text) returns TABLE(resource_uid text, state jsonb, layout_name text, type text, resource_name text, nest_name text, job_name text, page_number integer, start_at timestamp with time zone, offset_seconds numeric, duration_seconds numeric, capacity_sqm_per_day numeric, capacity_reserved_sqm numeric, capacity_left numeric, production_line_id integer)
 	stable
 	language plpgsql
 as $$
@@ -120,5 +120,5 @@ begin
 end;
 $$;
 
-alter function get_resource_state_current(timestamp with time zone, text) owner to xfw3;
+alter function log.get_resource_state_current(timestamp with time zone, text) owner to xfw3;
 

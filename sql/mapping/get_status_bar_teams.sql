@@ -1,4 +1,4 @@
-create function get_status_bar_teams(p_model text, p_until timestamp with time zone) returns jsonb
+create function mapping.get_status_bar_teams(p_model text, p_until timestamp with time zone) returns jsonb
 	stable
 	language plpgsql
 as $$
@@ -42,5 +42,5 @@ BEGIN
 END;
 $$;
 
-alter function get_status_bar_teams(text, timestamp with time zone) owner to xfw3;
+alter function mapping.get_status_bar_teams(text, timestamp with time zone) owner to xfw3;
 

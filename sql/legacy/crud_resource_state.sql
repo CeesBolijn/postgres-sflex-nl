@@ -1,4 +1,4 @@
-create function crud_resource_state(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, resource_uid text, status text, nest_name text, job_name text, page_number integer, start_at timestamp with time zone, resource_status_json jsonb)
+create function legacy.crud_resource_state(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, resource_uid text, status text, nest_name text, job_name text, page_number integer, start_at timestamp with time zone, resource_status_json jsonb)
 	language plpgsql
 as $$
 DECLARE
@@ -69,5 +69,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_resource_state(jsonb, boolean) owner to xfw3;
+alter function legacy.crud_resource_state(jsonb, boolean) owner to xfw3;
 

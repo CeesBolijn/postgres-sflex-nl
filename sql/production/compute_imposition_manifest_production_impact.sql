@@ -1,4 +1,4 @@
-create function compute_imposition_manifest_production_impact(p_imposition_id bigint, p_item_code text, p_overhead_fixed integer DEFAULT 0, p_overhead_factor numeric DEFAULT 0) returns integer
+create function production.compute_imposition_manifest_production_impact(p_imposition_id bigint, p_item_code text, p_overhead_fixed integer DEFAULT 0, p_overhead_factor numeric DEFAULT 0) returns integer
 	stable
 	language sql
 as $$
@@ -25,5 +25,5 @@ as $$
       JOIN per_spec ps ON ps.spec_id = is_.spec_id;
 $$;
 
-alter function compute_imposition_manifest_production_impact(bigint, text, integer, numeric) owner to xfw3;
+alter function production.compute_imposition_manifest_production_impact(bigint, text, integer, numeric) owner to xfw3;
 

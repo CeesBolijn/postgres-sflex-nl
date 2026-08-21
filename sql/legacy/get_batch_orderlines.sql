@@ -1,4 +1,4 @@
-create function get_batch_orderlines(p_batch_id integer, p_from timestamp with time zone) returns TABLE(nest_id integer, nest_name text, waste_percentage numeric, nest_amount numeric, nest_status_json jsonb, start_at timestamp with time zone, duration_seconds integer, production_date timestamp without time zone, production_orderline_id integer, product_amount numeric, product_width numeric, product_height numeric, customer_id integer, company_name text, class_names text[])
+create function legacy.get_batch_orderlines(p_batch_id integer, p_from timestamp with time zone) returns TABLE(nest_id integer, nest_name text, waste_percentage numeric, nest_amount numeric, nest_status_json jsonb, start_at timestamp with time zone, duration_seconds integer, production_date timestamp without time zone, production_orderline_id integer, product_amount numeric, product_width numeric, product_height numeric, customer_id integer, company_name text, class_names text[])
 	stable
 	language sql
 as $$
@@ -78,5 +78,5 @@ as $$
     ORDER BY cs.production_date, bn.nest_id, cs.production_orderline_id;
 $$;
 
-alter function get_batch_orderlines(integer, timestamp with time zone) owner to xfw3;
+alter function legacy.get_batch_orderlines(integer, timestamp with time zone) owner to xfw3;
 

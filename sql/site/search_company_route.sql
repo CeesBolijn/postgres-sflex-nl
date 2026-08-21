@@ -1,4 +1,4 @@
-create function search_company_route(p_search_txt character varying) returns TABLE(text character varying, _gmap character varying)
+create function site.search_company_route(p_search_txt character varying) returns TABLE(text character varying, _gmap character varying)
 	language plpgsql
 as $$
 BEGIN
@@ -99,5 +99,5 @@ BEGIN
 END;
 $$;
 
-alter function search_company_route(varchar) owner to xfw3;
+alter function site.search_company_route(varchar) owner to xfw3;
 

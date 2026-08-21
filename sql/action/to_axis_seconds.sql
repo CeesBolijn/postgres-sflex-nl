@@ -1,4 +1,4 @@
-create function to_axis_seconds(p_clock_seconds integer, p_start_offset_in_seconds integer DEFAULT 79200) returns integer
+create function action.to_axis_seconds(p_clock_seconds integer, p_start_offset_in_seconds integer DEFAULT 79200) returns integer
 	immutable
 	parallel safe
 	language sql
@@ -7,5 +7,5 @@ as $$
            + p_start_offset_in_seconds;
 $$;
 
-alter function to_axis_seconds(integer, integer) owner to xfw3;
+alter function action.to_axis_seconds(integer, integer) owner to xfw3;
 

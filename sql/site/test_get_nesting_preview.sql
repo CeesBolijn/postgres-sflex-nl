@@ -1,4 +1,4 @@
-create function test_get_nesting_preview() returns TABLE(source text, sheet json, items json)
+create function site.test_get_nesting_preview() returns TABLE(source text, sheet json, items json)
 	immutable
 	language sql
 as $$
@@ -13,5 +13,5 @@ as $$
     ]'::json
 $$;
 
-alter function test_get_nesting_preview() owner to xfw3;
+alter function site.test_get_nesting_preview() owner to xfw3;
 

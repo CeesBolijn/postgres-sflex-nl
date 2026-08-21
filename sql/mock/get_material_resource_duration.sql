@@ -1,4 +1,4 @@
-create function get_material_resource_duration(p_material_id integer, p_resource_uid text) returns numeric
+create function mock.get_material_resource_duration(p_material_id integer, p_resource_uid text) returns numeric
 	stable
 	language plpgsql
 as $$
@@ -44,5 +44,5 @@ BEGIN
 END;
 $$;
 
-alter function get_material_resource_duration(integer, text) owner to xfw3;
+alter function mock.get_material_resource_duration(integer, text) owner to xfw3;
 

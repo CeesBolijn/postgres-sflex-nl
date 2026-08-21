@@ -1,4 +1,4 @@
-create function crud_xbom() returns TABLE(option_code text)
+create function catalog.crud_xbom() returns TABLE(option_code text)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -93,5 +93,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_xbom() owner to xfw3;
+alter function catalog.crud_xbom() owner to xfw3;
 

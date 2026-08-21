@@ -1,4 +1,4 @@
-create function get_main_menu() returns TABLE(nav_left jsonb, nav_right jsonb)
+create function site.get_main_menu() returns TABLE(nav_left jsonb, nav_right jsonb)
 	language plpgsql
 as $$
 BEGIN
@@ -8,5 +8,5 @@ BEGIN
 END;
 $$;
 
-alter function get_main_menu() owner to xfw3;
+alter function site.get_main_menu() owner to xfw3;
 

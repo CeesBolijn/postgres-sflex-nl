@@ -1,4 +1,4 @@
-create function crud_error_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, error_log_id bigint, resource_uid text, start_at timestamp with time zone, end_at timestamp with time zone, code text, severity text, message text, context_json jsonb, source text, source_ref text, source_ts timestamp with time zone, page_number integer)
+create function log.crud_error_log(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, error_log_id bigint, resource_uid text, start_at timestamp with time zone, end_at timestamp with time zone, code text, severity text, message text, context_json jsonb, source text, source_ref text, source_ts timestamp with time zone, page_number integer)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -85,5 +85,5 @@ begin
 end;
 $$;
 
-alter function crud_error_log(jsonb, boolean) owner to xfw3;
+alter function log.crud_error_log(jsonb, boolean) owner to xfw3;
 

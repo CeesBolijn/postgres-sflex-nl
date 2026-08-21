@@ -1,4 +1,4 @@
-create function test_get_nesting_printfactory(p_nesting_bucket_id character varying, p_bucket_content jsonb DEFAULT NULL::jsonb) returns TABLE(id integer, nesting_bucket_id character varying, document_name text, source_page integer, width numeric, height numeric, position_x numeric, position_y numeric, angle numeric, print_deadline timestamp without time zone, thumbnail_url text)
+create function site.test_get_nesting_printfactory(p_nesting_bucket_id character varying, p_bucket_content jsonb DEFAULT NULL::jsonb) returns TABLE(id integer, nesting_bucket_id character varying, document_name text, source_page integer, width numeric, height numeric, position_x numeric, position_y numeric, angle numeric, print_deadline timestamp without time zone, thumbnail_url text)
 	language plpgsql
 as $$
 BEGIN
@@ -21,5 +21,5 @@ BEGIN
 END;
 $$;
 
-alter function test_get_nesting_printfactory(varchar, jsonb) owner to xfw3;
+alter function site.test_get_nesting_printfactory(varchar, jsonb) owner to xfw3;
 

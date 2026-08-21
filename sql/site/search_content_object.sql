@@ -1,4 +1,4 @@
-create function search_content_object(p_search_txt character varying, p_roles jsonb, p_user_domain_id integer) returns TABLE(path character varying, block_json text, sort_order integer, hidden integer, page_id integer, block_id integer, action_id integer)
+create function site.search_content_object(p_search_txt character varying, p_roles jsonb, p_user_domain_id integer) returns TABLE(path character varying, block_json text, sort_order integer, hidden integer, page_id integer, block_id integer, action_id integer)
 	language plpgsql
 as $$
 BEGIN
@@ -29,5 +29,5 @@ BEGIN
 END;
 $$;
 
-alter function search_content_object(varchar, jsonb, integer) owner to xfw3;
+alter function site.search_content_object(varchar, jsonb, integer) owner to xfw3;
 

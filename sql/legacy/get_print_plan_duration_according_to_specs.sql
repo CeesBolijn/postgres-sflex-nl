@@ -1,4 +1,4 @@
-create function get_print_plan_duration_according_to_specs(p_action_id integer) returns numeric
+create function legacy.get_print_plan_duration_according_to_specs(p_action_id integer) returns numeric
 	language plpgsql
 as $$
 DECLARE
@@ -71,5 +71,5 @@ BEGIN
 END;
 $$;
 
-alter function get_print_plan_duration_according_to_specs(integer) owner to xfw3;
+alter function legacy.get_print_plan_duration_according_to_specs(integer) owner to xfw3;
 

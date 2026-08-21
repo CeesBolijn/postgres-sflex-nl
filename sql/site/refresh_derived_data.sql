@@ -1,4 +1,4 @@
-create function refresh_derived_data() returns void
+create function site.refresh_derived_data() returns void
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -12,5 +12,5 @@ begin
 end;
 $$;
 
-alter function refresh_derived_data() owner to xfw3;
+alter function site.refresh_derived_data() owner to xfw3;
 

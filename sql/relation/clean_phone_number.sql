@@ -1,4 +1,4 @@
-create function clean_phone_number(str character varying) returns character varying
+create function relation.clean_phone_number(str character varying) returns character varying
 	language plpgsql
 as $$
 BEGIN
@@ -30,5 +30,5 @@ BEGIN
 END;
 $$;
 
-alter function clean_phone_number(varchar) owner to xfw3;
+alter function relation.clean_phone_number(varchar) owner to xfw3;
 

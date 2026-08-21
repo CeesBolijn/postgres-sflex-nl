@@ -1,4 +1,4 @@
-create function get_nest_moments(p_nest_moment_codes text[]) returns jsonb
+create function action.get_nest_moments(p_nest_moment_codes text[]) returns jsonb
 	stable
 	parallel safe
 	language sql
@@ -25,5 +25,5 @@ as $$
     ) m;
 $$;
 
-alter function get_nest_moments(text[]) owner to xfw3;
+alter function action.get_nest_moments(text[]) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function get_nest_schedule(p_from timestamp with time zone, p_line_type text, p_threshold numeric DEFAULT 10) returns TABLE(board_date date, tenant_id integer, production_location text, material_id integer, material_name text, production_date timestamp without time zone, day_offset integer, hours_until_production numeric, group_code text, segment_seq integer, segment_day_offset integer, segment_start_offset_in_seconds integer, orderline_count integer, product_amount numeric, sqm numeric, sequence integer, status_json jsonb, impact_json jsonb, class_name text[])
+create function action.get_nest_schedule(p_from timestamp with time zone, p_line_type text, p_threshold numeric DEFAULT 10) returns TABLE(board_date date, tenant_id integer, production_location text, material_id integer, material_name text, production_date timestamp without time zone, day_offset integer, hours_until_production numeric, group_code text, segment_seq integer, segment_day_offset integer, segment_start_offset_in_seconds integer, orderline_count integer, product_amount numeric, sqm numeric, sequence integer, status_json jsonb, impact_json jsonb, class_name text[])
 	stable
 	language plpgsql
 as $$
@@ -231,5 +231,5 @@ BEGIN
 END;
 $$;
 
-alter function get_nest_schedule(timestamp with time zone, text, numeric) owner to xfw3;
+alter function action.get_nest_schedule(timestamp with time zone, text, numeric) owner to xfw3;
 

@@ -1,4 +1,4 @@
-create function crud_internal_status(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, internal_status_id integer, code text, sequence integer, internal_title text, group_name text, updated_at timestamp with time zone)
+create function mapping.crud_internal_status(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, internal_status_id integer, code text, sequence integer, internal_title text, group_name text, updated_at timestamp with time zone)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -82,5 +82,5 @@ BEGIN
 END;
 $$;
 
-alter function crud_internal_status(jsonb, boolean) owner to xfw3;
+alter function mapping.crud_internal_status(jsonb, boolean) owner to xfw3;
 

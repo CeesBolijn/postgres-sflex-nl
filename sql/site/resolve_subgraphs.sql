@@ -1,4 +1,4 @@
-create function resolve_subgraphs(p_graph_json jsonb, p_depth integer DEFAULT 0, p_max_depth integer DEFAULT 10) returns jsonb
+create function site.resolve_subgraphs(p_graph_json jsonb, p_depth integer DEFAULT 0, p_max_depth integer DEFAULT 10) returns jsonb
 	language plpgsql
 as $$
 DECLARE
@@ -40,5 +40,5 @@ BEGIN
 END;
 $$;
 
-alter function resolve_subgraphs(jsonb, integer, integer) owner to xfw3;
+alter function site.resolve_subgraphs(jsonb, integer, integer) owner to xfw3;
 
