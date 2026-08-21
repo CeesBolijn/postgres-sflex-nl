@@ -13,7 +13,7 @@ create table xbom
 	param_json jsonb default '{}'::jsonb not null,
 	config_json jsonb default '{}'::jsonb not null,
 	version integer default 1 not null,
-	status text default 'active'::text not null,
+	version_status text default 'active'::text not null,
 	created_at timestamp with time zone default now() not null,
 	sort_order integer
 );

@@ -1,6 +1,7 @@
-create function mapping.create_spec_unit_manifest(p_production_orderline_ids integer[]) returns TABLE(production_orderline_id integer, row_count bigint)
-	language plpgsql
-as $$
+create function mapping.create_spec_unit_manifest(p_production_orderline_ids integer[])
+ RETURNS TABLE(production_orderline_id integer, row_count bigint)
+ LANGUAGE plpgsql
+AS $function$
 #variable_conflict use_column
 BEGIN
     -- Resolve xbom rows for the given orderlines and rebuild their manifest.
@@ -18,7 +19,7 @@ BEGIN
                ON slo.sales_orderline_id = cs.sales_orderline_id
         JOIN   mapping.option_translation t
                ON t.product_api_code = slo.product_api_code
-              AND t.api_code         = slo.api_code
+               AND t.api_code in ('default', slo.api_code)
         WHERE  cs.production_orderline_id = ANY(p_production_orderline_ids)
 
         UNION
@@ -47,7 +48,7 @@ BEGIN
         FROM   selected s
         JOIN   catalog.xbom x
           ON   string_to_array(x.option_code, ';') <@ s.option_codes
-        WHERE  x.status = 'active'
+        WHERE  x.version_status = 'active'
     ),
     filtered AS (
         -- A row is superseded only by a strictly more specific row covering the same parts
@@ -102,7 +103,6 @@ BEGIN
     FROM     inserted i
     GROUP BY i.production_orderline_id;
 END;
-$$;
+$function$
 
-alter function mapping.create_spec_unit_manifest(integer[]) owner to xfw3;
-
+alter function mapping.create_spec_unit_manifest(p_production_orderline_ids integer[]) owner to xfw3;

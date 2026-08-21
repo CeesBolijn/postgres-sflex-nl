@@ -7,7 +7,7 @@ create table library_option_set
 	option_set_json jsonb,
 	sort_order integer,
 	version integer default 1,
-	status text default 'active'::text,
+	version_status text default 'active'::text,
 	created_at timestamp with time zone default now() not null
 );
 

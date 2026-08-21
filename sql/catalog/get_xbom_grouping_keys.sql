@@ -104,7 +104,7 @@ as $$
            array_agg(DISTINCT c.option_code ORDER BY c.option_code)
     FROM candidate c
     JOIN catalog.xbom x ON x.option_code = c.option_code
-    WHERE x.status = 'active'
+    WHERE x.version_status = 'active'
     GROUP BY x.scope;
 $$;
 

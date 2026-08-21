@@ -9,7 +9,8 @@ create table item
 	description text not null,
 	item_json jsonb not null,
 	created_at timestamp with time zone default now() not null,
-	updated_at timestamp with time zone default now() not null
+	version integer default 1 not null,
+	version_status text default 'active'::text not null
 );
 
 alter table item owner to xfw3;

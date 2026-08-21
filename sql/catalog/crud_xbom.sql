@@ -14,7 +14,7 @@ BEGIN
         FROM   catalog.library_option_set los
         JOIN   catalog.library_option lo ON lo.option_set_id = los.option_set_id
                                         AND lo.version_status = 'active'
-        WHERE los.status = 'active'
+        WHERE los.version_status = 'active'
     ),
     axis AS (
         -- one row per allowed option_code per axis; the axis members are listed explicitly
@@ -37,7 +37,7 @@ BEGIN
                                   ORDER BY lo.sort_order, a.option_code) - 1 AS member_index
         FROM   axis a
         JOIN   catalog.library_option_set los ON los.collection_id = a.collection_id
-                                             AND los.status = 'active'
+                                             AND los.version_status = 'active'
         JOIN   catalog.library_option lo ON lo.option_set_id = los.option_set_id
                                         AND lo.option_code   = a.option_code
                                         AND lo.version_status = 'active'
