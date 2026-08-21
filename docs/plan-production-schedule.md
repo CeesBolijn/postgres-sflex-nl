@@ -64,10 +64,16 @@ it stays null) — the path as it was when the plan was made, a snapshot. See
 `relation.resource.resource_path = lane.resource_path` (btree on both);
 resources are also grouped and filtered on the tree (`<@ 'dokkum.sheet'`).
 
-```sql
-alter table action.lane add column resource_path ltree;
-create index idx_lane_resource_path on action.lane (resource_path) where resource_path is not null;
-```
+**Extended (2026-08-19): the lane is a machine-day, `plan_lane` carries the
+boards.** A machine physically in the sheet hall can run foil orders; its time
+is one strip that both boards must see. So `lane` = `(lane_date,
+resource_path ltree)` (one machine per lane; material
+lanes of the nest plan have null paths), and `action.plan_lane (plan_id,
+lane_id, sort_order)` says which plans show the lane and in which order per
+board. `crud_object` hangs a lane under the order-side plan **and** the
+physical department's plan automatically; every board shows all items of its
+lanes, so borrowed occupation is always visible. The drag mutation writes
+`plan_lane.sort_order` (order differs per board).
 
 ## 3. `mock.get_production_schedule` — the plan side
 

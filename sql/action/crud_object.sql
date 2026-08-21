@@ -174,7 +174,11 @@ BEGIN
            pt.machine_type,
            r.resource_path,
            r.step,
-           pl.line_type,
+           -- the plan's line type is the ORDER's, from the batch; a machine can
+           -- physically stand in another department (a foil order on a printer
+           -- in the sheet hall still belongs to the foil plan)
+           coalesce(bpl.line_type, pl.line_type) as line_type,
+           pl.line_type                              as physical_line_type,
            ((pt.action_json ->> 'start_date')::timestamp AT TIME ZONE 'Europe/Amsterdam')                     AS start_at,
            ((pt.action_json ->> 'start_date')::timestamp AT TIME ZONE 'Europe/Amsterdam')::date               AS plan_date,
            (pt.action_json ->> 'start_date')::timestamp                                                        AS start_local,
@@ -184,6 +188,8 @@ BEGIN
     FROM param_table pt
     JOIN relation.resource r          ON r.resource_uid = pt.resource_uid
     JOIN relation.production_line pl  ON pl.line_id = r.line_id
+    LEFT JOIN legacy.batch b          ON b.batch_id = pt.batch_id
+    LEFT JOIN relation.production_line bpl ON bpl.line_id = (b.batch_json ->> 'production_line_id')::integer
     WHERE pt.crud = 'merge'
       AND NOT pt.is_delete
       AND COALESCE(pt.action_json ->> 'type', 'batch') = 'batch'
@@ -205,7 +211,10 @@ BEGIN
     -- the day's production plan per line type: the newest one, or a new one
     INSERT INTO action.plan (plan_date, steps, type, line_type)
     SELECT d.plan_date, array_agg(DISTINCT d.step ORDER BY d.step), 'production-plan', d.line_type
-    FROM new_item d
+    FROM (SELECT ni.plan_date, ni.step, ni.line_type FROM new_item ni
+          UNION ALL
+          SELECT ni.plan_date, ni.step, ni.physical_line_type FROM new_item ni
+          WHERE ni.physical_line_type IS DISTINCT FROM ni.line_type) d
     WHERE NOT EXISTS (SELECT 1 FROM action.plan p
                       WHERE p.plan_date = d.plan_date AND p.type = 'production-plan'
                         AND p.line_type IS NOT DISTINCT FROM d.line_type)
@@ -216,7 +225,11 @@ BEGIN
     SET steps = (SELECT array_agg(DISTINCT s ORDER BY s)
                  FROM unnest(p.steps || x.steps) AS s)
     FROM (SELECT d.plan_date, d.line_type, array_agg(DISTINCT d.step) AS steps
-          FROM new_item d GROUP BY d.plan_date, d.line_type) x
+          FROM (SELECT ni.plan_date, ni.step, ni.line_type FROM new_item ni
+                UNION ALL
+                SELECT ni.plan_date, ni.step, ni.physical_line_type FROM new_item ni
+                WHERE ni.physical_line_type IS DISTINCT FROM ni.line_type) d
+          GROUP BY d.plan_date, d.line_type) x
     WHERE p.plan_id = (SELECT p2.plan_id FROM action.plan p2
                        WHERE p2.plan_date = x.plan_date AND p2.type = 'production-plan'
                          AND p2.line_type IS NOT DISTINCT FROM x.line_type
@@ -229,19 +242,35 @@ BEGIN
            (SELECT p.plan_id FROM action.plan p
             WHERE p.plan_date = d.plan_date AND p.type = 'production-plan'
               AND p.line_type IS NOT DISTINCT FROM d.line_type
-            ORDER BY p.plan_id DESC LIMIT 1) AS plan_id
+            ORDER BY p.plan_id DESC LIMIT 1) AS plan_id,
+           CASE WHEN d.physical_line_type IS DISTINCT FROM d.line_type THEN
+           (SELECT p.plan_id FROM action.plan p
+            WHERE p.plan_date = d.plan_date AND p.type = 'production-plan'
+              AND p.line_type IS NOT DISTINCT FROM d.physical_line_type
+            ORDER BY p.plan_id DESC LIMIT 1) END AS physical_plan_id
     FROM new_item d;
 
-    -- one lane per resource in the plan; new lanes sort after the existing
-    -- ones in resource order
-    INSERT INTO action.lane (plan_id, sort_order, resource_paths)
-    SELECT x.plan_id,
-           COALESCE((SELECT max(l.sort_order) FROM action.lane l WHERE l.plan_id = x.plan_id), 0)
-             + row_number() OVER (PARTITION BY x.plan_id ORDER BY x.resource_path),
-           ARRAY[x.resource_path]
-    FROM (SELECT DISTINCT ip.plan_id, ip.resource_path FROM item_plan ip) x
+    -- the machine-day lane of every item, created once, then hung under
+    -- the order's plan AND the physical department's plan, so both boards
+    -- see the machine's full occupation
+    INSERT INTO action.lane (lane_date, resource_path)
+    SELECT DISTINCT ip.plan_date, ip.resource_path
+    FROM item_plan ip
     WHERE NOT EXISTS (SELECT 1 FROM action.lane l
-                      WHERE l.plan_id = x.plan_id AND x.resource_path = ANY (l.resource_paths));
+                      WHERE l.lane_date = ip.plan_date AND l.resource_path = ip.resource_path);
+
+    INSERT INTO action.plan_lane (plan_id, lane_id, sort_order)
+    SELECT x.plan_id, x.lane_id,
+           COALESCE((SELECT max(pl2.sort_order) FROM action.plan_lane pl2 WHERE pl2.plan_id = x.plan_id), 0)
+             + row_number() OVER (PARTITION BY x.plan_id ORDER BY x.lane_id)
+    FROM (SELECT DISTINCT pp.plan_id, l.lane_id
+          FROM (SELECT ip.plan_id, ip.plan_date, ip.resource_path FROM item_plan ip
+                UNION
+                SELECT ip.physical_plan_id, ip.plan_date, ip.resource_path FROM item_plan ip
+                WHERE ip.physical_plan_id IS NOT NULL) pp
+          JOIN action.lane l ON l.lane_date = pp.plan_date AND l.resource_path = pp.resource_path) x
+    WHERE NOT EXISTS (SELECT 1 FROM action.plan_lane pl3
+                      WHERE pl3.plan_id = x.plan_id AND pl3.lane_id = x.lane_id);
 
     -- the items: offset in seconds since the plan date's local midnight,
     -- duration from the pv2 end, pinned when pv2 fixes the offset, never
@@ -256,7 +285,7 @@ BEGIN
            GREATEST(COALESCE(EXTRACT(EPOCH FROM (ip.end_local - ip.start_local))::integer, 0), 0),
            ip.is_fixed_offset, true, 0, 'pv2', ip.source_ref
     FROM item_plan ip
-    JOIN action.lane l ON l.plan_id = ip.plan_id AND ip.resource_path = ANY (l.resource_paths)
+    JOIN action.lane l ON l.lane_date = ip.plan_date AND l.resource_path = ip.resource_path
     ON CONFLICT (source, source_ref) DO UPDATE SET
         lane_id                 = EXCLUDED.lane_id,
         sort_order              = EXCLUDED.sort_order,
@@ -270,7 +299,7 @@ BEGIN
     SET sort_order = -1 * li.lane_item_id
     WHERE li.level = 0
       AND li.lane_id IN (SELECT DISTINCT l.lane_id FROM item_plan ip
-                         JOIN action.lane l ON l.plan_id = ip.plan_id AND ip.resource_path = ANY (l.resource_paths));
+                         JOIN action.lane l ON l.lane_date = ip.plan_date AND l.resource_path = ip.resource_path);
 
     UPDATE action.lane_item li
     SET sort_order = x.rank * 1000
@@ -280,7 +309,7 @@ BEGIN
           FROM action.lane_item li2
           WHERE li2.level = 0
             AND li2.lane_id IN (SELECT DISTINCT l.lane_id FROM item_plan ip
-                                JOIN action.lane l ON l.plan_id = ip.plan_id AND ip.resource_path = ANY (l.resource_paths))) x
+                                JOIN action.lane l ON l.lane_date = ip.plan_date AND l.resource_path = ip.resource_path)) x
     WHERE li.lane_item_id = x.lane_item_id;
 
     -- the nests of the items: replaced as a set

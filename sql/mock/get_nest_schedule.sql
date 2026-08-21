@@ -51,7 +51,7 @@ begin
         -- the nests hung on the lane items of this lane, if any
         select l.sort_order, array_agg(distinct nli.nest_id) as nest_ids
         from the_plan tp
-        join action.lane l using (plan_id)
+        join action.plan_lane l using (plan_id)
         join action.lane_item li on li.lane_id = l.lane_id
         join action.nest_lane_item nli on nli.lane_item_id = li.lane_item_id
         group by l.sort_order

@@ -14,13 +14,15 @@ as $$
     ),
     net AS (
         -- One span per lane: the summed working time, anchored at the origin.
-        SELECT l.lane_id, l.sort_order,
+        -- a lane can hang under several plans; its earliest board order names it
+        SELECT l.lane_id,
+               (SELECT min(pl.sort_order) FROM action.plan_lane pl WHERE pl.lane_id = l.lane_id) AS sort_order,
                coalesce(sum(i.duration_in_seconds), 0)::int AS duration_in_seconds,
                p_start_offset_in_seconds AS net_start
         FROM action.lane l
         LEFT JOIN action.lane_item i USING (lane_id)
         WHERE l.lane_id = ANY (p_lane_id)
-        GROUP BY l.lane_id, l.sort_order
+        GROUP BY l.lane_id
     )
     SELECT n.lane_id, n.sort_order, n.duration_in_seconds,
            e.cum - s.cum                               AS non_working_time_in_seconds,

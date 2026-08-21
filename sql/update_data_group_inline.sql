@@ -23051,43 +23051,13 @@ WITH payload AS (
               "hidden": true
             }
           },
-          "resource_paths": {
-            "ui": {
-              "hidden": true
-            }
-          },
-          "resource_uids": {
-            "ui": {
-              "hidden": true
-            }
-          },
           "lane_id": {
             "ui": {
               "hidden": true
             }
           },
-          "resource_names": {
+          "resource_path": {
             "ui": {
-              "i18n": {
-                "de": {
-                  "title": "Ressource"
-                },
-                "en": {
-                  "title": "Resource"
-                },
-                "es": {
-                  "title": "Recurso"
-                },
-                "fr": {
-                  "title": "Ressource"
-                },
-                "nl": {
-                  "title": "Resource"
-                },
-                "uk": {
-                  "title": "Ресурс"
-                }
-              },
               "hidden": true
             }
           }
@@ -23258,15 +23228,9 @@ WITH payload AS (
                         "order": 1
                       }
                     },
-                    "resource_paths": {
+                    "resource_path": {
                       "ui": {
                         "order": 2,
-                        "hidden": false
-                      }
-                    },
-                    "resource_names": {
-                      "ui": {
-                        "order": 1,
                         "hidden": false
                       }
                     }
@@ -23334,11 +23298,6 @@ WITH payload AS (
               },
               "resource_name": {
                 "ui": {
-                  "hidden": true
-                }
-              },
-              "resource_names": {
-                "ui": {
                   "i18n": {
                     "de": {
                       "title": "Ressource"
@@ -23377,7 +23336,7 @@ WITH payload AS (
             ],
             "group_title_fields": [
               "tenant_name",
-              "resource_names"
+              "resource_name"
             ],
             "deselectable": true
           },
@@ -23436,7 +23395,7 @@ WITH payload AS (
           ],
           "group_title_fields": [
             "tenant_name",
-            "resource_names"
+            "resource_name"
           ],
           "no_label": false,
           "no_split_field": "no_split"

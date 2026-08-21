@@ -67,7 +67,7 @@ BEGIN
                END AS start_offset_in_seconds,
                m.next_start_offset_in_seconds
         FROM the_plan tp
-        JOIN action.lane l USING (plan_id)
+        JOIN action.plan_lane l USING (plan_id)
         JOIN mock.material_resource_plan_lane mrpl ON mrpl.lane_id = l.lane_id
         JOIN mock.material_resource_plan m
              ON m.material_resource_plan_id = mrpl.material_resource_plan_id

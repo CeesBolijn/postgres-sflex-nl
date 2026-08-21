@@ -7,7 +7,7 @@ create table resource
 	company_id integer,
 	active boolean default true,
 	domain_id integer,
-	x_bom_state_id integer,
+	equipment_id integer,
 	resource_uid text not null
 		constraint uq_resource_uid
 			unique,

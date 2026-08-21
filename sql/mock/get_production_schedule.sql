@@ -1,7 +1,7 @@
 -- the return type changes with the model, so the old one goes first
 drop function if exists mock.get_production_schedule(timestamp with time zone, text, text, integer[], integer);
 
-create function mock.get_production_schedule(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_domain_id integer DEFAULT 1) returns TABLE(tenant_id integer, tenant_name text, production_company_id integer, resource_uid text, resource_name text, resource_uids text[], resource_names text, resource_paths ltree[], lane_id bigint, step text, level smallint, lane_item_id bigint, sort_order numeric, is_pinned boolean, no_split boolean, is_fixed_group text, start_offset_in_seconds integer, duration_in_seconds integer, start_at timestamp with time zone, end_at timestamp with time zone, nest_ids bigint[], nest_count integer, batch_id integer, batch_name text, material_id integer, material_name text, impact_json jsonb, sqm numeric, gross_sqm numeric, part_status_json jsonb, state_json jsonb, group_state_json jsonb, class_names text[], param_json jsonb)
+create function mock.get_production_schedule(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_domain_id integer DEFAULT 1) returns TABLE(tenant_id integer, tenant_name text, production_company_id integer, resource_uid text, resource_name text, resource_path ltree, lane_id bigint, step text, level smallint, lane_item_id bigint, sort_order numeric, is_pinned boolean, no_split boolean, is_fixed_group text, start_offset_in_seconds integer, duration_in_seconds integer, start_at timestamp with time zone, end_at timestamp with time zone, nest_ids bigint[], nest_count integer, batch_id integer, batch_name text, material_id integer, material_name text, impact_json jsonb, sqm numeric, gross_sqm numeric, part_status_json jsonb, state_json jsonb, group_state_json jsonb, class_names text[], param_json jsonb)
 	stable
 	language plpgsql
 as $$
@@ -43,39 +43,28 @@ begin
     tenant as (
         select (v.value ->> 'tenant_id')::integer             as tenant_id,
                v.value ->> 'name'                             as tenant_name,
+               v.value ->> 'abb'                              as abb,
                (v.value ->> 'production_company_id')::integer as production_company_id
         from relation.lookup lk
         cross join lateral jsonb_array_elements(lk.lookup_json) as v(value)
         where lk.lookup = 'lookup_tenants'
     ),
-    -- one lane = one or more interchangeable resources: every live resource
-    -- whose path is in the lane's set; the first path is the primary one and
-    -- names the lane. The tenant comes through the primary's production line.
-    lane_resource as (
-        select l.lane_id, l.sort_order, l.resource_paths,
-               r.resource_uid, r.resource_name, r.step, r.line_id,
-               r.resource_path = l.resource_paths[1] as is_primary
-        from the_plan tp
-        join action.lane l on l.plan_id = tp.plan_id
-        join relation.resource r on r.resource_path = any (l.resource_paths)
-        where l.resource_paths is not null
-    ),
+    -- one lane = one machine's day; the live resource is found on its
+    -- path, the tenant through its production line. Which machines a plan
+    -- shows says plan_lane (a foil plan can carry a printer from the sheet
+    -- hall; both boards share the lane and see its full occupation).
     lane as (
-        select la.*, t.tenant_id, t.tenant_name, t.production_company_id
-        from (
-            select lr.lane_id, lr.sort_order, lr.resource_paths,
-                   (array_agg(lr.resource_uid  order by lr.is_primary desc, lr.resource_uid))[1] as resource_uid,
-                   (array_agg(lr.resource_name order by lr.is_primary desc, lr.resource_uid))[1] as resource_name,
-                   (array_agg(lr.step          order by lr.is_primary desc, lr.resource_uid))[1] as step,
-                   (array_agg(lr.line_id       order by lr.is_primary desc, lr.resource_uid))[1] as line_id,
-                   array_agg(lr.resource_uid   order by lr.is_primary desc, lr.resource_uid)     as resource_uids,
-                   string_agg(lr.resource_name, ', ' order by lr.is_primary desc, lr.resource_uid) as resource_names
-            from lane_resource lr
-            group by lr.lane_id, lr.sort_order, lr.resource_paths
-        ) la
-        left join relation.production_line pl on pl.line_id = la.line_id
-        left join tenant t on t.tenant_id = pl.tenant_id
-        where (p_tenant_ids is null or t.tenant_id = any (p_tenant_ids))
+        select l.lane_id, pl_l.sort_order, l.resource_path,
+               r.resource_uid, r.resource_name, r.step,
+               t.tenant_id, t.tenant_name, t.production_company_id
+        from the_plan tp
+        join action.plan_lane pl_l on pl_l.plan_id = tp.plan_id
+        join action.lane l on l.lane_id = pl_l.lane_id
+        join relation.resource r on r.resource_path = l.resource_path
+        -- the site is the first label of the path: the tenant's abb (dk, bh)
+        left join tenant t on t.abb = ltree2text(subpath(l.resource_path, 0, 1))
+        where l.resource_path is not null
+          and (p_tenant_ids is null or t.tenant_id = any (p_tenant_ids))
     ),
     -- planned items with the nests hung on them
     item as (
@@ -154,21 +143,20 @@ begin
     -- realized: the state blocks and the produced items of the lanes'
     -- resources, up to the viewed moment (the log functions clip to now())
     realized_state as (
-        select s.resource_uid, s.name as resource_name, s.state, s.group_state, s.start_at,
+        select s.resource_uid, s.state, s.group_state, s.start_at,
                s.duration_seconds, s.data, s.nest_name
         from log.get_resource_state(
-                 (select array_agg(distinct u) from lane l cross join unnest(l.resource_uids) u), v_day_start, least(p_until, v_day_end), null) s
+                 (select array_agg(l.resource_uid) from lane l), v_day_start, least(p_until, v_day_end), null) s
     ),
     realized_produced as (
-        select r.resource_uid, r.name as resource_name, r.state, r.group_state, r.start_at,
+        select r.resource_uid, r.state, r.group_state, r.start_at,
                r.duration_seconds, r.data, r.nest_name
         from log.get_resource_produced(
-                 (select array_agg(distinct u) from lane l cross join unnest(l.resource_uids) u), v_day_start, least(p_until, v_day_end), null) r
+                 (select array_agg(l.resource_uid) from lane l), v_day_start, least(p_until, v_day_end), null) r
     )
     -- planned rows: the lane's primary resource names the row
     select l.tenant_id, l.tenant_name, l.production_company_id,
-           l.resource_uid, l.resource_name, l.resource_uids, l.resource_names,
-           l.resource_paths, l.lane_id, l.step,
+           l.resource_uid, l.resource_name, l.resource_path, l.lane_id, l.step,
            i.level, i.lane_item_id, i.sort_order, i.is_pinned, i.no_split, i.is_fixed_group,
            i.start_offset_in_seconds,
            -- pv2's duration when it sent one, else the print time of the run
@@ -208,8 +196,7 @@ begin
     union all
     -- realized: state blocks, named by the resource that ran
     select l.tenant_id, l.tenant_name, l.production_company_id,
-           rs.resource_uid, rs.resource_name, l.resource_uids, l.resource_names,
-           l.resource_paths, l.lane_id, l.step,
+           l.resource_uid, l.resource_name, l.resource_path, l.lane_id, l.step,
            1::smallint, null::bigint, null::numeric, false, false, null::text,
            extract(epoch from (rs.start_at - v_day_start))::integer,
            rs.duration_seconds::integer,
@@ -224,13 +211,12 @@ begin
            array_remove(array[rs.state ->> 'class_name'], null),
            coalesce(rs.data, '{}'::jsonb)
     from realized_state rs
-    join lane l on rs.resource_uid = any (l.resource_uids)
+    join lane l on l.resource_uid = rs.resource_uid
 
     union all
     -- realized: produced items, named by the resource that ran
     select l.tenant_id, l.tenant_name, l.production_company_id,
-           rp.resource_uid, rp.resource_name, l.resource_uids, l.resource_names,
-           l.resource_paths, l.lane_id, l.step,
+           l.resource_uid, l.resource_name, l.resource_path, l.lane_id, l.step,
            1::smallint, null::bigint, null::numeric, false, false, null::text,
            extract(epoch from (rp.start_at - v_day_start))::integer,
            rp.duration_seconds::integer,
@@ -246,9 +232,9 @@ begin
            array_remove(array[rp.state ->> 'class_name', 'realized-produced'], null),
            coalesce(rp.data, '{}'::jsonb) || jsonb_build_object('nest_name', rp.nest_name)
     from realized_produced rp
-    join lane l on rp.resource_uid = any (l.resource_uids)
+    join lane l on l.resource_uid = rp.resource_uid
 
-    order by tenant_id, resource_paths, level, start_offset_in_seconds, sort_order;
+    order by tenant_id, resource_path, level, start_offset_in_seconds, sort_order;
 end;
 $$;
 
