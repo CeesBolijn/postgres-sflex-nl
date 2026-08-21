@@ -180,7 +180,11 @@ BEGIN
            coalesce(bpl.line_type, pl.line_type) as line_type,
            pl.line_type                              as physical_line_type,
            ((pt.action_json ->> 'start_date')::timestamp AT TIME ZONE 'Europe/Amsterdam')                     AS start_at,
-           ((pt.action_json ->> 'start_date')::timestamp AT TIME ZONE 'Europe/Amsterdam')::date               AS plan_date,
+           -- start_date is Amsterdam local time; its date IS the plan date.
+           -- No AT TIME ZONE here: the date cast would run in the session
+           -- timezone (GMT) and shift items starting just after midnight
+           -- to the previous day, blowing the 0..86399 offset check.
+           ((pt.action_json ->> 'start_date')::timestamp)::date                                                AS plan_date,
            (pt.action_json ->> 'start_date')::timestamp                                                        AS start_local,
            (pt.action_json ->> 'end_date')::timestamp                                                          AS end_local,
            pt.is_fixed_offset,
