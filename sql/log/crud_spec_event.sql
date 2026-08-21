@@ -1,81 +1,100 @@
 create function crud_spec_event(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(track_by integer, crud text, spec_id bigint, spec_event_id bigint)
 	language plpgsql
 as $$
-declare
-  rec jsonb;
-  v_data jsonb;
-  v_spec_id bigint;
-  v_spec_event_id bigint;
-  v_from_seq integer;
-  v_to_seq integer;
+#variable_conflict use_column
 begin
 
-  for rec in
-    select value from jsonb_array_elements(p_param_json) as e(value)
-    where e.value ->> 'crud' = 'create'
-    order by (e.value -> 'data' ->> 'to_status' = 'stock') desc,
-             (e.value ->> 'track_by')::integer
-  loop
-
-    v_data := rec -> 'data';
-    v_spec_id := null;
-    v_spec_event_id := null;
-
-    if v_data ->> 'to_status' = 'stock' then
-
+  -- 1. stock rows create a spec. These run first: movements in the same
+  --    call find their spec by newest spec_id, which may be created here.
+  --    Inserted ids are paired back to input rows by rank; spec_id is
+  --    assigned in the ordered insert's row order.
+  return query
+  with stock as (
+      select (e.value ->> 'track_by')::integer as track_by,
+             e.value ->> 'crud'                as crud,
+             e.value -> 'data'                 as data,
+             row_number() over (order by (e.value ->> 'track_by')::integer) as rn
+      from jsonb_array_elements(p_param_json) as e(value)
+      where e.value ->> 'crud' = 'create'
+        and e.value -> 'data' ->> 'to_status' = 'stock'
+  ),
+  ins as (
       insert into log.spec as sp (amount, spec_json)
-      values (
-        (v_data ->> 'amount')::integer,
-        (v_data -> 'spec_json') || jsonb_build_object('expiry_date', v_data ->> 'expiry_date')
-      )
-      returning sp.spec_id into v_spec_id;
+      select (s.data ->> 'amount')::integer,
+             (s.data -> 'spec_json') || jsonb_build_object('expiry_date', s.data ->> 'expiry_date')
+      from stock s
+      order by s.rn
+      returning sp.spec_id
+  ),
+  ins_ranked as (
+      select i.spec_id, row_number() over (order by i.spec_id) as rn
+      from ins i
+  )
+  select s.track_by, s.crud, i.spec_id, null::bigint
+  from stock s
+  join ins_ranked i on i.rn = s.rn
+  where not p_no_results
+  order by s.track_by;
 
-    else
-
-     select sp.spec_id into v_spec_id
-     from log.spec sp
-     where sp.spec_json -> 'resource_uids' ->> 0 = v_data ->> 'resource_uid'
-     and sp.spec_json ->> 'ink_configuration_id'
-       = v_data -> 'spec_json' ->> 'ink_configuration_id'
-     order by sp.spec_id desc
-     limit 1;
-
-      v_from_seq := (select st.sequence from job.status st where st.code = v_data ->> 'from_status');
-      v_to_seq := (select st.sequence from job.status st where st.code = v_data ->> 'to_status');
-
-      -- skip rows we can't log: unknown spec, no resolvable status, or a non-move
-      if v_spec_id is null
-         or (v_from_seq is null and v_to_seq is null)
-         or v_from_seq is not distinct from v_to_seq then
-        continue;
-      end if;
-
+  -- 2. the other rows are movements; the specs inserted above are visible
+  --    here. Rows that cannot be logged (unknown spec, no resolvable
+  --    status, or a non-move) are silently omitted from the result.
+  return query
+  with move as (
+      select (e.value ->> 'track_by')::integer as track_by,
+             e.value ->> 'crud'                as crud,
+             e.value -> 'data'                 as data
+      from jsonb_array_elements(p_param_json) as e(value)
+      where e.value ->> 'crud' = 'create'
+        and e.value -> 'data' ->> 'to_status' is distinct from 'stock'
+  ),
+  resolved as (
+      select m.track_by, m.crud, m.data,
+             cand.spec_id, f.sequence as from_seq, t.sequence as to_seq
+      from move m
+      left join lateral (
+          select sp.spec_id
+          from log.spec sp
+          where sp.spec_json -> 'resource_uids' ->> 0 = m.data ->> 'resource_uid'
+            and sp.spec_json ->> 'ink_configuration_id'
+              = m.data -> 'spec_json' ->> 'ink_configuration_id'
+          order by sp.spec_id desc
+          limit 1
+      ) cand on true
+      left join job.status f on f.code = m.data ->> 'from_status'
+      left join job.status t on t.code = m.data ->> 'to_status'
+  ),
+  valid as (
+      select r.*, row_number() over (order by r.track_by) as rn
+      from resolved r
+      where r.spec_id is not null
+        and (r.from_seq is not null or r.to_seq is not null)
+        and r.from_seq is distinct from r.to_seq
+  ),
+  ins as (
       insert into log.spec_event as sl (
-        spec_id, from_status_sequence, to_status_sequence,
-        amount, remaining_impact_delta, resource_uids, moved_at
+          spec_id, from_status_sequence, to_status_sequence,
+          amount, remaining_impact_delta, resource_uids, moved_at
       )
-      values (
-        v_spec_id, v_from_seq, v_to_seq,
-        (v_data ->> 'amount')::integer, null,
-        array[v_data ->> 'resource_uid'],
-        (v_data ->> 'moved_at')::timestamptz
-      )
-      returning sl.spec_event_id into v_spec_event_id;
-
-    end if;
-
-    if not p_no_results then
-      return query select
-        (rec ->> 'track_by')::integer,
-        rec ->> 'crud',
-        v_spec_id,
-        v_spec_event_id;
-    end if;
-
-  end loop;
+      select v.spec_id, v.from_seq, v.to_seq,
+             (v.data ->> 'amount')::integer, null,
+             array[v.data ->> 'resource_uid'],
+             (v.data ->> 'moved_at')::timestamptz
+      from valid v
+      order by v.rn
+      returning sl.spec_event_id
+  ),
+  ins_ranked as (
+      select i.spec_event_id, row_number() over (order by i.spec_event_id) as rn
+      from ins i
+  )
+  select v.track_by, v.crud, v.spec_id, i.spec_event_id
+  from valid v
+  join ins_ranked i on i.rn = v.rn
+  where not p_no_results
+  order by v.track_by;
 
 end;
 $$;
 
 alter function crud_spec_event(jsonb, boolean) owner to xfw3;
-
