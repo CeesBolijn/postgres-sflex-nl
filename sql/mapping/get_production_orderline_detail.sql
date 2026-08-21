@@ -153,16 +153,23 @@ begin
                    'amount',               pc.amount
                ) order by pc.part_status) as part_status_json
         from (
-            select pg.production_orderline_id, u.part_status,
-                   -- part_amount can be shorter than part_statuses; then the
-                   -- total is spread evenly instead.
-                   case when pg.part_amount_count < pg.part_status_count
-                        then pg.part_amount_sum::numeric / pg.part_status_count
-                        else pg.part_amount[u.ord]::numeric
-                   end as amount
-            from progress pg
-            cross join lateral unnest(pg.part_statuses) with ordinality as u(part_status, ord)
-            where pg.part_statuses is not null
+            -- one row per status: parts sharing a status collapse into one
+            -- entry with their amounts summed
+            select per_part.production_orderline_id, per_part.part_status,
+                   sum(per_part.amount) as amount
+            from (
+                select pg.production_orderline_id, u.part_status,
+                       -- part_amount can be shorter than part_statuses; then the
+                       -- total is spread evenly instead.
+                       case when pg.part_amount_count < pg.part_status_count
+                            then pg.part_amount_sum::numeric / pg.part_status_count
+                            else pg.part_amount[u.ord]::numeric
+                       end as amount
+                from progress pg
+                cross join lateral unnest(pg.part_statuses) with ordinality as u(part_status, ord)
+                where pg.part_statuses is not null
+            ) per_part
+            group by per_part.production_orderline_id, per_part.part_status
         ) pc
         left join mapping.internal_status si
                on si.sequence = pc.part_status and si.domain_id = p_domain_id
