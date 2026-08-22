@@ -106,9 +106,11 @@ SELECT setval(pg_get_serial_sequence('catalog.imposition_group', 'imposition_gro
 -- ambiguous and unmatched rows stay null for hand-work. Dry-run today:
 -- 314 imposition rows, 142 matched of which 19 ambiguous.
 UPDATE catalog.xbom x
-SET item_code = upper(replace(ltree2text(m.path), '.', '-'))
+SET item_code = upper(replace(m.path_text, '.', '-'))
 FROM (
-    SELECT x2.xbom_id, min(g.item_code_paths[1]) AS path
+    -- min() over the text form: ltree has no min aggregate, and the HAVING
+    -- guarantees there is only one path anyway
+    SELECT x2.xbom_id, min(ltree2text(g.item_code_paths[1])) AS path_text
     FROM catalog.xbom x2
     JOIN mapping.option_translation t
       ON t.material_id IS NOT NULL
