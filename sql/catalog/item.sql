@@ -4,6 +4,7 @@ create table item
 		primary key,
 	item_code text not null
 		unique,
+	item_code_path ltree generated always as (text2ltree(replace(lower(item_code), '-', '.'))) stored,
 	item_group_code text not null
 		references item_group (item_group_code),
 	description text not null,
@@ -17,4 +18,7 @@ alter table item owner to xfw3;
 
 create index idx_item_item_group_code
 	on item (item_group_code);
+
+create index idx_item_code_path_gist
+	on item using gist (item_code_path);
 

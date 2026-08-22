@@ -1,21 +1,34 @@
 -- ============================================================
 -- Migration: catalog.imposition_group — planning moves from
--- material to imposition group.
+-- material to imposition group — plus the material items in
+-- catalog.item, both seeded from mapping.material_production_line.
 --
 -- Run BEFORE sql/migration_lane_slots.sql: the slot link table
 -- (action.imposition_group_lane_item) references this one.
 --
--- The seed derives one group per material from
--- mapping.material_production_line, with imposition_group_id =
--- material_id (the ids stay interchangeable during the
--- transition) and item_code_paths[1] built from the line_json:
--- material_media_type (roll/sheet/piece; missing = roll, those
--- are the textile rows) + material_name as a path. Eleven
--- materials share a name; their path gets the material_id as an
--- extra label — refine by hand afterwards.
+-- Seed rules:
+-- * media type from line_json material_media_type_id:
+--   1 = sheet, 3 = roll, missing = roll (the textile rows);
+--   2 = piece is left out entirely — accessories are not planned.
+-- * imposition_group_id = material_id, so the ids stay
+--   interchangeable during the transition.
+-- * item_code_paths[1] = media type + material_name as a path;
+--   materials sharing a name get their id as an extra label —
+--   refine by hand afterwards.
+-- * every path also becomes a catalog.item (group 'material',
+--   item_code is the path in code form: sheet.dibond.budget.2mm
+--   -> SHEET-DIBOND-BUDGET-2MM); item_code_path derives it back.
 -- ============================================================
 
 BEGIN;
+
+-- the automatic path on the item, same derivation as item_base_price
+ALTER TABLE catalog.item
+    ADD COLUMN item_code_path ltree
+        GENERATED ALWAYS AS (text2ltree(replace(lower(item_code), '-', '.'))) STORED;
+
+CREATE INDEX idx_item_code_path_gist
+    ON catalog.item USING gist (item_code_path);
 
 CREATE TABLE catalog.imposition_group
 (
@@ -31,37 +44,83 @@ ALTER TABLE catalog.imposition_group OWNER TO xfw3;
 CREATE INDEX idx_catalog_imposition_group_paths_gist
     ON catalog.imposition_group USING gist (item_code_paths);
 
--- seed: one group per material, id = material_id
+-- the item group of the material items
+INSERT INTO catalog.item_group (item_group_code, item_group_json)
+VALUES ('material', '{"sort_order": 0}'::jsonb);
+
+-- seed groups and items in one pass
 WITH src AS (
     SELECT DISTINCT ON (material_id)
            material_id,
-           coalesce(line_json ->> 'material_media_type', 'roll') AS media_type,
-           line_json ->> 'material_name'                         AS material_name
+           CASE line_json ->> 'material_media_type_id'
+                WHEN '1' THEN 'sheet'
+                ELSE 'roll'                       -- 3 and the type-less textile rows
+           END                           AS media_type,
+           line_json ->> 'material_name' AS material_name
     FROM mapping.material_production_line
     WHERE line_json ->> 'material_name' IS NOT NULL
-    ORDER BY material_id, (line_json ->> 'material_media_type') NULLS LAST
+      AND coalesce(line_json ->> 'material_media_type_id', '') <> '2'   -- piece: not planned
+    ORDER BY material_id, (line_json ->> 'material_media_type_id') NULLS LAST
 ),
 pathed AS (
-    SELECT material_id,
+    SELECT material_id, media_type, material_name,
            text2ltree(media_type || '.' ||
                trim(both '.' from regexp_replace(lower(material_name), '[^a-z0-9]+', '.', 'g'))) AS path
     FROM src
 ),
 deduped AS (
     -- materials sharing a name get their id as an extra label
-    SELECT material_id,
+    SELECT material_id, media_type, material_name,
            CASE WHEN count(*) OVER (PARTITION BY path) > 1
                 THEN path || material_id::text
                 ELSE path END AS path
     FROM pathed
+),
+grp AS (
+    INSERT INTO catalog.imposition_group (imposition_group_id, item_code_paths)
+    SELECT material_id, ARRAY[path]
+    FROM deduped
+    ORDER BY material_id
+    RETURNING imposition_group_id
+),
+itm AS (
+    INSERT INTO catalog.item (item_code, item_group_code, description, item_json)
+    SELECT DISTINCT ON (path)
+           upper(replace(ltree2text(path), '.', '-')),
+           'material',
+           material_name,
+           jsonb_build_object('material_id', material_id, 'media_type', media_type)
+    FROM deduped
+    ORDER BY path, material_id
+    RETURNING item_id
 )
-INSERT INTO catalog.imposition_group (imposition_group_id, item_code_paths)
-SELECT material_id, ARRAY[path]
-FROM deduped
-ORDER BY material_id;
+SELECT (SELECT count(*) FROM grp) AS imposition_groups,
+       (SELECT count(*) FROM itm) AS items;
 
 SELECT setval(pg_get_serial_sequence('catalog.imposition_group', 'imposition_group_id'),
               (SELECT max(imposition_group_id) FROM catalog.imposition_group), true);
+
+-- xbom item codes: option_translation says which material an option code
+-- is produced on; the imposition group turns that into the item code.
+-- Only unambiguous matches (one material per option code) are written;
+-- ambiguous and unmatched rows stay null for hand-work. Dry-run today:
+-- 314 imposition rows, 142 matched of which 19 ambiguous.
+UPDATE catalog.xbom x
+SET item_code = upper(replace(ltree2text(m.path), '.', '-'))
+FROM (
+    SELECT x2.xbom_id, min(g.item_code_paths[1]) AS path
+    FROM catalog.xbom x2
+    JOIN mapping.option_translation t
+      ON t.material_id IS NOT NULL
+     AND x2.option_code = ANY (t.option_codes)
+    JOIN catalog.imposition_group g
+      ON g.imposition_group_id = t.material_id
+    WHERE x2.scope = 'imposition'
+    GROUP BY x2.xbom_id
+    HAVING count(DISTINCT t.material_id) = 1
+) m
+WHERE x.xbom_id = m.xbom_id
+  AND x.item_code IS NULL;
 
 COMMIT;
 
