@@ -3,9 +3,17 @@
 Proposal for folding `json/data/block/pages.json` and
 `json/data/block/pages-content.json` into the block concept. **The block
 json structure is the master**: where the two files name the same thing
-differently, the block's property name wins; where they carry something the
-block structure cannot express yet, the block structure is extended — as
-data, not as code.
+differently, the block's property name wins; where they invent structure the
+block model already covers, the block model's way wins.
+
+Two principles drive the mapping:
+
+- **blocks are region-agnostic** — a block never knows whether it sits in a
+  header, footer, sidebar or main area; placement is the page's business;
+- **the page's blocks are the UI rows** — `site.page_block.sort_order`
+  stacks them, and inside a block `cols` (with `col_width`) makes the
+  columns. That covers what pages.json expresses with `grid.rows`,
+  `grid.columns` and `areas`, so none of those come over.
 
 ## 1. what exists today
 
@@ -22,92 +30,69 @@ The react side is already converging: a floating window mounts
 serves database pages. The static files are the last views not yet living in
 `site.page` / `site.block` / `site.data_group`.
 
-## 2. gap analysis — what the block structure misses
+## 2. gap analysis
 
 Checked against the master type (`packages/xfw-ui/src/types/content.ts`,
 interface `Content`) and the renderer (`components/blocks/multi-col.tsx`):
 
-| pages.json has | block structure today | gap |
-|---|---|---|
-| `header` / `main` / `footer` regions | one block is one region-less grid; a page stacks blocks by `page_block.sort_order` | **no region concept** |
-| `grid.rows` / `grid.columns` / `grid.areas` / `grid.gap` / `grid.align_items` | `MultiCol` derives an implicit grid from `cols[].col_width` and `col[].row_height`; no named areas, no gap, no alignment | **no explicit grid** |
-| `sections[].area` | cells have `class_name` / `row_height`, no area assignment | **no `area` on a cell** |
-| `sidebar_width` | `BlockRow.environment` knows `sidebar_side`, `sidebar_title`, `sidebar_icon` | **no `sidebar_width`** |
-| `data_group: "header_data_groups/timeline-controls.json"` (a file path) | `param_json.data_group` is always a **name** resolved from `site.data_group` | **file-referenced data groups** |
-| — (pages-content) `block.title` + `block.i18n` | `Content.title` items have `text` / `class_name`, **no i18n** | **no multilingual block title** |
+| pages.json has | verdict |
+|---|---|
+| `header` / `main` / `footer` regions | **does not come over** — blocks are region-agnostic; a page is an ordered stack of blocks (`page_block.sort_order`) |
+| `grid.rows` | **already covered** — one section per block; the block order is the row order |
+| `grid.columns` | **already covered** — `cols` with `col_width` (`"auto"`, `"1fr"`) |
+| `grid.areas` + `sections[].area` | **unnecessary** — rows × cols place everything these views need |
+| `grid.gap`, `grid.align_items` | **unnecessary** — spacing and alignment belong to the layout components, not to content config |
+| `sections[].data_group` | **already covered** — `param_json.data_group` |
+| `data_group: "header_data_groups/timeline-controls.json"` (a file path) | **gap** — a data group reference is always a *name* resolved from `site.data_group`; the file must become a row |
+| `sidebar_width` (pages.json root) | **gap** — dock hint, belongs next to `sidebar_side` / `sidebar_title` / `sidebar_icon` in `page.environment` |
+| pages-content `block.title` + `block.i18n` | **gap** — `Content.title` items have `text` / `class_name`, no i18n; the dock also needs a translated tab title |
 
-Everything else maps one-to-one: a `section` is a cell, `section.data_group`
-is `param_json.data_group`, ordering is array order.
+So only two real extensions remain, plus one data cleanup.
 
-## 3. proposed extensions to block_json
+## 3. proposed extensions
 
-Four additions, all optional, all backwards compatible (an existing block
-without them renders exactly as before):
+1. **`i18n` at the root of `block_json`**, `title` as the standard slot —
+   the same rule as everywhere else. The bare `title` array stays what it is
+   (styled title parts); `i18n.title` is the translated window/tab title.
 
 ```json
 {
-  "region": "header",
-  "grid": {
-    "columns": "auto 1fr",
-    "rows": "auto",
-    "gap": "0.5rem",
-    "align_items": "center",
-    "areas": ["breadcrumb controls"]
-  },
   "i18n": {
     "nl": {"title": "Nest resource agenda"},
     "en": {"title": "Nest resource schedule"}
   },
-  "cols": [
-    {"col": [{"area": "breadcrumb"}]},
-    {"col": [{"area": "controls", "param_json": {"data_group": "timeline_controls"}}]}
-  ],
-  "block_layout": "grid"
+  "cols": [{"col": [{"param_json": {"data_group": "nest_resource_schedule"}}]}],
+  "block_layout": "one-col"
 }
 ```
 
-1. **`region`** — `header` | `main` | `footer`, default `main`. A page-code
-   becomes one `site.page` with one block per region; `page_block.sort_order`
-   keeps the order within a region. No schema change: it is a `block_json`
-   property.
-2. **`grid`** — the explicit variant of what `MultiCol` derives implicitly.
-   When present it wins over the derived grid; `block_layout` stays the named
-   preset for everything that does not need it. Keys exactly as pages.json
-   already writes them (they were already snake_case).
-3. **`area`** on a cell — pairs with `grid.areas`; a cell without `area`
-   falls back to the derived placement, so both styles mix.
-4. **`i18n`** at the root, `title` as the standard slot — the same rule as
-   everywhere else in the data groups. The bare `title` array stays what it
-   is (styled title parts); `i18n.title` is the translated window/tab title,
-   which the dock also needs for `TabMeta.title`.
+2. **`sidebar_width` in `page.environment`** — joining the existing
+   `sidebar_side` / `sidebar_title` / `sidebar_icon`: it describes the
+   page's dock behaviour, never a block's content.
 
-And one addition next to the block: **`sidebar_width`** joins
-`sidebar_side` / `sidebar_title` / `sidebar_icon` in `page.environment` —
-it describes the page's dock behaviour, not a block's content.
+And the cleanup: the two file-referenced data groups
+(`header_data_groups/timeline-controls.json`) become real `site.data_group`
+rows (`timeline_controls`), referenced by name. File paths as data group
+references do not survive this migration, by design.
 
 ## 4. property mapping
 
 | from | to |
 |---|---|
 | `code` | `site.page` (one page per code; the window path stays the route) |
-| `header` / `main` / `footer` | one block each, `block_json.region` |
-| `grid.*` | `block_json.grid.*` (names unchanged) |
-| `sections[]` | `cols[].col[]` cells |
+| region + `sections[]` order | `page_block.sort_order` — one block per section, top to bottom: header sections, main sections, footer sections |
+| a multi-column region (`grid.columns: "auto 1fr"`) | one block with two `cols`, `col_width` `"auto"` / `"1fr"` |
 | `sections[].data_group` | `param_json.data_group` |
-| `sections[].area` | cell `area` |
+| `grid.rows` / `areas` / `gap` / `align_items`, `sections[].area` | dropped (covered or unnecessary, see §2) |
 | `sidebar_width` | `page.environment.sidebar_width` |
 | pages-content `block.title` | `block_json.title[0].text` |
 | pages-content `block.i18n.<lang>.title` | `block_json.i18n.<lang>.title` |
-| `"header_data_groups/timeline-controls.json"` | a real `site.data_group` row (`timeline_controls`), referenced by name |
-
-Note the last row: the two file-referenced data groups must become database
-rows first — file paths as data group references do not survive this
-migration, by design.
+| `"header_data_groups/timeline-controls.json"` | `site.data_group` row `timeline_controls`, by name |
 
 ## 5. worked example
 
-`nest-resource-schedule` (the fullest case: three regions, named areas, a
-footer) becomes one page and three blocks:
+`nest-resource-schedule` (the fullest case: a two-column header, a filter, a
+schedule and a footer) becomes one page and four blocks:
 
 **page** — path as today's window route, environment carries the dock hints:
 
@@ -116,57 +101,33 @@ footer) becomes one page and three blocks:
  "environment": {"sidebar_width": "30%"}}
 ```
 
-**block 1** (`sort_order` 1):
+**blocks**, stacked by `page_block.sort_order`:
 
 ```json
-{
-  "region": "header",
-  "grid": {"columns": "auto 1fr", "align_items": "center",
-           "areas": ["breadcrumb controls"]},
-  "cols": [
-    {"col": [{"area": "breadcrumb"}]},
-    {"col": [{"area": "controls",
-              "param_json": {"data_group": "timeline_controls"}}]}
-  ],
-  "block_layout": "grid"
-}
+{"cols": [{"col": [{}], "col_width": "auto"},
+          {"col": [{"param_json": {"data_group": "timeline_controls"}}], "col_width": "1fr"}],
+ "block_layout": "grid"}
 ```
-
-**block 2** (`sort_order` 2) — with the titles from pages-content.json:
 
 ```json
-{
-  "region": "main",
-  "grid": {"rows": "auto 1fr", "gap": "0.5rem"},
-  "i18n": {
-    "nl": {"title": "Nest resource agenda"},
-    "en": {"title": "Nest resource schedule"},
-    "de": {"title": "Nest Ressourcen Zeitplan"}
-  },
-  "cols": [
-    {"col": [
-      {"param_json": {"data_group": "nest_schedule_filter"}},
-      {"param_json": {"data_group": "nest_resource_schedule"}}
-    ]}
-  ],
-  "block_layout": "grid"
-}
+{"i18n": {"nl": {"title": "Nest resource agenda"},
+          "en": {"title": "Nest resource schedule"},
+          "de": {"title": "Nest Ressourcen Zeitplan"}},
+ "cols": [{"col": [{"param_json": {"data_group": "nest_schedule_filter"}}]}],
+ "block_layout": "one-col"}
 ```
-
-**block 3** (`sort_order` 3):
 
 ```json
-{
-  "region": "footer",
-  "grid": {"rows": "auto", "gap": "0.5rem"},
-  "cols": [{"col": [{"param_json": {"data_group": "status_bar"}}]}],
-  "block_layout": "grid"
-}
+{"cols": [{"col": [{"param_json": {"data_group": "nest_resource_schedule"}}]}],
+ "block_layout": "one-col"}
 ```
 
-A simple case (`nest-detail`: one section, no grid, no header/footer)
-collapses to a single block — `{"cols": [{"col": [{"param_json":
-{"data_group": "nest_detail"}}]}], "block_layout": "one-col", "i18n": {…}}` —
+```json
+{"cols": [{"col": [{"param_json": {"data_group": "status_bar"}}]}],
+ "block_layout": "one-col"}
+```
+
+A simple case (`nest-detail`: one section) collapses to a single block —
 indistinguishable from the blocks that exist today.
 
 ## 6. migration steps
@@ -174,15 +135,14 @@ indistinguishable from the blocks that exist today.
 1. **Data groups first**: create `site.data_group` rows for the two
    file-referenced groups (`header_data_groups/timeline-controls.json` →
    `timeline_controls`).
-2. **Frontend types**: extend `Content` with `region`, `grid`, `i18n` and the
-   cell `area`; teach `MultiCol` to prefer an explicit `grid`; teach the page
-   renderer to slot blocks by `region`; dock reads `sidebar_width` from
-   `page.environment` and the tab title from `block_json.i18n`.
+2. **Frontend types**: extend `Content` with the root `i18n`; the dock reads
+   `sidebar_width` from `page.environment` and the tab title from
+   `block_json.i18n`.
 3. **Convert**: one script generates, per `code` in pages.json, the page row,
-   the blocks (merged with the title from pages-content.json on the main
-   block), the `page_block` rows and the `domain_page` row. 35 layouts, 35
-   titles — small enough to review as one diff in the `json/` mirror before
-   it is applied.
+   one block per section (title from pages-content.json on the main block),
+   the `page_block` rows and the `domain_page` row. 35 layouts, 35 titles —
+   small enough to review as one diff in the `json/` mirror before it is
+   applied.
 4. **Switch over**: windows already load through `getBlocks`; once the pages
    exist, the react portal drops its bundled copies and
    `json/data/block/pages.json` + `pages-content.json` are deleted.
