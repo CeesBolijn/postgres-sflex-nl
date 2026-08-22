@@ -485,6 +485,11 @@ WITH payload AS (
                                   "is_optional": true,
                                   "is_query_param": true,
                                   "value_from": "logistics_datetime"
+                                },
+                                {
+                                  "key": "status_sequences",
+                                  "value_from": "status_sequence",
+                                  "is_query_param": true
                                 }
                               ]
                             },
@@ -536,6 +541,11 @@ WITH payload AS (
                                 "key": "logistics_at",
                                 "value_from": "logistics_datetime",
                                 "is_optional": true,
+                                "is_query_param": true
+                              },
+                              {
+                                "key": "status_sequences",
+                                "value_from": "status_sequence",
                                 "is_query_param": true
                               }
                             ]
@@ -1116,8 +1126,8 @@ WITH payload AS (
           },
           {
             "key": "status_sequences",
-            "value_from": "status_sequence",
-            "is_query_param": true
+            "is_query_param": true,
+            "is_optional": true
           },
           {
             "key": "from",
@@ -1563,7 +1573,7 @@ WITH payload AS (
                   }
                 },
                 "order": 4,
-                "class_name": "col-span-1 text-right",
+                "class_name": "col-span-1",
                 "hidden_when": [
                   {
                     "key": "impact_json.rework_count",
@@ -1589,7 +1599,7 @@ WITH payload AS (
                 },
                 "order": 5,
                 "scale": 1,
-                "class_name": "col-span-1 text-right",
+                "class_name": "col-span-1",
                 "hidden_when": [
                   {
                     "key": "impact_json.rework_count",
@@ -1614,7 +1624,7 @@ WITH payload AS (
                   }
                 },
                 "order": 6,
-                "class_name": "col-span-1 text-right",
+                "class_name": "col-span-1",
                 "hidden_when": [
                   {
                     "key": "impact_json.rework_count",

@@ -472,6 +472,11 @@
                                 "is_optional": true,
                                 "is_query_param": true,
                                 "value_from": "logistics_datetime"
+                              },
+                              {
+                                "key": "status_sequences",
+                                "value_from": "status_sequence",
+                                "is_query_param": true
                               }
                             ]
                           },
@@ -523,6 +528,11 @@
                               "key": "logistics_at",
                               "value_from": "logistics_datetime",
                               "is_optional": true,
+                              "is_query_param": true
+                            },
+                            {
+                              "key": "status_sequences",
+                              "value_from": "status_sequence",
                               "is_query_param": true
                             }
                           ]
