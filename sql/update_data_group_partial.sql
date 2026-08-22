@@ -476,10 +476,6 @@ WITH payload AS (
                                   "is_query_param": true
                                 },
                                 {
-                                  "key": "internal_status_code",
-                                  "is_query_param": true
-                                },
-                                {
                                   "key": "material_ids",
                                   "is_query_param": true,
                                   "value_from": "material_id"
