@@ -21,7 +21,7 @@ WITH payload AS (
     WHERE n.nested_at >= current_date - 21
 )
 SELECT p.nest_id, p.sort_order, p.nest_seconds, p.is_cancelled,
-       lane.lane_id, slot.lane_item_id
+       lane.lane_id, item.lane_item_id
 FROM payload p
 LEFT JOIN relation.production_line prl ON prl.line_id = p.production_line_id
 LEFT JOIN LATERAL (
@@ -57,7 +57,7 @@ LEFT JOIN LATERAL (
                   THEN -COALESCE(li.start_offset_in_seconds, 0)
                   ELSE COALESCE(li.start_offset_in_seconds, 0) END
     LIMIT 1
-) slot ON true;
+) item ON true;
 
 INSERT INTO action.lane_item
     (lane_id, sort_order, start_offset_in_seconds, no_split, level, source, source_ref)

@@ -150,7 +150,7 @@ BEGIN
         WHERE pt.crud IN ('create', 'merge', 'update')
     )
     SELECT p.nest_id, p.sort_order, p.nest_seconds, p.is_cancelled,
-           lane.lane_id, slot.lane_item_id
+           lane.lane_id, item.lane_item_id
     FROM payload p
     LEFT JOIN relation.production_line prl ON prl.line_id = p.production_line_id
     LEFT JOIN LATERAL (
@@ -185,7 +185,7 @@ BEGIN
                       THEN -COALESCE(li.start_offset_in_seconds, 0)
                       ELSE COALESCE(li.start_offset_in_seconds, 0) END
         LIMIT 1
-    ) slot ON true;
+    ) item ON true;
 
     -- lane found but no lane item at all: create one for this nest
     INSERT INTO action.lane_item
