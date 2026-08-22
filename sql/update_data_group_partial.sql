@@ -40,17 +40,7 @@ WITH payload AS (
             "is_query_param": true
           },
           {
-            "key": "internal_status_code",
-            "is_optional": true,
-            "is_query_param": true
-          },
-          {
             "key": "status_levels",
-            "is_optional": true,
-            "is_query_param": true
-          },
-          {
-            "key": "material_id",
             "is_optional": true,
             "is_query_param": true
           },
