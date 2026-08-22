@@ -547,9 +547,6 @@ WITH payload AS (
                         "deselectable": true
                       },
                       "field_config": {
-                        "nest_ids": {
-                          "ui": {}
-                        },
                         "material_sqm": {
                           "ui": {
                             "i18n": {
