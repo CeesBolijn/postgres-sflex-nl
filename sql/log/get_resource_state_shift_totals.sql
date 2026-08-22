@@ -1,4 +1,4 @@
-create function log.get_resource_state_shift_totals(p_resource_uids text[] DEFAULT NULL::text[], p_until timestamp with time zone DEFAULT CURRENT_TIMESTAMP, p_days integer DEFAULT 42, p_line_type text DEFAULT NULL::text, p_states text[] DEFAULT NULL::text[], p_include_weekends boolean DEFAULT false, p_include_mandatory_days_off boolean DEFAULT false, p_include_shifts boolean DEFAULT true, p_group_by text DEFAULT NULL::text) returns TABLE(shift_date date, shift_index integer, shift_start timestamp with time zone, shift_end timestamp with time zone, resource_uid text, resource_name text, resource_uids jsonb, line text, step text, state text, state_json jsonb, duration_seconds numeric, total_duration_seconds numeric, duration_percent numeric, parent_percent numeric, count_resources integer, sort_order integer)
+create function log.get_resource_state_shift_totals(p_resource_uids text[] DEFAULT NULL::text[], p_until timestamp with time zone DEFAULT CURRENT_TIMESTAMP, p_days integer DEFAULT 42, p_line_type text DEFAULT NULL::text, p_states text[] DEFAULT NULL::text[], p_include_weekends boolean DEFAULT false, p_include_mandatory_days_off boolean DEFAULT false, p_include_shifts boolean DEFAULT true, p_group_by text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns TABLE(shift_date date, shift_index integer, shift_start timestamp with time zone, shift_end timestamp with time zone, resource_uid text, resource_name text, resource_uids jsonb, line text, step text, state text, state_json jsonb, duration_seconds numeric, total_duration_seconds numeric, duration_percent numeric, parent_percent numeric, count_resources integer, sort_order integer)
 	stable
 	parallel safe
 	language plpgsql
@@ -79,7 +79,7 @@ begin
     cross join lateral jsonb_array_elements(d.shift_json) with ordinality as sh(value, idx)
     where d.date between v_until - p_days + 1 and v_until
       and (p_include_weekends or not d.is_weekend)
-      and (p_include_mandatory_days_off or not coalesce(d.is_mandatory_day_off, false))
+      and (p_include_mandatory_days_off or not action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids))
   ),
   actual as (
     select agg.shift_date, agg.shift_index, agg.shift_start, agg.shift_end,
@@ -92,7 +92,7 @@ begin
     where agg.shift_date between v_until - p_days + 1 and v_until
       and agg.resource_uid = any(p_resource_uids)
       and (p_include_weekends or not d.is_weekend)
-      and (p_include_mandatory_days_off or not coalesce(d.is_mandatory_day_off, false))
+      and (p_include_mandatory_days_off or not action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids))
     group by agg.shift_date, agg.shift_index, agg.shift_start, agg.shift_end,
              agg.resource_uid, res.resource_name, pl.line, res.step, agg.state
   ),
@@ -220,5 +220,5 @@ begin
 end;
 $$;
 
-alter function log.get_resource_state_shift_totals(text[], timestamp with time zone, integer, text, text[], boolean, boolean, boolean, text) owner to xfw3;
+alter function log.get_resource_state_shift_totals(text[], timestamp with time zone, integer, text, text[], boolean, boolean, boolean, text, integer[]) owner to xfw3;
 

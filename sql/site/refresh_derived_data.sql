@@ -16,19 +16,19 @@ begin
     -- the tenants that run the line_type (relation.production_line).
     insert into action.plan (plan_date, steps, type, line_type, tenant_ids)
     select d.date, '{print}', 'material-resource-plan', lt.line_type, lt.tenant_ids
-    from (select distinct dt.date
+    from (select dt.date, dt.tenants_mandatory_day_off
           from action.dates dt
           where dt.date >= current_date
             and dt.date < current_date + 14
-            and not dt.is_weekend
-            and not dt.is_mandatory_day_off) d
+            and not dt.is_weekend) d
     cross join (select pl.line_type,
                        array_agg(distinct pl.tenant_id order by pl.tenant_id)
                            filter (where pl.tenant_id is not null) as tenant_ids
                 from relation.production_line pl
                 where pl.line_type is not null
                 group by pl.line_type) lt
-    where not exists (select 1 from action.plan p
+    where not action.is_day_off(d.tenants_mandatory_day_off, lt.tenant_ids)
+      and not exists (select 1 from action.plan p
                       where p.plan_date = d.date
                         and p.type = 'material-resource-plan'
                         and p.line_type = lt.line_type);

@@ -1,4 +1,4 @@
-create function production.get_timeline_view_segments(p_code text, p_until timestamp with time zone DEFAULT now(), p_look_back integer DEFAULT 0, p_look_ahead integer DEFAULT 0) returns TABLE(code text, i18n jsonb, class_names jsonb, "time" time with time zone, duration_in_seconds integer, segment_size_in_seconds integer, start_offset_in_seconds integer, end_offset_in_seconds integer, sort_order integer, is_current boolean, date date, start_at timestamp with time zone, end_at timestamp with time zone)
+create function production.get_timeline_view_segments(p_code text, p_until timestamp with time zone DEFAULT now(), p_look_back integer DEFAULT 0, p_look_ahead integer DEFAULT 0, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns TABLE(code text, i18n jsonb, class_names jsonb, "time" time with time zone, duration_in_seconds integer, segment_size_in_seconds integer, start_offset_in_seconds integer, end_offset_in_seconds integer, sort_order integer, is_current boolean, date date, start_at timestamp with time zone, end_at timestamp with time zone)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -46,7 +46,7 @@ BEGIN
         WHERE NOT (coalesce((v_view ->> 'exclude_weekend')::boolean, false)
                        AND d.is_weekend)
           AND NOT (coalesce((v_view ->> 'exclude_mandatory_day_off')::boolean, false)
-                       AND coalesce(d.is_mandatory_day_off, false))
+                       AND action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids))
     ),
     day AS (
         -- day_index 0 is the first included day on or after p_until, so an excluded day moves forward
@@ -117,5 +117,5 @@ BEGIN
 END;
 $$;
 
-alter function production.get_timeline_view_segments(text, timestamp with time zone, integer, integer) owner to xfw3;
+alter function production.get_timeline_view_segments(text, timestamp with time zone, integer, integer, integer[]) owner to xfw3;
 

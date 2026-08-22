@@ -1,8 +1,9 @@
 -- signature changes, so the old ones have to go first
 drop function if exists mapping.get_production_orderline_manifest(integer, date, text, integer);
 drop function if exists mapping.get_production_orderline_manifest(integer, timestamp with time zone, integer, text, integer, integer);
+drop function if exists mapping.get_production_orderline_manifest(integer, date, integer, text, integer, integer);
 
-create function mapping.get_production_orderline_manifest(p_material_id integer, p_date date DEFAULT CURRENT_DATE, p_look_ahead_days integer DEFAULT '-1'::integer, p_scope text DEFAULT 'imposition'::text, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, product_width numeric, product_height numeric, ship_separately boolean, production_line_id integer, production_company_id integer, tenant_name text, internal_status_code text, status_sequence integer, status_level text, status_title text, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, impact_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[], queue_class_names text[], scope text, option_codes text[], manifest_i18n jsonb)
+create function mapping.get_production_orderline_manifest(p_material_id integer, p_date date DEFAULT CURRENT_DATE, p_look_ahead_days integer DEFAULT '-1'::integer, p_scope text DEFAULT 'imposition'::text, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, product_width numeric, product_height numeric, ship_separately boolean, production_line_id integer, production_company_id integer, tenant_name text, internal_status_code text, status_sequence integer, status_level text, status_title text, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, impact_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[], queue_class_names text[], scope text, option_codes text[], manifest_i18n jsonb)
 	stable
 	language plpgsql
 as $$
@@ -21,7 +22,7 @@ declare
 begin
     select min(d.date) into v_next_workday
     from action.dates d
-    where d.date > p_date and d.is_weekend = false and d.is_mandatory_day_off = false;
+    where d.date > p_date and d.is_weekend = false and not action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids);
 
     if p_look_ahead_days <> -1 then
         v_look_ahead_days := p_look_ahead_days;
@@ -44,7 +45,8 @@ begin
             p_look_back_days          => 0,
             p_look_ahead_days         => v_look_ahead_days,
             p_include_weekend         => false,
-            p_include_mandatory_dates => false,
+            p_include_mandatory_days_off => false,
+            p_tenant_ids              => p_tenant_ids,
             p_material_ids            => array[p_material_id],
             p_threshold               => p_threshold,
             p_domain_id               => p_domain_id)
@@ -85,4 +87,4 @@ begin
 end;
 $$;
 
-alter function mapping.get_production_orderline_manifest(integer, date, integer, text, integer, integer) owner to xfw3;
+alter function mapping.get_production_orderline_manifest(integer, date, integer, text, integer, integer, integer[]) owner to xfw3;

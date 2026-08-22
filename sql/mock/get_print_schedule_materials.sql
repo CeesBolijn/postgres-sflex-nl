@@ -89,7 +89,7 @@ BEGIN
                              FROM action.dates d
                              WHERE d.date >= coalesce(mps.interval_start_date, v_date)
                                AND d.is_weekend = false
-                               AND d.is_mandatory_day_off = false),
+                               AND NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids)),
                             v_date,
                             coalesce(nullif(mps.interval_days, 0), 1),
                             1, false, false, 0) AS i(interval_date)

@@ -1,4 +1,4 @@
-create function action.get_interval_dates(p_reference_date date, p_current_date date, p_interval integer, p_look_ahead_days integer, p_include_weekends boolean DEFAULT false, p_include_mandatory_days_off boolean DEFAULT true, p_day_offset integer DEFAULT 0) returns TABLE(interval_date date)
+create function action.get_interval_dates(p_reference_date date, p_current_date date, p_interval integer, p_look_ahead_days integer, p_include_weekends boolean DEFAULT false, p_include_mandatory_days_off boolean DEFAULT true, p_day_offset integer DEFAULT 0, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns TABLE(interval_date date)
 	stable
 	language sql
 as $$
@@ -8,7 +8,7 @@ as $$
             ROW_NUMBER() OVER (ORDER BY d.date) AS seq
         FROM action.dates d
         WHERE (p_include_weekends OR d.is_weekend = FALSE)
-          AND (p_include_mandatory_days_off OR d.is_mandatory_day_off IS NOT TRUE)
+          AND (p_include_mandatory_days_off OR NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids))
     ),
     shifted AS (               -- reference en current verschoven volgens de formule
         SELECT
@@ -27,5 +27,5 @@ as $$
     ORDER BY s.date;
 $$;
 
-alter function action.get_interval_dates(date, date, integer, integer, boolean, boolean, integer) owner to xfw3;
+alter function action.get_interval_dates(date, date, integer, integer, boolean, boolean, integer, integer[]) owner to xfw3;
 

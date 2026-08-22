@@ -1,4 +1,4 @@
-create function mapping.calculate_nest_date(p_order_date date, p_production_hours integer) returns timestamp with time zone
+create function mapping.calculate_nest_date(p_order_date date, p_production_hours integer, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns timestamp with time zone
 	stable
 	parallel safe
 	language sql
@@ -20,7 +20,7 @@ as $$
         FROM action.dates d
         WHERE d.date >= p_order_date
           AND d.is_weekend = false
-          AND d.is_mandatory_day_off IS NOT TRUE
+          AND NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids)
         ORDER BY d.date
         OFFSET greatest(p_production_hours / 24 - 1, 1) - 1
         LIMIT 1
@@ -34,5 +34,5 @@ as $$
     LIMIT 1;
 $$;
 
-alter function mapping.calculate_nest_date(date, integer) owner to xfw3;
+alter function mapping.calculate_nest_date(date, integer, integer[]) owner to xfw3;
 

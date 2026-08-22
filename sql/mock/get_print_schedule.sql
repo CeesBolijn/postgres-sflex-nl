@@ -33,7 +33,7 @@ BEGIN
     FROM action.dates d
     WHERE d.date >= (p_until AT TIME ZONE current_setting('TimeZone'))::date
       AND d.is_weekend = false
-      AND d.is_mandatory_day_off = false;
+      AND NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids);
 
     IF v_from IS NULL THEN
         RETURN;
@@ -53,7 +53,7 @@ BEGIN
           FROM action.dates d
           WHERE d.date >= v_from
             AND d.is_weekend = false
-            AND d.is_mandatory_day_off = false
+            AND NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids)
           ORDER BY d.date
           LIMIT v_days + v_look_ahead) d;
 
@@ -67,7 +67,7 @@ BEGIN
             WHERE d.date >= v_from
               AND d.date <= v_last
               AND d.is_weekend = false
-              AND d.is_mandatory_day_off = false
+              AND NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids)
         ),
         tenant AS (
             -- the company id joins the forecast, the name is returned as well
@@ -114,7 +114,7 @@ BEGIN
                     FROM action.dates d
                     WHERE d.date >= coalesce(mps.interval_start_date, v_from)
                       AND d.is_weekend = false
-                      AND d.is_mandatory_day_off = false) AS interval_start_date
+                      AND NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids)) AS interval_start_date
             FROM mock.material_print_schedule mps
             WHERE mps.line = p_line_type
               AND (p_tenant_ids IS NULL OR mps.tenant_id = ANY (p_tenant_ids))

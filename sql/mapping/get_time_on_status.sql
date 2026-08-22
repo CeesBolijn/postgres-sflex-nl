@@ -1,4 +1,4 @@
-create function mapping.get_time_on_status(p_model text DEFAULT NULL::text, p_from timestamp with time zone DEFAULT now(), p_days integer DEFAULT 5, p_production_line_id integer DEFAULT NULL::integer) returns TABLE(logistics_date date, production_order_id integer, order_id integer, production_order text, material_name text, status_name text, sqm numeric, time_on_status_hours numeric, color text, count_warning bigint, color_warning text, count_critical bigint, color_critical text, production_line_id integer, production_line_name text)
+create function mapping.get_time_on_status(p_model text DEFAULT NULL::text, p_from timestamp with time zone DEFAULT now(), p_days integer DEFAULT 5, p_production_line_id integer DEFAULT NULL::integer, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns TABLE(logistics_date date, production_order_id integer, order_id integer, production_order text, material_name text, status_name text, sqm numeric, time_on_status_hours numeric, color text, count_warning bigint, color_warning text, count_critical bigint, color_critical text, production_line_id integer, production_line_name text)
 	stable
 	language plpgsql
 as $$
@@ -12,7 +12,7 @@ BEGIN
   FROM action.dates d
   WHERE d.date >= v_from
     AND NOT d.is_weekend
-    AND NOT COALESCE(d.is_mandatory_day_off, false)
+    AND NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids)
   ORDER BY d.date
   OFFSET p_days - 1
   LIMIT 1;
@@ -99,5 +99,5 @@ BEGIN
 END;
 $$;
 
-alter function mapping.get_time_on_status(text, timestamp with time zone, integer, integer) owner to xfw3;
+alter function mapping.get_time_on_status(text, timestamp with time zone, integer, integer, integer[]) owner to xfw3;
 
