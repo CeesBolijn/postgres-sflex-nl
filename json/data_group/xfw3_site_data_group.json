@@ -8940,6 +8940,11 @@
             "key": "batch_id",
             "is_optional": true,
             "is_query_param": true
+          },
+          {
+            "key": "nest_ids",
+            "is_optional": true,
+            "is_query_param": true
           }
         ],
         "children": [],
