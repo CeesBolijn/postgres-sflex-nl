@@ -455,7 +455,7 @@ WITH payload AS (
               },
               "aggregate_fn": "sum"
             },
-            "rework_count": {
+            "impact_json.rework_count": {
               "ui": {
                 "i18n": {
                   "de": {
@@ -472,7 +472,7 @@ WITH payload AS (
                 "class_name": "col-span-1 text-right",
                 "hidden_when": [
                   {
-                    "field": "rework_count",
+                    "key": "impact_json.rework_count",
                     "op": "==",
                     "value": 0
                   }
@@ -480,7 +480,7 @@ WITH payload AS (
               },
               "aggregate_fn": "sum"
             },
-            "rework_sqm": {
+            "impact_json.rework_sqm": {
               "ui": {
                 "i18n": {
                   "de": {
@@ -498,7 +498,7 @@ WITH payload AS (
                 "class_name": "col-span-1 text-right",
                 "hidden_when": [
                   {
-                    "field": "rework_count",
+                    "key": "impact_json.rework_count",
                     "op": "==",
                     "value": 0
                   }
@@ -506,7 +506,7 @@ WITH payload AS (
               },
               "aggregate_fn": "sum"
             },
-            "rework_amount": {
+            "impact_json.rework_amount": {
               "ui": {
                 "i18n": {
                   "de": {
@@ -523,7 +523,7 @@ WITH payload AS (
                 "class_name": "col-span-1 text-right",
                 "hidden_when": [
                   {
-                    "field": "rework_count",
+                    "key": "impact_json.rework_count",
                     "op": "==",
                     "value": 0
                   }
