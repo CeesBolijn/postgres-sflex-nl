@@ -34,16 +34,17 @@ LEFT JOIN LATERAL (
     LIMIT 1
 ) tp ON true
 LEFT JOIN LATERAL (
-    -- the material lane of that plan, through the material pattern:
-    -- the nest side keys on material_id — the imposition group link
-    -- (imposition_group_lane_item) is the future side of the board
+    -- the lane of the nest material on that plan, through the group
+    -- link of its lane items. imposition_group_id acts as an alias of
+    -- material_id for now (the groups were seeded 1:1 from the material
+    -- ids); later the nests resolve their real imposition group here.
     SELECT l.lane_id
     FROM action.plan_lane apl
     JOIN action.lane l ON l.lane_id = apl.lane_id
-    JOIN mock.material_resource_plan_lane mrpl ON mrpl.lane_id = l.lane_id
-    JOIN mock.material_resource_plan m ON m.material_resource_plan_id = mrpl.material_resource_plan_id
+    JOIN action.lane_item li2 ON li2.lane_id = l.lane_id
+    JOIN action.imposition_group_lane_item igli ON igli.lane_item_id = li2.lane_item_id
     WHERE apl.plan_id = tp.plan_id
-      AND m.material_id = p.material_id
+      AND igli.imposition_group_id = p.material_id
     LIMIT 1
 ) lane ON true
 LEFT JOIN LATERAL (
