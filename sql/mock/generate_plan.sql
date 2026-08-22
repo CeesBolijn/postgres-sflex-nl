@@ -3,7 +3,8 @@ create or replace function mock.generate_plan(p_date date, p_step text, p_line_t
 as $$
     WITH pattern AS (
         SELECT DISTINCT ON (m.sort_order)
-               m.material_resource_plan_id, m.sort_order
+               m.material_resource_plan_id, m.sort_order, m.material_id,
+               m.start_offset_in_seconds, m.is_pinned
         FROM mock.material_resource_plan m
         WHERE m.weekday = extract(dow FROM p_date)::smallint + 1
           AND m.step = p_step
@@ -42,6 +43,29 @@ as $$
         JOIN numbered_pattern p USING (rn)
         CROSS JOIN new_plan np
         RETURNING plan_id, lane_id, sort_order
+    ),
+    -- one slot per lane, stamped from the pattern row: the planned moment
+    -- the client moves, pins and copies. The pattern stays the template.
+    new_lane_item AS (
+        INSERT INTO action.lane_item
+            (lane_id, sort_order, start_offset_in_seconds, is_pinned,
+             no_split, level, source, source_ref)
+        SELECT nl.lane_id, p.sort_order, p.start_offset_in_seconds,
+               coalesce(p.is_pinned, false), true, 0,
+               'material-plan', p.material_resource_plan_id || ':' || p_date
+        FROM numbered_lane nl
+        JOIN numbered_pattern p USING (rn)
+        RETURNING lane_item_id, lane_id
+    ),
+    -- the material of the slot, on the item
+    new_material_lane_item AS (
+        INSERT INTO action.material_lane_item (material_id, lane_item_id)
+        SELECT p.material_id, nli.lane_item_id
+        FROM new_lane_item nli
+        JOIN numbered_lane nl ON nl.lane_id = nli.lane_id
+        JOIN numbered_pattern p USING (rn)
+        WHERE p.material_id IS NOT NULL
+        RETURNING lane_item_id
     )
     INSERT INTO mock.material_resource_plan_lane (lane_id, material_resource_plan_id)
     SELECT npl.lane_id, p.material_resource_plan_id
@@ -51,4 +75,3 @@ as $$
 $$;
 
 alter function mock.generate_plan(date, text, text) owner to xfw3;
-
