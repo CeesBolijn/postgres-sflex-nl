@@ -5,7 +5,7 @@
 -- Phase 1: clean up — lanes without lane_date are invalid (701
 -- orphans, nothing hangs on them), production_orderline_lane_item
 -- is dead (0 rows, wrong idea).
--- Phase 2: slots for the future — action.material_lane_item, the
+-- Phase 2: slots for the future — action.imposition_group_lane_item, the
 -- slot stamping in mock.generate_plan, and a backfill onto the
 -- plans that already exist.
 -- ============================================================
@@ -22,25 +22,27 @@ ALTER TABLE action.lane ALTER COLUMN lane_date SET NOT NULL;
 DROP TABLE action.production_orderline_lane_item;
 
 -- ------------------------------------------------------------
--- 2. the material link per slot
+-- 2. the imposition group link per slot (group ids seeded 1:1 from
+--    material ids by sql/migration_imposition_group.sql — run that first)
 -- ------------------------------------------------------------
-CREATE TABLE action.material_lane_item
+CREATE TABLE action.imposition_group_lane_item
 (
-    material_id integer NOT NULL,
+    imposition_group_id integer NOT NULL
+        REFERENCES catalog.imposition_group,
     lane_item_id bigint NOT NULL
         REFERENCES action.lane_item
             ON DELETE CASCADE,
-    CONSTRAINT material_lane_item_pk
-        PRIMARY KEY (material_id, lane_item_id)
+    CONSTRAINT imposition_group_lane_item_pk
+        PRIMARY KEY (imposition_group_id, lane_item_id)
 );
 
-ALTER TABLE action.material_lane_item OWNER TO xfw3;
+ALTER TABLE action.imposition_group_lane_item OWNER TO xfw3;
 
-CREATE INDEX ix_material_lane_item_lane_item_id
-    ON action.material_lane_item (lane_item_id);
+CREATE INDEX ix_imposition_group_lane_item_lane_item_id
+    ON action.imposition_group_lane_item (lane_item_id);
 
 -- >>> now run sql/mock/generate_plan.sql (create or replace):
---     new plans get their slots + material links stamped from the pattern
+--     new plans get their slots + group links stamped from the pattern
 
 -- ------------------------------------------------------------
 -- 3. backfill: stamp slots onto the already-created plans of
@@ -63,7 +65,7 @@ WITH slot AS (
     ON CONFLICT (source, source_ref) DO NOTHING
     RETURNING lane_item_id, lane_id
 )
-INSERT INTO action.material_lane_item (material_id, lane_item_id)
+INSERT INTO action.imposition_group_lane_item (imposition_group_id, lane_item_id)
 SELECT m.material_id, s.lane_item_id
 FROM slot s
 JOIN mock.material_resource_plan_lane mrpl ON mrpl.lane_id = s.lane_id

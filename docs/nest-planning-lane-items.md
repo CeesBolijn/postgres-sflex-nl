@@ -11,7 +11,7 @@ creating a new lane item — **no copy_index anywhere**.
 ```mermaid
 flowchart LR
     P["weekly pattern<br/>mock.material_resource_plan<br/>(the template)"] -->|"generate_plan stamps"| L["action.lane_item<br/>one per planned moment"]
-    M[(action.material_lane_item)] --- L
+    M[(action.imposition_group_lane_item)] --- L
     subgraph future["slot in the future"]
         A["aggregate per material<br/>(computed at read time)"]
         Q["menu: nest_schedule_queue"]
@@ -52,12 +52,15 @@ flowchart LR
    pattern: `start_offset_in_seconds`, `is_pinned` and `sort_order` from the
    pattern row. The pattern (`mock.material_resource_plan`) stays only as
    the **template**; after stamping, the lane items are the truth the boards
-   read and the client mutates. The material of a slot is a link on the
-   **item**, not on the lane: a new table **`action.material_lane_item`**
-   (`material_id`, `lane_item_id`), the same shape as `nest_lane_item` —
+   read and the client mutates. The imposition group of a slot is a link on the
+   **item**, not on the lane: **`action.imposition_group_lane_item`**
+   (`imposition_group_id`, `lane_item_id`), the same shape as
+   `nest_lane_item`; planning moves from material to
+   `catalog.imposition_group`, whose ids were seeded 1:1 from the material
+   ids —
    `generate_plan` stamps it together with the slot, a copied slot takes its
-   material along, and `lane_item` itself stays generic (pv2 machine items
-   carry no material). The lane-level detour
+   group along, and `lane_item` itself stays generic (pv2 machine items
+   carry no group). The lane-level detour
    `mock.material_resource_plan_lane` disappears once the reads use it.
 2. **No copy_index.** An extra moment is a **new lane item** on the same
    lane (nest agenda). In the print agenda, where a lane carries exactly one
@@ -67,7 +70,8 @@ flowchart LR
 3. **The future side stays an aggregate, computed at read time.** A future
    lane item is only the slot; the orderline numbers per material come from
    `get_production_orderline_aggregate` on every read, matched to the slot
-   through `material_lane_item.material_id` and the lane date. So
+   through `imposition_group_lane_item.imposition_group_id` and the lane
+   date. So
    `action.production_orderline_lane_item` goes — it holds 0 rows and a
    copied orderline list per slot is the wrong idea (facts once).
 4. **The nest side keeps one link table: `action.nest_lane_item`.** Slots
@@ -90,7 +94,8 @@ Resolution per created/merged nest, set-based over the payload:
 1. **slot candidates** — the slots of the day for the nest's material:
    `action.plan` (`type = 'material-resource-plan'`,
    `plan_date = nest_date::date`, newest per line type) → `plan_lane` →
-   `lane` → `lane_item` → `material_lane_item.material_id` = nest material.
+   `lane` → `lane_item` → `imposition_group_lane_item.imposition_group_id`
+   = the nest material's group.
 2. **lane item** — the slot on that lane whose window covers the nest
    moment (`start_offset_in_seconds ≤ seconds(nest_date) <
    start + duration`, `level = 0`); several matches → the latest start
@@ -133,8 +138,8 @@ DROP TABLE action.production_orderline_lane_item;
 lane items per material lane from the pattern row (`start_offset`,
 `is_pinned`, `sort_order`; `source = 'material-plan'`,
 `source_ref = material_resource_plan_id || ':' || plan_date` for
-idempotency), **plus the material link per slot in the new
-`action.material_lane_item`**. One backfill pass stamps slots onto the
+idempotency), **plus the group link per slot in the new
+`action.imposition_group_lane_item`**. One backfill pass stamps slots onto the
 already-created plans of the coming 14 days.
 
 **Phase 3 — client mutations without copy_index** — moving a moment =
@@ -152,7 +157,7 @@ block after the nest upsert, same transaction.
 `get_print_schedule_materials` select the slots from `action.lane_item`
 (with the aggregate for future slots, nests via `nest_lane_item` for past
 slots) instead of deriving moments from the pattern, with the aggregate matched
-per slot through `material_lane_item`; `copy_index` disappears from their
+per slot through `imposition_group_lane_item`; `copy_index` disappears from their
 outputs and from the data group configs (`copy_index_field`), and
 `mock.material_resource_plan_lane` is dropped once nothing reads it.
 

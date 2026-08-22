@@ -57,9 +57,10 @@ as $$
         JOIN numbered_pattern p USING (rn)
         RETURNING lane_item_id, lane_id
     ),
-    -- the material of the slot, on the item
-    new_material_lane_item AS (
-        INSERT INTO action.material_lane_item (material_id, lane_item_id)
+    -- the imposition group of the slot, on the item (the group ids were
+    -- seeded 1:1 from the material ids)
+    new_imposition_group_lane_item AS (
+        INSERT INTO action.imposition_group_lane_item (imposition_group_id, lane_item_id)
         SELECT p.material_id, nli.lane_item_id
         FROM new_lane_item nli
         JOIN numbered_lane nl ON nl.lane_id = nli.lane_id
