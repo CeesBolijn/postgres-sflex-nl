@@ -162,7 +162,7 @@ WITH payload AS (
                     },
                     {
                       "field": "nest_count",
-                      "op": "==",
+                      "op": ">",
                       "value": 0
                     }
                   ]
@@ -223,6 +223,49 @@ WITH payload AS (
                     {
                       "field": "nest_count",
                       "op": ">",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "i18n": {
+                  "de": {
+                    "title": "Nest detail"
+                  },
+                  "en": {
+                    "title": "Nest detail"
+                  },
+                  "es": {
+                    "title": "Detalle del nido"
+                  },
+                  "fr": {
+                    "title": "Détail du nid"
+                  },
+                  "nl": {
+                    "title": "Nest detail"
+                  },
+                  "uk": {
+                    "title": "Деталі гнізда"
+                  }
+                },
+                "path": "(sidebar:nest-detail)",
+                "params": [
+                  {
+                    "key": "nest_ids",
+                    "is_query_param": true
+                  }
+                ],
+                "hidden_when": {
+                  "or": [
+                    {
+                      "field": "material_id",
+                      "op": "==",
+                      "value": null
+                    },
+                    {
+                      "field": "nest_count",
+                      "op": "==",
                       "value": 0
                     }
                   ]
@@ -1745,7 +1788,7 @@ WITH payload AS (
                     },
                     {
                       "field": "nest_count",
-                      "op": "==",
+                      "op": ">",
                       "value": 0
                     }
                   ]
@@ -1806,6 +1849,49 @@ WITH payload AS (
                     {
                       "field": "nest_count",
                       "op": ">",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "i18n": {
+                  "de": {
+                    "title": "Nest detail"
+                  },
+                  "en": {
+                    "title": "Nest detail"
+                  },
+                  "es": {
+                    "title": "Detalle del nido"
+                  },
+                  "fr": {
+                    "title": "Détail du nid"
+                  },
+                  "nl": {
+                    "title": "Nest detail"
+                  },
+                  "uk": {
+                    "title": "Деталі гнізда"
+                  }
+                },
+                "path": "(sidebar:nest-detail)",
+                "params": [
+                  {
+                    "key": "nest_ids",
+                    "is_query_param": true
+                  }
+                ],
+                "hidden_when": {
+                  "or": [
+                    {
+                      "field": "material_id",
+                      "op": "==",
+                      "value": null
+                    },
+                    {
+                      "field": "nest_count",
+                      "op": "==",
                       "value": 0
                     }
                   ]
