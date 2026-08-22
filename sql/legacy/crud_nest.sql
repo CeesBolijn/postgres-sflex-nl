@@ -128,13 +128,16 @@ BEGIN
     WHERE n.batch_uid IS NULL
       AND b.batch_id = (n.nest_json ->> 'batch_id')::integer;
 
-    -- ── nest → planned slot (docs/nest-planning-lane-items.md §3) ──────
-    -- Every nest hangs on a slot of the material-resource-plan of its day.
-    -- Resolution: plan → plan_lane → lane → lane_item →
-    -- imposition_group_lane_item. The slot picked is the latest one at or
-    -- before the nest moment (stamped slots are 0-duration markers, so a
-    -- covering-window match would never hit), else the first of the day.
-    CREATE TEMP TABLE nest_slot ON COMMIT DROP AS
+    -- ── nest → lane item (docs/nest-planning-lane-items.md §3) ─────────
+    -- Every nest hangs on a lane item of the material-resource-plan of its
+    -- day: plan → plan_lane → lane (the material lane) → lane_item. The
+    -- item picked is the latest one starting at or before the nest moment
+    -- (the stamped items are 0-duration moments, so a covering-window match
+    -- would never hit), else the first of the day. Durations are never
+    -- stored here: the boards derive them at read time — nests from
+    -- width × height × sum(amount), the future from the aggregate and the
+    -- material sizes in line_json.specs.
+    CREATE TEMP TABLE nest_link ON COMMIT DROP AS
     WITH payload AS (
         SELECT pt.nest_id, pt.sort_order,
                (n.nest_json ->> 'material_id')::integer        AS material_id,
@@ -160,17 +163,16 @@ BEGIN
         LIMIT 1
     ) tp ON true
     LEFT JOIN LATERAL (
-        -- the material lane of that plan. imposition_group_id equals the
-        -- legacy material_id: the groups were seeded 1:1 from the material
-        -- ids, so material_id = imposition_group_id is a valid join during
-        -- the transition.
+        -- the material lane of that plan, through the material pattern:
+        -- the nest side keys on material_id — the imposition group link
+        -- (imposition_group_lane_item) is the future side of the board
         SELECT l.lane_id
         FROM action.plan_lane apl
         JOIN action.lane l ON l.lane_id = apl.lane_id
-        JOIN action.lane_item li2 ON li2.lane_id = l.lane_id
-        JOIN action.imposition_group_lane_item igli ON igli.lane_item_id = li2.lane_item_id
+        JOIN mock.material_resource_plan_lane mrpl ON mrpl.lane_id = l.lane_id
+        JOIN mock.material_resource_plan m ON m.material_resource_plan_id = mrpl.material_resource_plan_id
         WHERE apl.plan_id = tp.plan_id
-          AND igli.imposition_group_id = p.material_id
+          AND m.material_id = p.material_id
         LIMIT 1
     ) lane ON true
     LEFT JOIN LATERAL (
@@ -185,17 +187,17 @@ BEGIN
         LIMIT 1
     ) slot ON true;
 
-    -- lane found but no slot at all: create one for this nest
+    -- lane found but no lane item at all: create one for this nest
     INSERT INTO action.lane_item
         (lane_id, sort_order, start_offset_in_seconds, no_split, level, source, source_ref)
     SELECT ns.lane_id, -1 * ns.nest_id, ns.nest_seconds, true, 0, 'nest', ns.nest_id::text
-    FROM nest_slot ns
+    FROM nest_link ns
     WHERE ns.lane_item_id IS NULL
       AND ns.lane_id IS NOT NULL
       AND NOT ns.is_cancelled
     ON CONFLICT ON CONSTRAINT lane_item_source_ref_uq DO NOTHING;
 
-    -- replace the material-slot links of the payload nests as a set; the
+    -- replace the material-lane links of the payload nests as a set; the
     -- pv2 machine links belong to action.crud_object and stay untouched.
     -- Cancelled nests only lose their link. No plan or lane for the day:
     -- no link, never an invented lane — the backfill catches it later.
@@ -203,13 +205,13 @@ BEGIN
     USING action.lane_item li
     WHERE nli.lane_item_id = li.lane_item_id
       AND li.source IN ('material-plan', 'nest')
-      AND nli.nest_id IN (SELECT ns.nest_id FROM nest_slot ns);
+      AND nli.nest_id IN (SELECT ns.nest_id FROM nest_link ns);
 
     INSERT INTO action.nest_lane_item (nest_id, lane_item_id, sort_order)
     SELECT ns.nest_id,
            COALESCE(ns.lane_item_id, own.lane_item_id),
            ns.sort_order
-    FROM nest_slot ns
+    FROM nest_link ns
     LEFT JOIN action.lane_item own
            ON own.source = 'nest' AND own.source_ref = ns.nest_id::text
     WHERE NOT ns.is_cancelled
