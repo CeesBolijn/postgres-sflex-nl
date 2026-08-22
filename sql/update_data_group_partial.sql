@@ -476,13 +476,15 @@ WITH payload AS (
                                   "is_query_param": true
                                 },
                                 {
-                                  "key": "material_id",
-                                  "is_query_param": true
+                                  "key": "material_ids",
+                                  "is_query_param": true,
+                                  "value_from": "material_id"
                                 },
                                 {
-                                  "key": "logistics_datetime",
+                                  "key": "logistics_at",
                                   "is_optional": true,
-                                  "is_query_param": true
+                                  "is_query_param": true,
+                                  "value_from": "logistics_datetime"
                                 }
                               ]
                             },
@@ -522,7 +524,22 @@ WITH payload AS (
                                 }
                               ]
                             }
-                          ]
+                          ],
+                          "on_select": {
+                            "params": [
+                              {
+                                "key": "material_ids",
+                                "value_from": "material_id",
+                                "is_query_param": true
+                              },
+                              {
+                                "key": "logistics_at",
+                                "value_from": "logistics_datetime",
+                                "is_optional": true,
+                                "is_query_param": true
+                              }
+                            ]
+                          }
                         },
                         "colexp": false,
                         "checkable": false,
@@ -1122,8 +1139,7 @@ WITH payload AS (
           {
             "key": "material_ids",
             "is_optional": true,
-            "is_query_param": true,
-            "value_from": "material_id"
+            "is_query_param": true
           },
           {
             "key": "domain_id",
@@ -1132,8 +1148,7 @@ WITH payload AS (
           {
             "key": "logistics_at",
             "is_optional": true,
-            "is_query_param": true,
-            "value_from": "logistics_datetime"
+            "is_query_param": true
           }
         ],
         "children": [],
