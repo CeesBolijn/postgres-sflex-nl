@@ -1496,7 +1496,7 @@ WITH payload AS (
                   }
                 },
                 "order": 1,
-                "class_name": "col-span-1 text-right"
+                "class_name": "col-span-1"
               },
               "aggregate_fn": "sum"
             },
@@ -1515,7 +1515,7 @@ WITH payload AS (
                 },
                 "order": 2,
                 "scale": 1,
-                "class_name": "col-span-1 text-right"
+                "class_name": "col-span-1"
               },
               "aggregate_fn": "sum"
             },
@@ -1533,7 +1533,7 @@ WITH payload AS (
                   }
                 },
                 "order": 3,
-                "class_name": "col-span-1 text-right"
+                "class_name": "col-span-1"
               },
               "aggregate_fn": "sum"
             },
