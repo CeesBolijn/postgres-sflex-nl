@@ -7,7 +7,10 @@ create table plan
 	steps text[] not null,
 	plan_date date not null,
 	type text default 'material-resource-plan'::text not null,
-	line_type text
+	line_type text,
+	-- the tenants this plan covers: the tenants that run this line_type
+	-- (relation.production_line); null on rows from before tenant scoping
+	tenant_ids integer[]
 );
 
 comment on column plan.steps is 'The planning steps this plan covers (nest, rip, print, coat, laminate, embellish, route, cut, package, ship, mount, ...); vocabulary in relation.lookup lookup_step_category. A board asks for one step: p_step = any (steps).';
