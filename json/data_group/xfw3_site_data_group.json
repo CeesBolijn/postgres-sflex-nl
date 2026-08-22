@@ -7658,22 +7658,22 @@
                             {
                               "i18n": {
                                 "de": {
-                                  "title": "Auftragspositionen"
+                                  "title": "Aufträge"
                                 },
                                 "en": {
-                                  "title": "Orderlines"
+                                  "title": "Orders"
                                 },
                                 "es": {
-                                  "title": "Líneas de pedido"
+                                  "title": "Pedidos"
                                 },
                                 "fr": {
-                                  "title": "Lignes de commande"
+                                  "title": "Commandes"
                                 },
                                 "nl": {
-                                  "title": "Orderlijnen"
+                                  "title": "Orders"
                                 },
                                 "uk": {
-                                  "title": "Рядки замовлення"
+                                  "title": "Замовлення"
                                 }
                               },
                               "path": "(sidebar:production-board-detail)",
@@ -7700,33 +7700,34 @@
                                   "is_query_param": true
                                 },
                                 {
-                                  "key": "material_id",
-                                  "is_query_param": true
+                                  "key": "material_ids",
+                                  "is_query_param": true,
+                                  "value_from": "material_id"
                                 }
                               ]
                             },
                             {
                               "i18n": {
                                 "de": {
-                                  "title": "Nest-Buckets"
+                                  "title": "Nest detail"
                                 },
                                 "en": {
-                                  "title": "Nest buckets"
+                                  "title": "Nest detail"
                                 },
                                 "es": {
-                                  "title": "Buckets de nesting"
+                                  "title": "Detalle del nido"
                                 },
                                 "fr": {
-                                  "title": "Buckets de nesting"
+                                  "title": "Détail du nid"
                                 },
                                 "nl": {
-                                  "title": "Nest buckets"
+                                  "title": "Nest detail"
                                 },
                                 "uk": {
-                                  "title": "Nest-бакети"
+                                  "title": "Деталі гнізда"
                                 }
                               },
-                              "path": "(sidebar:nest-buckets)",
+                              "path": "(sidebar:nest-detail)",
                               "params": [
                                 {
                                   "key": "nest_ids",
@@ -8339,7 +8340,7 @@
             "is_query_param": true
           },
           {
-            "key": "material_id",
+            "key": "material_ids",
             "is_optional": true,
             "is_query_param": true
           },
@@ -8674,229 +8675,177 @@
           "layout": "flow-container",
           "children": [
             {
-              "layout": "flow-container",
-              "children": [
-                {
-                  "layout": "flow-cards",
-                  "group_by": [
-                    "production_orderline_id"
-                  ],
-                  "row_options": {
-                    "nav": {
-                      "on_select": {
-                        "path": "(detail:uploader-data)",
-                        "params": [
-                          {
-                            "key": "production_orderline_id",
-                            "is_query_param": true
-                          }
-                        ]
-                      }
-                    },
-                    "colexp": false,
-                    "checkable": false,
-                    "selectable": true
-                  },
-                  "field_config": {
-                    "sqm": {
-                      "ui": {
-                        "order": 3,
-                        "class_name": "col-span-1"
-                      }
-                    },
-                    "number": {
-                      "ui": {
-                        "order": 0,
-                        "class_name": "col-span-3"
-                      }
-                    },
-                    "part_amount": {
-                      "ui": {
-                        "order": 4,
-                        "class_name": "col-span-1"
-                      }
-                    },
-                    "rework_count": {
-                      "ui": {
-                        "order": 5,
-                        "class_name": "col-span-1"
-                      }
-                    },
-                    "status_title": {
-                      "ui": {
-                        "order": 1,
-                        "class_name": "col-span-3"
-                      }
-                    },
-                    "logistics_date": {
-                      "ui": {
-                        "order": 6,
-                        "class_name": "col-span-3",
-                        "type": "date"
-                      }
-                    },
-                    "product_amount": {
-                      "ui": {
-                        "order": 2,
-                        "class_name": "col-span-1"
-                      }
-                    },
-                    "logistics_datetime": {
-                      "ui": {
-                        "order": 7,
-                        "class_name": "col-span-3",
-                        "type": "datetime"
-                      }
-                    }
-                  },
-                  "fields_class_name": "grid grid-cols-6 gap-1"
-                }
-              ],
+              "layout": "flow-cards",
               "group_by": [
-                "production_order_id",
-                "number"
+                "production_orderline_id"
               ],
               "row_options": {
                 "nav": {
+                  "on_select": {
+                    "path": "(detail:uploader-data)",
+                    "params": [
+                      {
+                        "key": "production_orderline_id",
+                        "is_query_param": true
+                      }
+                    ]
+                  },
                   "menu": [
                     {
                       "i18n": {
                         "de": {
-                          "title": "Produktionslinien"
+                          "title": "Uploader-Daten"
                         },
                         "en": {
-                          "title": "Production lines"
+                          "title": "Uploader data"
                         },
                         "es": {
-                          "title": "Líneas de producción"
+                          "title": "Datos del cargador"
                         },
                         "fr": {
-                          "title": "Lignes de production"
+                          "title": "Données du chargeur"
                         },
                         "nl": {
-                          "title": "Productielijnen"
+                          "title": "Uploader data"
                         },
                         "uk": {
-                          "title": "Виробничі лінії"
+                          "title": "Дані завантажувача"
                         }
                       },
-                      "path": "(detail:production-lines)",
+                      "path": "(detail:uploader-data)",
                       "params": [
                         {
-                          "key": "production_order_id",
+                          "key": "production_orderline_id",
                           "is_query_param": true
                         }
                       ]
                     }
                   ]
                 },
-                "colexp": true,
+                "colexp": false,
                 "checkable": false,
                 "selectable": true
               },
               "field_config": {
                 "sqm": {
                   "ui": {
-                    "order": 3,
-                    "class_name": "col-span-1  text-right"
-                  },
-                  "aggregate_fn": "sum"
-                },
-                "number": {
-                  "ui": {
-                    "order": 0,
-                    "class_name": "col-span-2"
+                    "order": 2,
+                    "class_name": "col-span-1"
                   }
                 },
-                "company_name": {
+                "part_amount": {
                   "ui": {
-                    "order": 1,
-                    "class_name": "col-span-2"
+                    "order": 3,
+                    "class_name": "col-span-1"
+                  }
+                },
+                "rework_count": {
+                  "ui": {
+                    "order": 4,
+                    "class_name": "col-span-1"
+                  }
+                },
+                "status_title": {
+                  "ui": {
+                    "order": 0,
+                    "class_name": "col-span-3"
+                  }
+                },
+                "logistics_date": {
+                  "ui": {
+                    "order": 5,
+                    "class_name": "col-span-3",
+                    "type": "date"
                   }
                 },
                 "product_amount": {
                   "ui": {
-                    "order": 2,
-                    "class_name": "col-span-1  text-right"
-                  },
-                  "aggregate_fn": "sum"
+                    "order": 1,
+                    "class_name": "col-span-1"
+                  }
+                },
+                "logistics_datetime": {
+                  "ui": {
+                    "order": 6,
+                    "class_name": "col-span-3",
+                    "type": "datetime"
+                  }
                 }
               },
               "fields_class_name": "grid grid-cols-6 gap-1"
             }
           ],
           "group_by": [
-            "material_id",
-            "material_name"
+            "production_order_id",
+            "number"
           ],
           "row_options": {
+            "nav": {
+              "menu": [
+                {
+                  "i18n": {
+                    "de": {
+                      "title": "Produktionslinien"
+                    },
+                    "en": {
+                      "title": "Production lines"
+                    },
+                    "es": {
+                      "title": "Líneas de producción"
+                    },
+                    "fr": {
+                      "title": "Lignes de production"
+                    },
+                    "nl": {
+                      "title": "Productielijnen"
+                    },
+                    "uk": {
+                      "title": "Виробничі лінії"
+                    }
+                  },
+                  "path": "(detail:production-lines)",
+                  "params": [
+                    {
+                      "key": "production_order_id",
+                      "is_query_param": true
+                    }
+                  ]
+                }
+              ]
+            },
             "colexp": true,
             "checkable": false,
-            "selectable": false
+            "selectable": true
           },
           "field_config": {
             "sqm": {
               "ui": {
-                "i18n": {
-                  "de": {
-                    "title": "m²"
-                  },
-                  "en": {
-                    "title": "m²"
-                  },
-                  "nl": {
-                    "title": "m²"
-                  }
-                },
-                "order": 1,
-                "class_name": "col-span-1 text-right"
-              },
-              "aggregate_fn": "sum"
-            },
-            "rework_count": {
-              "ui": {
-                "i18n": {
-                  "de": {
-                    "title": "Nacharbeit"
-                  },
-                  "en": {
-                    "title": "Rework"
-                  },
-                  "nl": {
-                    "title": "Herstel"
-                  }
-                },
                 "order": 3,
-                "class_name": "col-span-1 text-right"
+                "class_name": "col-span-1  text-right"
               },
               "aggregate_fn": "sum"
             },
-            "material_name": {
+            "number": {
               "ui": {
                 "order": 0,
                 "class_name": "col-span-2"
               }
             },
+            "company_name": {
+              "ui": {
+                "order": 1,
+                "class_name": "col-span-2"
+              }
+            },
             "product_amount": {
               "ui": {
-                "i18n": {
-                  "de": {
-                    "title": "Regulär"
-                  },
-                  "en": {
-                    "title": "Regular"
-                  },
-                  "nl": {
-                    "title": "Regulier"
-                  }
-                },
                 "order": 2,
-                "class_name": "col-span-1 text-right"
+                "class_name": "col-span-1  text-right"
               },
               "aggregate_fn": "sum"
             }
           },
-          "fields_class_name": "grid grid-cols-5 gap-1"
+          "fields_class_name": "grid grid-cols-6 gap-1"
         }
       }
     ]

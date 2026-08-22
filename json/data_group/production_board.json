@@ -435,22 +435,22 @@
                           {
                             "i18n": {
                               "de": {
-                                "title": "Auftragspositionen"
+                                "title": "Aufträge"
                               },
                               "en": {
-                                "title": "Orderlines"
+                                "title": "Orders"
                               },
                               "es": {
-                                "title": "Líneas de pedido"
+                                "title": "Pedidos"
                               },
                               "fr": {
-                                "title": "Lignes de commande"
+                                "title": "Commandes"
                               },
                               "nl": {
-                                "title": "Orderlijnen"
+                                "title": "Orders"
                               },
                               "uk": {
-                                "title": "Рядки замовлення"
+                                "title": "Замовлення"
                               }
                             },
                             "path": "(sidebar:production-board-detail)",
@@ -477,33 +477,34 @@
                                 "is_query_param": true
                               },
                               {
-                                "key": "material_id",
-                                "is_query_param": true
+                                "key": "material_ids",
+                                "is_query_param": true,
+                                "value_from": "material_id"
                               }
                             ]
                           },
                           {
                             "i18n": {
                               "de": {
-                                "title": "Nest-Buckets"
+                                "title": "Nest detail"
                               },
                               "en": {
-                                "title": "Nest buckets"
+                                "title": "Nest detail"
                               },
                               "es": {
-                                "title": "Buckets de nesting"
+                                "title": "Detalle del nido"
                               },
                               "fr": {
-                                "title": "Buckets de nesting"
+                                "title": "Détail du nid"
                               },
                               "nl": {
-                                "title": "Nest buckets"
+                                "title": "Nest detail"
                               },
                               "uk": {
-                                "title": "Nest-бакети"
+                                "title": "Деталі гнізда"
                               }
                             },
-                            "path": "(sidebar:nest-buckets)",
+                            "path": "(sidebar:nest-detail)",
                             "params": [
                               {
                                 "key": "nest_ids",
