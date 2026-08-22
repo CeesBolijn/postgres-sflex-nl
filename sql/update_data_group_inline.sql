@@ -8952,6 +8952,11 @@ WITH payload AS (
             "key": "batch_id",
             "is_optional": true,
             "is_query_param": true
+          },
+          {
+            "key": "nest_ids",
+            "is_optional": true,
+            "is_query_param": true
           }
         ],
         "children": [],
@@ -17199,7 +17204,6 @@ WITH payload AS (
             },
             "draggable": true,
             "order_field": "sort_order",
-            "copy_index_field": "copy_index",
             "drop": {
               "sort": true,
               "order_type": "rank",
@@ -17651,7 +17655,6 @@ WITH payload AS (
         "row_options": {
           "draggable": true,
           "order_field": "sort_order",
-          "copy_index_field": "copy_index",
           "drop": {
             "sort": true,
             "order_type": "rank",
@@ -17705,6 +17708,157 @@ WITH payload AS (
                     "field": "material_id"
                   }
                 ]
+              },
+              {
+                "i18n": {
+                  "de": {
+                    "title": "Auftragspositionen"
+                  },
+                  "en": {
+                    "title": "Orderlines"
+                  },
+                  "es": {
+                    "title": "Líneas de pedido"
+                  },
+                  "fr": {
+                    "title": "Lignes de commande"
+                  },
+                  "nl": {
+                    "title": "Orderlijnen"
+                  },
+                  "uk": {
+                    "title": "Рядки замовлення"
+                  }
+                },
+                "path": "(sidebar:nest-schedule-queue)",
+                "params": [
+                  {
+                    "key": "material_id",
+                    "is_query_param": true
+                  },
+                  {
+                    "key": "date",
+                    "value_from": "nest_date",
+                    "is_query_param": true
+                  }
+                ],
+                "hidden_when": {
+                  "or": [
+                    {
+                      "field": "material_id",
+                      "op": "==",
+                      "value": null
+                    },
+                    {
+                      "field": "nest_count",
+                      "op": ">",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "i18n": {
+                  "de": {
+                    "title": "Auftragspositionen"
+                  },
+                  "en": {
+                    "title": "Orderlines"
+                  },
+                  "es": {
+                    "title": "Líneas de pedido"
+                  },
+                  "fr": {
+                    "title": "Lignes de commande"
+                  },
+                  "nl": {
+                    "title": "Orderlijnen"
+                  },
+                  "uk": {
+                    "title": "Рядки замовлення"
+                  }
+                },
+                "path": "(sidebar:production-board-detail)",
+                "params": [
+                  {
+                    "key": "from",
+                    "value_from": "nest_date",
+                    "is_query_param": true
+                  },
+                  {
+                    "key": "look_back_days",
+                    "default_value": 0
+                  },
+                  {
+                    "key": "look_ahead_days",
+                    "default_value": 0
+                  },
+                  {
+                    "key": "production_line_id",
+                    "is_query_param": true
+                  },
+                  {
+                    "key": "material_id",
+                    "is_query_param": true
+                  }
+                ],
+                "hidden_when": {
+                  "or": [
+                    {
+                      "field": "material_id",
+                      "op": "==",
+                      "value": null
+                    },
+                    {
+                      "field": "nest_count",
+                      "op": ">",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "i18n": {
+                  "de": {
+                    "title": "Nest detail"
+                  },
+                  "en": {
+                    "title": "Nest detail"
+                  },
+                  "es": {
+                    "title": "Detalle del nido"
+                  },
+                  "fr": {
+                    "title": "Détail du nid"
+                  },
+                  "nl": {
+                    "title": "Nest detail"
+                  },
+                  "uk": {
+                    "title": "Деталі гнізда"
+                  }
+                },
+                "path": "(sidebar:nest-detail)",
+                "params": [
+                  {
+                    "key": "nest_ids",
+                    "is_query_param": true
+                  }
+                ],
+                "hidden_when": {
+                  "or": [
+                    {
+                      "field": "material_id",
+                      "op": "==",
+                      "value": null
+                    },
+                    {
+                      "field": "nest_count",
+                      "op": "==",
+                      "value": 0
+                    }
+                  ]
+                }
               },
               {
                 "i18n": {
@@ -17813,11 +17967,6 @@ WITH payload AS (
             }
           },
           "is_pinned": {
-            "ui": {
-              "hidden": true
-            }
-          },
-          "copy_index": {
             "ui": {
               "hidden": true
             }
@@ -18722,7 +18871,6 @@ WITH payload AS (
             },
             "draggable": true,
             "order_field": "sort_order",
-            "copy_index_field": "copy_index",
             "drop": {
               "sort": true,
               "order_type": "rank",
@@ -19169,7 +19317,6 @@ WITH payload AS (
         "row_options": {
           "draggable": true,
           "order_field": "sort_order",
-          "copy_index_field": "copy_index",
           "drop": {
             "sort": true,
             "order_type": "rank",
@@ -19214,13 +19361,123 @@ WITH payload AS (
                     "is_query_param": true
                   }
                 ],
-                "hidden_when": [
-                  {
-                    "op": "==",
-                    "value": null,
-                    "field": "material_id"
+                "hidden_when": {
+                  "or": [
+                    {
+                      "field": "material_id",
+                      "op": "==",
+                      "value": null
+                    },
+                    {
+                      "field": "nest_count",
+                      "op": ">",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "i18n": {
+                  "de": {
+                    "title": "Auftragspositionen"
+                  },
+                  "en": {
+                    "title": "Orderlines"
+                  },
+                  "es": {
+                    "title": "Líneas de pedido"
+                  },
+                  "fr": {
+                    "title": "Lignes de commande"
+                  },
+                  "nl": {
+                    "title": "Orderlijnen"
+                  },
+                  "uk": {
+                    "title": "Рядки замовлення"
                   }
-                ]
+                },
+                "path": "(sidebar:production-board-detail)",
+                "params": [
+                  {
+                    "key": "from",
+                    "value_from": "nest_date",
+                    "is_query_param": true
+                  },
+                  {
+                    "key": "look_back_days",
+                    "default_value": 0
+                  },
+                  {
+                    "key": "look_ahead_days",
+                    "default_value": 0
+                  },
+                  {
+                    "key": "production_line_id",
+                    "is_query_param": true
+                  },
+                  {
+                    "key": "material_id",
+                    "is_query_param": true
+                  }
+                ],
+                "hidden_when": {
+                  "or": [
+                    {
+                      "field": "material_id",
+                      "op": "==",
+                      "value": null
+                    },
+                    {
+                      "field": "nest_count",
+                      "op": ">",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "i18n": {
+                  "de": {
+                    "title": "Nest detail"
+                  },
+                  "en": {
+                    "title": "Nest detail"
+                  },
+                  "es": {
+                    "title": "Detalle del nido"
+                  },
+                  "fr": {
+                    "title": "Détail du nid"
+                  },
+                  "nl": {
+                    "title": "Nest detail"
+                  },
+                  "uk": {
+                    "title": "Деталі гнізда"
+                  }
+                },
+                "path": "(sidebar:nest-detail)",
+                "params": [
+                  {
+                    "key": "nest_ids",
+                    "is_query_param": true
+                  }
+                ],
+                "hidden_when": {
+                  "or": [
+                    {
+                      "field": "material_id",
+                      "op": "==",
+                      "value": null
+                    },
+                    {
+                      "field": "nest_count",
+                      "op": "==",
+                      "value": 0
+                    }
+                  ]
+                }
               },
               {
                 "i18n": {
@@ -19304,11 +19561,6 @@ WITH payload AS (
             "scale": 0
           },
           "is_pinned": {
-            "ui": {
-              "hidden": true
-            }
-          },
-          "copy_index": {
             "ui": {
               "hidden": true
             }
@@ -20215,7 +20467,6 @@ WITH payload AS (
             },
             "draggable": true,
             "order_field": "sort_order",
-            "copy_index_field": "copy_index",
             "drop": {
               "sort": true,
               "order_type": "rank",

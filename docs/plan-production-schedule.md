@@ -97,7 +97,7 @@ Rows, one set:
 Columns (superset of 78, so the client renders it with the same config):
 
 `tenant_id, tenant_name, production_company_id, resource_uid, resource_name,
-step, level, lane_item_id, sort_order, copy_index, is_pinned, is_fixed_group,
+step, level, lane_item_id, sort_order, is_pinned, is_fixed_group,
 start_offset_in_seconds, next_start_offset_in_seconds, duration_in_seconds,
 start_at, nest_ids, nest_count, material_id, material_name,
 impact_json, sqm, gross_sqm, forecast_sqm, part_status_json,
@@ -150,7 +150,7 @@ them into level-1 lane items can come later; the board will not notice.
 | `set: "plan"` | names the item set | **no** — one set; plan/realized is a row property (`level`, and `class_names`) the client renders differently. Ask the client whether it can style on `level`, else two class names `plan` / `realized`. |
 | `links.connector`, `parent_field`, `foreign_field` | draws dependency lines between actions | **later** — `lane_item_dependency` exists (rip → print → coat …); once the board shows more than one step it comes back as `dependency_config {parent_field, foreign_field}` on `timeline_config`. Not for a one-step board. |
 | `evaluate.formula_field` + `formula` column | the client evaluates duration/lock formulas | **no** — durations are computed in the function; a formula in the payload is code in data. |
-| `draggable`, `rank_field`, `offset_field`, `params_field` | drag | **replaced** by the drag-and-drop contract (`row_options.drop`, `order_field`, `copy_index_field`); `rank_field` = `order_field` |
+| `draggable`, `rank_field`, `offset_field`, `params_field` | drag | **replaced** by the drag-and-drop contract (`row_options.drop`, `order_field`); `rank_field` = `order_field` |
 | `resource_field` (`resource_uids[]`) | the lane | **replaced** by `set_group_fields: [tenant_id, resource_uid]` — one resource per lane, no array |
 | `start_at_field` | absolute time | keep as column, not as config; the board works in offsets like 78 |
 | `is_atomic_field`, `is_fixed_offset_field` | may not split / may not move | `is_pinned_field` covers "may not move"; atomic has no counterpart — **ask** whether it is still needed (splitting an item on the board) |

@@ -1,0 +1,676 @@
+[
+  {
+    "glb": "/models/bh.glb",
+    "code": "bh",
+    "line_type": "sheet",
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "BH"
+        },
+        "en": {
+          "title": "BH"
+        },
+        "es": {
+          "title": "BH"
+        },
+        "nl": {
+          "title": "BH"
+        },
+        "uk": {
+          "title": "BH"
+        }
+      },
+      "title": "BH"
+    },
+    "camera": {
+      "position": [
+        30.850884758569713,
+        49.05773098235695,
+        -78.75877207751654
+      ],
+      "target": [
+        45.39368716865419,
+        -0.10000000484150054,
+        -30.410656896086305
+      ]
+    },
+    "production_lines": [
+      {
+        "code": "uv-bad-hersfeld",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "UV Bad Hersfeld"
+            },
+            "en": {
+              "title": "UV Bad Hersfeld"
+            },
+            "es": {
+              "title": "UV Bad Hersfeld"
+            },
+            "nl": {
+              "title": "UV Bad Hersfeld"
+            },
+            "uk": {
+              "title": "UV Bad Hersfeld"
+            }
+          },
+          "title": "UV Bad Hersfeld"
+        },
+        "production_line_id": 18,
+        "production_line_name": "UV Bad Hersfeld",
+        "line_type": "non-adhesive"
+      },
+      {
+        "code": "sublimation-bh",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Sublimation Bad Hersfeld"
+            },
+            "en": {
+              "title": "Sublimation Bad Hersfeld"
+            },
+            "es": {
+              "title": "Sublimación Bad Hersfeld"
+            },
+            "nl": {
+              "title": "Sublimatie Bad Hersfeld"
+            },
+            "uk": {
+              "title": "Сублімація Bad Hersfeld"
+            }
+          },
+          "title": "Sublimation Bad Hersfeld"
+        },
+        "production_line_id": 22,
+        "production_line_name": "Sublimation BH",
+        "line_type": "textile"
+      },
+      {
+        "code": "sheet-bad-hersfeld",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Blatt Bad Hersfeld"
+            },
+            "en": {
+              "title": "Sheet Bad Hersfeld"
+            },
+            "es": {
+              "title": "Hoja Bad Hersfeld"
+            },
+            "nl": {
+              "title": "Plaat Bad Hersfeld"
+            },
+            "uk": {
+              "title": "Листовий Bad Hersfeld"
+            }
+          },
+          "title": "Sheet Bad Hersfeld"
+        },
+        "production_line_id": 23,
+        "production_line_name": "Sheet Bad Hersfeld",
+        "line_type": "sheet"
+      },
+      {
+        "code": "foil-bad-hersfeld",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Folie Bad Hersfeld"
+            },
+            "en": {
+              "title": "Foil Bad Hersfeld"
+            },
+            "es": {
+              "title": "Lámina Bad Hersfeld"
+            },
+            "nl": {
+              "title": "Folie Bad Hersfeld"
+            },
+            "uk": {
+              "title": "Фольга Bad Hersfeld"
+            }
+          },
+          "title": "Foil Bad Hersfeld"
+        },
+        "production_line_id": 24,
+        "production_line_name": "Foil Bad Hersfeld",
+        "line_type": "foil"
+      }
+    ]
+  },
+  {
+    "glb": "/models/foil.glb",
+    "code": "foil",
+    "line_type": "foil",
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "Folie"
+        },
+        "en": {
+          "title": "Foil"
+        },
+        "es": {
+          "title": "Lámina"
+        },
+        "nl": {
+          "title": "Folie"
+        },
+        "uk": {
+          "title": "Фольга"
+        }
+      },
+      "title": "Foil"
+    },
+    "camera": {
+      "position": [
+        -9.439815372164613,
+        28.89947526756245,
+        -30.38177495778047
+      ],
+      "target": [
+        14.83254985231931,
+        -0.10019182500280324,
+        -27.405481564752638
+      ]
+    },
+    "production_lines": [
+      {
+        "code": "foil",
+        "line_type": "foil",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Folie"
+            },
+            "en": {
+              "title": "Foil"
+            },
+            "es": {
+              "title": "Lámina"
+            },
+            "nl": {
+              "title": "Folie"
+            },
+            "uk": {
+              "title": "Фольга"
+            }
+          },
+          "title": "Foil"
+        },
+        "production_line_id": 4,
+        "production_line_name": "Foil"
+      },
+      {
+        "code": "labels",
+        "line_type": "foil",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Etiketten"
+            },
+            "en": {
+              "title": "Labels"
+            },
+            "es": {
+              "title": "Etiquetas"
+            },
+            "nl": {
+              "title": "Labels"
+            },
+            "uk": {
+              "title": "Етикетки"
+            }
+          },
+          "title": "Labels"
+        },
+        "production_line_id": 9,
+        "production_line_name": "Labels"
+      },
+      {
+        "code": "paper",
+        "line_type": "foil",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Papier"
+            },
+            "en": {
+              "title": "Paper"
+            },
+            "es": {
+              "title": "Papel"
+            },
+            "nl": {
+              "title": "Papier"
+            },
+            "uk": {
+              "title": "Папір"
+            }
+          },
+          "title": "Paper"
+        },
+        "production_line_id": 12,
+        "production_line_name": "Paper"
+      }
+    ]
+  },
+  {
+    "glb": "/models/non-adhesive.glb",
+    "code": "non-adhesive",
+    "line_type": "non-adhesive",
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "UV"
+        },
+        "en": {
+          "title": "UV"
+        },
+        "es": {
+          "title": "UV"
+        },
+        "nl": {
+          "title": "UV"
+        },
+        "uk": {
+          "title": "УФ"
+        }
+      },
+      "title": "UV"
+    },
+    "camera": {
+      "target": [
+        21.182310126319845,
+        -1.5707103763421533e-10,
+        -37.547277866941435
+      ],
+      "position": [
+        12.626714669148623,
+        28.689986278155228,
+        -68.1231441549845
+      ]
+    },
+    "production_lines": [
+      {
+        "code": "uv",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "UV"
+            },
+            "en": {
+              "title": "UV"
+            },
+            "es": {
+              "title": "UV"
+            },
+            "nl": {
+              "title": "UV"
+            },
+            "uk": {
+              "title": "УФ"
+            }
+          },
+          "title": "UV"
+        },
+        "production_line_id": 2,
+        "production_line_name": "UV",
+        "line_type": "non-adhesive"
+      }
+    ]
+  },
+  {
+    "glb": "/models/sheet.glb",
+    "code": "sheet",
+    "line_type": "sheet",
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "Blatt"
+        },
+        "en": {
+          "title": "Sheet"
+        },
+        "es": {
+          "title": "Hoja"
+        },
+        "nl": {
+          "title": "Plaat"
+        },
+        "uk": {
+          "title": "Листовий"
+        }
+      },
+      "title": "Sheet"
+    },
+    "camera": {
+      "target": [
+        -9.556378266854027,
+        0.05000000131261788,
+        -3.622709538550553
+      ],
+      "position": [
+        -36.05636450993364,
+        21.08100344886424,
+        -12.839818936576155
+      ]
+    },
+    "camera2d": {
+      "target": [
+        0,
+        0.05000000131261788,
+        0
+      ],
+      "position": [
+        0,
+        55.840196351609755,
+        0.00005581744541050887
+      ]
+    },
+    "production_lines": [
+      {
+        "code": "sheet",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Blatt"
+            },
+            "en": {
+              "title": "Sheet"
+            },
+            "es": {
+              "title": "Hoja"
+            },
+            "nl": {
+              "title": "Plaat"
+            },
+            "uk": {
+              "title": "Листовий"
+            }
+          },
+          "title": "Sheet"
+        },
+        "production_line_id": 5,
+        "production_line_name": "Sheet",
+        "line_type": "sheet"
+      }
+    ]
+  },
+  {
+    "glb": "/models/textile.glb",
+    "code": "textile",
+    "line_type": "textile",
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "Sublimation"
+        },
+        "en": {
+          "title": "Sublimation"
+        },
+        "es": {
+          "title": "Sublimación"
+        },
+        "nl": {
+          "title": "Sublimatie"
+        },
+        "uk": {
+          "title": "Сублімація"
+        }
+      },
+      "title": "Sublimation"
+    },
+    "camera": {
+      "position": [
+        21.69233397007095,
+        29.619433300209064,
+        0.6468238351808822
+      ],
+      "target": [
+        27.30398374161055,
+        3.8090972311756635,
+        -18.020905284939158
+      ]
+    },
+    "production_lines": [
+      {
+        "code": "sublimation",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Sublimation"
+            },
+            "en": {
+              "title": "Sublimation"
+            },
+            "es": {
+              "title": "Sublimación"
+            },
+            "nl": {
+              "title": "Sublimatie"
+            },
+            "uk": {
+              "title": "Сублімація"
+            }
+          },
+          "title": "Sublimation"
+        },
+        "production_line_id": 3,
+        "production_line_name": "Sublimation",
+        "line_type": "textile"
+      },
+      {
+        "code": "textile",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Textil"
+            },
+            "en": {
+              "title": "Textile"
+            },
+            "es": {
+              "title": "Textil"
+            },
+            "nl": {
+              "title": "Textiel"
+            },
+            "uk": {
+              "title": "Текстиль"
+            }
+          },
+          "title": "Textile"
+        },
+        "production_line_id": 10,
+        "production_line_name": "Textile",
+        "line_type": "textile"
+      }
+    ]
+  },
+  {
+    "glb": "/models/warehouse.glb",
+    "code": "warehouse",
+    "line_type": null,
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "Lager"
+        },
+        "en": {
+          "title": "Ware-house"
+        },
+        "es": {
+          "title": "Almacén"
+        },
+        "nl": {
+          "title": "Magazijn"
+        },
+        "uk": {
+          "title": "Склад"
+        }
+      },
+      "title": "Warehouse"
+    },
+    "production_lines": [
+      {
+        "code": "expedition",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Versand"
+            },
+            "en": {
+              "title": "Expedition"
+            },
+            "es": {
+              "title": "Expedición"
+            },
+            "nl": {
+              "title": "Expeditie"
+            },
+            "uk": {
+              "title": "Експедиція"
+            }
+          },
+          "title": "Expedition"
+        },
+        "production_line_id": 6,
+        "production_line_name": "Expedition",
+        "line_type": null
+      }
+    ]
+  },
+  {
+    "glb": "/models/expedition.glb",
+    "code": "expedition",
+    "line_type": null,
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "Versand"
+        },
+        "en": {
+          "title": "Expedition"
+        },
+        "es": {
+          "title": "Expedición"
+        },
+        "nl": {
+          "title": "Expeditie"
+        },
+        "uk": {
+          "title": "Експедиція"
+        }
+      },
+      "title": "Expedition"
+    },
+    "production_lines": [
+      {
+        "code": "expedition",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Versand"
+            },
+            "en": {
+              "title": "Expedition"
+            },
+            "es": {
+              "title": "Expedición"
+            },
+            "nl": {
+              "title": "Expeditie"
+            },
+            "uk": {
+              "title": "Експедиція"
+            }
+          },
+          "title": "Expedition"
+        },
+        "production_line_id": 6,
+        "production_line_name": "Expedition"
+      }
+    ],
+    "camera": {
+      "position": [
+        65.17610630644741,
+        21.343374901383186,
+        -35.64740467433055
+      ],
+      "target": [
+        38.325891592711216,
+        -0.16136205428553785,
+        -19.75752692716452
+      ]
+    }
+  },
+  {
+    "glb": "/models/expedition-first-floor.glb",
+    "code": "expedition-first-floor",
+    "line_type": null,
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "Versand Erste Etage"
+        },
+        "en": {
+          "title": "Expedition First Floor"
+        },
+        "es": {
+          "title": "Expedición Primera Planta"
+        },
+        "nl": {
+          "title": "Expeditie Eerste Verdieping"
+        },
+        "uk": {
+          "title": "Експедиція Перший Поверх"
+        }
+      },
+      "title": "Expedition First Floor"
+    },
+    "production_lines": [
+      {
+        "code": "expedition-first-floor",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Versand Erste Etage"
+            },
+            "en": {
+              "title": "Expedition First Floor"
+            },
+            "es": {
+              "title": "Expedición Primera Planta"
+            },
+            "nl": {
+              "title": "Expeditie Eerste Verdieping"
+            },
+            "uk": {
+              "title": "Експедиція Перший Поверх"
+            }
+          },
+          "title": "Expedition First Floor"
+        },
+        "production_line_id": 6,
+        "production_line_name": "Expedition First Floor"
+      }
+    ],
+    "camera": {
+      "position": [
+        55.761631550663054,
+        25.0495890465927,
+        -47.451037430960916
+      ],
+      "target": [
+        30.161796475203136,
+        -0.30046836154486445,
+        -21.851202355501
+      ]
+    }
+  }
+]

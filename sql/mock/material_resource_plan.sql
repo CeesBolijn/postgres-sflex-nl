@@ -13,7 +13,6 @@ create table material_resource_plan
 	material_id integer,
 	next_start_offset_in_seconds integer default 0 not null,
 	moved_at timestamp with time zone default now() not null,
-	copy_index integer default 0 not null,
 	production_line_id integer,
 	tenant_id integer,
 	start_offset_in_seconds integer,

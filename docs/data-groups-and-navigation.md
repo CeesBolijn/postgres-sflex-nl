@@ -121,7 +121,7 @@ The key conventions (the full analysis lives in
   (always an array of id columns) with `group_title_fields` in the same
   order;
 - **drag & drop** follows `docs/contracts/drag-and-drop.md`: a `drop` block
-  with `order_field` and `copy_index_field`, `within_fields` ⊆ `group_by`;
+  with `order_field`; `within_fields` ⊆ `group_by`;
 - **chart config** keys are `<chart>_chart_config`; variants are properties
   or a prefix (`stacked_bar_chart_config`), never a separate key per variant;
 - **`no_*` / `hide_*` booleans default to false**.

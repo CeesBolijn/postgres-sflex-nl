@@ -1,0 +1,550 @@
+[
+  {
+    "code": "resource.info",
+    "path": "(sidebar:info)",
+    "environments": ["development"],
+    "block": {
+      "title": "{resource_name}"
+    }
+  },
+  {
+    "code": "resource.oee",
+    "path": "(sidebar:oee)",
+    "block": {
+      "title": "Analytics",
+      "i18n": {
+        "en": {
+          "title": "Analytics"
+        },
+        "nl": {
+          "title": "Analyse"
+        },
+        "de": {
+          "title": "Analytik"
+        },
+        "uk": {
+          "title": "Аналітика"
+        },
+        "es": {
+          "title": "Analítica"
+        },
+        "fr": {
+          "title": "Analytique"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "printer",
+        "cutter",
+        "laser",
+        "coater",
+        "calander",
+        "laminator",
+        "cure-oven",
+        "slitter",
+        "folder",
+        "finish",
+        "grommet-seam"
+      ]
+    }
+  },
+  {
+    "code": "resource.oee-area-chart",
+    "path": "(sidebar:resource-oee-area-chart)",
+    "block": {
+      "title": "OEE",
+      "i18n": {
+        "en": {
+          "title": "OEE"
+        },
+        "nl": {
+          "title": "OEE"
+        },
+        "de": {
+          "title": "OEE"
+        },
+        "uk": {
+          "title": "OEE"
+        },
+        "es": {
+          "title": "OEE"
+        },
+        "fr": {
+          "title": "OEE"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "printer",
+        "cutter",
+        "laser",
+        "coater",
+        "calander",
+        "laminator",
+        "cure-oven",
+        "slitter",
+        "folder",
+        "finish",
+        "grommet-seam"
+      ]
+    }
+  },
+  {
+    "code": "resource.oee-area-chart",
+    "path": "(window:resource-oee-area-chart)",
+    "block": {
+      "title": "OEE",
+      "i18n": {
+        "en": {
+          "title": "OEE"
+        },
+        "nl": {
+          "title": "OEE"
+        },
+        "de": {
+          "title": "OEE"
+        },
+        "uk": {
+          "title": "OEE"
+        },
+        "es": {
+          "title": "OEE"
+        },
+        "fr": {
+          "title": "OEE"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "floor"
+      ]
+    }
+  },
+  {
+    "code": "resource.planning-info",
+    "path": "(sidebar:planning-info)",
+    "block": {  
+      "title": "Planning info",
+      "i18n": {
+        "en": {
+          "title": "Planning info"
+        },
+        "nl": {
+          "title": "Planning info"
+        },
+        "de": {
+          "title": "Planungsinformationen"
+        },
+        "uk": {
+          "title": "Інформація про планування"
+        },
+        "es": {
+          "title": "Información de planificación"
+        },
+        "fr": {
+          "title": "Informations sur la planification"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "floor"
+      ]
+    }
+  },
+  {
+    "code": "resource.file-inflow",
+    "path": "(window:file-inflow)",
+    "block": {
+      "title": "File inflow",
+      "i18n": {
+        "en": {
+          "title": "File inflow"
+        },
+        "nl": {
+          "title": "Bestandsinstroom"
+        },
+        "de": {
+          "title": "Datei-Eingang"
+        },
+        "uk": {
+          "title": "Вхід файлів"
+        },
+        "es": {
+          "title": "Entrada de archivos"
+        },
+        "fr": {
+          "title": "Entrée de fichiers"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "floor"
+      ]
+    }
+  },
+  {
+    "code": "resource.tco",
+    "environments": ["development"],
+    "path": "(sidebar:tco)",
+    "block": {
+      "title": "TCO & capacity",
+      "i18n": {
+        "en": {
+          "title": "TCO & capacity"
+        },
+        "nl": {
+          "title": "TCO & capaciteit"
+        },
+        "de": {
+          "title": "TCO & Kapazität"
+        },
+        "uk": {
+          "title": "TCO та потужність"
+        },
+        "es": {
+          "title": "TCO y capacidad"
+        },
+        "fr": {
+          "title": "TCO et capacité"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "printer",
+        "cutter",
+        "laser",
+        "coater",
+        "calander",
+        "laminator",
+        "cure-oven",
+        "slitter",
+        "folder",
+        "finish",
+        "grommet-seam"
+      ]
+    }
+  },
+  {
+    "code": "resource.production",
+    "path": "(sidebar:production)",
+    "block": {
+      "title": "Production",
+      "i18n": {
+        "en": {
+          "title": "Production"
+        },
+        "nl": {
+          "title": "Productie"
+        },
+        "de": {
+          "title": "Produktion"
+        },
+        "uk": {
+          "title": "Виробництво"
+        },
+        "es": {
+          "title": "Producción"
+        },
+        "fr": {
+          "title": "Production"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "printer",
+        "cutter",
+        "laser",
+        "coater",
+        "calander",
+        "laminator",
+        "cure-oven",
+        "slitter",
+        "folder",
+        "finish",
+        "grommet-seam"
+      ]
+    }
+  },
+  {
+    "code": "resource.ink-heads",
+    "environments": ["development"],
+    "path": "(sidebar:ink-heads)",
+    "block": {
+      "title": "Ink & heads",
+      "i18n": {
+        "en": {
+          "title": "Ink & heads"
+        },
+        "nl": {
+          "title": "Inkt & koppen"
+        },
+        "de": {
+          "title": "Tinte & Köpfe"
+        },
+        "uk": {
+          "title": "Чорнила та головки"
+        },
+        "es": {
+          "title": "Tintas y cabezales"
+        },
+        "fr": {
+          "title": "Encre et têtes"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "printer"
+      ]
+    }
+  },
+  {
+    "code": "resource.quality-management",
+    "environments": ["development"],
+    "path": "(sidebar:quality-management)",
+    "block": {
+      "title": "Quality management",
+      "i18n": {
+        "en": {
+          "title": "Quality management"
+        },
+        "nl": {
+          "title": "Kwaliteitsbeheer"
+        },
+        "de": {
+          "title": "Qualitätsmanagement"
+        },
+        "uk": {
+          "title": "Управління якістю"
+        },
+        "es": {
+          "title": "Gestión de calidad"
+        },
+        "fr": {
+          "title": "Gestion de la qualité"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "printer",
+        "cutter",
+        "laser",
+        "coater",
+        "calander",
+        "laminator",
+        "finish"
+      ]
+    }
+  },
+  {
+    "code": "resource.maintenance-tickets",
+    "environments": ["development"],
+    "path": "(sidebar:maintenance-tickets)",
+    "block": {
+      "title": "Maintenance & tickets",
+      "i18n": {
+        "en": {
+          "title": "Maintenance & tickets"
+        },
+        "nl": {
+          "title": "Onderhoud & tickets"
+        },
+        "de": {
+          "title": "Wartung & Tickets"
+        },
+        "uk": {
+          "title": "Обслуговування та заявки"
+        },
+        "es": {
+          "title": "Mantenimiento y tickets"
+        },
+        "fr": {
+          "title": "Maintenance et tickets"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "printer",
+        "cutter",
+        "laser",
+        "coater",
+        "calander",
+        "laminator",
+        "cure-oven",
+        "slitter",
+        "folder",
+        "finish",
+        "grommet-seam"
+      ]
+    }
+  },
+  {
+    "code": "resource.tooling-wear",
+    "environments": ["development"],
+    "path": "(sidebar:tooling-wear)",
+    "block": {
+      "title": "Tooling & wear",
+      "i18n": {
+        "en": {
+          "title": "Tooling & wear"
+        },
+        "nl": {
+          "title": "Gereedschap & slijtage"
+        },
+        "de": {
+          "title": "Werkzeug & Verschleiß"
+        },
+        "uk": {
+          "title": "Інструмент та знос"
+        },
+        "es": {
+          "title": "Herramientas y desgaste"
+        },
+        "fr": {
+          "title": "Outillage et usure"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "cutter",
+        "slitter"
+      ]
+    }
+  },
+  {
+    "code": "resource.intermediate-stock",
+    "path": "(sidebar:intermediate-stock)",
+    "block": {
+      "title": "Intermediate stock",
+      "i18n": {
+        "en": {
+          "title": "Intermediate stock"
+        },
+        "nl": {
+          "title": "Tussenvoorraad"
+        },
+        "de": {
+          "title": "Zwischenlager"
+        },
+        "uk": {
+          "title": "Проміжний запас"
+        },
+        "es": {
+          "title": "Stock intermedio"
+        },
+        "fr": {
+          "title": "Stock intermédiaire"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "queue"
+      ]
+    }
+  },
+  {
+    "code": "resource.consumption-waste",
+    "environments": ["development"],
+    "path": "(sidebar:consumption-waste)",
+    "block": {
+      "title": "Consumption & waste",
+      "i18n": {
+        "en": {
+          "title": "Consumption & waste"
+        },
+        "nl": {
+          "title": "Verbruik & afval"
+        },
+        "de": {
+          "title": "Verbrauch & Abfall"
+        },
+        "uk": {
+          "title": "Споживання та відходи"
+        },
+        "es": {
+          "title": "Consumo y desperdicio"
+        },
+        "fr": {
+          "title": "Consommation et déchets"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "stock"
+      ]
+    }
+  },
+  {
+    "code": "resource.material-specs",
+    "environments": ["development"],
+    "path": "(sidebar:material-specs)",
+    "block": {
+      "title": "Material specifications",
+      "i18n": {
+        "en": {
+          "title": "Material specifications"
+        },
+        "nl": {
+          "title": "Materiaalspecificaties"
+        },
+        "de": {
+          "title": "Materialspezifikationen"
+        },
+        "uk": {
+          "title": "Специфікації матеріалів"
+        },
+        "es": {
+          "title": "Especificaciones del material"
+        },
+        "fr": {
+          "title": "Spécifications matériaux"
+        }
+      }
+    },
+    "hidden_when": {
+      "key": "type",
+      "op": "not in",
+      "val": [
+        "stock"
+      ]
+    }
+  }
+]

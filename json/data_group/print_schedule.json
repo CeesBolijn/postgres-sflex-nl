@@ -847,7 +847,6 @@
           },
           "draggable": true,
           "order_field": "sort_order",
-          "copy_index_field": "copy_index",
           "drop": {
             "sort": true,
             "order_type": "rank",

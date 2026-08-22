@@ -17192,7 +17192,6 @@
             },
             "draggable": true,
             "order_field": "sort_order",
-            "copy_index_field": "copy_index",
             "drop": {
               "sort": true,
               "order_type": "rank",
@@ -17644,7 +17643,6 @@
         "row_options": {
           "draggable": true,
           "order_field": "sort_order",
-          "copy_index_field": "copy_index",
           "drop": {
             "sort": true,
             "order_type": "rank",
@@ -17957,11 +17955,6 @@
             }
           },
           "is_pinned": {
-            "ui": {
-              "hidden": true
-            }
-          },
-          "copy_index": {
             "ui": {
               "hidden": true
             }
@@ -18866,7 +18859,6 @@
             },
             "draggable": true,
             "order_field": "sort_order",
-            "copy_index_field": "copy_index",
             "drop": {
               "sort": true,
               "order_type": "rank",
@@ -19313,7 +19305,6 @@
         "row_options": {
           "draggable": true,
           "order_field": "sort_order",
-          "copy_index_field": "copy_index",
           "drop": {
             "sort": true,
             "order_type": "rank",
@@ -19558,11 +19549,6 @@
             "scale": 0
           },
           "is_pinned": {
-            "ui": {
-              "hidden": true
-            }
-          },
-          "copy_index": {
             "ui": {
               "hidden": true
             }
@@ -20469,7 +20455,6 @@
             },
             "draggable": true,
             "order_field": "sort_order",
-            "copy_index_field": "copy_index",
             "drop": {
               "sort": true,
               "order_type": "rank",

@@ -2,7 +2,7 @@
 drop function if exists mock.get_nest_schedule(timestamp with time zone, text, text, integer[], boolean, integer, integer, integer);
 drop function if exists mock.get_nest_schedule(timestamp with time zone, text, text, integer[], integer, integer, integer);
 
-create function mock.get_nest_schedule(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_look_back_days integer DEFAULT 0, p_look_ahead_days integer DEFAULT 0, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, production_company_id integer, resource_uid text, resource_name text, delivery_hours integer, min_delivery_hours integer, sort_order numeric, param_json jsonb, copy_index integer, is_fixed_group text, is_pinned boolean, start_offset_in_seconds integer, next_start_offset_in_seconds integer, duration_in_seconds integer, nest_date date, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, gross_sqm numeric, part_status_json jsonb, nest_ids bigint[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
+create function mock.get_nest_schedule(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_look_back_days integer DEFAULT 0, p_look_ahead_days integer DEFAULT 0, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, production_company_id integer, resource_uid text, resource_name text, delivery_hours integer, min_delivery_hours integer, sort_order numeric, param_json jsonb, is_fixed_group text, is_pinned boolean, start_offset_in_seconds integer, next_start_offset_in_seconds integer, duration_in_seconds integer, nest_date date, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, gross_sqm numeric, part_status_json jsonb, nest_ids bigint[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
 	stable
 	language plpgsql
 as $$
@@ -22,7 +22,7 @@ begin
         select b.material_id, b.material_name, b.production_line_id,
                b.tenant_id, b.tenant_name, b.resource_uid, b.resource_name,
                b.delivery_hours, b.min_delivery_hours, b.sort_order,
-               b.param_json, b.copy_index, b.is_fixed_group, b.is_pinned,
+               b.param_json, b.is_fixed_group, b.is_pinned,
                b.start_offset_in_seconds, b.next_start_offset_in_seconds
         -- only the materials whose interval (action.get_interval_dates on
         -- interval_start_date and interval_days) says the plan date is a
@@ -147,7 +147,7 @@ begin
                       ceil(coalesce(r.gross_sqm, 0) * v_standard_seconds_per_sqm)::integer,
                   'fast_production_impact_in_seconds',
                       ceil(coalesce(r.gross_sqm, 0) * v_fast_seconds_per_sqm)::integer) as param_json,
-           r.copy_index, r.is_fixed_group, r.is_pinned,
+           r.is_fixed_group, r.is_pinned,
            r.start_offset_in_seconds, r.next_start_offset_in_seconds,
            -- noop rows keep their window duration; a material row gets its
            -- print time, but never less than the minimum

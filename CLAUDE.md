@@ -62,8 +62,8 @@ zie `docs/data-group-governance.md` voor de volledige analyse
 - één conditie-vorm: `{field, op, value}`, vergelijk je twee velden dan `value_field`
 - sorteren: `sort: {field, direction}`; groeperen: `group_by`, altijd een array van id-kolommen;
   de titel per niveau staat in `group_title_fields` (zelfde volgorde)
-- drag & drop: `docs/contracts/drag-and-drop.md` is leidend (`drop`-blok, `order_field`,
-  `copy_index_field`; `within_fields` ⊆ `group_by`, id's)
+- drag & drop: `docs/contracts/drag-and-drop.md` is leidend (`drop`-blok, `order_field`;
+  `within_fields` ⊆ `group_by`, id's)
 - chart-config keys heten `<chart>_chart_config`, varianten zijn properties of een prefix
   (`stacked_bar_chart_config`), geen losse key per variant
 - booleans met `no_*` / `hide_*` staan default op false

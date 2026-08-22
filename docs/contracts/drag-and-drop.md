@@ -33,9 +33,11 @@ correct here:
   add it to the gestures table when it exists.
 - `group_title_fields`: `group_by` holds ids only, the display column per level comes
   from `group_title_fields`, same order (see `docs/handoff-control-room.md` §8).
-- `copy_index_field` on `label_options` is served by `get_print_schedule_materials`
-  (column `copy_index`); on `row_options` of `nest_schedule` / `nest_resource_schedule`
-  by `get_nest_schedule`. `print_schedule` rows do not carry it — no `drop` block there.
+- `copy_index_field` is **dropped** (data side, this change): planned moments are real
+  `action.lane_item` rows now, so a Ctrl+drag copy is a **new lane item** created by the
+  mutation — no index bookkeeping on the client. The key is gone from every data group
+  and the `copy_index` columns are gone from `get_nest_schedule` and
+  `get_print_schedule_materials`.
 - `commit: "mutation"` is set on all three boards; the mutation procedure on the source
   does not exist yet, so a drop reverts on refetch until it does.
 
@@ -57,7 +59,6 @@ Absent key = behaviour off. No `*_field` key is ever defaulted to a canonical co
 |---|---|---|---|
 | `draggable` | `boolean` | the item can be picked up | — |
 | `order_field` | `string` | column the new rank is written to | the lane sort; the fixed-group roll-out order |
-| `copy_index_field` | `string` | `0` = the original, `n` = the nth copy | the lane key (a copy is its own lane); the ✕ delete affordance |
 
 ## `drop` object — on either host
 
@@ -86,11 +87,11 @@ The **column's presence is the switch** — there are no enable flags.
 |---|---|---|
 | drag | move; reorder as well when `drop.sort` | `draggable` |
 | **Shift**+drag | flips the pinned flag (`false → true`, `true → false`) | `is_pinned_field` |
-| **Ctrl**+drag | drops a **copy**, `copy_index` + 1 | `copy_index_field` |
+| **Ctrl**+drag | drops a **copy**: the mutation creates a **new lane item** (a new row, its own identity) | `drop.commit: "mutation"` |
 | **Ctrl+Shift**+drag | copy, pinned | both |
 
-Without `is_pinned_field` Shift does nothing. Without `copy_index_field` Ctrl degrades to a
-plain move. Without `no_split_field` every item may be split.
+Without `is_pinned_field` Shift does nothing. Without `commit: "mutation"` Ctrl degrades
+to a plain move. Without `no_split_field` every item may be split.
 
 ---
 
@@ -104,7 +105,7 @@ Columns the source must accept on update when `commit: "mutation"`:
 | each `drop.value_fields` entry | crossing into another group | copied from a neighbour row |
 | each `group_by` level crossed | crossing | the target group's value |
 | `is_pinned_field` | Shift | the flipped boolean |
-| `copy_index_field` | Ctrl | previous max within the same identity, + 1 |
+| — (Ctrl) | Ctrl | no column: the mutation **inserts** a new lane item copying the dragged row (offset, duration, links) |
 
 ---
 
@@ -122,13 +123,12 @@ Columns the source must accept on update when `commit: "mutation"`:
    `production_orderline_id`, which is absent from its own schema.
 4. **`order_field` must be numeric and writable.** The rank method computes a midpoint, so
    the column needs room between neighbours — integer steps of 10 or 100, not 1.
-5. **`copy_index_field`**: integer, `0` on originals, never null.
-6. **`is_pinned_field`**: boolean or null; null counts as not pinned.
-6b. **`no_split_field`**: boolean, default false; the source serves it from
+5. **`is_pinned_field`**: boolean or null; null counts as not pinned.
+5b. **`no_split_field`**: boolean, default false; the source serves it from
    `action.lane_item.no_split` (was `is_atomic` on the old plan).
-7. **`commit: "mutation"` requires a mutation procedure on the source.** Without one the
+6. **`commit: "mutation"` requires a mutation procedure on the source.** Without one the
    POST fails and the optimistic reorder silently reverts.
-8. **Use id columns in `within_fields`**, not display names — two resources sharing a name
+7. **Use id columns in `within_fields`**, not display names — two resources sharing a name
    would otherwise be treated as one group.
 
 ---
@@ -144,8 +144,8 @@ Columns the source must accept on update when `commit: "mutation"`:
 | `drag_group_fields` | `drop.within_fields` — **inverted**, see below |
 | `drag_value_fields` | `drop.value_fields` |
 | `drag_commit: true` | `drop.commit: "mutation"` |
-| `occurence_field` | `copy_index_field` |
-| `instance_field` | `copy_index_field` (legacy alias, drop it) |
+| `occurence_field` | dropped — a copy is a new lane item |
+| `instance_field` | dropped — same |
 | `is_fixed_field` | `is_fixed_group_field` (legacy alias, drop it) |
 | `is_pinned_field` | unchanged, stays on `timeline_config` |
 | `plan_config.is_atomic_field` | `no_split_field` on `timeline_config` |
@@ -165,7 +165,6 @@ unlocked and the tenant stays locked.
 ```json
 "draggable": true,
 "order_field": "sort_order",
-"copy_index_field": "occurence",
 "drop": {
   "sort": true,
   "order_type": "rank",
