@@ -122,9 +122,26 @@ FROM (
 WHERE x.xbom_id = m.xbom_id
   AND x.item_code IS NULL;
 
+-- catalog.item is the master: an item_code change follows automatically
+-- in xbom and item_base_price (their generated path columns recompute on
+-- the cascaded update). The imposition group arrays cannot cascade
+-- declaratively; the trigger in sql/catalog/cascade_item_code_paths.sql
+-- rewrites those.
+ALTER TABLE catalog.xbom
+    DROP CONSTRAINT xbom_item_code_fkey,
+    ADD CONSTRAINT xbom_item_code_fkey
+        FOREIGN KEY (item_code) REFERENCES catalog.item (item_code)
+        ON UPDATE CASCADE;
+
+ALTER TABLE catalog.item_base_price
+    ADD CONSTRAINT item_base_price_item_code_fkey
+        FOREIGN KEY (item_code) REFERENCES catalog.item (item_code)
+        ON UPDATE CASCADE;
+
 COMMIT;
 
 -- >>> then run:
+--     sql/catalog/cascade_item_code_paths.sql (rename trigger on catalog.item)
 --     sql/catalog/get_imposition_group.sql   (find-or-create from the xbom)
 --     sql/migration_lane_slots.sql           (slots + the group link per slot)
 --     sql/mock/generate_plan.sql             (stamps the group link on new plans)

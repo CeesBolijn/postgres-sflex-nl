@@ -5,7 +5,8 @@ create table xbom
 			primary key,
 	option_code text,
 	item_code text
-		references item (item_code),
+		references item (item_code)
+			on update cascade,
 	-- the formula by code, not by row: the version that applies is picked
 	-- at read time by date (catalog.get_formula)
 	formula_code text,
