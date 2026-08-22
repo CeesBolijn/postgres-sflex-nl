@@ -22,7 +22,7 @@ declare
 begin
     select min(d.date) into v_next_workday
     from action.dates d
-    where d.date > p_date and d.is_weekend = false and not action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids);
+    where d.date > p_date and d.is_weekend = false and not (coalesce(p_tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}');
 
     if p_look_ahead_days <> -1 then
         v_look_ahead_days := p_look_ahead_days;

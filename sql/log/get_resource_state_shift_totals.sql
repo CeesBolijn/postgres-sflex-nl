@@ -79,7 +79,7 @@ begin
     cross join lateral jsonb_array_elements(d.shift_json) with ordinality as sh(value, idx)
     where d.date between v_until - p_days + 1 and v_until
       and (p_include_weekends or not d.is_weekend)
-      and (p_include_mandatory_days_off or not action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids))
+      and (p_include_mandatory_days_off or not (coalesce(p_tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}'))
   ),
   actual as (
     select agg.shift_date, agg.shift_index, agg.shift_start, agg.shift_end,
@@ -92,7 +92,7 @@ begin
     where agg.shift_date between v_until - p_days + 1 and v_until
       and agg.resource_uid = any(p_resource_uids)
       and (p_include_weekends or not d.is_weekend)
-      and (p_include_mandatory_days_off or not action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids))
+      and (p_include_mandatory_days_off or not (coalesce(p_tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}'))
     group by agg.shift_date, agg.shift_index, agg.shift_start, agg.shift_end,
              agg.resource_uid, res.resource_name, pl.line, res.step, agg.state
   ),

@@ -1,10 +1,14 @@
 -- ============================================================
 -- Migration: action.dates gets tenants_mandatory_day_off; every
--- reader of is_mandatory_day_off becomes tenant-aware through
--- action.is_day_off(tenants_off, tenant_ids) and gains
+-- reader of is_mandatory_day_off becomes tenant-aware and gains
 -- p_tenant_ids where it was missing. The parameter name is
 -- p_include_mandatory_days_off everywhere (the _dates variant
--- is renamed).
+-- is renamed). A date is a mandatory day off for the caller when
+-- every requested tenant has it off:
+--   coalesce(p_tenant_ids, tenants_mandatory_day_off)
+--       <@ tenants_mandatory_day_off
+--   and tenants_mandatory_day_off <> '{}'
+-- (no tenant scope: off as soon as any tenant is off).
 --
 -- The boolean is_mandatory_day_off column STAYS for now; it can
 -- be dropped once nothing outside this migration reads it.
@@ -45,8 +49,7 @@ DROP FUNCTION mock.get_print_schedule_test(timestamp with time zone, text, integ
 DROP FUNCTION production.get_timeline_view_segments(text, timestamp with time zone, integer, integer);
 DROP FUNCTION site.refresh_derived_data();
 
--- >>> now run, in this order (the mapping files drop themselves):
---     sql/action/is_day_off.sql                              (new helper, first)
+-- >>> now run (the mapping files drop themselves; order is free):
 --     sql/action/get_date_window.sql
 --     sql/action/get_interval_dates.sql
 --     sql/action/get_nest_schedule_test.sql

@@ -13,12 +13,12 @@ as $$
         coalesce((select d.date from action.dates d
                   where d.date <= day.day
                     and (p_include_weekend            or not d.is_weekend)
-                    and (p_include_mandatory_days_off or not action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids))
+                    and (p_include_mandatory_days_off or not (coalesce(p_tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}'))
                   order by d.date desc offset coalesce(p_look_back_days, 0) limit 1), day.day),
         coalesce((select d.date from action.dates d
                   where d.date >= day.day
                     and (p_include_weekend            or not d.is_weekend)
-                    and (p_include_mandatory_days_off or not action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids))
+                    and (p_include_mandatory_days_off or not (coalesce(p_tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}'))
                   order by d.date offset coalesce(p_look_ahead_days, 0) limit 1), day.day) + 1
     from day
     where p_look_back_days is not null or p_look_ahead_days is not null;

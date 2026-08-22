@@ -8,7 +8,7 @@ as $$
             ROW_NUMBER() OVER (ORDER BY d.date) AS seq
         FROM action.dates d
         WHERE (p_include_weekends OR d.is_weekend = FALSE)
-          AND (p_include_mandatory_days_off OR NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids))
+          AND (p_include_mandatory_days_off OR NOT (coalesce(p_tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}'))
     ),
     shifted AS (               -- reference en current verschoven volgens de formule
         SELECT

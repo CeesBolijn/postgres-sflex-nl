@@ -20,7 +20,7 @@ as $$
         FROM action.dates d
         WHERE d.date >= p_order_date
           AND d.is_weekend = false
-          AND NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids)
+          AND NOT (coalesce(p_tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}')
         ORDER BY d.date
         OFFSET greatest(p_production_hours / 24 - 1, 1) - 1
         LIMIT 1

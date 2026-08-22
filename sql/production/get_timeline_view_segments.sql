@@ -46,7 +46,7 @@ BEGIN
         WHERE NOT (coalesce((v_view ->> 'exclude_weekend')::boolean, false)
                        AND d.is_weekend)
           AND NOT (coalesce((v_view ->> 'exclude_mandatory_day_off')::boolean, false)
-                       AND action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids))
+                       AND (coalesce(p_tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}'))
     ),
     day AS (
         -- day_index 0 is the first included day on or after p_until, so an excluded day moves forward

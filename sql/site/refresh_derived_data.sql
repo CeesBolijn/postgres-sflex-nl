@@ -27,7 +27,7 @@ begin
                 from relation.production_line pl
                 where pl.line_type is not null
                 group by pl.line_type) lt
-    where not action.is_day_off(d.tenants_mandatory_day_off, lt.tenant_ids)
+    where not (coalesce(lt.tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}')
       and not exists (select 1 from action.plan p
                       where p.plan_date = d.date
                         and p.type = 'material-resource-plan'

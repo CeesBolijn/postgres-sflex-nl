@@ -40,7 +40,7 @@ BEGIN
       FROM action.dates d
      WHERE d.date >= (p_until AT TIME ZONE 'UTC')::date
        AND d.is_weekend = false
-       AND NOT action.is_day_off(d.tenants_mandatory_day_off, p_tenant_ids);
+       AND NOT (coalesce(p_tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}');
 
     RETURN QUERY
     -- The timeline segments, fetched with the SAME parameters the
