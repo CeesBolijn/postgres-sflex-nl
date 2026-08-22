@@ -212,30 +212,33 @@ BEGIN
     WHERE li.source = 'pv2' AND li.source_ref = pt.plannable_item_id::text
       AND pt.crud = 'merge' AND pt.is_delete;
 
-    -- the day's production plan per line type: the newest one, or a new one
+    -- the day's production plan AND material resource plan per line type:
+    -- the newest one, or a new one — every workday needs both
     INSERT INTO action.plan (plan_date, steps, type, line_type)
-    SELECT d.plan_date, array_agg(DISTINCT d.step ORDER BY d.step), 'production-plan', d.line_type
+    SELECT d.plan_date, array_agg(DISTINCT d.step ORDER BY d.step), t.type, d.line_type
     FROM (SELECT ni.plan_date, ni.step, ni.line_type FROM new_item ni
           UNION ALL
           SELECT ni.plan_date, ni.step, ni.physical_line_type FROM new_item ni
           WHERE ni.physical_line_type IS DISTINCT FROM ni.line_type) d
+    CROSS JOIN (VALUES ('production-plan'), ('material-resource-plan')) AS t(type)
     WHERE NOT EXISTS (SELECT 1 FROM action.plan p
-                      WHERE p.plan_date = d.plan_date AND p.type = 'production-plan'
+                      WHERE p.plan_date = d.plan_date AND p.type = t.type
                         AND p.line_type IS NOT DISTINCT FROM d.line_type)
-    GROUP BY d.plan_date, d.line_type;
+    GROUP BY d.plan_date, d.line_type, t.type;
 
-    -- and every step of the payload in the plan's steps
+    -- and every step of the payload in the plans' steps
     UPDATE action.plan p
     SET steps = (SELECT array_agg(DISTINCT s ORDER BY s)
                  FROM unnest(p.steps || x.steps) AS s)
-    FROM (SELECT d.plan_date, d.line_type, array_agg(DISTINCT d.step) AS steps
+    FROM (SELECT d.plan_date, d.line_type, t.type, array_agg(DISTINCT d.step) AS steps
           FROM (SELECT ni.plan_date, ni.step, ni.line_type FROM new_item ni
                 UNION ALL
                 SELECT ni.plan_date, ni.step, ni.physical_line_type FROM new_item ni
                 WHERE ni.physical_line_type IS DISTINCT FROM ni.line_type) d
-          GROUP BY d.plan_date, d.line_type) x
+          CROSS JOIN (VALUES ('production-plan'), ('material-resource-plan')) AS t(type)
+          GROUP BY d.plan_date, d.line_type, t.type) x
     WHERE p.plan_id = (SELECT p2.plan_id FROM action.plan p2
-                       WHERE p2.plan_date = x.plan_date AND p2.type = 'production-plan'
+                       WHERE p2.plan_date = x.plan_date AND p2.type = x.type
                          AND p2.line_type IS NOT DISTINCT FROM x.line_type
                        ORDER BY p2.plan_id DESC LIMIT 1)
       AND NOT (p.steps @> x.steps);
