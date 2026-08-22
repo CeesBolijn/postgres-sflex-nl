@@ -1,0 +1,31 @@
+{
+  "block_id": 21,
+  "hidden": false,
+  "languages": [],
+  "roles": [
+    "user"
+  ],
+  "company_ids": [],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "paramJSON": {
+              "dataGroup": "productionLineThreeView"
+            }
+          }
+        ]
+      }
+    ],
+    "title": [],
+    "blockLayout": "multi-col",
+    "blockCombine": "",
+    "rowClassName": "",
+    "blockLayoutGrid": [
+      "xfw3-col-1"
+    ],
+    "blockLayoutType": "xfw3-container xfw3-bg-transparant",
+    "disableContainerWidth": true
+  }
+}

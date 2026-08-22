@@ -1,0 +1,16 @@
+{
+  "page_id": 21,
+  "path": [
+    "xfw/nl/test-planner-capaciteit-overview"
+  ],
+  "environment": {},
+  "domain_ids": [
+    1
+  ],
+  "blocks": [
+    {
+      "block_id": 12,
+      "sort_order": 0
+    }
+  ]
+}

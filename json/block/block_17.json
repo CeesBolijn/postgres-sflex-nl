@@ -1,0 +1,114 @@
+{
+  "block_id": 17,
+  "hidden": false,
+  "languages": [
+    "nl",
+    "en",
+    "fr",
+    "de"
+  ],
+  "roles": [
+    "user"
+  ],
+  "company_ids": [
+    1
+  ],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "body": [
+              {
+                "ml": {
+                  "cz": {
+                    "text": ""
+                  },
+                  "de": {
+                    "text": ""
+                  },
+                  "en": {
+                    "text": ""
+                  },
+                  "fr": {
+                    "text": ""
+                  }
+                },
+                "text": "Als jouw ‘groene’ totaalleverancier is IGEPA Nederland voortdurend bezig de ecologische impact te verminderen, met een focus op klimaatbescherming en duurzaam inkopen. Wij zijn bewust van onze rol als schakel tussen producent en verbruiker en nemen onze maatschappelijke verantwoordelijkheid. Alleen samen maken wij het verschil en werken wij aan een printmarkt die klaar is voor de toekomst. De volgende stap? IGEPA Circulair, want alleen met jou maken wij de cirkel rond. What’s in it for you? Exclusief toegang tot het eerste circulaire plaatmateriaal Sign Again® en deelname aan recycling trajecten met onze hardlopers: Banner 510, roll up banners, Dibond / ACP en Plexiglas. Hier lees je er alles over en kan je je direct aanmelden.",
+                "title": "Groen als verkoopkans",
+                "title_class_name": "h2"
+              },
+              {
+                "nav": {
+                  "custom": {
+                    "ml": {
+                      "de": {
+                        "text": ""
+                      },
+                      "en": {
+                        "path": "",
+                        "text": ""
+                      },
+                      "fr": {
+                        "text": ""
+                      }
+                    },
+                    "icon": "arrow-right",
+                    "path": "xfw/nl/content-landing",
+                    "text": "Lees verder",
+                    "type": "icon-right",
+                    "track": {
+                      "event_name": "cmd",
+                      "event_action": "https://igepa.nl/circulair"
+                    },
+                    "params": [
+                      {
+                        "key": "object",
+                        "val": "signagain",
+                        "is_query_param": true
+                      }
+                    ],
+                    "class_name": "cmd text xfw3-cmd-action-bg rounded-corners",
+                    "params_from": [
+                      {
+                        "key": "object"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "col": [
+          {
+            "img": [
+              {
+                "url": "https://igepa.nl/media/wysiwyg/hoofdpage_circulair.jpg",
+                "size": "contain",
+                "class_name": "text-center"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "title": [
+      {
+        "logo_class_name": "partner-content-logo"
+      }
+    ],
+    "suppliers": [
+      101
+    ],
+    "block_layout": "multi-col",
+    "block_layout_grid": [
+      "xfw-col-2-1",
+      "xfw-col-2-2"
+    ],
+    "block_layout_type": "xfw3-container xfw3-bg-transparant b-t",
+    "block_layout_grid_title": "xfw-col-1"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "block_id": 13,
+  "hidden": false,
+  "languages": [
+    "nl",
+    "en",
+    "fr",
+    "de"
+  ],
+  "roles": [
+    "user"
+  ],
+  "company_ids": [
+    1
+  ],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "param_json": {
+              "params": [
+                {
+                  "key": "blockId"
+                }
+              ],
+              "data_group": "dataCardsBlockContent"
+            }
+          }
+        ]
+      }
+    ],
+    "title": [
+      {
+        "text": "Keep It Simple",
+        "logo_class_name": "partner-content-logo"
+      }
+    ],
+    "block_layout": "one-col",
+    "row_class_name": ""
+  }
+}

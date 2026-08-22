@@ -1,0 +1,29 @@
+{
+  "block_id": 10,
+  "hidden": false,
+  "languages": [
+    "nl",
+    "en",
+    "fr",
+    "de"
+  ],
+  "roles": [
+    "user"
+  ],
+  "company_ids": [],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "param_json": {
+              "data_group": "dataListJobSummary"
+            }
+          }
+        ]
+      }
+    ],
+    "block_layout": "one-col",
+    "row_class_name": ""
+  }
+}

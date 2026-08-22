@@ -1,0 +1,150 @@
+{
+  "nav_id": 5,
+  "nav": "resource_menu",
+  "company_ids": [],
+  "nav_json": {
+    "menu": [
+      {
+        "code": "resource.oee-area-chart",
+        "i18n": {
+          "de": {
+            "title": "OEE"
+          },
+          "en": {
+            "title": "OEE"
+          },
+          "es": {
+            "title": "OEE"
+          },
+          "fr": {
+            "title": "OEE"
+          },
+          "nl": {
+            "title": "OEE"
+          },
+          "uk": {
+            "title": "OEE"
+          }
+        },
+        "path": "(sidebar:resource-oee-area-chart)"
+      },
+      {
+        "code": "resource.tco",
+        "i18n": {
+          "de": {
+            "title": "TCO & Kapazität"
+          },
+          "en": {
+            "title": "TCO & capacity"
+          },
+          "es": {
+            "title": "TCO y capacidad"
+          },
+          "fr": {
+            "title": "TCO et capacité"
+          },
+          "nl": {
+            "title": "TCO & capaciteit"
+          },
+          "uk": {
+            "title": "TCO та потужність"
+          }
+        },
+        "path": "(sidebar:tco)",
+        "environments": [
+          "development"
+        ]
+      },
+      {
+        "code": "resource.production",
+        "i18n": {
+          "de": {
+            "title": "Produktion"
+          },
+          "en": {
+            "title": "Production"
+          },
+          "es": {
+            "title": "Producción"
+          },
+          "fr": {
+            "title": "Production"
+          },
+          "nl": {
+            "title": "Productie"
+          },
+          "uk": {
+            "title": "Виробництво"
+          }
+        },
+        "path": "(sidebar:production)"
+      },
+      {
+        "code": "resource.intermediate-stock",
+        "i18n": {
+          "de": {
+            "title": "Zwischenlager"
+          },
+          "en": {
+            "title": "Intermediate stock"
+          },
+          "es": {
+            "title": "Stock intermedio"
+          },
+          "fr": {
+            "title": "Stock intermédiaire"
+          },
+          "nl": {
+            "title": "Tussenvoorraad"
+          },
+          "uk": {
+            "title": "Проміжний запас"
+          }
+        },
+        "path": "(sidebar:intermediate-stock)"
+      },
+      {
+        "code": "resource.ink-heads",
+        "i18n": {
+          "de": {
+            "title": "Tinte & Köpfe"
+          },
+          "en": {
+            "title": "Ink & heads"
+          },
+          "es": {
+            "title": "Tintas y cabezales"
+          },
+          "fr": {
+            "title": "Encre et têtes"
+          },
+          "nl": {
+            "title": "Inkt & koppen"
+          },
+          "uk": {
+            "title": "Чорнила та головки"
+          }
+        },
+        "path": "(sidebar:ink-heads)",
+        "hidden_when": {
+          "op": "not in",
+          "key": "type",
+          "val": [
+            "printer"
+          ]
+        },
+        "environments": [
+          "development"
+        ]
+      }
+    ],
+    "on_select": {
+      "params": [
+        {
+          "key": "resource_uids",
+          "is_query_param": true
+        }
+      ]
+    }
+  }
+}

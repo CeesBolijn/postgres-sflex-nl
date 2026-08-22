@@ -1,0 +1,105 @@
+{
+  "nav_id": 2,
+  "nav": "xfw.main-menu-left",
+  "company_ids": [],
+  "nav_json": [
+    {
+      "func": null,
+      "i18n": {
+        "nl": {
+          "path": "xfw/nl/planning",
+          "text": "Planning"
+        }
+      },
+      "menu": [
+        {
+          "func": null,
+          "i18n": {
+            "nl": {
+              "path": "xfw/nl/planning-preproductie",
+              "text": "Preproductie"
+            }
+          },
+          "path": "xfw/nl/planning-preproductie",
+          "type": null,
+          "nav_item_id": 230402,
+          "access_level": [
+            "superAdmin"
+          ],
+          "is_search_global": false
+        },
+        {
+          "func": null,
+          "i18n": {
+            "nl": {
+              "path": "xfw/nl/planning-productie",
+              "text": "Productie"
+            }
+          },
+          "path": "xfw/nl/planning-productie",
+          "type": null,
+          "nav_item_id": 230403,
+          "access_level": [
+            "superAdmin"
+          ],
+          "is_search_global": false
+        },
+        {
+          "func": null,
+          "i18n": {
+            "nl": {
+              "path": "xfw/nl/planning-montage",
+              "text": "Montage"
+            }
+          },
+          "path": "xfw/nl/planning-montage",
+          "type": null,
+          "nav_item_id": 230404,
+          "access_level": [
+            "superAdmin"
+          ],
+          "is_search_global": false
+        },
+        {
+          "func": null,
+          "i18n": {
+            "nl": {
+              "path": "xfw/nl/planning-projecten",
+              "text": "Projecten"
+            }
+          },
+          "path": "xfw/nl/planning-projecten",
+          "type": null,
+          "nav_item_id": 230405,
+          "access_level": [
+            "superAdmin"
+          ],
+          "is_search_global": false
+        }
+      ],
+      "path": "xfw/nl/planning",
+      "type": null,
+      "nav_item_id": 230401,
+      "access_level": [
+        "superAdmin"
+      ],
+      "is_search_global": false
+    },
+    {
+      "func": null,
+      "i18n": {
+        "nl": {
+          "path": "xfw/nl/faq",
+          "text": "FAQ"
+        }
+      },
+      "path": "xfw/nl/faq",
+      "type": null,
+      "nav_item_id": 230603,
+      "access_level": [
+        "user"
+      ],
+      "is_search_global": false
+    }
+  ]
+}

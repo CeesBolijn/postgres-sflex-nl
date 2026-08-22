@@ -1,0 +1,16 @@
+{
+  "page_id": 6,
+  "path": [
+    "xfw/nl/sidebar/productielijn-machine"
+  ],
+  "environment": {},
+  "domain_ids": [
+    1
+  ],
+  "blocks": [
+    {
+      "block_id": 25,
+      "sort_order": 0
+    }
+  ]
+}

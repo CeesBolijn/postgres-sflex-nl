@@ -1,0 +1,42 @@
+{
+  "block_id": 19,
+  "hidden": false,
+  "languages": [
+    "nl",
+    "en",
+    "fr",
+    "de"
+  ],
+  "roles": [],
+  "company_ids": [],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "text": ""
+          }
+        ]
+      },
+      {
+        "col": [
+          {
+            "body": [
+              {
+                "title": "Sign-Spine",
+                "title_class_name": "h2"
+              }
+            ]
+          },
+          {
+            "param_json": {
+              "data_group": "login"
+            }
+          }
+        ]
+      }
+    ],
+    "block_layout": "one-col",
+    "row_class_name": ""
+  }
+}

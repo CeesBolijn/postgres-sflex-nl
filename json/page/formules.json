@@ -1,0 +1,16 @@
+{
+  "page_id": 3,
+  "path": [
+    "xfw/nl/formules"
+  ],
+  "environment": {},
+  "domain_ids": [
+    1
+  ],
+  "blocks": [
+    {
+      "block_id": 20,
+      "sort_order": 1
+    }
+  ]
+}

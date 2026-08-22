@@ -1,0 +1,17 @@
+{
+  "page_id": 9,
+  "path": {
+    "ml": {
+      "nl": {
+        "path": "xfw/nl/sidebar/productielijn-onderhoudslog",
+        "text": "Onderhoudslog"
+      }
+    },
+    "nl": "xfw/nl/sidebar/productielijn-onderhoudslog"
+  },
+  "environment": {},
+  "domain_ids": [
+    1
+  ],
+  "blocks": []
+}

@@ -1,0 +1,25 @@
+{
+  "block_id": 25,
+  "hidden": false,
+  "languages": [],
+  "roles": [
+    "user"
+  ],
+  "company_ids": [],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "param_json": {
+              "data_group": "resourceInfoStatus"
+            },
+            "grid_template_row": "auto"
+          }
+        ]
+      }
+    ],
+    "block_layout": "one-col",
+    "row_class_name": ""
+  }
+}

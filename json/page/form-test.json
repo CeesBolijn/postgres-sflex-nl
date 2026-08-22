@@ -1,0 +1,16 @@
+{
+  "page_id": 2,
+  "path": [
+    "xfw/nl/form-test"
+  ],
+  "environment": {},
+  "domain_ids": [
+    1
+  ],
+  "blocks": [
+    {
+      "block_id": 1,
+      "sort_order": 0
+    }
+  ]
+}

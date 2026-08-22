@@ -1,0 +1,16 @@
+{
+  "page_id": 17,
+  "path": [
+    "xfw/nl/test-nesting-preview"
+  ],
+  "environment": {},
+  "domain_ids": [
+    1
+  ],
+  "blocks": [
+    {
+      "block_id": 5,
+      "sort_order": null
+    }
+  ]
+}

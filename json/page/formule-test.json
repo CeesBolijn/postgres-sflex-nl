@@ -1,0 +1,16 @@
+{
+  "page_id": 23,
+  "path": [
+    "xfw/nl/formule-test"
+  ],
+  "environment": {},
+  "domain_ids": [
+    1
+  ],
+  "blocks": [
+    {
+      "block_id": 4,
+      "sort_order": 1
+    }
+  ]
+}

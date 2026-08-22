@@ -1,0 +1,17 @@
+{
+  "page_id": 7,
+  "path": {
+    "ml": {
+      "nl": {
+        "path": "xfw/nl/sidebar/productielijn-storing",
+        "text": "Storing"
+      }
+    },
+    "nl": "xfw/nl/sidebar/productielijn-storing"
+  },
+  "environment": {},
+  "domain_ids": [
+    1
+  ],
+  "blocks": []
+}

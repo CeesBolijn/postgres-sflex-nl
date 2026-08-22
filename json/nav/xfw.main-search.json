@@ -1,0 +1,139 @@
+{
+  "nav_id": 4,
+  "nav": "xfw.main-search",
+  "company_ids": [],
+  "nav_json": [
+    {
+      "src": "searchProduct",
+      "card": true,
+      "i18n": {
+        "nl": {
+          "text": "Zoek product"
+        }
+      },
+      "info": ":",
+      "path": "xfw/nl/configurator",
+      "params": [
+        {
+          "key": "code",
+          "is_query_param": true
+        }
+      ],
+      "group_by_keys": [
+        "companyName"
+      ],
+      "is_search_global": 1
+    },
+    {
+      "src": "searchCompany",
+      "i18n": {
+        "nl": {
+          "text": "Zoek relatie"
+        }
+      },
+      "info": ".",
+      "path": "xfw/nl/relatie",
+      "params": [
+        {
+          "key": "companyId",
+          "is_query_param": true
+        }
+      ]
+    },
+    {
+      "src": "searchContact",
+      "i18n": {
+        "nl": {
+          "text": "Zoek contact"
+        }
+      },
+      "info": "-",
+      "path": "(window:xfw/nl/window/contact)",
+      "params": [
+        {
+          "key": "_contactId",
+          "is_query_param": true
+        }
+      ],
+      "is_search_global": 1
+    },
+    {
+      "src": "searchPhone",
+      "i18n": {
+        "nl": {
+          "text": "Zoek op telefoonnummer"
+        }
+      },
+      "info": "0"
+    },
+    {
+      "src": "searchInvoice",
+      "i18n": {
+        "nl": {
+          "text": "Zoek factuur"
+        }
+      },
+      "info": "!"
+    },
+    {
+      "src": "searchJobContent",
+      "i18n": {
+        "nl": {
+          "text": "Zoek in job's"
+        }
+      },
+      "info": "*"
+    },
+    {
+      "i18n": {
+        "nl": {
+          "text": "Calculator"
+        }
+      },
+      "info": "="
+    },
+    {
+      "src": "searchLocation",
+      "i18n": {
+        "nl": {
+          "text": "Google maps"
+        }
+      },
+      "info": "@",
+      "path": "(window:xfw/nl/window/route)",
+      "params": [
+        {
+          "key": "_gmap",
+          "is_query_param": true
+        }
+      ]
+    },
+    {
+      "src": "searchJob",
+      "i18n": {
+        "nl": {
+          "text": "Zoek job"
+        }
+      },
+      "info": "2"
+    },
+    {
+      "src": "searchBatch",
+      "i18n": {
+        "nl": {
+          "text": "Zoek batch"
+        }
+      },
+      "info": "%"
+    },
+    {
+      "src": "searchNest",
+      "i18n": {
+        "nl": {
+          "text": "Zoek nesting"
+        }
+      },
+      "info": ">"
+    }
+  ]
+}

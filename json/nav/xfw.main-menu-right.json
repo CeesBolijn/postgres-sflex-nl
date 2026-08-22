@@ -1,0 +1,192 @@
+{
+  "nav_id": 3,
+  "nav": "xfw.main-menu-right",
+  "company_ids": [],
+  "nav_json": [
+    {
+      "i18n": {
+        "de": {
+          "text": ""
+        },
+        "en": {
+          "text": ""
+        },
+        "fr": {
+          "text": ""
+        },
+        "nl": {
+          "text": ""
+        }
+      },
+      "icon": "SearchSm",
+      "menu": [],
+      "nav_item_id": 230101,
+      "widget_action": [
+        {
+          "event": "open",
+          "widget_group": [
+            "main-search"
+          ]
+        }
+      ],
+      "is_search_global": false,
+      "keyboard_shortcut": "ctrl+k"
+    },
+    {
+      "i18n": {
+        "de": {
+          "text": ""
+        },
+        "en": {
+          "text": ""
+        },
+        "fr": {
+          "text": ""
+        },
+        "nl": {
+          "text": ""
+        }
+      },
+      "icon": "ShoppingCart01",
+      "menu": [],
+      "pop_over": {
+        "path": "xfw/nl/popup/dataListInProgressEmployeeJobContainer",
+        "placement": "bottom"
+      },
+      "nav_item_id": 230102,
+      "is_search_global": false
+    },
+    {
+      "i18n": {
+        "de": {
+          "text": ""
+        },
+        "en": {
+          "text": ""
+        },
+        "fr": {
+          "text": ""
+        },
+        "nl": {
+          "text": ""
+        }
+      },
+      "icon": "User01",
+      "menu": [
+        {
+          "func": null,
+          "i18n": {
+            "en": {
+              "text": "Account"
+            },
+            "nl": {
+              "text": "Account"
+            }
+          },
+          "path": "(sidebar:xfw/nl/sidebar/account)",
+          "type": null,
+          "nav_item_id": 230102,
+          "access_level": [
+            "superAdmin",
+            "demonstrator"
+          ]
+        },
+        {
+          "i18n": {
+            "en": {
+              "text": "Change Password"
+            },
+            "nl": {
+              "text": "Verander Wachtwoord"
+            }
+          },
+          "path": "(window:xfw/nl/window/verander-wachtwoord)",
+          "nav_item_id": 6,
+          "access_level": [
+            "user"
+          ],
+          "is_search_global": false
+        },
+        {
+          "func": null,
+          "i18n": {
+            "en": {
+              "text": "Employees"
+            },
+            "nl": {
+              "text": "Medewerkers"
+            }
+          },
+          "path": "xfw/nl/medewerkers",
+          "type": null,
+          "nav_item_id": 230103,
+          "access_level": [
+            "admin"
+          ],
+          "widget_action": [
+            {
+              "event": 4,
+              "widget_group": ""
+            }
+          ],
+          "is_search_global": false
+        },
+        {
+          "func": "generic.setApiMode",
+          "i18n": {
+            "en": {
+              "text": "API Mode"
+            },
+            "nl": {
+              "text": "API Mode"
+            }
+          },
+          "nav_item_id": 230106,
+          "access_level": [
+            "user"
+          ],
+          "is_search_global": false
+        },
+        {
+          "func": null,
+          "i18n": {
+            "nl": {
+              "path": "xfw/nl/window/lampen",
+              "text": "Lampen"
+            }
+          },
+          "path": "(window:xfw/nl/window/lampen)",
+          "type": null,
+          "nav_item_id": 230107,
+          "access_level": [
+            "superAdmin"
+          ],
+          "widget_action": [
+            {
+              "event": 4,
+              "widget_group": ""
+            }
+          ],
+          "is_search_global": false
+        },
+        {
+          "func": "auth.logout",
+          "i18n": {
+            "nl": {
+              "text": "Uitloggen"
+            }
+          },
+          "nav_item_id": 230108,
+          "access_level": [
+            "user"
+          ],
+          "is_search_global": false
+        }
+      ],
+      "path": "xfw/nl/home",
+      "nav_item_id": 230103,
+      "is_search_global": false,
+      "disable_active_style": true
+    }
+  ]
+}

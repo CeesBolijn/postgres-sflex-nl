@@ -1,0 +1,26 @@
+{
+  "page_id": 4,
+  "path": {
+    "ml": {
+      "nl": {
+        "path": "xfw/nl/sidebar/productielijn-prestaties",
+        "text": "Prestaties"
+      }
+    },
+    "nl": "xfw/nl/sidebar/productielijn-prestaties"
+  },
+  "environment": {
+    "sidebar_icon": "ActivityHeart",
+    "sidebar_side": "bottom",
+    "sidebar_title": "Prestaties"
+  },
+  "domain_ids": [
+    1
+  ],
+  "blocks": [
+    {
+      "block_id": 26,
+      "sort_order": 0
+    }
+  ]
+}

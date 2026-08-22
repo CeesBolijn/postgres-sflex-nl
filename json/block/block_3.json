@@ -1,0 +1,27 @@
+{
+  "block_id": 3,
+  "hidden": false,
+  "languages": [
+    "nl",
+    "en",
+    "fr",
+    "de"
+  ],
+  "roles": [
+    "user"
+  ],
+  "company_ids": [],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "row_class_name": "xfw-rowSpacer"
+          }
+        ]
+      }
+    ],
+    "block_layout": "one-col",
+    "row_class_name": ""
+  }
+}

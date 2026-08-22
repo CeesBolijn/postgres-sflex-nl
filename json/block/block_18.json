@@ -1,0 +1,94 @@
+{
+  "block_id": 18,
+  "hidden": false,
+  "languages": [
+    "nl",
+    "en",
+    "fr",
+    "de"
+  ],
+  "roles": [
+    "user"
+  ],
+  "company_ids": [
+    1
+  ],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "body": [
+              {
+                "ml": {
+                  "cz": {
+                    "text": ""
+                  },
+                  "de": {
+                    "text": ""
+                  },
+                  "en": {
+                    "text": ""
+                  },
+                  "fr": {
+                    "text": ""
+                  }
+                },
+                "text": "Heb je de gave MetaCast MCX serie al ontdekt? Deze premium gegoten wrap film serie biedt ultieme wrap prestaties voor full colour wrapping in de automotive branche. \n Colour Wrap Film voor 3D-applicaties\n Zelfvertrouwen bij complexe rondingen\n Air-Release lijmtechnologie\n Moderne en inspirerende OEM-kleuren\n\nBekijk de 25 MCX kleuren of bestel de Metamark MCX kleurenwaaier in onze webshop. De kleuren zijn geselecteerd op basis van de meest toegepaste kleuren in de wrapping industrie.\n",
+                "title": "Ervaar ultieme wrap film prestaties",
+                "title_class_name": "h2"
+              },
+              {
+                "nav": {
+                  "custom": {
+                    "ml": {
+                      "de": {
+                        "text": ""
+                      },
+                      "en": {
+                        "path": "",
+                        "text": ""
+                      },
+                      "fr": {
+                        "text": ""
+                      }
+                    },
+                    "icon": "arrow-right",
+                    "path": "https://vinkvts.nl/metamark-waaier-mcx-colour-wrap-series.html",
+                    "text": "Meer informatie",
+                    "type": "icon-right",
+                    "track": {
+                      "event_name": "cmd",
+                      "event_action": "https://vinkvts.nl/metamark-waaier-mcx-colour-wrap-series.html"
+                    },
+                    "params": [],
+                    "class_name": "cmd text xfw3-cmd-action-bg rounded-corners"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "col": [
+          {
+            "img": [
+              {
+                "url": "https://vinkvts.nl/media/catalog/product/cache/e48fa5967fb5f0af8e823443a533e289/v/t/vts_metamark_7_series_kleurkaart.jpg",
+                "size": "contain",
+                "class_name": "text-center"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "title": [
+      {
+        "logo_class_name": "partner-content-logo"
+      }
+    ],
+    "block_layout": "multi-col"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "block_id": 8,
+  "hidden": false,
+  "languages": [
+    "nl",
+    "en",
+    "fr",
+    "de"
+  ],
+  "roles": [
+    "user"
+  ],
+  "company_ids": [],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "nav_json": {
+              "nav": "xfw.home",
+              "src": "xfw.home",
+              "widget_id": "xfw.home"
+            }
+          }
+        ]
+      }
+    ],
+    "block_layout": "one-col"
+  }
+}

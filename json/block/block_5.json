@@ -1,0 +1,24 @@
+{
+  "block_id": 5,
+  "hidden": false,
+  "languages": [],
+  "roles": [
+    "user"
+  ],
+  "company_ids": [],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "param_json": {
+              "data_group": "test_get_nesting_preview"
+            }
+          }
+        ]
+      }
+    ],
+    "block_layout": "one-col",
+    "row_class_name": ""
+  }
+}

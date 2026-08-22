@@ -1,0 +1,29 @@
+{
+  "block_id": 20,
+  "hidden": false,
+  "languages": [
+    "nl",
+    "en",
+    "fr",
+    "de"
+  ],
+  "roles": [
+    "user"
+  ],
+  "company_ids": [],
+  "block_json": {
+    "cols": [
+      {
+        "col": [
+          {
+            "param_json": {
+              "data_group": "formulaGraphEditor"
+            }
+          }
+        ]
+      }
+    ],
+    "block_layout": "one-col",
+    "disable_container_width": true
+  }
+}

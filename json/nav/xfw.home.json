@@ -1,0 +1,121 @@
+{
+  "nav_id": 1,
+  "nav": "xfw.home",
+  "company_ids": [],
+  "nav_json": [
+    {
+      "nav": {
+        "menu": [
+          {
+            "path": "xfw/nl/home",
+            "text": "Nieuws",
+            "type": null,
+            "width": 0,
+            "divide": false,
+            "outlet": null,
+            "params": [],
+            "disabled": false,
+            "group_id": 17,
+            "noToggle": true,
+            "isVisible": true,
+            "isSelected": false,
+            "paramsFrom": [],
+            "skateBoard": null,
+            "accessLevel": null,
+            "nav_item_id": 69696
+          },
+          {
+            "path": "xfw/nl/evenementen",
+            "text": "Agenda",
+            "type": null,
+            "width": 0,
+            "divide": false,
+            "outlet": null,
+            "params": [],
+            "disabled": false,
+            "group_id": 17,
+            "noToggle": true,
+            "isVisible": true,
+            "isSelected": false,
+            "paramsFrom": [],
+            "skateBoard": null,
+            "accessLevel": null,
+            "nav_item_id": 914
+          },
+          {
+            "path": "xfw/nl/koppelingen",
+            "text": "Koppelingen",
+            "type": null,
+            "width": 0,
+            "divide": false,
+            "outlet": null,
+            "params": [],
+            "disabled": false,
+            "group_id": 17,
+            "noToggle": true,
+            "isVisible": true,
+            "isSelected": false,
+            "paramsFrom": [],
+            "skateBoard": null,
+            "accessLevel": [
+              "signmaker",
+              "distributor",
+              "producer"
+            ],
+            "nav_item_id": 96
+          },
+          {
+            "path": "xfw/nl/mijn-producten",
+            "text": "Mijn producten",
+            "type": null,
+            "width": 0,
+            "divide": false,
+            "outlet": null,
+            "params": [],
+            "disabled": false,
+            "group_id": 17,
+            "noToggle": true,
+            "isVisible": true,
+            "isSelected": false,
+            "paramsFrom": [],
+            "skateBoard": null,
+            "accessLevel": [
+              "customer"
+            ],
+            "nav_item_id": 98
+          },
+          {
+            "path": "xfw/nl/inspiratie",
+            "text": "Inspiratie",
+            "type": null,
+            "width": 0,
+            "divide": false,
+            "outlet": null,
+            "params": [],
+            "disabled": false,
+            "group_id": 17,
+            "noToggle": true,
+            "isVisible": true,
+            "isSelected": false,
+            "paramsFrom": [],
+            "skateBoard": null,
+            "accessLevel": null,
+            "nav_item_id": 908
+          }
+        ],
+        "type": "tabs",
+        "navId": 17,
+        "width": 0,
+        "maxLevel": 3,
+        "className": "home-component",
+        "infoPopup": false,
+        "autoSelect": true,
+        "fullscreen": false,
+        "isHamburger": false,
+        "fullscreenType": "treeview",
+        "gridTemplateColumns": "",
+        "fullscreenGridTemplateColumns": ""
+      }
+    }
+  ]
+}
