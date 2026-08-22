@@ -97,6 +97,9 @@ A config, annotated:
 - **`children`** — nested configs, always an array.
 - **`field_config`** — *only* fields. Config that belongs to the field grid
   itself lives next to it (`fields_class_name`), never between field names.
+  Field keys support **dot notation into jsonb columns**
+  (`impact_json.rework_count`), including with `aggregate_fn` — never add a
+  flat column to a source when the value already lives in a json.
 
 The key conventions (the full analysis lives in
 `docs/data-group-governance.md`, the layout system in

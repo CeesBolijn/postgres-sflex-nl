@@ -53,6 +53,9 @@ zie `docs/data-group-governance.md` voor de volledige analyse
 - config-keys staan nooit tussen veldnamen: `field_config` bevat alleen velden,
   de grid van de velden heet `fields_class_name` en staat ernaast;
   `class_name` is altijd de class van het element zelf (`ui.class_name` op een veld)
+- field_config-keys ondersteunen dot-notatie in jsonb-kolommen
+  (`impact_json.rework_count`), ook in combinatie met `aggregate_fn` —
+  geen platte kolom toevoegen aan de functie als het veld al in een json zit
 - `ui.type` zegt wat de waarde ís, `ui.control` hoe hij getoond wordt
 - `title` is het standaard tekst-slot in `i18n` (niet `text` of `label`); andere slots
   (`subtitle`, `abb`, ...) alleen als het echt iets anders is dan de titel
