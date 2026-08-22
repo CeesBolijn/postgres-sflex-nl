@@ -34,7 +34,8 @@
         {
           "key": "material_ids",
           "is_optional": true,
-          "is_query_param": true
+          "is_query_param": true,
+          "value_from": "material_id"
         },
         {
           "key": "domain_id",
@@ -43,7 +44,8 @@
         {
           "key": "logistics_at",
           "is_optional": true,
-          "is_query_param": true
+          "is_query_param": true,
+          "value_from": "logistics_datetime"
         }
       ],
       "children": [],
