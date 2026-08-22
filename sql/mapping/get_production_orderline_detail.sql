@@ -3,7 +3,7 @@ drop function if exists mapping.get_production_orderline_detail(timestamp with t
 drop function if exists mapping.get_production_orderline_detail(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer, integer[], integer[], bigint[], boolean, integer, integer);
 drop function if exists mapping.get_production_orderline_detail(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer, integer[], integer[], bigint[], boolean, integer, integer, integer[]);
 
-create function mapping.get_production_orderline_detail(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_days_off boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_is_open boolean DEFAULT true, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, product_width numeric, product_height numeric, ship_separately boolean, production_line_id integer, production_company_id integer, delivery_hours integer, internal_status_code text, status_sequence integer, status_level text, status_title text, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, impact_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[])
+create function mapping.get_production_orderline_detail(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_days_off boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_is_open boolean DEFAULT true, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, product_width numeric, product_height numeric, ship_separately boolean, production_line_id integer, production_company_id integer, delivery_hours integer, internal_status_code text, status_sequence integer, status_level text, status_title text, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, impact_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[], order_count integer, rework_count integer, rework_amount numeric, rework_sqm numeric)
 	stable
 	SET plan_cache_mode=force_custom_plan
 	language plpgsql
@@ -265,7 +265,16 @@ begin
         -- production_order_amount is kept on the row, so no aggregate needed
         case when ob.production_order_amount is null then '{}'::text[]
              when ob.production_order_amount <= p_threshold then array['units-lte-threshold']
-             else array['units-gt-threshold'] end
+             else array['units-gt-threshold'] end,
+        -- 1 on the first orderline of every order: a board sums this into
+        -- the order count (the frontend only sums)
+        (row_number() over (partition by ob.production_order_id
+                            order by ob.production_orderline_id) = 1)::integer,
+        -- the rework shape of impact_json as plain columns, so boards can sum
+        (coalesce(orw.rework_count, 0) + coalesce(na.nest_rework_count, 0))::integer,
+        coalesce(orw.rework_amount, 0) + coalesce(na.nest_rework_amount, 0),
+        ob.sqm / nullif(ob.product_amount, 0)
+            * (coalesce(orw.rework_amount, 0) + coalesce(na.nest_rework_amount, 0))
     from orderline_base ob
     left join nest_agg na               on na.production_orderline_id   = ob.production_orderline_id
     left join orderline_rework orw      on orw.production_orderline_id  = ob.production_orderline_id

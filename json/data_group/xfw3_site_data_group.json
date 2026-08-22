@@ -8673,179 +8673,329 @@
         },
         "flow_board_config": {
           "layout": "flow-container",
+          "search": [
+            "number",
+            "company_name",
+            "material_name",
+            "status_title"
+          ],
           "children": [
             {
               "layout": "flow-cards",
               "group_by": [
-                "production_orderline_id"
+                "material_id",
+                "material_name"
               ],
               "row_options": {
-                "nav": {
-                  "on_select": {
-                    "path": "(detail:uploader-data)",
-                    "params": [
+                "colexp": false,
+                "checkable": false,
+                "selectable": false
+              },
+              "field_config": {
+                "material_name": {
+                  "ui": {
+                    "order": 0,
+                    "class_name": "col-span-3"
+                  }
+                },
+                "order_count": {
+                  "ui": {
+                    "i18n": {
+                      "de": {
+                        "title": "Aufträge"
+                      },
+                      "en": {
+                        "title": "Orders"
+                      },
+                      "nl": {
+                        "title": "Orders"
+                      }
+                    },
+                    "order": 1,
+                    "class_name": "col-span-1 text-right"
+                  },
+                  "aggregate_fn": "sum"
+                },
+                "product_amount": {
+                  "ui": {
+                    "i18n": {
+                      "de": {
+                        "title": "Einheiten"
+                      },
+                      "en": {
+                        "title": "Units"
+                      },
+                      "nl": {
+                        "title": "Units"
+                      }
+                    },
+                    "order": 2,
+                    "class_name": "col-span-1 text-right"
+                  },
+                  "aggregate_fn": "sum"
+                },
+                "sqm": {
+                  "ui": {
+                    "i18n": {
+                      "de": {
+                        "title": "m²"
+                      },
+                      "en": {
+                        "title": "m²"
+                      },
+                      "nl": {
+                        "title": "m²"
+                      }
+                    },
+                    "order": 3,
+                    "scale": 1,
+                    "class_name": "col-span-1 text-right"
+                  },
+                  "aggregate_fn": "sum"
+                },
+                "rework_count": {
+                  "ui": {
+                    "i18n": {
+                      "de": {
+                        "title": "Nacharbeit"
+                      },
+                      "en": {
+                        "title": "Rework"
+                      },
+                      "nl": {
+                        "title": "Herstel"
+                      }
+                    },
+                    "order": 4,
+                    "class_name": "col-span-1 text-right",
+                    "hidden_when": [
                       {
-                        "key": "production_orderline_id",
-                        "is_query_param": true
+                        "field": "rework_count",
+                        "op": "==",
+                        "value": 0
                       }
                     ]
                   },
-                  "menu": [
-                    {
-                      "i18n": {
-                        "de": {
-                          "title": "Uploader-Daten"
-                        },
-                        "en": {
-                          "title": "Uploader data"
-                        },
-                        "es": {
-                          "title": "Datos del cargador"
-                        },
-                        "fr": {
-                          "title": "Données du chargeur"
-                        },
-                        "nl": {
-                          "title": "Uploader data"
-                        },
-                        "uk": {
-                          "title": "Дані завантажувача"
-                        }
+                  "aggregate_fn": "sum"
+                },
+                "rework_amount": {
+                  "ui": {
+                    "i18n": {
+                      "de": {
+                        "title": "H. Einheiten"
                       },
-                      "path": "(detail:uploader-data)",
-                      "params": [
+                      "en": {
+                        "title": "Rw units"
+                      },
+                      "nl": {
+                        "title": "H. units"
+                      }
+                    },
+                    "order": 5,
+                    "class_name": "col-span-1 text-right",
+                    "hidden_when": [
+                      {
+                        "field": "rework_count",
+                        "op": "==",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "aggregate_fn": "sum"
+                },
+                "rework_sqm": {
+                  "ui": {
+                    "i18n": {
+                      "de": {
+                        "title": "H. m²"
+                      },
+                      "en": {
+                        "title": "Rw m²"
+                      },
+                      "nl": {
+                        "title": "H. m²"
+                      }
+                    },
+                    "order": 6,
+                    "scale": 1,
+                    "class_name": "col-span-1 text-right",
+                    "hidden_when": [
+                      {
+                        "field": "rework_count",
+                        "op": "==",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "aggregate_fn": "sum"
+                }
+              },
+              "fields_class_name": "grid grid-cols-9 gap-1"
+            },
+            {
+              "layout": "flow-container",
+              "children": [
+                {
+                  "layout": "flow-cards",
+                  "group_by": [
+                    "production_orderline_id"
+                  ],
+                  "row_options": {
+                    "nav": {
+                      "menu": [
                         {
-                          "key": "production_orderline_id",
-                          "is_query_param": true
+                          "i18n": {
+                            "de": {
+                              "title": "Dateien"
+                            },
+                            "en": {
+                              "title": "Files"
+                            },
+                            "es": {
+                              "title": "Archivos"
+                            },
+                            "fr": {
+                              "title": "Fichiers"
+                            },
+                            "nl": {
+                              "title": "Bestanden"
+                            },
+                            "uk": {
+                              "title": "Файли"
+                            }
+                          },
+                          "path": "(detail:uploader-data)",
+                          "params": [
+                            {
+                              "key": "production_orderline_id",
+                              "is_query_param": true
+                            }
+                          ]
+                        },
+                        {
+                          "i18n": {
+                            "de": {
+                              "title": "Statusverlauf"
+                            },
+                            "en": {
+                              "title": "Status history"
+                            },
+                            "es": {
+                              "title": "Historial de estados"
+                            },
+                            "fr": {
+                              "title": "Historique des statuts"
+                            },
+                            "nl": {
+                              "title": "Status verloop"
+                            },
+                            "uk": {
+                              "title": "Історія статусів"
+                            }
+                          },
+                          "path": "(detail:status-log-duration)",
+                          "params": [
+                            {
+                              "key": "production_orderline_id",
+                              "is_query_param": true
+                            }
+                          ]
                         }
                       ]
+                    },
+                    "colexp": false,
+                    "checkable": false,
+                    "selectable": true
+                  },
+                  "field_config": {
+                    "sqm": {
+                      "ui": {
+                        "order": 2,
+                        "class_name": "col-span-1"
+                      }
+                    },
+                    "part_amount": {
+                      "ui": {
+                        "order": 3,
+                        "class_name": "col-span-1"
+                      }
+                    },
+                    "rework_count": {
+                      "ui": {
+                        "order": 4,
+                        "class_name": "col-span-1"
+                      }
+                    },
+                    "status_title": {
+                      "ui": {
+                        "order": 0,
+                        "class_name": "col-span-3"
+                      }
+                    },
+                    "logistics_date": {
+                      "ui": {
+                        "order": 5,
+                        "class_name": "col-span-3",
+                        "type": "date"
+                      }
+                    },
+                    "product_amount": {
+                      "ui": {
+                        "order": 1,
+                        "class_name": "col-span-1"
+                      }
+                    },
+                    "logistics_datetime": {
+                      "ui": {
+                        "order": 6,
+                        "class_name": "col-span-3",
+                        "type": "datetime"
+                      }
                     }
-                  ]
-                },
-                "colexp": false,
+                  },
+                  "fields_class_name": "grid grid-cols-6 gap-1"
+                }
+              ],
+              "group_by": [
+                "production_order_id",
+                "number"
+              ],
+              "row_options": {
+                "colexp": true,
                 "checkable": false,
                 "selectable": true
               },
               "field_config": {
                 "sqm": {
                   "ui": {
-                    "order": 2,
-                    "class_name": "col-span-1"
-                  }
-                },
-                "part_amount": {
-                  "ui": {
                     "order": 3,
-                    "class_name": "col-span-1"
-                  }
+                    "class_name": "col-span-1  text-right"
+                  },
+                  "aggregate_fn": "sum"
                 },
-                "rework_count": {
-                  "ui": {
-                    "order": 4,
-                    "class_name": "col-span-1"
-                  }
-                },
-                "status_title": {
+                "number": {
                   "ui": {
                     "order": 0,
-                    "class_name": "col-span-3"
+                    "class_name": "col-span-2"
                   }
                 },
-                "logistics_date": {
+                "company_name": {
                   "ui": {
-                    "order": 5,
-                    "class_name": "col-span-3",
-                    "type": "date"
+                    "order": 1,
+                    "class_name": "col-span-2"
                   }
                 },
                 "product_amount": {
                   "ui": {
-                    "order": 1,
-                    "class_name": "col-span-1"
-                  }
-                },
-                "logistics_datetime": {
-                  "ui": {
-                    "order": 6,
-                    "class_name": "col-span-3",
-                    "type": "datetime"
-                  }
+                    "order": 2,
+                    "class_name": "col-span-1  text-right"
+                  },
+                  "aggregate_fn": "sum"
                 }
               },
               "fields_class_name": "grid grid-cols-6 gap-1"
             }
-          ],
-          "group_by": [
-            "production_order_id",
-            "number"
-          ],
-          "row_options": {
-            "nav": {
-              "menu": [
-                {
-                  "i18n": {
-                    "de": {
-                      "title": "Produktionslinien"
-                    },
-                    "en": {
-                      "title": "Production lines"
-                    },
-                    "es": {
-                      "title": "Líneas de producción"
-                    },
-                    "fr": {
-                      "title": "Lignes de production"
-                    },
-                    "nl": {
-                      "title": "Productielijnen"
-                    },
-                    "uk": {
-                      "title": "Виробничі лінії"
-                    }
-                  },
-                  "path": "(detail:production-lines)",
-                  "params": [
-                    {
-                      "key": "production_order_id",
-                      "is_query_param": true
-                    }
-                  ]
-                }
-              ]
-            },
-            "colexp": true,
-            "checkable": false,
-            "selectable": true
-          },
-          "field_config": {
-            "sqm": {
-              "ui": {
-                "order": 3,
-                "class_name": "col-span-1  text-right"
-              },
-              "aggregate_fn": "sum"
-            },
-            "number": {
-              "ui": {
-                "order": 0,
-                "class_name": "col-span-2"
-              }
-            },
-            "company_name": {
-              "ui": {
-                "order": 1,
-                "class_name": "col-span-2"
-              }
-            },
-            "product_amount": {
-              "ui": {
-                "order": 2,
-                "class_name": "col-span-1  text-right"
-              },
-              "aggregate_fn": "sum"
-            }
-          },
-          "fields_class_name": "grid grid-cols-6 gap-1"
+          ]
         }
       }
     ]
