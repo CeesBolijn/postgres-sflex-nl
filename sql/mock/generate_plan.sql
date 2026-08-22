@@ -17,8 +17,13 @@ as $$
         SELECT p.*, row_number() OVER (ORDER BY p.sort_order) AS rn FROM pattern p
     ),
     new_plan AS (
-        INSERT INTO action.plan (plan_date, steps, type, line_type)
-        VALUES (p_date, array[p_step], 'material-resource-plan', p_line_type)
+        -- tenant_ids: the tenants that run this line_type
+        INSERT INTO action.plan (plan_date, steps, type, line_type, tenant_ids)
+        SELECT p_date, array[p_step], 'material-resource-plan', p_line_type,
+               (SELECT array_agg(DISTINCT pl.tenant_id ORDER BY pl.tenant_id)
+                       FILTER (WHERE pl.tenant_id IS NOT NULL)
+                FROM relation.production_line pl
+                WHERE pl.line_type = p_line_type)
         RETURNING plan_id
     ),
     -- material lanes: one fresh lane per pattern row, no resource paths

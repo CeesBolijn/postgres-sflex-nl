@@ -12,10 +12,10 @@ begin
 
     -- the material resource plan: one per workday per line type, created
     -- ahead of time — the plannable items are generated from this planning
-    -- later, so the plan must exist before any item does. tenant_ids are
-    -- the tenants that run the line_type (relation.production_line).
-    insert into action.plan (plan_date, steps, type, line_type, tenant_ids)
-    select d.date, '{print}', 'material-resource-plan', lt.line_type, lt.tenant_ids
+    -- later, so the plan must exist before any item does. mock.generate_plan
+    -- builds the whole set: the plan (with tenant_ids), the material lanes
+    -- from the weekly pattern, plan_lane and the material link per lane.
+    perform mock.generate_plan(d.date, 'print', lt.line_type)
     from (select dt.date, dt.tenants_mandatory_day_off
           from action.dates dt
           where dt.date >= current_date
