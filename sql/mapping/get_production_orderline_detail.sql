@@ -63,9 +63,14 @@ begin
                or ist.level = any (p_status_levels))
           and (p_production_line_id is null or cs.first_production_line_id = p_production_line_id)
           and (p_material_ids is null or cs.material_id = any (p_material_ids))
-          -- a board card sometimes carries the shipment cutoff moment; then
-          -- only that specific moment is shown
-          and (p_logistics_at is null or cs.logistics_date = p_logistics_at)
+          -- a board card carries its logistics grain: today's cards the exact
+          -- cutoff moment, other days a midnight stamp meaning the whole day
+          -- (the same derivation as get_production_board_aggregate)
+          and (p_logistics_at is null
+               or cs.logistics_date = p_logistics_at
+               or (p_logistics_at = date_trunc('day', p_logistics_at)
+                   and cs.logistics_date >= p_logistics_at
+                   and cs.logistics_date <  p_logistics_at + interval '1 day'))
           -- One branch per date, so the comparison stays on a single column.
           and (v_scope <> 'window' or v_from is null
                or (p_date_type = 'logistics'
