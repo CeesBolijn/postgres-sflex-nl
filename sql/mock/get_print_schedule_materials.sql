@@ -1,7 +1,7 @@
--- return type changes (occurence -> copy_index), so the old signature has to go first
+-- return type changes, so the old signature has to go first
 drop function if exists mock.get_print_schedule_materials(timestamp with time zone, text, text, integer[], boolean);
 
-create function mock.get_print_schedule_materials(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_only_starting_today boolean DEFAULT false) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, resource_uid text, resource_name text, delivery_hours integer, min_delivery_hours integer, sort_order numeric, param_json jsonb, is_fixed_group text, is_pinned boolean, start_offset_in_seconds integer, next_start_offset_in_seconds integer)
+create function mock.get_print_schedule_materials(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_only_starting_today boolean DEFAULT false) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, resource_uid text, resource_name text, delivery_hours integer, min_delivery_hours integer, sort_order numeric, param_json jsonb, is_fixed_group text, is_pinned boolean, start_offset_in_seconds integer, next_start_offset_in_seconds integer, lane_item_id bigint, lane_id bigint)
 	stable
 	language plpgsql
 as $$
@@ -48,7 +48,7 @@ BEGIN
     material_row AS (
         SELECT m.material_id, mps.material_name, m.production_line_id,
                m.tenant_id, t.tenant_name, m.resource_uid, r.resource_name,
-               mps.delivery_hours, mps.min_delivery_hours, l.sort_order,
+               mps.delivery_hours, mps.min_delivery_hours, li.sort_order,
                -- only the two keys the tooltip reads
                jsonb_build_object('specs', coalesce((
                    SELECT jsonb_agg(jsonb_build_object('width',  spec.value -> 'width',
@@ -58,15 +58,21 @@ BEGIN
                         WITH ORDINALITY AS spec(value, ord)
                ), '[]'::jsonb)) AS param_json,
                v_fixed -> mps.delivery_hours::text ->> 'group' AS is_fixed_group,
-               m.is_pinned,
-               -- fixed rows take the lookup moment, the rest their pinned time
+               -- the mutable truth lives on the lane item: the client moves,
+               -- pins and copies items, the pattern is only the template
+               li.is_pinned,
+               -- fixed rows take the lookup moment, the rest the item's time
                CASE WHEN v_fixed ? mps.delivery_hours::text
                     THEN (v_fixed -> mps.delivery_hours::text ->> 'offset')::integer
-                    ELSE m.start_offset_in_seconds
+                    ELSE li.start_offset_in_seconds
                END AS start_offset_in_seconds,
-               m.next_start_offset_in_seconds
+               m.next_start_offset_in_seconds,
+               li.lane_item_id,
+               l.lane_id
         FROM the_plan tp
         JOIN action.plan_lane l USING (plan_id)
+        -- one row per planned moment: an extra moment is simply another item
+        JOIN action.lane_item li ON li.lane_id = l.lane_id AND li.level = 0
         JOIN mock.material_resource_plan_lane mrpl ON mrpl.lane_id = l.lane_id
         JOIN mock.material_resource_plan m
              ON m.material_resource_plan_id = mrpl.material_resource_plan_id
@@ -100,7 +106,7 @@ BEGIN
     -- lays the timeline around (column names and types come from the first branch)
     SELECT NULL, NULL, NULL, s.tenant_id, t.tenant_name, NULL, NULL, NULL, NULL, NULL,
            jsonb_build_object('specs', '[]'::jsonb), NULL, 'noop', false,
-           s.start_offset_in_seconds, s.duration_in_seconds
+           s.start_offset_in_seconds, s.duration_in_seconds, NULL::bigint, NULL::bigint
     FROM (
         SELECT DISTINCT ON (n.rule_path, n.weekday, n.start_offset_in_seconds)
                n.rule_path::integer AS tenant_id,

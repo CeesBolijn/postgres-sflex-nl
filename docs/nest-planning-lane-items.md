@@ -106,21 +106,19 @@ Resolution per created/merged nest, set-based over the payload:
 |---|---|---|
 | 1 | clean up: dateless lanes out, `lane_date not null`, `production_orderline_lane_item` dropped | in `sql/migration_lane_slots.sql` |
 | 2 | lane items for the future: `generate_plan` stamps item + group link from the pattern; backfill onto the existing plans | same script + `sql/mock/generate_plan.sql` |
-| 3 | client mutations without copy_index: move = update offset/sort_order, extra moment = new lane item (+ lane in the print agenda); one crud on lane_item level replaces the day-to-day pattern mutations | open |
+| 3 | client mutations without copy_index: move = update offset/sort_order, extra moment = new lane item (+ lane in the print agenda); one crud on lane_item level replaces the day-to-day pattern mutations | in `sql/action/crud_lane_item.sql` |
 | 4 | `legacy.crud_nest` links every nest to its lane item (§3) | in `sql/legacy/crud_nest.sql` |
-| 5 | the reads: `get_nest_schedule` / `get_print_schedule_materials` select the lane items (aggregate ahead through the group link, nests behind through `nest_lane_item`); `mock.material_resource_plan_lane` is dropped once nothing reads it | open |
+| 5 | the reads: one row per lane item — the mutable truth (offset, pin, sort) from `action.lane_item`, nests per item through `nest_lane_item`, and `lane_item_id`/`lane_id` in the output as mutation target; the identity keeps coming from the pattern link while it is the template | in `sql/mock/get_print_schedule_materials.sql` + `get_nest_schedule.sql` |
 | 6 | backfill the recent nests onto their lane items | in `sql/migration_backfill_nest_links.sql` |
 | 7 | real imposition groups: stamping and nest resolution switch from the material alias to `catalog.get_imposition_group` (the xbom paths); the alias comments mark every switch point | later |
 
-## 5. open points
+## 5. decided
 
-- **Several lane items per group per day**: the aggregate is per group and
-  day; with extra moments the numbers would repeat per lane item. Decide
-  whether the aggregate splits by moment window (orderlines before moment N,
-  between N and N+1, …) or shows on the first open moment only.
-- **The drag & drop contract**: `copy_index_field` is already out of the
-  contract; the client-side copy gesture must create the new lane item
-  through the phase-3 crud.
-- **`mock.` promotion**: the pattern and its plan tables sit on a production
-  write path now — domain-model.md open point 10 (promote
-  `mock.material_resource_plan*` out of `mock.`) rides along with phase 5.
+- **Several lane items per group per day** show the **same aggregate
+  numbers** — no splitting by moment window. The duplicate is a planning
+  moment, not a partition of the work.
+- **The drag & drop contract** is settled: `copy_index_field` is out, the
+  copy gesture creates a new lane item through the phase-3 crud.
+- **`mock.material_resource_plan` stays where it is** and is *the* template
+  for stamping lane items, for now; a different template mechanism replaces
+  it later. No promotion out of `mock.` as part of this plan.

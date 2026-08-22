@@ -2,7 +2,7 @@
 drop function if exists mock.get_nest_schedule(timestamp with time zone, text, text, integer[], boolean, integer, integer, integer);
 drop function if exists mock.get_nest_schedule(timestamp with time zone, text, text, integer[], integer, integer, integer);
 
-create function mock.get_nest_schedule(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_look_back_days integer DEFAULT 0, p_look_ahead_days integer DEFAULT 0, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, production_company_id integer, resource_uid text, resource_name text, delivery_hours integer, min_delivery_hours integer, sort_order numeric, param_json jsonb, is_fixed_group text, is_pinned boolean, start_offset_in_seconds integer, next_start_offset_in_seconds integer, duration_in_seconds integer, nest_date date, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, gross_sqm numeric, part_status_json jsonb, nest_ids bigint[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
+create function mock.get_nest_schedule(p_until timestamp with time zone DEFAULT now(), p_step text DEFAULT 'print'::text, p_line_type text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[], p_look_back_days integer DEFAULT 0, p_look_ahead_days integer DEFAULT 0, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, tenant_id integer, tenant_name text, production_company_id integer, resource_uid text, resource_name text, delivery_hours integer, min_delivery_hours integer, sort_order numeric, param_json jsonb, is_fixed_group text, is_pinned boolean, start_offset_in_seconds integer, next_start_offset_in_seconds integer, duration_in_seconds integer, nest_date date, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, gross_sqm numeric, part_status_json jsonb, nest_ids bigint[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[], lane_item_id bigint, lane_id bigint)
 	stable
 	language plpgsql
 as $$
@@ -23,7 +23,8 @@ begin
                b.tenant_id, b.tenant_name, b.resource_uid, b.resource_name,
                b.delivery_hours, b.min_delivery_hours, b.sort_order,
                b.param_json, b.is_fixed_group, b.is_pinned,
-               b.start_offset_in_seconds, b.next_start_offset_in_seconds
+               b.start_offset_in_seconds, b.next_start_offset_in_seconds,
+               b.lane_item_id, b.lane_id
         -- only the materials whose interval (action.get_interval_dates on
         -- interval_start_date and interval_days) says the plan date is a
         -- production day; the rest of the plan stays out of the nest board
@@ -48,13 +49,13 @@ begin
         limit 1
     ),
     lane_nest as (
-        -- the nests hung on the lane items of this lane, if any
-        select l.sort_order, array_agg(distinct nli.nest_id) as nest_ids
-        from the_plan tp
-        join action.plan_lane l using (plan_id)
-        join action.lane_item li on li.lane_id = l.lane_id
-        join action.nest_lane_item nli on nli.lane_item_id = li.lane_item_id
-        group by l.sort_order
+        -- the nests hung on this planned moment, if any: per lane item,
+        -- not per lane — every extra moment carries its own nests
+        select nli.lane_item_id, array_agg(distinct nli.nest_id) as nest_ids
+        from action.nest_lane_item nli
+        where nli.lane_item_id in (select b2.lane_item_id from base b2
+                                   where b2.lane_item_id is not null)
+        group by nli.lane_item_id
     ),
     -- One aggregate call for all rows without lane nests, and one per distinct
     -- nest set for the rest, instead of one call per row: the detail behind
@@ -70,7 +71,7 @@ begin
                  -- empty, not null: null would mean every material
                  p_material_ids     => coalesce((select array_agg(distinct b.material_id)
                                                  from base b
-                                                 left join lane_nest ln on ln.sort_order = b.sort_order
+                                                 left join lane_nest ln on ln.lane_item_id = b.lane_item_id
                                                  where b.material_id is not null and ln.nest_ids is null),
                                                 '{}'::integer[]),
                  p_tenant_ids       => (select array_agg(distinct b.tenant_id) from base b),
@@ -99,7 +100,7 @@ begin
                o.specs_json, o.part_status_json, o.seconds_to_logistics_date,
                o.class_names, o.unit_class_names
         from base b
-        left join lane_nest ln on ln.sort_order = b.sort_order
+        left join lane_nest ln on ln.lane_item_id = b.lane_item_id
         -- the longest delivery time this material has on the board
         left join lateral (
             select max(x.delivery_hours) as max_delivery_hours
@@ -165,7 +166,8 @@ begin
            coalesce(cardinality(r.nest_ids), 0),
            r.seconds_to_logistics_date,
            coalesce(r.class_names, '{}'::text[]),
-           coalesce(r.unit_class_names, '{}'::text[])
+           coalesce(r.unit_class_names, '{}'::text[]),
+           r.lane_item_id, r.lane_id
     from row_data r
     left join tenant t on t.tenant_id = r.tenant_id
     order by r.tenant_id, r.sort_order;
