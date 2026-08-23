@@ -2,8 +2,9 @@
 drop function if exists mapping.get_production_orderline_manifest(integer, date, text, integer);
 drop function if exists mapping.get_production_orderline_manifest(integer, timestamp with time zone, integer, text, integer, integer);
 drop function if exists mapping.get_production_orderline_manifest(integer, date, integer, text, integer, integer);
+drop function if exists mapping.get_production_orderline_manifest(integer, date, integer, text, integer, integer, integer[]);
 
-create function mapping.get_production_orderline_manifest(p_material_id integer, p_date date DEFAULT CURRENT_DATE, p_look_ahead_days integer DEFAULT '-1'::integer, p_scope text DEFAULT 'imposition'::text, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, product_width numeric, product_height numeric, ship_separately boolean, production_line_id integer, production_company_id integer, tenant_name text, internal_status_code text, status_sequence integer, status_level text, status_title text, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, impact_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[], queue_class_names text[], scope text, option_codes text[], manifest_i18n jsonb)
+create function mapping.get_production_orderline_manifest(p_material_id integer, p_date date DEFAULT CURRENT_DATE, p_look_ahead_days integer DEFAULT '-1'::integer, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, product_width numeric, product_height numeric, ship_separately boolean, production_line_id integer, production_company_id integer, tenant_name text, internal_status_code text, status_sequence integer, status_level text, status_title text, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, impact_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[], queue_class_names text[], manifest_json jsonb)
 	stable
 	language plpgsql
 as $$
@@ -33,10 +34,9 @@ begin
     end if;
 
     return query
-    -- The open orderlines of one material nesting from p_date on,
-    -- each with its aggregated unit manifest. One row per orderline and
-    -- scope; p_scope NULL returns all scopes. Orderlines without manifest
-    -- rows are kept with NULL option_codes so gaps stay visible.
+    -- The open orderlines of one material nesting from p_date on; the
+    -- manifest travels along on the row itself (component_specs.manifest_json,
+    -- one object per scope) — the queue groups on manifest_json.imposition.
     with detail as (
         select *
         from mapping.get_production_orderline_detail(
@@ -73,18 +73,13 @@ begin
            -- to there the day is one group, so the board needs no rule of its own
            case when d.nest_date > v_next_workday then d.unit_class_names
                 else '{}'::text[] end,
-           agg.scope, agg.option_codes, agg.i18n
+           d.manifest_json
     from detail d
     left join tenant t on t.production_company_id = d.production_company_id
-    -- one call over the whole set, then a cheap join per row
-    left join mapping.get_unit_manifest_aggregate(
-                  (select array_agg(x.production_orderline_id) from detail x),
-                  p_scope) as agg
-           on agg.production_orderline_id = d.production_orderline_id
     -- biggest first, the order the nesting queue wants its rows in
     order by d.sqm desc, d.product_width desc, d.product_height desc,
-             d.production_orderline_id, agg.scope;
+             d.production_orderline_id;
 end;
 $$;
 
-alter function mapping.get_production_orderline_manifest(integer, date, integer, text, integer, integer, integer[]) owner to xfw3;
+alter function mapping.get_production_orderline_manifest(integer, date, integer, integer, integer, integer[]) owner to xfw3;

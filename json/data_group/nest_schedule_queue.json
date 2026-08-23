@@ -24,11 +24,6 @@
           "is_query_param": true
         },
         {
-          "key": "scope",
-          "default_value": "imposition",
-          "is_query_param": true
-        },
-        {
           "key": "threshold",
           "is_optional": true,
           "default_value": 1,
@@ -62,7 +57,7 @@
             }
           }
         },
-        "manifest_i18n": {
+        "manifest_json.imposition.i18n": {
           "ui": {
             "i18n": {
               "de": {
@@ -87,12 +82,7 @@
             "control": "i18n-text"
           }
         },
-        "option_codes": {
-          "ui": {
-            "hidden": true
-          }
-        },
-        "scope": {
+        "manifest_json": {
           "ui": {
             "hidden": true
           }
@@ -509,7 +499,7 @@
           {
             "layout": "flow-container",
             "group_by": [
-              "option_codes"
+              "manifest_json.imposition"
             ],
             "row_options": {
               "colexp": true,
@@ -517,7 +507,7 @@
               "selectable": false
             },
             "field_config": {
-              "manifest_i18n": {
+              "manifest_json.imposition.i18n": {
                 "ui": {
                   "i18n": {
                     "de": {

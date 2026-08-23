@@ -52,9 +52,10 @@ create table component_specs
 	assembled_production boolean,
 	allow_rerouting boolean,
 	unloading_forklift_available boolean,
-	-- the evaluated manifest of this orderline (option_code, item_code,
-	-- scope, param_json, config_json per xbom row), written by
-	-- mapping.create_spec_unit_manifest in the same pass as the table
+	-- aggregated manifest of this orderline, one object per scope:
+	-- {"<scope>": {"i18n": {...}, "item_code_paths": [...]}} — written by
+	-- mapping.create_spec_unit_manifest in the same pass as the table,
+	-- rebuilt retroactively by mapping.update_component_specs_manifest
 	manifest_json jsonb,
 	nest_date timestamp with time zone,
 	ship_separately boolean default false,

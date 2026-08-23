@@ -343,10 +343,10 @@ Formulas are evaluated by the Rust/WASM evaluator (`evaluate_many_nas`).
 
 Relevant functions seen in design:
 
-- `mapping.crud_spec_unit_manifest(int[])` — delete-insert, returns row counts
-- `mapping.get_unit_manifest_aggregate(int[], text)` — aggregates manifest rows
-  per orderline/scope into `option_codes[]` and `i18n`
-- `mapping.get_component_specs_with_manifest(date, int, int[], text)`
+- `mapping.create_spec_unit_manifest(int[])` — delete-insert, returns row counts
+- `mapping.update_component_specs_manifest(int[])` — rebuilds
+  `component_specs.manifest_json` (one object per scope with `i18n` and
+  `item_code_paths`) from the manifest rows; called by create in the same pass
 - `job.next_status_sequence`
 
 ---

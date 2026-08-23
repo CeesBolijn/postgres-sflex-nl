@@ -35,8 +35,7 @@ print_schedule (75)                  →   mock.get_print_schedule
     label_options.input_data.src     →   mock.get_print_schedule_materials
 
 nest_schedule_queue (79)             →   mapping.get_production_orderline_manifest
-                                             ├─ mapping.get_production_orderline_detail
-                                             └─ mapping.get_unit_manifest_aggregate
+                                             └─ mapping.get_production_orderline_detail   (manifest_json on the row)
 
 anything else needing orderlines     →   mapping.get_production_orderline_detail  (graph, sitrep, ...)
 ```
@@ -163,13 +162,14 @@ panel size for panels and print impacts. Class names `plan-na` (offset day),
 
 ### 2.7 `mapping.get_production_orderline_manifest` — the nest queue (79)
 
-`(p_material_id, p_from, p_look_ahead_days = -1, p_scope = 'imposition',
-p_threshold, p_domain_id)`. One detail call (`nest` window, workdays only,
-look-ahead = `greatest(2, max(material_print_schedule.interval_days))` unless
-overridden) joined once with `get_unit_manifest_aggregate` over the whole set.
-Adds `tenant_name`, `manifest_i18n`, `option_codes`, and `queue_class_names`
-(= `unit_class_names` beyond the next working day, else `{}` — that is what
-lets one board level group on date + threshold). Rows biggest first.
+`(p_material_id, p_date, p_look_ahead_days = -1, p_threshold, p_domain_id,
+p_tenant_ids)`. One detail call (`nest` window, workdays only, look-ahead =
+`greatest(2, max(material_print_schedule.interval_days))` unless overridden);
+the manifest rides along on the detail row itself (`manifest_json`, one object
+per scope — the queue groups on `manifest_json.imposition`). Adds
+`tenant_name` and `queue_class_names` (= `unit_class_names` beyond the next
+working day, else `{}` — that is what lets one board level group on date +
+threshold). Rows biggest first.
 
 ## 3. parameter and shape conventions across the chain
 
