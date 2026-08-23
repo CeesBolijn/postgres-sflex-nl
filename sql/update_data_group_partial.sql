@@ -1215,11 +1215,6 @@ WITH payload AS (
               "order": 13
             }
           },
-          "customer_id": {
-            "ui": {
-              "hidden": true
-            }
-          },
           "material_id": {
             "ui": {
               "hidden": true
@@ -1244,22 +1239,6 @@ WITH payload AS (
                 }
               },
               "order": 10
-            }
-          },
-          "company_name": {
-            "ui": {
-              "i18n": {
-                "de": {
-                  "title": "Kunde"
-                },
-                "en": {
-                  "title": "Customer"
-                },
-                "nl": {
-                  "title": "Klant"
-                }
-              },
-              "order": 2
             }
           },
           "rework_count": {
@@ -1401,22 +1380,6 @@ WITH payload AS (
               "hidden": true
             }
           },
-          "customer_reference": {
-            "ui": {
-              "i18n": {
-                "de": {
-                  "title": "Referenz"
-                },
-                "en": {
-                  "title": "Reference"
-                },
-                "nl": {
-                  "title": "Referentie"
-                }
-              },
-              "order": 12
-            }
-          },
           "logistics_datetime": {
             "ui": {
               "i18n": {
@@ -1478,6 +1441,38 @@ WITH payload AS (
             "ui": {
               "hidden": true
             }
+          },
+          "customer_json.company_name": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Kunde"
+                },
+                "en": {
+                  "title": "Customer"
+                },
+                "nl": {
+                  "title": "Klant"
+                }
+              },
+              "order": 2
+            }
+          },
+          "customer_json.customer_reference": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Referenz"
+                },
+                "en": {
+                  "title": "Reference"
+                },
+                "nl": {
+                  "title": "Referentie"
+                }
+              },
+              "order": 12
+            }
           }
         },
         "flow_board_config": {
@@ -1535,7 +1530,7 @@ WITH payload AS (
                     "title": "m²"
                   }
                 },
-                "order": 2,
+                "order": 3,
                 "scale": 1,
                 "class_name": "col-span-1"
               },
@@ -1554,7 +1549,7 @@ WITH payload AS (
                     "title": "Units"
                   }
                 },
-                "order": 3,
+                "order": 2,
                 "class_name": "col-span-1"
               },
               "aggregate_fn": "sum"
@@ -1597,7 +1592,7 @@ WITH payload AS (
                     "title": "H. m²"
                   }
                 },
-                "order": 5,
+                "order": 6,
                 "scale": 1,
                 "class_name": "col-span-1",
                 "hidden_when": [
@@ -1623,7 +1618,7 @@ WITH payload AS (
                     "title": "H. units"
                   }
                 },
-                "order": 6,
+                "order": 5,
                 "class_name": "col-span-1",
                 "hidden_when": [
                   {
@@ -1821,18 +1816,18 @@ WITH payload AS (
                     "class_name": "col-span-2"
                   }
                 },
-                "company_name": {
-                  "ui": {
-                    "order": 1,
-                    "class_name": "col-span-2"
-                  }
-                },
                 "product_amount": {
                   "ui": {
                     "order": 2,
                     "class_name": "col-span-1  text-right"
                   },
                   "aggregate_fn": "sum"
+                },
+                "customer_json.company_name": {
+                  "ui": {
+                    "order": 1,
+                    "class_name": "col-span-2"
+                  }
                 }
               },
               "fields_class_name": "grid grid-cols-6 gap-1"
