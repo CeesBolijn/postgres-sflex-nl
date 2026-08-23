@@ -102,6 +102,32 @@ BEGIN
              count(*) AS row_count
     FROM     inserted i
     GROUP BY i.production_orderline_id;
+
+    -- the manifest also travels on the spec row itself, written in the
+    -- same pass so table and column can never disagree
+    UPDATE mapping.component_specs cs
+    SET manifest_json = m.manifest_json
+    FROM (
+        SELECT s.production_orderline_id,
+               jsonb_agg(jsonb_build_object(
+                   'option_code', s.option_code,
+                   'item_code',   s.item_code,
+                   'scope',       s.scope,
+                   'param_json',  s.param_json,
+                   'config_json', s.config_json)
+                 ORDER BY s.sort_order) AS manifest_json
+        FROM mapping.spec_unit_manifest s
+        WHERE s.production_orderline_id = ANY(p_production_orderline_ids)
+        GROUP BY s.production_orderline_id
+    ) m
+    WHERE cs.production_orderline_id = m.production_orderline_id;
+
+    UPDATE mapping.component_specs cs
+    SET manifest_json = NULL
+    WHERE cs.production_orderline_id = ANY(p_production_orderline_ids)
+      AND cs.manifest_json IS NOT NULL
+      AND NOT EXISTS (SELECT 1 FROM mapping.spec_unit_manifest s
+                      WHERE s.production_orderline_id = cs.production_orderline_id);
 END;
 $function$
 

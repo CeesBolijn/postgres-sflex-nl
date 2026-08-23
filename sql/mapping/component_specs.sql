@@ -52,8 +52,10 @@ create table component_specs
 	assembled_production boolean,
 	allow_rerouting boolean,
 	unloading_forklift_available boolean,
-	resources_json jsonb,
-	resource_uids text[],
+	-- the evaluated manifest of this orderline (option_code, item_code,
+	-- scope, param_json, config_json per xbom row), written by
+	-- mapping.create_spec_unit_manifest in the same pass as the table
+	manifest_json jsonb,
 	nest_date timestamp with time zone,
 	ship_separately boolean default false,
 	order_sequence integer,
@@ -92,9 +94,6 @@ create index ix_component_specs_is_open_logistics
 
 create index idx_component_specs_uploader_data_id
 	on component_specs (uploader_data_id);
-
-create index ix_component_specs_resource_uids
-	on component_specs using gin (resource_uids);
 
 create index idx_component_specs_uploader_data_id_cov
 	on component_specs (uploader_data_id) include (material_id, product_amount, sqm);
