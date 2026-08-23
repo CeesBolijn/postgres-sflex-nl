@@ -482,7 +482,6 @@ WITH payload AS (
                                 },
                                 {
                                   "key": "logistics_at",
-                                  "is_optional": true,
                                   "is_query_param": true,
                                   "value_from": "logistics_datetime"
                                 },
@@ -540,7 +539,6 @@ WITH payload AS (
                               {
                                 "key": "logistics_at",
                                 "value_from": "logistics_datetime",
-                                "is_optional": true,
                                 "is_query_param": true
                               },
                               {

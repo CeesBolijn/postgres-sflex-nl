@@ -1,3 +1,5 @@
+drop function if exists mapping.create_spec_unit_manifest(integer[]);
+
 create function mapping.create_spec_unit_manifest(p_production_orderline_ids integer[])
  RETURNS TABLE(production_orderline_id integer, row_count bigint)
  LANGUAGE plpgsql
