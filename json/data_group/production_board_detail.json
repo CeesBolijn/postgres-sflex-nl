@@ -375,7 +375,7 @@
           "material_name"
         ],
         "row_options": {
-          "colexp": true,
+          "colexp": false,
           "checkable": false,
           "selectable": false
         },
@@ -385,6 +385,137 @@
               "order": 0,
               "class_name": "col-span-3"
             }
+          },
+          "order_count": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Aufträge"
+                },
+                "en": {
+                  "title": "Orders"
+                },
+                "nl": {
+                  "title": "Orders"
+                }
+              },
+              "order": 1,
+              "class_name": "col-span-1"
+            },
+            "aggregate_fn": "sum"
+          },
+          "product_amount": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Einheiten"
+                },
+                "en": {
+                  "title": "Units"
+                },
+                "nl": {
+                  "title": "Units"
+                }
+              },
+              "order": 2,
+              "class_name": "col-span-1"
+            },
+            "aggregate_fn": "sum"
+          },
+          "sqm": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "m²"
+                },
+                "en": {
+                  "title": "m²"
+                },
+                "nl": {
+                  "title": "m²"
+                }
+              },
+              "order": 3,
+              "scale": 1,
+              "class_name": "col-span-1"
+            },
+            "aggregate_fn": "sum"
+          },
+          "impact_json.rework_count": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Nacharbeit"
+                },
+                "en": {
+                  "title": "Rework"
+                },
+                "nl": {
+                  "title": "Herstel"
+                }
+              },
+              "order": 4,
+              "class_name": "col-span-1",
+              "hidden_when": [
+                {
+                  "key": "impact_json.rework_count",
+                  "op": "==",
+                  "value": 0
+                }
+              ]
+            },
+            "aggregate_fn": "sum"
+          },
+          "impact_json.rework_amount": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "H. Einheiten"
+                },
+                "en": {
+                  "title": "Rw units"
+                },
+                "nl": {
+                  "title": "H. units"
+                }
+              },
+              "order": 5,
+              "class_name": "col-span-1",
+              "hidden_when": [
+                {
+                  "key": "impact_json.rework_count",
+                  "op": "==",
+                  "value": 0
+                }
+              ]
+            },
+            "aggregate_fn": "sum"
+          },
+          "impact_json.rework_sqm": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "H. m²"
+                },
+                "en": {
+                  "title": "Rw m²"
+                },
+                "nl": {
+                  "title": "H. m²"
+                }
+              },
+              "order": 6,
+              "scale": 1,
+              "class_name": "col-span-1",
+              "hidden_when": [
+                {
+                  "key": "impact_json.rework_count",
+                  "op": "==",
+                  "value": 0
+                }
+              ]
+            },
+            "aggregate_fn": "sum"
           }
         },
         "fields_class_name": "grid grid-cols-3 gap-1",
@@ -402,7 +533,19 @@
             "field_config": {
               "manifest_json.imposition.i18n": {
                 "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Material/Veredelung"
+                    },
+                    "en": {
+                      "title": "Material/finish"
+                    },
+                    "nl": {
+                      "title": "Materiaal/afwerking"
+                    }
+                  },
                   "order": 0,
+                  "control": "i18n-text",
                   "class_name": "col-span-3"
                 }
               },
@@ -630,7 +773,7 @@
                                 "title": "Деталі гнізда"
                               }
                             },
-                            "path": "(sidebar:nest-detail)",
+                            "path": "(detail:nest-detail)",
                             "params": [
                               {
                                 "key": "nest_ids",

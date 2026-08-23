@@ -32,3 +32,8 @@ create unique index uq_data_log_source_ref
 create index ix_data_resource_time
 	on data (resource_uid, start_at);
 
+-- nest lookups (get_nest_detail, get_nest_list) find their rows by nest_name
+create index ix_data_nest_time
+	on data (nest_name, start_at)
+	where nest_name is not null;
+

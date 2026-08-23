@@ -1,124 +1,157 @@
-# Nest planning and lane items
+# Nestplanning en lane items
 
-Plan for wiring the nest and print agendas: **every planned moment is a real
-lane item, future included.** A future lane item shows the aggregated
-to-be-planned production_orderlines for its imposition group; once
-orderlines are pushed to the nester and `legacy.nest` rows exist, the nests
-hang on those same lane items and the board shows whether nesting went well.
-The client shifts a moment by moving its lane item and adds a moment by
-creating a new lane item — **no copy_index anywhere**.
+Plan voor de nest- en printagenda's: **elk gepland moment is een echt lane
+item, ook in de toekomst.** Een toekomstig lane item toont de geaggregeerde
+te-plannen production_orderlines van zijn impositiegroep; zodra orderlines
+naar de nester zijn geduwd en er `legacy.nest`-rijen bestaan, hangen de
+nests aan diezelfde lane items en laat het bord zien of het nesten goed
+ging. De client verschuift een moment door zijn lane item te verplaatsen en
+voegt een moment toe met een nieuw lane item; **elke mutatie schrijft door
+naar de template**, zodat opnieuw stempelen altijd de actuele planning
+oplevert.
 
 ```mermaid
 flowchart LR
-    P["weekly pattern<br/>mock.material_resource_plan<br/>(the template)"] -->|"generate_plan stamps"| L["action.lane_item<br/>one per planned moment"]
+    P["weekpatroon<br/>mock.material_resource_plan<br/>(de template, rij-identiteit: instance)"] -->|"generate_plan stempelt"| L["action.lane_item<br/>één per gepland moment"]
     G[(action.imposition_group_lane_item)] --- L
-    subgraph future["lane item in the future"]
-        A["aggregate per imposition group<br/>(computed at read time)"]
+    subgraph future["lane item in de toekomst"]
+        A["aggregaat per impositiegroep<br/>(berekend bij lezen)"]
         Q["menu: nest_schedule_queue"]
     end
-    subgraph past["lane item before now"]
+    subgraph past["lane item vóór nu"]
         N[(action.nest_lane_item)]
         D["menu: nest_detail"]
     end
     L --> future
     L --> past
-    C["legacy.crud_nest"] -->|"links nest_id"| N
+    C["legacy.crud_nest"] -->|"koppelt nest_id"| N
 ```
 
-## 1. the one link that carries it all
+## 1. de ene link die alles draagt
 
 **`action.imposition_group_lane_item`** (`imposition_group_id`,
-`lane_item_id`) says what a planned moment produces. It is the only identity
-link on the future side, and the nest side finds its lane items through it.
+`lane_item_id`) zegt wat een gepland moment produceert. Het is de enige
+identiteitslink aan de toekomstkant, en de nestkant vindt zijn lane items
+erdoorheen.
 
-**The transition:** `imposition_group_id` acts as an **alias of
-`material_id`** for now — `catalog.imposition_group` was seeded 1:1 from the
-material ids, so `material_id = imposition_group_id` is a valid join, and
-every place that joins this way carries a `--` comment saying so. Later the
-groups become real imposition groups (the item-code-path combinations from
-the xbom, `catalog.get_imposition_group`); the join comments mark exactly
-the places that then switch from material to group resolution. Nothing else
-changes shape.
+**De overgang:** `imposition_group_id` is voorlopig een **alias van
+`material_id`** — `catalog.imposition_group` is 1:1 uit de material-id's
+geseed, dus `material_id = imposition_group_id` is een geldige join, en elke
+plek die zo joint draagt een `--`-comment die dat zegt. Later worden de
+groepen echte impositiegroepen (de item-code-path-combinaties uit de xbom,
+`catalog.get_imposition_group`); de join-comments markeren precies de
+plekken die dan omschakelen van material- naar groep-resolutie. Verder
+verandert er niets van vorm.
 
-## 2. the decisions
+## 2. de beslissingen
 
-1. **Lane items exist for the future too.** `mock.generate_plan` stamps,
-   together with each material lane, its lane item(s) out of the weekly
-   pattern: `start_offset_in_seconds`, `is_pinned` and `sort_order` from the
-   pattern row, plus the group link in `imposition_group_lane_item`. The
-   pattern (`mock.material_resource_plan`) stays only as the **template**;
-   after stamping, the lane items are the truth the boards read and the
-   client mutates. A copied lane item takes its group link along;
-   `lane_item` itself stays generic (pv2 machine items carry no group).
-   The lane-level detour `mock.material_resource_plan_lane` disappears once
-   the reads use the group link.
-2. **No copy_index.** An extra moment is a **new lane item** on the same
-   lane (nest agenda). In the print agenda, where a lane carries exactly one
-   lane item, a copy pushes through to a **new lane + lane item** — the
-   lane order on the board comes from the lane item's `sort_order`.
-3. **The future side stays an aggregate, computed at read time.** A future
-   lane item is only the planned moment; the orderline numbers come from
-   `get_production_orderline_aggregate` on every read, matched to the lane
-   item through `imposition_group_lane_item.imposition_group_id` and the
-   lane date. Durations are read-time too: the future from the aggregate
-   and the material sizes in `line_json.specs` of
-   `material_production_line`, the nests from `width × height ×
-   sum(amount)`. Nothing derived is stored.
-4. **The nest side keeps one link table: `action.nest_lane_item`.** Lane
-   items before now carry the nests that were actually made.
-5. **A lane without `lane_date` is invalid** — cleaned up (was 701 of 1101,
-   nothing hung on them) and `lane_date` is `not null` since.
-6. **The reads simplify.** With real lane items, `get_nest_schedule` and
-   especially `get_print_schedule_materials` stop reconstructing moments
-   from the pattern + `lookup_nest_moments` per read and simply select the
-   lane items of the plan.
+1. **Lane items bestaan ook voor de toekomst.** `mock.generate_plan`
+   stempelt bij elke material-lane zijn lane item(s) uit het weekpatroon:
+   `start_offset_in_seconds`, `is_pinned` en `sort_order` uit de
+   patroonrij, plus de groeplink in `imposition_group_lane_item`. Elk
+   gestempeld lane item onthoudt **uit welke template-rij het komt** (de
+   patroonlink, inclusief `instance`). Na het stempelen zijn de lane items
+   de waarheid die de borden lezen en de client muteert;
+   `lane_item` zelf blijft generiek (pv2-machine-items dragen geen groep).
+   De lane-omweg `mock.material_resource_plan_lane` verdwijnt zodra de
+   reads de groeplink gebruiken.
+2. **`instance` in plaats van copy_index — met write-through.** De
+   template `mock.material_resource_plan` krijgt `instance` (volgnummer
+   van het herhaalde moment, uniek binnen de lane: `weekday` + `step` +
+   `resource_uid` + `material_id`; default 0). Clientmutaties gaan altijd
+   naar **beide kanten**, in één call van de fase-3 crud:
+   - **kopie** = nieuw lane item (in de printagenda: nieuwe lane + lane
+     item) **én** een nieuwe template-rij met het volgende `instance`;
+   - **verplaatsen of `sort_order` wijzigen** = het lane item **én** zijn
+     template-rij bijwerken.
+   `instance` blijft server-side; de client ziet alleen lane items, de
+   lane-volgorde op het bord komt uit `sort_order` van het lane item.
+3. **Ketening via `resource_json` — `next_start_offset_in_seconds`
+   vervalt.** In `nest_schedule` volgt de start van de volgende
+   material-lane niet meer uit een opgeslagen offset, maar uit de vorige
+   lane zelf, precies zoals een volgende step (print → cut) al ketent in
+   `plan_timeline`:
+   - de read levert per lane item **twee duraties**, allebei rekentijd
+     (niets opgeslagen): `first_item_duration` (eerste nest klaar) en
+     `batch_duration` (hele batch klaar, = `duration_in_seconds`);
+   - de resource van de lane (`resource_uid` op de template-rij) zegt in
+     `resource_json.next_trigger_type` welke daarvan de volgende start
+     bepaalt: `first_item_duration`, `batch_duration`, of `after_lag` —
+     bij `after_lag` is de offset `resource_json.fixed_lag_duration`
+     (de bestaande lag-key);
+   - **de frontend ketent zelf**, met hetzelfde connector-mechanisme als
+     `plan_timeline` (`from_anchor_offset_field: "next_trigger_type"`) —
+     geen nieuw frontend-concept, geen server-side startberekening. In de
+     data_groups `nest_schedule` en `print_schedule` vervangt het
+     connector-blok de key `next_start_offset_in_seconds_field`; daarna
+     kan de kolom uit `mock.material_resource_plan` en uit de reads.
+4. **De toekomstkant blijft een aggregaat, berekend bij lezen.** Een
+   toekomstig lane item is alleen het geplande moment; de orderline-cijfers
+   komen bij elke read uit `get_production_orderline_aggregate`, gematcht
+   via `imposition_group_lane_item.imposition_group_id` en de lane-datum.
+   Duraties zijn ook rekentijd: de toekomst uit het aggregaat en de
+   material-maten in `line_json.specs` van `material_production_line`, de
+   nests uit `width × height × sum(amount)`. Niets afgeleids wordt
+   opgeslagen.
+5. **De nestkant houdt één linktabel: `action.nest_lane_item`.** Lane items
+   vóór nu dragen de nests die echt gemaakt zijn.
+6. **Een lane zonder `lane_date` is ongeldig** — opgeruimd (701 van 1101,
+   er hing niets aan) en `lane_date` is sindsdien `not null`.
+7. **De reads worden simpeler.** Met echte lane items stoppen
+   `get_nest_schedule` en vooral `get_print_schedule_materials` met per
+   read momenten reconstrueren uit patroon + `lookup_nest_moments`; ze
+   selecteren gewoon de lane items van het plan.
 
-## 3. the link from legacy.crud_nest
+## 3. de link vanuit legacy.crud_nest
 
-Everything needed lives on the nest itself: `nest_json` carries
-`material_id`, `nest_date` and `production_line_id`.
+Alles wat nodig is staat op de nest zelf: `nest_json` draagt `material_id`,
+`nest_date` en `production_line_id`.
 
-Resolution per created/merged nest, set-based over the payload:
+Resolutie per aangemaakte/samengevoegde nest, set-based over de payload:
 
-1. **plan** — the material-resource-plan of the nest day
-   (`plan_date = nest_date::date`, newest per line type; line type through
+1. **plan** — het material-resource-plan van de nestdag
+   (`plan_date = nest_date::date`, nieuwste per line type; line type via
    `relation.production_line`).
-2. **lane** — the lane of the nest material on that plan, found through the
-   group link of its lane items:
+2. **lane** — de lane van het nest-material op dat plan, gevonden via de
+   groeplink van zijn lane items:
    `plan_lane` → `lane` → `lane_item` →
    `imposition_group_lane_item.imposition_group_id = nest material_id` —
-   **the alias join**, commented as such; when real groups arrive the nest
-   resolves its group from the xbom here instead.
-3. **lane item** — the latest one on that lane starting at or before the
-   nest moment (the stamped items are 0-duration moments, so a
-   covering-window match would never hit), else the first of the day. Lane
-   without any item → create one (`source = 'nest'`,
-   `source_ref = nest_id`, idempotent on the source key).
+   **de alias-join**, als zodanig gecommentarieerd; komen de echte groepen,
+   dan resolvet de nest hier zijn groep uit de xbom.
+3. **lane item** — het laatste op die lane dat start op of vóór het
+   nestmoment (de gestempelde items zijn 0-duratie-momenten, dus een
+   covering-window-match raakt nooit), anders het eerste van de dag. Lane
+   zonder item → er één aanmaken (`source = 'nest'`,
+   `source_ref = nest_id`, idempotent op de source-key).
 4. **link** — delete-insert `action.nest_lane_item (nest_id, lane_item_id,
-   sort_order)` per nest in the payload; only links whose lane item has
-   `source in ('material-plan', 'nest')` are replaced — the pv2 machine
-   links belong to `action.crud_object`. Cancelled nests only lose their
-   link; no plan or lane for the day means no link, never an invented lane.
+   sort_order)` per nest in de payload; alleen links waarvan het lane item
+   `source in ('material-plan', 'nest')` heeft worden vervangen — de
+   pv2-machinelinks horen bij `action.crud_object`. Geannuleerde nests
+   verliezen alleen hun link; geen plan of lane die dag betekent geen link,
+   nooit een verzonnen lane.
 
-## 4. the phases
+## 4. de fasen
 
-| phase | what | status |
+| fase | wat | status |
 |---|---|---|
-| 1 | clean up: dateless lanes out, `lane_date not null`, `production_orderline_lane_item` dropped | in `sql/migration_lane_slots.sql` |
-| 2 | lane items for the future: `generate_plan` stamps item + group link from the pattern; backfill onto the existing plans | same script + `sql/mock/generate_plan.sql` |
-| 3 | client mutations without copy_index: move = update offset/sort_order, extra moment = new lane item (+ lane in the print agenda); one crud on lane_item level replaces the day-to-day pattern mutations | in `sql/action/crud_lane_item.sql` |
-| 4 | `legacy.crud_nest` links every nest to its lane item (§3) | in `sql/legacy/crud_nest.sql` |
-| 5 | the reads: one row per lane item — the mutable truth (offset, pin, sort) from `action.lane_item`, nests per item through `nest_lane_item`, and `lane_item_id`/`lane_id` in the output as mutation target; the identity keeps coming from the pattern link while it is the template | in `sql/mock/get_print_schedule_materials.sql` + `get_nest_schedule.sql` |
-| 6 | backfill the recent nests onto their lane items | in `sql/migration_backfill_nest_links.sql` |
-| 7 | real imposition groups: stamping and nest resolution switch from the material alias to `catalog.get_imposition_group` (the xbom paths); the alias comments mark every switch point | later |
+| 1 | opruimen: dateloze lanes eruit, `lane_date not null`, `production_orderline_lane_item` gedropt | in `sql/migration_lane_slots.sql` |
+| 2 | lane items voor de toekomst: `generate_plan` stempelt item + groeplink uit het patroon (patroonlink incl. `instance`); backfill op de bestaande plannen; `instance` op `mock.material_resource_plan` | zelfde script + `sql/mock/generate_plan.sql` |
+| 3 | clientmutaties met write-through: move/sort = lane item **én** template-rij bijwerken, kopie = nieuw lane item (+ lane in de printagenda) **én** nieuwe template-rij met volgend `instance`; één crud op lane_item-niveau vervangt de dag-tot-dag patroonmutaties | in `sql/action/crud_lane_item.sql` |
+| 4 | `legacy.crud_nest` koppelt elke nest aan zijn lane item (§3) | in `sql/legacy/crud_nest.sql` |
+| 5 | de reads: één rij per lane item — de muteerbare waarheid (offset, pin, sort) uit `action.lane_item`, nests per item via `nest_lane_item`, `lane_item_id`/`lane_id` in de output als mutatiedoel; plus `first_item_duration`, `batch_duration`, `next_trigger_type` en `fixed_lag_duration` voor de ketening (§2.3); de identiteit blijft uit de patroonlink komen zolang die de template is | in `sql/mock/get_print_schedule_materials.sql` + `get_nest_schedule.sql` |
+| 6 | data_groups `nest_schedule`/`print_schedule` op het connector-mechanisme; daarna kolom `next_start_offset_in_seconds` uit `mock.material_resource_plan` en de reads | volgt op 5 |
+| 7 | backfill van de recente nests op hun lane items | in `sql/migration_backfill_nest_links.sql` |
+| 8 | echte impositiegroepen: stempelen en nestresolutie schakelen van de material-alias naar `catalog.get_imposition_group` (de xbom-paden); de alias-comments markeren elk omschakelpunt | later |
 
-## 5. decided
+## 5. besloten
 
-- **Several lane items per group per day** show the **same aggregate
-  numbers** — no splitting by moment window. The duplicate is a planning
-  moment, not a partition of the work.
-- **The drag & drop contract** is settled: `copy_index_field` is out, the
-  copy gesture creates a new lane item through the phase-3 crud.
-- **`mock.material_resource_plan` stays where it is** and is *the* template
-  for stamping lane items, for now; a different template mechanism replaces
-  it later. No promotion out of `mock.` as part of this plan.
+- **Meerdere lane items per groep per dag** tonen **dezelfde
+  aggregaatcijfers** — geen splitsing per momentvenster. Het duplicaat is
+  een planningsmoment, geen verdeling van het werk.
+- **Het drag & drop-contract verandert niet**: geen `copy_index_field`
+  richting de client — `instance` is puur server-side, het kopieergebaar
+  maakt via de fase-3 crud een nieuw lane item én een nieuwe template-rij.
+- **`mock.material_resource_plan` blijft waar hij staat** en is voorlopig
+  *de* template voor het stempelen van lane items; een ander
+  template-mechanisme vervangt hem later. Geen promotie uit `mock.` als
+  onderdeel van dit plan.

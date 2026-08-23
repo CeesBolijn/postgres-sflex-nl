@@ -1,3 +1,5 @@
+drop function if exists legacy.get_nest_detail(bigint, integer, bigint[]);
+
 create function legacy.get_nest_detail(p_nest_id bigint DEFAULT NULL::bigint, p_batch_id integer DEFAULT NULL::integer, p_nest_ids bigint[] DEFAULT NULL::bigint[]) returns TABLE(batch_id integer, nest_id bigint, nest_name text, nest_json jsonb, nested_at timestamp with time zone, updated_at timestamp with time zone, start_at timestamp with time zone)
 	language plpgsql
 as $$
@@ -27,8 +29,13 @@ BEGIN
         n.updated_at,
         rdl.start_at
     FROM legacy.nest n
-    LEFT JOIN legacy.resource_data_log rdl
-        ON rdl.nest_name = n.nest_name
+    -- log.data replaced legacy.resource_data_log; a nest can have several
+    -- rows there (print and cut, reruns) — one start per nest: the latest
+    LEFT JOIN LATERAL (
+        SELECT max(d.start_at) AS start_at
+        FROM log.data d
+        WHERE d.nest_name = n.nest_name
+    ) rdl ON true
     -- batch found: every nest of the batch; no batch: every nest of the
     -- given set, or just the single nest when no set was given
     WHERE (n.batch_id = v_batch_id)

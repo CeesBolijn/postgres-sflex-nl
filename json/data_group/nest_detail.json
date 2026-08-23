@@ -120,7 +120,8 @@
               }
             },
             "order": 3,
-            "control": "img"
+            "control": "img",
+            "field": "https://f003.backblazeb2.com/file/probo-hub/${nest_json.job_thumbnail}"
           }
         },
         "nest_json.waste_percentage": {
@@ -182,6 +183,7 @@
                 "ui": {
                   "order": 4,
                   "control": "img",
+                  "field": "https://f003.backblazeb2.com/file/probo-hub/${nest_json.job_thumbnail}",
                   "class_name": "col-span-6"
                 }
               },
