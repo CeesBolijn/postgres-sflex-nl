@@ -1,4 +1,4 @@
-create function mapping.crud_component_specs_orderline(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, production_orderline_id integer)
+create or replace function mapping.crud_component_specs_orderline(p_param_json jsonb, p_no_results boolean DEFAULT false) returns TABLE(param_id integer, track_by integer, crud text, domain_id integer, production_orderline_id integer)
 	language plpgsql
 as $$
 #variable_conflict use_column
@@ -209,6 +209,21 @@ BEGIN
 --     ) r
 --     WHERE cs.production_orderline_id = r.production_orderline_id
 --       AND cs.resource_uids IS DISTINCT FROM r.uids;
+
+    -- keep mapping.customer in step with the specs stream: one set-based
+    -- upsert per call, newest name per customer wins, and a no-op name
+    -- generates no dead tuple
+    INSERT INTO mapping.customer (customer_id, company_name)
+    SELECT DISTINCT ON (p.customer_id) p.customer_id, p.company_name
+    FROM _params p
+    WHERE p.crud = 'merge'
+      AND p.customer_id IS NOT NULL
+      AND p.company_name IS NOT NULL
+    ORDER BY p.customer_id, p.updated_at DESC NULLS LAST
+    ON CONFLICT (customer_id) DO UPDATE SET
+        company_name = EXCLUDED.company_name,
+        updated_at   = now()
+    WHERE mapping.customer.company_name IS DISTINCT FROM EXCLUDED.company_name;
 
     SELECT MAX(p.updated_at) INTO last_updated_at FROM _params p;
 

@@ -9,7 +9,13 @@
       "layout": "flow-board",
       "params": [
         {
-          "key": "production_line_id",
+          "key": "production_line_ids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "customer_id",
+          "is_optional": true,
           "is_query_param": true
         },
         {
@@ -23,13 +29,11 @@
         },
         {
           "key": "look_back_days",
-          "is_optional": true,
-          "is_query_param": true
+          "default_value": 0
         },
         {
           "key": "look_ahead_days",
-          "is_optional": true,
-          "is_query_param": true
+          "default_value": 0
         },
         {
           "key": "material_ids",
@@ -62,7 +66,7 @@
                 "title": "m²"
               }
             },
-            "order": 5
+            "order": 6
           },
           "scale": 1
         },
@@ -131,7 +135,14 @@
                 "title": "Delen"
               }
             },
-            "order": 10
+            "order": 5,
+            "hidden_when": [
+              {
+                "op": "==",
+                "field": "part_amount",
+                "value_field": "product_amount"
+              }
+            ]
           }
         },
         "rework_count": {
@@ -152,7 +163,7 @@
                 "title": "Status"
               }
             },
-            "order": 9
+            "order": 10
           }
         },
         "manifest_json": {
@@ -194,7 +205,7 @@
                 "title": "Logistiek datum"
               }
             },
-            "order": 6,
+            "order": 7,
             "type": "date"
           }
         },
@@ -202,18 +213,23 @@
           "ui": {
             "i18n": {
               "de": {
-                "title": "Menge"
+                "title": "Einheiten"
               },
               "en": {
-                "title": "Qty"
+                "title": "Units"
               },
               "nl": {
-                "title": "Aantal"
+                "title": "Units"
               }
             },
             "order": 4
           },
           "scale": 0
+        },
+        "order_count": {
+          "ui": {
+            "hidden": true
+          }
         },
         "produced_amount": {
           "ui": {
@@ -233,7 +249,7 @@
                 "title": "Productiedatum"
               }
             },
-            "order": 8,
+            "order": 9,
             "type": "date"
           }
         },
@@ -280,7 +296,7 @@
                 "title": "Logistiek tijdstip"
               }
             },
-            "order": 7,
+            "order": 8,
             "type": "datetime"
           }
         },
@@ -383,7 +399,7 @@
           "material_name": {
             "ui": {
               "order": 0,
-              "class_name": "col-span-3"
+              "class_name": "col-span-4"
             }
           },
           "order_count": {
@@ -400,7 +416,14 @@
                 }
               },
               "order": 1,
-              "class_name": "col-span-1"
+              "class_name": "col-span-1",
+              "hidden_when": [
+                {
+                  "op": "==",
+                  "value": 0,
+                  "field": "order_count"
+                }
+              ]
             },
             "aggregate_fn": "sum"
           },
@@ -422,6 +445,31 @@
             },
             "aggregate_fn": "sum"
           },
+          "part_amount": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Teile"
+                },
+                "en": {
+                  "title": "Parts"
+                },
+                "nl": {
+                  "title": "Delen"
+                }
+              },
+              "order": 3,
+              "class_name": "col-span-1",
+              "hidden_when": [
+                {
+                  "op": "==",
+                  "field": "part_amount",
+                  "value_field": "product_amount"
+                }
+              ]
+            },
+            "aggregate_fn": "sum"
+          },
           "sqm": {
             "ui": {
               "i18n": {
@@ -435,7 +483,7 @@
                   "title": "m²"
                 }
               },
-              "order": 3,
+              "order": 4,
               "scale": 1,
               "class_name": "col-span-1"
             },
@@ -454,11 +502,11 @@
                   "title": "Herstel"
                 }
               },
-              "order": 4,
+              "order": 5,
               "class_name": "col-span-1",
               "hidden_when": [
                 {
-                  "key": "impact_json.rework_count",
+                  "field": "impact_json.rework_count",
                   "op": "==",
                   "value": 0
                 }
@@ -479,11 +527,11 @@
                   "title": "H. units"
                 }
               },
-              "order": 5,
+              "order": 6,
               "class_name": "col-span-1",
               "hidden_when": [
                 {
-                  "key": "impact_json.rework_count",
+                  "field": "impact_json.rework_count",
                   "op": "==",
                   "value": 0
                 }
@@ -504,12 +552,12 @@
                   "title": "H. m²"
                 }
               },
-              "order": 6,
+              "order": 7,
               "scale": 1,
               "class_name": "col-span-1",
               "hidden_when": [
                 {
-                  "key": "impact_json.rework_count",
+                  "field": "impact_json.rework_count",
                   "op": "==",
                   "value": 0
                 }
@@ -518,7 +566,7 @@
             "aggregate_fn": "sum"
           }
         },
-        "fields_class_name": "grid grid-cols-3 gap-1",
+        "fields_class_name": "grid grid-cols-4 gap-1",
         "children": [
           {
             "layout": "flow-container",
@@ -546,7 +594,7 @@
                   },
                   "order": 0,
                   "control": "i18n-text",
-                  "class_name": "col-span-3"
+                  "class_name": "col-span-4"
                 }
               },
               "order_count": {
@@ -563,7 +611,14 @@
                     }
                   },
                   "order": 1,
-                  "class_name": "col-span-1"
+                  "class_name": "col-span-1",
+                  "hidden_when": [
+                    {
+                      "op": "==",
+                      "value": 0,
+                      "field": "order_count"
+                    }
+                  ]
                 },
                 "aggregate_fn": "sum"
               },
@@ -585,6 +640,31 @@
                 },
                 "aggregate_fn": "sum"
               },
+              "part_amount": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Teile"
+                    },
+                    "en": {
+                      "title": "Parts"
+                    },
+                    "nl": {
+                      "title": "Delen"
+                    }
+                  },
+                  "order": 3,
+                  "class_name": "col-span-1",
+                  "hidden_when": [
+                    {
+                      "op": "==",
+                      "field": "part_amount",
+                      "value_field": "product_amount"
+                    }
+                  ]
+                },
+                "aggregate_fn": "sum"
+              },
               "sqm": {
                 "ui": {
                   "i18n": {
@@ -598,7 +678,7 @@
                       "title": "m²"
                     }
                   },
-                  "order": 3,
+                  "order": 4,
                   "scale": 1,
                   "class_name": "col-span-1"
                 },
@@ -617,11 +697,11 @@
                       "title": "Herstel"
                     }
                   },
-                  "order": 4,
+                  "order": 5,
                   "class_name": "col-span-1",
                   "hidden_when": [
                     {
-                      "key": "impact_json.rework_count",
+                      "field": "impact_json.rework_count",
                       "op": "==",
                       "value": 0
                     }
@@ -642,11 +722,11 @@
                       "title": "H. units"
                     }
                   },
-                  "order": 5,
+                  "order": 6,
                   "class_name": "col-span-1",
                   "hidden_when": [
                     {
-                      "key": "impact_json.rework_count",
+                      "field": "impact_json.rework_count",
                       "op": "==",
                       "value": 0
                     }
@@ -667,12 +747,12 @@
                       "title": "H. m²"
                     }
                   },
-                  "order": 6,
+                  "order": 7,
                   "scale": 1,
                   "class_name": "col-span-1",
                   "hidden_when": [
                     {
-                      "key": "impact_json.rework_count",
+                      "field": "impact_json.rework_count",
                       "op": "==",
                       "value": 0
                     }
@@ -681,7 +761,7 @@
                 "aggregate_fn": "sum"
               }
             },
-            "fields_class_name": "grid grid-cols-3 gap-1",
+            "fields_class_name": "grid grid-cols-4 gap-1",
             "children": [
               {
                 "layout": "flow-container",
@@ -782,7 +862,7 @@
                             ],
                             "hidden_when": [
                               {
-                                "key": "nest_ids[0]",
+                                "field": "nest_ids[0]",
                                 "op": "==",
                                 "value": null
                               }
@@ -825,13 +905,20 @@
                           "class_name": "col-span-1"
                         }
                       },
-                      "sqm": {
+                      "part_amount": {
                         "ui": {
                           "order": 3,
-                          "class_name": "col-span-1"
+                          "class_name": "col-span-1",
+                          "hidden_when": [
+                            {
+                              "op": "==",
+                              "field": "part_amount",
+                              "value_field": "product_amount"
+                            }
+                          ]
                         }
                       },
-                      "part_amount": {
+                      "sqm": {
                         "ui": {
                           "order": 4,
                           "class_name": "col-span-1"
@@ -854,7 +941,7 @@
                           "class_name": "col-span-1",
                           "hidden_when": [
                             {
-                              "key": "impact_json.rework_count",
+                              "field": "impact_json.rework_count",
                               "op": "==",
                               "value": 0
                             }
@@ -879,7 +966,7 @@
                           "class_name": "col-span-1",
                           "hidden_when": [
                             {
-                              "key": "impact_json.rework_count",
+                              "field": "impact_json.rework_count",
                               "op": "==",
                               "value": 0
                             }
@@ -903,7 +990,7 @@
                           "class_name": "col-span-1",
                           "hidden_when": [
                             {
-                              "key": "impact_json.rework_count",
+                              "field": "impact_json.rework_count",
                               "op": "==",
                               "value": 0
                             }

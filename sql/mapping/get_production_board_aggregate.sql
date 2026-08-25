@@ -1,4 +1,7 @@
-create or replace function mapping.get_production_board_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_look_back_days integer DEFAULT 10, p_look_ahead_days integer DEFAULT 5, p_production_line_id integer DEFAULT NULL::integer, p_domain_id integer DEFAULT 1, p_status_levels text[] DEFAULT NULL::text[]) returns TABLE(status_sequence integer, internal_status_code text, status_title text, logistics_date date, logistics_datetime timestamp without time zone, is_logistics_date_today boolean, delivery_class_names text[], order_count bigint, regular_amount numeric, regular_sqm numeric, rework_count numeric, rework_amount numeric, rework_sqm numeric, day_distribution_json jsonb, distribution_json jsonb, material_id integer, material_name text, material_order_count bigint, material_product_amount numeric, material_sqm numeric, material_rework_count numeric, material_rework_amount numeric, material_rework_sqm numeric, material_distribution_json jsonb, nest_ids bigint[])
+-- the line filter became an array, so the old signature has to go first
+drop function if exists mapping.get_production_board_aggregate(timestamp with time zone, integer, integer, integer, integer, text[]);
+
+create function mapping.get_production_board_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_look_back_days integer DEFAULT 10, p_look_ahead_days integer DEFAULT 5, p_production_line_ids integer[] DEFAULT NULL::integer[], p_domain_id integer DEFAULT 1, p_status_levels text[] DEFAULT NULL::text[], p_customer_id integer DEFAULT NULL::integer) returns TABLE(status_sequence integer, internal_status_code text, status_title text, logistics_date date, logistics_datetime timestamp without time zone, is_logistics_date_today boolean, delivery_class_names text[], order_count bigint, regular_amount numeric, part_amount integer, regular_sqm numeric, rework_count numeric, rework_amount numeric, rework_sqm numeric, day_distribution_json jsonb, distribution_json jsonb, material_id integer, material_name text, material_order_count bigint, material_product_amount numeric, material_part_amount integer, material_sqm numeric, material_rework_count numeric, material_rework_amount numeric, material_rework_sqm numeric, material_distribution_json jsonb, nest_ids bigint[])
 	stable
 	language plpgsql
 as $$
@@ -18,9 +21,15 @@ begin
         from mapping.get_production_orderline_detail(
                  p_from               => p_from,
                  p_date_type          => 'logistics',
+                 -- window edges count workdays (action.get_date_window skips
+                 -- weekends and mandatory days off), so look ahead 5 always
+                 -- reaches the fifth workday, also across a weekend
                  p_look_back_days     => p_look_back_days,
                  p_look_ahead_days    => p_look_ahead_days,
-                 p_production_line_id => p_production_line_id,
+                 p_include_weekend    => false,
+                 p_include_mandatory_days_off => false,
+                 p_production_line_ids => p_production_line_ids,
+                 p_customer_id        => p_customer_id,
                  -- filtered at the scan, not on the rows coming back
                  p_status_levels      => p_status_levels,
                  p_is_open            => true,
@@ -35,6 +44,8 @@ begin
                d.is_logistics_date_today, d.material_id, d.material_name,
                count(distinct d.production_order_id) as material_order_count,
                sum(d.product_amount)                 as material_product_amount,
+               -- parts: the detail already sums part_status_json per orderline
+               sum(d.part_amount)::integer           as material_part_amount,
                sum(d.sqm)                            as material_sqm,
                sum((d.impact_json ->> 'rework_count')::integer)::numeric
                                                      as material_rework_count,
@@ -145,6 +156,7 @@ begin
         -- consistent with the material breakdown by construction.
         (sum(m.material_order_count)   over w)::bigint as order_count,
         sum(m.material_product_amount) over w          as regular_amount,
+        (sum(m.material_part_amount)   over w)::integer as part_amount,
         sum(m.material_sqm)            over w          as regular_sqm,
         sum(m.material_rework_count)   over w          as rework_count,
         sum(m.material_rework_amount)  over w          as rework_amount,
@@ -155,6 +167,7 @@ begin
         m.material_name,
         m.material_order_count,
         m.material_product_amount,
+        m.material_part_amount,
         m.material_sqm,
         m.material_rework_count,
         m.material_rework_amount,
@@ -193,5 +206,5 @@ begin
 end;
 $$;
 
-alter function mapping.get_production_board_aggregate(timestamp with time zone, integer, integer, integer, integer, text[]) owner to xfw3;
+alter function mapping.get_production_board_aggregate(timestamp with time zone, integer, integer, integer[], integer, text[], integer) owner to xfw3;
 

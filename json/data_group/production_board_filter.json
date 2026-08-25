@@ -9,6 +9,28 @@
           "key": "status_levels",
           "is_optional": true,
           "is_query_param": true
+        },
+        {
+          "key": "production_line_ids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "customer_id",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "look_back_days",
+          "default_value": 10,
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "look_ahead_days",
+          "default_value": 5,
+          "is_optional": true,
+          "is_query_param": true
         }
       ],
       "children": [],
@@ -45,6 +67,171 @@
               "params": [],
               "text_field": "level",
               "value_field": "level"
+            }
+          }
+        },
+        "production_line_ids": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionslinien"
+              },
+              "en": {
+                "title": "Production lines"
+              },
+              "es": {
+                "title": "Líneas de producción"
+              },
+              "fr": {
+                "title": "Lignes de production"
+              },
+              "nl": {
+                "title": "Productielijnen"
+              },
+              "uk": {
+                "title": "Виробничі лінії"
+              }
+            },
+            "order": 1,
+            "control": "multi-select",
+            "input_data": {
+              "src": [
+                "get_production_lines"
+              ],
+              "params": [],
+              "text_field": "i18n",
+              "value_field": "line_id"
+            }
+          }
+        },
+        "customer_id": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Kunde"
+              },
+              "en": {
+                "title": "Customer"
+              },
+              "es": {
+                "title": "Cliente"
+              },
+              "fr": {
+                "title": "Client"
+              },
+              "nl": {
+                "title": "Klant"
+              },
+              "uk": {
+                "title": "Клієнт"
+              }
+            },
+            "order": 2,
+            "control": "combobox",
+            "input_data": {
+              "src": [
+                "get_customers"
+              ],
+              "params": [
+                {
+                  "key": "search",
+                  "is_optional": true,
+                  "is_search_term": true
+                }
+              ],
+              "text_field": "company_name",
+              "value_fields": [
+                "customer_id",
+                "production_line_ids"
+              ]
+            }
+          }
+        },
+        "look_back_days": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Arbeitstage zurück"
+              },
+              "en": {
+                "title": "Workdays back"
+              },
+              "es": {
+                "title": "Días laborables atrás"
+              },
+              "fr": {
+                "title": "Jours ouvrés en arrière"
+              },
+              "nl": {
+                "title": "Werkdagen terug"
+              },
+              "uk": {
+                "title": "Робочі дні назад"
+              }
+            },
+            "order": 3,
+            "control": "select",
+            "input_data": {
+              "src": [
+                "get_numbers"
+              ],
+              "params": [
+                {
+                  "key": "numbers",
+                  "default_value": [
+                    5,
+                    10,
+                    15,
+                    20
+                  ]
+                }
+              ],
+              "text_field": "number",
+              "value_field": "number"
+            }
+          }
+        },
+        "look_ahead_days": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Arbeitstage voraus"
+              },
+              "en": {
+                "title": "Workdays ahead"
+              },
+              "es": {
+                "title": "Días laborables adelante"
+              },
+              "fr": {
+                "title": "Jours ouvrés en avant"
+              },
+              "nl": {
+                "title": "Werkdagen vooruit"
+              },
+              "uk": {
+                "title": "Робочі дні вперед"
+              }
+            },
+            "order": 4,
+            "control": "select",
+            "input_data": {
+              "src": [
+                "get_numbers"
+              ],
+              "params": [
+                {
+                  "key": "numbers",
+                  "default_value": [
+                    3,
+                    5,
+                    7,
+                    10
+                  ]
+                }
+              ],
+              "text_field": "number",
+              "value_field": "number"
             }
           }
         }

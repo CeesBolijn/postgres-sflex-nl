@@ -47,7 +47,9 @@ BEGIN
     ),
     material_row AS (
         SELECT m.material_id, mps.material_name, m.production_line_id,
-               m.tenant_id, t.tenant_name, m.resource_uid, r.resource_name,
+               -- the pattern points at the impose resource by path; the uid
+               -- and name come from the resource it resolves to
+               m.tenant_id, t.tenant_name, r.resource_uid, r.resource_name,
                mps.delivery_hours, mps.min_delivery_hours, li.sort_order,
                -- only the two keys the tooltip reads
                jsonb_build_object('specs', coalesce((
@@ -74,9 +76,9 @@ BEGIN
         -- one row per planned moment: an extra moment is simply another item
         JOIN action.lane_item li ON li.lane_id = l.lane_id AND li.level = 0
         JOIN mock.material_resource_plan_lane mrpl ON mrpl.lane_id = l.lane_id
-        JOIN mock.material_resource_plan m
-             ON m.material_resource_plan_id = mrpl.material_resource_plan_id
-        LEFT JOIN relation.resource r ON r.resource_uid = m.resource_uid
+        JOIN mock.material_impose_plan m
+             ON m.material_impose_plan_id = mrpl.material_resource_plan_id
+        LEFT JOIN relation.resource r ON r.resource_path = m.resource_path
         LEFT JOIN mock.material_print_schedule mps
                ON mps.material_id = m.material_id
               AND mps.production_line_id = m.production_line_id

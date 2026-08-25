@@ -5,9 +5,7 @@ create table dates
 			primary key,
 	weekday smallint not null,
 	is_weekend boolean not null,
-	is_mandatory_day_off boolean default false not null,
-	-- the tenants that have this day off; replaces the boolean
-	-- is_mandatory_day_off, which stays until every reader is adapted
+	-- the tenants that have this day off; empty means a regular working day
 	tenants_mandatory_day_off integer[] default '{}'::integer[] not null
 );
 

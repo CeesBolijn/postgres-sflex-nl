@@ -19,8 +19,11 @@ begin
                (x.impact_json ->> 'rework_amount')::numeric         as rework_amount,
                (x.impact_json ->> 'rework_sqm')::numeric            as rework_sqm
         from mapping.get_production_orderline_detail(
-                 p_production_line_id => p_production_line_id,
-                 p_is_open            => true) x
+                 -- own parameter stays a single id; the detail takes an array
+                 p_production_line_ids => case when p_production_line_id is null
+                                               then null
+                                               else array[p_production_line_id] end,
+                 p_is_open             => true) x
     )
     select
         d.material_id,

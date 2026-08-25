@@ -1,7 +1,7 @@
--- return type changes, so the old signature has to go first
+-- the line filter became an array, so the old signature has to go first
 drop function if exists mapping.get_production_orderline_graph(timestamp with time zone, integer, integer, text[]);
 
-create function mapping.get_production_orderline_graph(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_production_line_id integer DEFAULT NULL::integer, p_domain_id integer DEFAULT 1, p_status_levels text[] DEFAULT NULL::text[]) returns TABLE(internal_status_code text, status_title text, regular_class_names jsonb, rework_class_names jsonb, orderline_status_sequence integer, total_orders bigint, total_product_amount numeric, total_sqm numeric, production_date date, total_nest_count integer, total_nest_sqm numeric, total_rework_count bigint, total_rework_amount numeric, total_rejected_amount numeric, total_rejected_sqm numeric, total_produced_amount numeric)
+create function mapping.get_production_orderline_graph(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_production_line_ids integer[] DEFAULT NULL::integer[], p_domain_id integer DEFAULT 1, p_status_levels text[] DEFAULT NULL::text[], p_customer_id integer DEFAULT NULL::integer) returns TABLE(internal_status_code text, status_title text, regular_class_names jsonb, rework_class_names jsonb, orderline_status_sequence integer, total_orders bigint, total_product_amount numeric, total_sqm numeric, production_date date, total_nest_count integer, total_nest_sqm numeric, total_rework_count bigint, total_rework_amount numeric, total_rejected_amount numeric, total_rejected_sqm numeric, total_produced_amount numeric)
 	stable
 	language sql
 as $$
@@ -14,7 +14,8 @@ as $$
             p_date_type          => 'logistics',
             p_look_back_days     => 0,
             p_look_ahead_days    => 0,
-            p_production_line_id => p_production_line_id,
+            p_production_line_ids => p_production_line_ids,
+            p_customer_id        => p_customer_id,
             -- filtered at the scan, not on the rows coming back
             p_status_levels      => p_status_levels,
             p_is_open            => true,
@@ -80,5 +81,5 @@ as $$
     order by g.orderline_status_sequence;
 $$;
 
-alter function mapping.get_production_orderline_graph(timestamp with time zone, integer, integer, text[]) owner to xfw3;
+alter function mapping.get_production_orderline_graph(timestamp with time zone, integer[], integer, text[], integer) owner to xfw3;
 

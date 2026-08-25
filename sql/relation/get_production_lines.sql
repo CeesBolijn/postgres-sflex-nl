@@ -1,36 +1,21 @@
-create function relation.get_production_lines() returns TABLE(models_json jsonb)
+-- Flat production-line list for select controls (the production board
+-- filter). Return type changed twice, so the old signature goes first.
+drop function if exists relation.get_production_lines();
+
+create function relation.get_production_lines() returns TABLE(line_id integer, line text, i18n jsonb, line_type text)
 	stable
 	language plpgsql
 as $$
 #variable_conflict use_column
-BEGIN
-    RETURN QUERY
-    SELECT jsonb_agg(
-      model_data || jsonb_build_object('production_lines', production_lines)
-      ORDER BY model_code
-    ) AS models_json
-    FROM (
-      SELECT
-        line_json->'model'->>'code' AS model_code,
-        (array_agg(line_json->'model' ORDER BY line_id))[1] AS model_data,
-        jsonb_agg(
-          jsonb_build_object(
-            'production_line_id',   line_id,
-            'code',                 line_json->>'code',
-            'production_line_name', line_json->>'production_line_name',
-            'block',                line_json->'block'
-          )
-          ORDER BY line_id
-        ) AS production_lines
-      FROM (
-        SELECT line_id, line_json::jsonb AS line_json
-        FROM relation.production_line
-      ) pl
-      WHERE line_json ? 'model'
-      GROUP BY line_json->'model'->>'code'
-    ) m;
-END;
+begin
+    return query
+    -- only real production lines: a line without line_type (Canvas, Supply,
+    -- ONB, Not applicable, ...) is a bookkeeping row, never a filter choice
+    select pl.line_id, pl.line, pl.line_json -> 'i18n', pl.line_type
+    from relation.production_line pl
+    where pl.line_type is not null
+    order by pl.line;
+end;
 $$;
 
 alter function relation.get_production_lines() owner to xfw3;
-

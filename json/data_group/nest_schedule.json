@@ -183,19 +183,13 @@
                   "is_query_param": true
                 },
                 {
-                  "key": "look_back_days",
-                  "default_value": 0
-                },
-                {
-                  "key": "look_ahead_days",
-                  "default_value": 0
-                },
-                {
-                  "key": "production_line_id",
+                  "key": "production_line_ids",
+                  "value_from": "production_line_id",
                   "is_query_param": true
                 },
                 {
-                  "key": "material_id",
+                  "key": "material_ids",
+                  "value_from": "material_id",
                   "is_query_param": true
                 }
               ],

@@ -2,7 +2,7 @@
 drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer);
 drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer);
 
-create function mapping.get_production_orderline_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_days_off boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_production_line_id integer DEFAULT NULL::integer, p_material_ids integer[] DEFAULT NULL::integer[], p_tenant_ids integer[] DEFAULT NULL::integer[], p_is_open boolean DEFAULT true, p_waste_percentage numeric DEFAULT 20, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1) returns TABLE(material_id integer, material_name text, production_line_id integer, delivery_hours integer, material_media_type_id integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, rejected_amount numeric, produced_amount numeric, waste_percentage numeric, gross_sqm numeric, specs_json jsonb, status_json jsonb, part_status_json jsonb, nest_ids bigint[], delivery_class_names text[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
+create function mapping.get_production_orderline_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_days_off boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_production_line_ids integer[] DEFAULT NULL::integer[], p_material_ids integer[] DEFAULT NULL::integer[], p_tenant_ids integer[] DEFAULT NULL::integer[], p_is_open boolean DEFAULT true, p_waste_percentage numeric DEFAULT 20, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1, p_customer_id integer DEFAULT NULL::integer) returns TABLE(material_id integer, material_name text, production_line_id integer, delivery_hours integer, material_media_type_id integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, rejected_amount numeric, produced_amount numeric, waste_percentage numeric, gross_sqm numeric, specs_json jsonb, status_json jsonb, part_status_json jsonb, nest_ids bigint[], delivery_class_names text[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
 	stable
 	language sql
 as $$
@@ -18,7 +18,8 @@ as $$
             p_tenant_ids              => p_tenant_ids,
             p_status_sequences        => p_status_sequences,
             p_status_levels           => p_status_levels,
-            p_production_line_id      => p_production_line_id,
+            p_production_line_ids     => p_production_line_ids,
+            p_customer_id             => p_customer_id,
             p_material_ids            => p_material_ids,
             p_batch_ids               => p_batch_ids,
             p_nest_ids                => p_nest_ids,
@@ -71,7 +72,8 @@ as $$
         from log.production_forecast_material f
         cross join forecast_window win
         where f.date >= win.from_date and f.date < win.until_date
-          and (p_production_line_id is null or f.production_line_id = p_production_line_id)
+          and (p_production_line_ids is null or cardinality(p_production_line_ids) = 0
+               or f.production_line_id = any (p_production_line_ids))
           and (p_material_ids is null or f.material_id = any (p_material_ids))
           and (p_tenant_ids is null or f.production_company_id in (
                    select (v.value ->> 'production_company_id')::integer
@@ -248,4 +250,4 @@ as $$
     order by g.material_id, g.production_line_id, g.delivery_hours;
 $$;
 
-alter function mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer) owner to xfw3;
+alter function mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer[], bigint[], integer[], integer[], integer[], boolean, numeric, integer, integer, integer) owner to xfw3;

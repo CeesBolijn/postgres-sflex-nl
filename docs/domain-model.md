@@ -917,7 +917,7 @@ drift physically impossible.
 ### 9.9 Calendar and cutoffs
 
 - **`action.dates`** — `date` (pk), `weekday`, `is_weekend`,
-  `is_mandatory_day_off`, `tenant_id`
+  `tenants_mandatory_day_off` (integer[], leeg = gewone werkdag)
 - **`action.non_working_times`** — `type`, `rule_path`, `weekday`,
   `start_offset_in_seconds`, `duration_in_seconds`, `moved_at`, `moved_by`
 - **`action.cutoff_time`** — append-only, `type`, `code`, `rule_path`,

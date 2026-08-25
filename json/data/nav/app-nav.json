@@ -76,6 +76,11 @@
             "value_from_field": "production_line_id"
           },
           {
+            "key": "production_line_ids",
+            "is_query_param": true,
+            "value_from_field": "production_line_id"
+          },
+          {
             "key": "line_type",
             "is_query_param": true,
             "value_from_field": "line_type"

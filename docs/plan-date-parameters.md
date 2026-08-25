@@ -109,13 +109,13 @@ as $$
         (select d.date from action.dates d
           where d.date <= (p_at at time zone 'Europe/Amsterdam')::date
             and (p_include_weekend or not d.is_weekend)
-            and (p_include_mandatory_dates or not d.is_mandatory_day_off)
+            and (p_include_mandatory_dates or d.tenants_mandatory_day_off = '{}')
           order by d.date desc limit p_look_back_days + 1)
         union
         (select d.date from action.dates d
           where d.date >= (p_at at time zone 'Europe/Amsterdam')::date
             and (p_include_weekend or not d.is_weekend)
-            and (p_include_mandatory_dates or not d.is_mandatory_day_off)
+            and (p_include_mandatory_dates or d.tenants_mandatory_day_off = '{}')
           order by d.date limit p_look_ahead_days + 1)
     ) d;
 $$;

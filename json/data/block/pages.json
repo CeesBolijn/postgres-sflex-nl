@@ -38,6 +38,16 @@
     }
   },
   {
+    "code": "nest-schedule-queue",
+    "main": {
+      "sections": [
+        {
+          "data_group": "nest_schedule_queue"
+        }
+      ]
+    }
+  },
+  {
     "code": "production-board-detail",
     "main": {
       "sections": [
@@ -276,7 +286,18 @@
       "sections": [
         {
           "data_group": "uploader_data_list"
-        },
+        }
+      ]
+    }
+  },
+  {
+    "code": "status-log-duration",
+    "main": {
+      "grid": {
+        "rows": "auto 1fr",
+        "gap": "0.5rem"
+      },
+      "sections": [
         {
           "data_group": "status_log_duration"
         }

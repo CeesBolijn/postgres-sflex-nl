@@ -121,7 +121,14 @@
             },
             "order": 3,
             "control": "img",
-            "field": "https://f003.backblazeb2.com/file/probo-hub/${nest_json.job_thumbnail}"
+            "field": "https://f003.backblazeb2.com/file/probo-hub/${nest_json.job_thumbnail}",
+            "hidden_when": [
+              {
+                "op": "==",
+                "field": "nest_json.job_thumbnail",
+                "value": null
+              }
+            ]
           }
         },
         "nest_json.waste_percentage": {
@@ -184,7 +191,14 @@
                   "order": 4,
                   "control": "img",
                   "field": "https://f003.backblazeb2.com/file/probo-hub/${nest_json.job_thumbnail}",
-                  "class_name": "col-span-6"
+                  "class_name": "col-span-6",
+                  "hidden_when": [
+                    {
+                      "op": "==",
+                      "field": "nest_json.job_thumbnail",
+                      "value": null
+                    }
+                  ]
                 }
               },
               "nest_json.printfile_name": {

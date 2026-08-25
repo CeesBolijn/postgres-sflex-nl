@@ -636,22 +636,45 @@
   {
     "code": "uploader-data",
     "block": {
-      "title": "Uploader data",
+      "title": "Files",
       "i18n": {
         "en": {
-          "title": "Uploader data"
+          "title": "Files"
         },
         "nl": {
-          "title": "Uploader data"
+          "title": "Bestanden"
         },
         "de": {
-          "title": "Uploader-Daten"
+          "title": "Dateien"
         },
         "uk": {
           "title": "Дані завантажувача"
         },
         "es": {
           "title": "Datos del cargador"
+        }
+      }
+    }
+  },
+  {
+    "code": "status-log-duration",
+    "block": {
+      "title": "Status log duration",
+      "i18n": {
+        "en": {
+          "title": "Status log duration"
+        },
+        "nl": {
+          "title": "Status log duur"
+        },
+        "de": {
+          "title": "Statusprotokolldauer"
+        },
+        "uk": {
+          "title": "Тривалість журналу стану"
+        },
+        "es": {
+          "title": "Duración del registro de estado"
         }
       }
     }

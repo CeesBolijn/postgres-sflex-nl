@@ -13,7 +13,13 @@
           "is_query_param": true
         },
         {
-          "key": "production_line_id",
+          "key": "production_line_ids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "customer_id",
+          "is_optional": true,
           "is_query_param": true
         },
         {
@@ -385,7 +391,8 @@
         },
         "group_by": [
           "internal_status_code"
-        ]
+        ],
+        "column_min_width": 200
       }
     }
   ]

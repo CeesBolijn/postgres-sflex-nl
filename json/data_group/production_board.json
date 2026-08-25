@@ -14,16 +14,24 @@
         },
         {
           "key": "look_back_days",
+          "default_value": 10,
           "is_optional": true,
           "is_query_param": true
         },
         {
           "key": "look_ahead_days",
+          "default_value": 5,
           "is_optional": true,
           "is_query_param": true
         },
         {
-          "key": "production_line_id",
+          "key": "production_line_ids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "customer_id",
+          "is_optional": true,
           "is_query_param": true
         },
         {
@@ -96,7 +104,37 @@
                 "title": "Orders"
               }
             },
-            "order": 3
+            "order": 3,
+            "hidden_when": [
+              {
+                "op": "==",
+                "value": 0,
+                "field": "order_count"
+              }
+            ]
+          }
+        },
+        "part_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Teile"
+              },
+              "en": {
+                "title": "Parts"
+              },
+              "nl": {
+                "title": "Delen"
+              }
+            },
+            "order": 5,
+            "hidden_when": [
+              {
+                "op": "==",
+                "field": "part_amount",
+                "value_field": "regular_amount"
+              }
+            ]
           }
         },
         "regular_sqm": {
@@ -112,7 +150,7 @@
                 "title": "m²"
               }
             },
-            "order": 5,
+            "order": 6,
             "scale": 1
           }
         },
@@ -129,7 +167,7 @@
                 "title": "m²"
               }
             },
-            "order": 14,
+            "order": 15,
             "scale": 1
           }
         },
@@ -146,7 +184,7 @@
                 "title": "Herstel"
               }
             },
-            "order": 6
+            "order": 7
           }
         },
         "status_title": {
@@ -194,7 +232,7 @@
                 "title": "H. units"
               }
             },
-            "order": 7
+            "order": 8
           }
         },
         "logistics_date": {
@@ -277,7 +315,7 @@
                 "title": "H. m²"
               }
             },
-            "order": 17,
+            "order": 18,
             "scale": 1
           }
         },
@@ -317,11 +355,38 @@
                 "title": "Orders"
               }
             },
-            "order": 12
+            "order": 12,
+            "hidden_when": [
+              {
+                "op": "==",
+                "value": 0,
+                "field": "material_order_count"
+              }
+            ]
           }
         },
         "day_distribution_json": {
           "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "Status"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "Statut"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Статус"
+              }
+            },
             "hidden": false
           }
         },
@@ -338,7 +403,7 @@
                 "title": "Herstel"
               }
             },
-            "order": 15
+            "order": 16
           }
         },
         "material_rework_amount": {
@@ -354,7 +419,7 @@
                 "title": "H. units"
               }
             },
-            "order": 16
+            "order": 17
           }
         },
         "material_product_amount": {
@@ -371,6 +436,29 @@
               }
             },
             "order": 13
+          }
+        },
+        "material_part_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Teile"
+              },
+              "en": {
+                "title": "Parts"
+              },
+              "nl": {
+                "title": "Delen"
+              }
+            },
+            "order": 14,
+            "hidden_when": [
+              {
+                "op": "==",
+                "field": "material_part_amount",
+                "value_field": "material_product_amount"
+              }
+            ]
           }
         },
         "material_distribution_json": {
@@ -395,7 +483,7 @@
                 "title": "Статус"
               }
             },
-            "order": 18,
+            "order": 19,
             "control": "distribution-bar",
             "distribution_bar_config": {
               "i18n_field": "i18n",
@@ -451,15 +539,13 @@
                                 "is_query_param": true
                               },
                               {
-                                "key": "look_back_days",
-                                "default_value": 0
+                                "key": "production_line_ids",
+                                "is_optional": true,
+                                "is_query_param": true
                               },
                               {
-                                "key": "look_ahead_days",
-                                "default_value": 0
-                              },
-                              {
-                                "key": "production_line_id",
+                                "key": "customer_id",
+                                "is_optional": true,
                                 "is_query_param": true
                               },
                               {
@@ -555,7 +641,7 @@
                               "title": "m²"
                             }
                           },
-                          "order": 3,
+                          "order": 4,
                           "scale": 1,
                           "class_name": "col-span-2"
                         }
@@ -563,7 +649,7 @@
                       "material_name": {
                         "ui": {
                           "order": 0,
-                          "class_name": "col-span-6 font-medium"
+                          "class_name": "col-span-8 font-medium"
                         }
                       },
                       "material_rework_sqm": {
@@ -579,7 +665,7 @@
                               "title": "H. m²"
                             }
                           },
-                          "order": 6,
+                          "order": 7,
                           "scale": 1,
                           "class_name": "col-span-2",
                           "hidden_when": [
@@ -605,7 +691,14 @@
                             }
                           },
                           "order": 1,
-                          "class_name": "col-span-2"
+                          "class_name": "col-span-2",
+                          "hidden_when": [
+                            {
+                              "op": "==",
+                              "value": 0,
+                              "field": "material_order_count"
+                            }
+                          ]
                         }
                       },
                       "material_rework_count": {
@@ -621,7 +714,7 @@
                               "title": "Herstel"
                             }
                           },
-                          "order": 4,
+                          "order": 5,
                           "class_name": "col-span-2",
                           "hidden_when": [
                             {
@@ -645,7 +738,7 @@
                               "title": "H. units"
                             }
                           },
-                          "order": 5,
+                          "order": 6,
                           "class_name": "col-span-2",
                           "hidden_when": [
                             {
@@ -673,11 +766,35 @@
                           "class_name": "col-span-2"
                         }
                       },
+                      "material_part_amount": {
+                        "ui": {
+                          "i18n": {
+                            "de": {
+                              "title": "Teile"
+                            },
+                            "en": {
+                              "title": "Parts"
+                            },
+                            "nl": {
+                              "title": "Delen"
+                            }
+                          },
+                          "order": 3,
+                          "class_name": "col-span-2",
+                          "hidden_when": [
+                            {
+                              "op": "==",
+                              "field": "material_part_amount",
+                              "value_field": "material_product_amount"
+                            }
+                          ]
+                        }
+                      },
                       "material_distribution_json": {
                         "ui": {
-                          "order": 7,
+                          "order": 8,
                           "control": "distribution-bar",
-                          "class_name": "col-span-6",
+                          "class_name": "col-span-8",
                           "distribution_bar_config": {
                             "i18n_field": "i18n",
                             "value_field": "amount",
@@ -697,7 +814,7 @@
                       "logistics_date",
                       "logistics_datetime"
                     ],
-                    "fields_class_name": "grid grid-cols-6 gap-1"
+                    "fields_class_name": "grid grid-cols-8 gap-1"
                   }
                 ],
                 "group_by": [
@@ -731,7 +848,7 @@
                           "title": "m²"
                         }
                       },
-                      "order": 4,
+                      "order": 5,
                       "scale": 1,
                       "class_name": "col-span-2"
                     },
@@ -741,7 +858,7 @@
                     "ui": {
                       "order": 1,
                       "control": "distribution-bar",
-                      "class_name": "col-span-6",
+                      "class_name": "col-span-8",
                       "distribution_bar_config": {
                         "i18n_field": "i18n",
                         "value_field": "amount",
@@ -767,7 +884,7 @@
                       },
                       "type": "datetime",
                       "order": 0,
-                      "class_name": "col-span-6"
+                      "class_name": "col-span-8"
                     }
                   },
                   "material_rework_sqm": {
@@ -809,8 +926,15 @@
                           "title": "Orders"
                         }
                       },
-                      "order": 3,
-                      "class_name": "col-span-2"
+                      "order": 2,
+                      "class_name": "col-span-2",
+                      "hidden_when": [
+                        {
+                          "op": "==",
+                          "value": 0,
+                          "field": "material_order_count"
+                        }
+                      ]
                     },
                     "aggregate_fn": "sum"
                   },
@@ -877,13 +1001,38 @@
                           "title": "Units"
                         }
                       },
-                      "order": 5,
+                      "order": 3,
                       "class_name": "col-span-2"
+                    },
+                    "aggregate_fn": "sum"
+                  },
+                  "material_part_amount": {
+                    "ui": {
+                      "i18n": {
+                        "de": {
+                          "title": "Teile"
+                        },
+                        "en": {
+                          "title": "Parts"
+                        },
+                        "nl": {
+                          "title": "Delen"
+                        }
+                      },
+                      "order": 4,
+                      "class_name": "col-span-2",
+                      "hidden_when": [
+                        {
+                          "op": "==",
+                          "field": "material_part_amount",
+                          "value_field": "material_product_amount"
+                        }
+                      ]
                     },
                     "aggregate_fn": "sum"
                   }
                 },
-                "fields_class_name": "grid grid-cols-6 gap-1"
+                "fields_class_name": "grid grid-cols-8 gap-1"
               }
             ],
             "group_by": [
@@ -910,7 +1059,7 @@
                       "title": "m²"
                     }
                   },
-                  "order": 4,
+                  "order": 5,
                   "scale": 1,
                   "class_name": "col-span-2"
                 },
@@ -931,7 +1080,7 @@
                   },
                   "type": "date",
                   "order": 0,
-                  "class_name": "col-span-3"
+                  "class_name": "col-span-4"
                 }
               },
               "material_rework_sqm": {
@@ -947,7 +1096,7 @@
                       "title": "H. m²"
                     }
                   },
-                  "order": 7,
+                  "order": 8,
                   "scale": 1,
                   "class_name": "col-span-2",
                   "hidden_when": [
@@ -974,15 +1123,42 @@
                     }
                   },
                   "order": 2,
-                  "class_name": "col-span-2"
+                  "class_name": "col-span-2",
+                  "hidden_when": [
+                    {
+                      "op": "==",
+                      "value": 0,
+                      "field": "material_order_count"
+                    }
+                  ]
                 },
                 "aggregate_fn": "sum"
               },
               "day_distribution_json": {
                 "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Status"
+                    },
+                    "en": {
+                      "title": "Status"
+                    },
+                    "es": {
+                      "title": "Estado"
+                    },
+                    "fr": {
+                      "title": "Statut"
+                    },
+                    "nl": {
+                      "title": "Status"
+                    },
+                    "uk": {
+                      "title": "Статус"
+                    }
+                  },
                   "order": 1,
                   "control": "distribution-bar",
-                  "class_name": "col-span-3",
+                  "class_name": "col-span-4",
                   "distribution_bar_config": {
                     "i18n_field": "i18n",
                     "value_field": "amount",
@@ -1006,7 +1182,7 @@
                       "title": "Herstel"
                     }
                   },
-                  "order": 5,
+                  "order": 6,
                   "class_name": "col-span-2",
                   "hidden_when": [
                     {
@@ -1031,7 +1207,7 @@
                       "title": "H. units"
                     }
                   },
-                  "order": 6,
+                  "order": 7,
                   "class_name": "col-span-2",
                   "hidden_when": [
                     {
@@ -1060,9 +1236,34 @@
                   "class_name": "col-span-2"
                 },
                 "aggregate_fn": "sum"
+              },
+              "material_part_amount": {
+                "ui": {
+                  "i18n": {
+                    "de": {
+                      "title": "Teile"
+                    },
+                    "en": {
+                      "title": "Parts"
+                    },
+                    "nl": {
+                      "title": "Delen"
+                    }
+                  },
+                  "order": 4,
+                  "class_name": "col-span-2",
+                  "hidden_when": [
+                    {
+                      "op": "==",
+                      "field": "material_part_amount",
+                      "value_field": "material_product_amount"
+                    }
+                  ]
+                },
+                "aggregate_fn": "sum"
               }
             },
-            "fields_class_name": "grid grid-cols-6 gap-1"
+            "fields_class_name": "grid grid-cols-8 gap-1"
           }
         ],
         "group_by": [
