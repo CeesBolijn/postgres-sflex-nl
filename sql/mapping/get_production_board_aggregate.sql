@@ -1,5 +1,7 @@
 -- the line filter became an array, so the old signature has to go first
 drop function if exists mapping.get_production_board_aggregate(timestamp with time zone, integer, integer, integer, integer, text[]);
+-- the customer filter joined the signature, so the version in the database has to go too
+drop function if exists mapping.get_production_board_aggregate(timestamp with time zone, integer, integer, integer[], integer, text[], integer);
 
 create function mapping.get_production_board_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_look_back_days integer DEFAULT 10, p_look_ahead_days integer DEFAULT 5, p_production_line_ids integer[] DEFAULT NULL::integer[], p_domain_id integer DEFAULT 1, p_status_levels text[] DEFAULT NULL::text[], p_customer_id integer DEFAULT NULL::integer) returns TABLE(status_sequence integer, internal_status_code text, status_title text, logistics_date date, logistics_datetime timestamp without time zone, is_logistics_date_today boolean, delivery_class_names text[], order_count bigint, regular_amount numeric, part_amount integer, regular_sqm numeric, rework_count numeric, rework_amount numeric, rework_sqm numeric, day_distribution_json jsonb, distribution_json jsonb, material_id integer, material_name text, material_order_count bigint, material_product_amount numeric, material_part_amount integer, material_sqm numeric, material_rework_count numeric, material_rework_amount numeric, material_rework_sqm numeric, material_distribution_json jsonb, nest_ids bigint[])
 	stable
@@ -19,7 +21,7 @@ begin
                end as logistics_datetime,
                d.logistics_date = v_day as is_logistics_date_today
         from mapping.get_production_orderline_detail(
-                 p_from               => p_from,
+                 p_date               => p_from,
                  p_date_type          => 'logistics',
                  -- window edges count workdays (action.get_date_window skips
                  -- weekends and mandatory days off), so look ahead 5 always

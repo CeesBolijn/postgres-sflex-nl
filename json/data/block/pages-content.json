@@ -238,11 +238,21 @@
     "block": {
       "title": "Sitrep detail",
       "i18n": {
-        "en": { "title": "Sitrep detail" },
-        "nl": { "title": "Sitrep detail" },
-        "de": { "title": "Sitrep detail" },
-        "uk": { "title": "Sitrep detail" },
-        "es": { "title": "Sitrep detail" }
+        "en": {
+          "title": "Sitrep detail"
+        },
+        "nl": {
+          "title": "Sitrep detail"
+        },
+        "de": {
+          "title": "Sitrep detail"
+        },
+        "uk": {
+          "title": "Sitrep detail"
+        },
+        "es": {
+          "title": "Sitrep detail"
+        }
       }
     }
   },
@@ -251,11 +261,21 @@
     "block": {
       "title": "Batch",
       "i18n": {
-        "en": { "title": "Batch" },
-        "nl": { "title": "Batch" },
-        "de": { "title": "Batch" },
-        "uk": { "title": "Батч" },
-        "es": { "title": "Lote" }
+        "en": {
+          "title": "Batch"
+        },
+        "nl": {
+          "title": "Batch"
+        },
+        "de": {
+          "title": "Batch"
+        },
+        "uk": {
+          "title": "Батч"
+        },
+        "es": {
+          "title": "Lote"
+        }
       }
     }
   },
@@ -680,7 +700,7 @@
     }
   },
   {
-    "code": "nest-schedule",
+    "code": "impose-plan",
     "block": {
       "title": "Nest schedule",
       "i18n": {
@@ -703,7 +723,7 @@
     }
   },
   {
-    "code": "nest-resource-schedule",
+    "code": "impose-resource-plan",
     "block": {
       "title": "Nest resource schedule",
       "i18n": {
@@ -776,12 +796,24 @@
     "block": {
       "title": "Control room",
       "i18n": {
-        "en": { "title": "Control room" },
-        "nl": { "title": "Control room" },
-        "de": { "title": "Leitstand" },
-        "fr": { "title": "Salle de contrôle" },
-        "es": { "title": "Sala de control" },
-        "uk": { "title": "Диспетчерська" }
+        "en": {
+          "title": "Control room"
+        },
+        "nl": {
+          "title": "Control room"
+        },
+        "de": {
+          "title": "Leitstand"
+        },
+        "fr": {
+          "title": "Salle de contrôle"
+        },
+        "es": {
+          "title": "Sala de control"
+        },
+        "uk": {
+          "title": "Диспетчерська"
+        }
       }
     }
   },
@@ -790,12 +822,50 @@
     "block": {
       "title": "Production lines",
       "i18n": {
-        "en": { "title": "Production lines" },
-        "nl": { "title": "Productielijnen" },
-        "de": { "title": "Produktionslinien" },
-        "fr": { "title": "Lignes de production" },
-        "es": { "title": "Líneas de producción" },
-        "uk": { "title": "Виробничі лінії" }
+        "en": {
+          "title": "Production lines"
+        },
+        "nl": {
+          "title": "Productielijnen"
+        },
+        "de": {
+          "title": "Produktionslinien"
+        },
+        "fr": {
+          "title": "Lignes de production"
+        },
+        "es": {
+          "title": "Líneas de producción"
+        },
+        "uk": {
+          "title": "Виробничі лінії"
+        }
+      }
+    }
+  },
+  {
+    "code": "production-line-overview",
+    "block": {
+      "title": "Resources",
+      "i18n": {
+        "de": {
+          "title": "Ressourcen"
+        },
+        "en": {
+          "title": "Resources"
+        },
+        "es": {
+          "title": "Recursos"
+        },
+        "fr": {
+          "title": "Ressources"
+        },
+        "nl": {
+          "title": "Resources"
+        },
+        "uk": {
+          "title": "Ресурси"
+        }
       }
     }
   },
@@ -804,12 +874,24 @@
     "block": {
       "title": "Production planning",
       "i18n": {
-        "en": { "title": "Production planning" },
-        "nl": { "title": "Productieplanning" },
-        "de": { "title": "Produktionsplanung" },
-        "fr": { "title": "Planification de la production" },
-        "es": { "title": "Planificación de la producción" },
-        "uk": { "title": "Планування виробництва" }
+        "en": {
+          "title": "Production planning"
+        },
+        "nl": {
+          "title": "Productieplanning"
+        },
+        "de": {
+          "title": "Produktionsplanung"
+        },
+        "fr": {
+          "title": "Planification de la production"
+        },
+        "es": {
+          "title": "Planificación de la producción"
+        },
+        "uk": {
+          "title": "Планування виробництва"
+        }
       }
     }
   }

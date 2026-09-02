@@ -1,0 +1,910 @@
+[
+  {
+    "code": "running",
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "Läuft"
+        },
+        "en": {
+          "title": "Running"
+        },
+        "es": {
+          "title": "En marcha"
+        },
+        "fr": {
+          "title": "En marche"
+        },
+        "nl": {
+          "title": "Running"
+        },
+        "uk": {
+          "title": "В роботі"
+        }
+      },
+      "title": "Running"
+    },
+    "color": "var(--state-running)",
+    "group": "state",
+    "order": 100,
+    "states": [
+      {
+        "code": "data-error",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Datenfehler"
+            },
+            "en": {
+              "title": "Data error"
+            },
+            "es": {
+              "title": "Error de datos"
+            },
+            "fr": {
+              "title": "Erreur de données"
+            },
+            "nl": {
+              "title": "Wrong data"
+            },
+            "uk": {
+              "title": "Помилка даних"
+            }
+          },
+          "title": "Data error"
+        },
+        "color": "var(--state-missingdata)",
+        "group": "state",
+        "order": 60,
+        "class_name": "state-missingdata"
+      },
+      {
+        "code": "producing",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Produziert"
+            },
+            "en": {
+              "title": "Producing"
+            },
+            "es": {
+              "title": "Produciendo"
+            },
+            "fr": {
+              "title": "En production"
+            },
+            "nl": {
+              "title": "Producing"
+            },
+            "uk": {
+              "title": "Виробництво"
+            }
+          },
+          "title": "Producing"
+        },
+        "color": "var(--state-producing)",
+        "group": "state",
+        "order": 10,
+        "class_name": "state-producing"
+      },
+      {
+        "code": "setup",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Rüsten"
+            },
+            "en": {
+              "title": "Setup"
+            },
+            "es": {
+              "title": "Configuración"
+            },
+            "fr": {
+              "title": "Configuration"
+            },
+            "nl": {
+              "title": "Setup"
+            },
+            "uk": {
+              "title": "Налаштування"
+            }
+          },
+          "title": "Setup"
+        },
+        "color": "var(--state-setup)",
+        "group": "state",
+        "order": 20,
+        "class_name": "state-setup"
+      },
+      {
+        "code": "starved",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Materialmangel"
+            },
+            "en": {
+              "title": "Starved"
+            },
+            "es": {
+              "title": "Sin material"
+            },
+            "fr": {
+              "title": "Sous-alimenté"
+            },
+            "nl": {
+              "title": "Starved"
+            },
+            "uk": {
+              "title": "Голодування"
+            }
+          },
+          "title": "Starved"
+        },
+        "color": "var(--state-starved)",
+        "group": "state",
+        "order": 30,
+        "class_name": "state-starved"
+      },
+      {
+        "code": "blocked",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Blockiert"
+            },
+            "en": {
+              "title": "Blocked"
+            },
+            "es": {
+              "title": "Bloqueado"
+            },
+            "fr": {
+              "title": "Bloqué"
+            },
+            "nl": {
+              "title": "Blocked"
+            },
+            "uk": {
+              "title": "Заблоковано"
+            }
+          },
+          "title": "Blocked"
+        },
+        "color": "var(--state-blocked)",
+        "group": "state",
+        "order": 50,
+        "class_name": "state-blocked"
+      },
+      {
+        "code": "blocked.operator",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Blockiert"
+            },
+            "en": {
+              "title": "Blocked"
+            },
+            "es": {
+              "title": "Bloqueado"
+            },
+            "fr": {
+              "title": "Bloqué"
+            },
+            "nl": {
+              "title": "Blocked"
+            },
+            "uk": {
+              "title": "Заблоковано"
+            }
+          },
+          "title": "Blocked"
+        },
+        "color": "var(--state-blocked)",
+        "group": "state",
+        "order": 50,
+        "class_name": "state-blocked"
+      },
+      {
+        "code": "not_released",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Nicht freigegeben"
+            },
+            "en": {
+              "title": "Not released"
+            },
+            "es": {
+              "title": "No liberado"
+            },
+            "fr": {
+              "title": "Non libéré"
+            },
+            "nl": {
+              "title": "Niet vrijgegeven"
+            },
+            "uk": {
+              "title": "Не випущено"
+            }
+          },
+          "title": "Not released"
+        },
+        "color": "var(--plan-not_released)",
+        "group": "plan",
+        "order": 0,
+        "class_name": "plan-not-released"
+      },
+      {
+        "code": "nesting",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Verschachtelung"
+            },
+            "en": {
+              "title": "Nesting"
+            },
+            "es": {
+              "title": "Anidando"
+            },
+            "fr": {
+              "title": "Imbrication"
+            },
+            "nl": {
+              "title": "Nesten"
+            },
+            "uk": {
+              "title": "Вкладання"
+            }
+          },
+          "title": "Nesting"
+        },
+        "color": "var(--plan-nesting)",
+        "group": "plan",
+        "order": 1,
+        "class_name": "plan-nesting"
+      },
+      {
+        "code": "nested",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Verschachtelt"
+            },
+            "en": {
+              "title": "Nested"
+            },
+            "es": {
+              "title": "Anidado"
+            },
+            "fr": {
+              "title": "Imbriqué"
+            },
+            "nl": {
+              "title": "Genest"
+            },
+            "uk": {
+              "title": "Вкладено"
+            }
+          },
+          "title": "Nested"
+        },
+        "color": "var(--plan-nested)",
+        "group": "plan",
+        "order": 2,
+        "class_name": "plan-nested"
+      },
+      {
+        "code": "ripping",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Verarbeitet"
+            },
+            "en": {
+              "title": "Ripped"
+            },
+            "es": {
+              "title": "Procesado"
+            },
+            "fr": {
+              "title": "Traité"
+            },
+            "nl": {
+              "title": "Geript"
+            },
+            "uk": {
+              "title": "Оброблено"
+            }
+          },
+          "title": "Ripped"
+        },
+        "color": "var(--plan-ripping)",
+        "group": "plan",
+        "order": 3,
+        "class_name": "plan-ripping"
+      },
+      {
+        "code": "ripped",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Verarbeitet"
+            },
+            "en": {
+              "title": "Ripped"
+            },
+            "es": {
+              "title": "Procesado"
+            },
+            "fr": {
+              "title": "Traité"
+            },
+            "nl": {
+              "title": "Geript"
+            },
+            "uk": {
+              "title": "Оброблено"
+            }
+          },
+          "title": "Ripped"
+        },
+        "color": "var(--plan-ripped)",
+        "group": "plan",
+        "order": 4,
+        "class_name": "plan-ripped"
+      },
+      {
+        "code": "cut",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Geschnitten"
+            },
+            "en": {
+              "title": "Cut"
+            },
+            "es": {
+              "title": "Cortado"
+            },
+            "fr": {
+              "title": "Découpé"
+            },
+            "nl": {
+              "title": "Gesneden"
+            },
+            "uk": {
+              "title": "Розрізано"
+            }
+          },
+          "title": "Cut"
+        },
+        "color": "var(--plan-cut)",
+        "group": "plan",
+        "order": 5,
+        "class_name": "plan-cut"
+      },
+      {
+        "code": "printed",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Gedruckt"
+            },
+            "en": {
+              "title": "Printed"
+            },
+            "es": {
+              "title": "Impreso"
+            },
+            "fr": {
+              "title": "Imprimé"
+            },
+            "nl": {
+              "title": "Geprint"
+            },
+            "uk": {
+              "title": "Надруковано"
+            }
+          },
+          "title": "Printed"
+        },
+        "color": "var(--plan-printed)",
+        "group": "plan",
+        "order": 6,
+        "class_name": "plan-printed"
+      },
+      {
+        "code": "laminated",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Laminiert"
+            },
+            "en": {
+              "title": "Laminated"
+            },
+            "es": {
+              "title": "Laminado"
+            },
+            "fr": {
+              "title": "Laminé"
+            },
+            "nl": {
+              "title": "Gelamineerd"
+            },
+            "uk": {
+              "title": "Ламіновано"
+            }
+          },
+          "title": "Laminated"
+        },
+        "color": "var(--plan-laminated)",
+        "group": "plan",
+        "order": 7,
+        "class_name": "plan-laminated"
+      },
+      {
+        "code": "batch-reserved",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Stapel reserviert"
+            },
+            "en": {
+              "title": "Batch reserved"
+            },
+            "es": {
+              "title": "Lote reservado"
+            },
+            "fr": {
+              "title": "Lot réservé"
+            },
+            "nl": {
+              "title": "Batch gereserveerd"
+            },
+            "uk": {
+              "title": "Партію зарезервовано"
+            }
+          },
+          "title": "Batch gereserveerd"
+        },
+        "color": "var(--plan-batch-reserved)",
+        "group": "plan",
+        "order": 8,
+        "class_name": "plan-batch-reserved"
+      },
+      {
+        "code": "batch-initiated",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Stapel initiiert"
+            },
+            "en": {
+              "title": "Batch initiated"
+            },
+            "es": {
+              "title": "Lote iniciado"
+            },
+            "fr": {
+              "title": "Lot initié"
+            },
+            "nl": {
+              "title": "Batch geïnitieerd"
+            },
+            "uk": {
+              "title": "Партію ініційовано"
+            }
+          },
+          "title": "Batch geïnitieerd"
+        },
+        "color": "var(--plan-batch-initiated)",
+        "group": "plan",
+        "order": 9,
+        "class_name": "plan-batch-initiated"
+      },
+      {
+        "code": "batch",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Stapel"
+            },
+            "en": {
+              "title": "Batch"
+            },
+            "es": {
+              "title": "Lote"
+            },
+            "fr": {
+              "title": "Lot"
+            },
+            "nl": {
+              "title": "Batch"
+            },
+            "uk": {
+              "title": "Партія"
+            }
+          },
+          "title": "Batch"
+        },
+        "color": "var(--plan-batch)",
+        "group": "plan",
+        "order": 10,
+        "class_name": "plan-batch"
+      },
+      {
+        "code": "impact",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Produktionsauswirkung"
+            },
+            "en": {
+              "title": "Production impact"
+            },
+            "es": {
+              "title": "Impacto de producción"
+            },
+            "fr": {
+              "title": "Impact de production"
+            },
+            "nl": {
+              "title": "Productie impact"
+            },
+            "uk": {
+              "title": "Вплив на виробництво"
+            }
+          },
+          "title": "Production impact"
+        },
+        "color": "var(--plan-impact)",
+        "group": "plan",
+        "order": 100,
+        "class_name": "plan-impact"
+      },
+      {
+        "code": "planned",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Geplant"
+            },
+            "en": {
+              "title": "Planned"
+            },
+            "es": {
+              "title": "Planificado"
+            },
+            "fr": {
+              "title": "Planifié"
+            },
+            "nl": {
+              "title": "Gepland"
+            },
+            "uk": {
+              "title": "Заплановано"
+            }
+          },
+          "title": "Planned"
+        },
+        "color": "var(--plan)",
+        "group": "state",
+        "order": 11,
+        "class_name": "plan"
+      }
+    ],
+    "class_name": "state-running"
+  },
+  {
+    "code": "idle",
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "Leerlauf"
+        },
+        "en": {
+          "title": "Idle"
+        },
+        "es": {
+          "title": "Inactivo"
+        },
+        "fr": {
+          "title": "Inactif"
+        },
+        "nl": {
+          "title": "Idle"
+        },
+        "uk": {
+          "title": "Неактивний"
+        }
+      },
+      "title": "Idle"
+    },
+    "color": "var(--state-idle)",
+    "group": "state",
+    "order": 300,
+    "states": [
+      {
+        "code": "breaks",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Pause"
+            },
+            "en": {
+              "title": "Break"
+            },
+            "es": {
+              "title": "Pausa"
+            },
+            "fr": {
+              "title": "Pause"
+            },
+            "nl": {
+              "title": "Break"
+            },
+            "uk": {
+              "title": "Перерва"
+            }
+          },
+          "title": "Break"
+        },
+        "color": "var(--plan-breaks)",
+        "group": "plan",
+        "order": 310,
+        "class_name": "plan-breaks"
+      },
+      {
+        "code": "changeovertime",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Umrüstzeit"
+            },
+            "en": {
+              "title": "Changeover time"
+            },
+            "es": {
+              "title": "Tiempo de cambio"
+            },
+            "fr": {
+              "title": "Temps de changement"
+            },
+            "nl": {
+              "title": "Changeover time"
+            },
+            "uk": {
+              "title": "Час переналагодження"
+            }
+          },
+          "title": "Changeover time"
+        },
+        "color": "var(--plan-changeovertime)",
+        "group": "plan",
+        "order": 7,
+        "class_name": "plan-changeovertime"
+      },
+      {
+        "code": "ticket",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Ticket"
+            },
+            "en": {
+              "title": "Ticket"
+            },
+            "es": {
+              "title": "Ticket"
+            },
+            "fr": {
+              "title": "Ticket"
+            },
+            "nl": {
+              "title": "Ticket"
+            },
+            "uk": {
+              "title": "Заявка"
+            }
+          },
+          "title": "Ticket"
+        },
+        "color": "var(--plan-ticket)",
+        "group": "plan",
+        "order": 9,
+        "class_name": "plan-ticket"
+      }
+    ],
+    "class_name": "state-idle"
+  },
+  {
+    "code": "breakdown",
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "Störung"
+        },
+        "en": {
+          "title": "Breakdown"
+        },
+        "es": {
+          "title": "Avería"
+        },
+        "fr": {
+          "title": "Panne"
+        },
+        "nl": {
+          "title": "Breakdown"
+        },
+        "uk": {
+          "title": "Поломка"
+        }
+      },
+      "title": "Breakdown"
+    },
+    "color": "var(--state-breakdown)",
+    "group": "state",
+    "order": 200,
+    "states": [
+      {
+        "code": "maintenance",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Wartung"
+            },
+            "en": {
+              "title": "Maintenance"
+            },
+            "es": {
+              "title": "Mantenimiento"
+            },
+            "fr": {
+              "title": "Maintenance"
+            },
+            "nl": {
+              "title": "Maintenance"
+            },
+            "uk": {
+              "title": "Обслуговування"
+            }
+          },
+          "title": "Maintenance"
+        },
+        "color": "var(--plan-maintenance)",
+        "group": "plan",
+        "order": 7,
+        "class_name": "plan-maintenance"
+      },
+      {
+        "code": "interruption",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Unterbrechung"
+            },
+            "en": {
+              "title": "Interruption"
+            },
+            "es": {
+              "title": "Interrupción"
+            },
+            "fr": {
+              "title": "Interruption"
+            },
+            "nl": {
+              "title": "Onderbreking"
+            },
+            "uk": {
+              "title": "Перерва у роботі"
+            }
+          },
+          "title": "Interruption"
+        },
+        "color": "var(--plan-interruption)",
+        "group": "plan",
+        "order": 9,
+        "class_name": "plan-interruption"
+      },
+      {
+        "code": "missingdata",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Fehlende Daten"
+            },
+            "en": {
+              "title": "Missing data"
+            },
+            "es": {
+              "title": "Datos faltantes"
+            },
+            "fr": {
+              "title": "Données manquantes"
+            },
+            "nl": {
+              "title": "Missing data"
+            },
+            "uk": {
+              "title": "Відсутні дані"
+            }
+          },
+          "title": "Missing data"
+        },
+        "color": "var(--state-missingdata)",
+        "group": "state",
+        "order": 220,
+        "class_name": "state-missingdata"
+      }
+    ],
+    "class_name": "state-breakdown"
+  },
+  {
+    "code": "offline",
+    "block": {
+      "i18n": {
+        "de": {
+          "title": "Offline"
+        },
+        "en": {
+          "title": "Offline"
+        },
+        "es": {
+          "title": "Sin conexión"
+        },
+        "fr": {
+          "title": "Hors ligne"
+        },
+        "nl": {
+          "title": "Offline"
+        },
+        "uk": {
+          "title": "Офлайн"
+        }
+      },
+      "title": "Offline"
+    },
+    "color": "var(--state-offline)",
+    "group": "state",
+    "order": 400,
+    "states": [
+      {
+        "code": "installation",
+        "block": {
+          "i18n": {
+            "de": {
+              "title": "Installation"
+            },
+            "en": {
+              "title": "Installation"
+            },
+            "es": {
+              "title": "Instalación"
+            },
+            "fr": {
+              "title": "Installation"
+            },
+            "nl": {
+              "title": "Installation"
+            },
+            "uk": {
+              "title": "Інсталяція"
+            }
+          },
+          "title": "Installation"
+        },
+        "color": "var(--state-installation)",
+        "group": "state",
+        "order": 410,
+        "class_name": "state-installation"
+      }
+    ],
+    "class_name": "state-offline"
+  }
+]

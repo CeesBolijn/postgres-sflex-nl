@@ -1,5 +1,7 @@
 -- the line filter became an array, so the old signature has to go first
 drop function if exists mapping.get_production_orderline_graph(timestamp with time zone, integer, integer, text[]);
+-- the customer filter joined the signature, so the version in the database has to go too
+drop function if exists mapping.get_production_orderline_graph(timestamp with time zone, integer[], integer, text[], integer);
 
 create function mapping.get_production_orderline_graph(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_production_line_ids integer[] DEFAULT NULL::integer[], p_domain_id integer DEFAULT 1, p_status_levels text[] DEFAULT NULL::text[], p_customer_id integer DEFAULT NULL::integer) returns TABLE(internal_status_code text, status_title text, regular_class_names jsonb, rework_class_names jsonb, orderline_status_sequence integer, total_orders bigint, total_product_amount numeric, total_sqm numeric, production_date date, total_nest_count integer, total_nest_sqm numeric, total_rework_count bigint, total_rework_amount numeric, total_rejected_amount numeric, total_rejected_sqm numeric, total_produced_amount numeric)
 	stable
@@ -10,7 +12,7 @@ as $$
         -- one logistics date, the viewed day.
         select *
         from mapping.get_production_orderline_detail(
-            p_from               => p_from,
+            p_date               => p_from,
             p_date_type          => 'logistics',
             p_look_back_days     => 0,
             p_look_ahead_days    => 0,

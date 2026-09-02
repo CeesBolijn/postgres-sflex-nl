@@ -1,62 +1,30 @@
--- name and shape follow the table: mock.material_resource_plan became
--- mock.material_impose_plan, and the lane is keyed by the impose path
+-- The pattern: one row per planned imposing moment, keyed by weekday, step,
+-- impose path, material and instance. The chaining offset is not here — it
+-- lives on the impose resource (resource_json.next_start_lag_in_seconds and
+-- next_start_after_first_item), so a moment has no length of its own to
+-- absorb into a following spacer.
 drop function if exists mock.crud_material_resource_plan(jsonb, boolean);
+-- the two-argument version from before the spacer logic disappeared
+drop function if exists mock.crud_material_impose_plan(jsonb, boolean);
 
-create or replace function mock.crud_material_impose_plan(p_data jsonb, p_cascade boolean DEFAULT true) returns SETOF mock.material_impose_plan
+create or replace function mock.crud_material_impose_plan(p_data jsonb) returns SETOF mock.material_impose_plan
 	language sql
 as $$
-    WITH input AS (
-        SELECT (e ->> 'weekday')::smallint                         AS weekday,
-                e ->> 'step'                                       AS step,
-               (e ->> 'resource_path')::ltree                      AS resource_path,
-               (e ->> 'sort_order')::numeric                       AS sort_order,
-               (e ->> 'material_id')::integer                      AS material_id,
-               coalesce((e ->> 'duration_in_seconds')::integer, 0) AS duration_in_seconds
-        FROM jsonb_array_elements(p_data) AS e
-    ),
-    -- Pre-insert snapshot of the affected lanes, read only when absorbing.
-    current_lane AS (
-        SELECT DISTINCT ON (p.weekday, p.step, p.resource_path, p.sort_order)
-               p.weekday, p.step, p.resource_path, p.sort_order,
-               p.material_id, p.duration_in_seconds
-        FROM mock.material_impose_plan p
-        WHERE NOT coalesce(p_cascade, true)
-          AND EXISTS (SELECT 1 FROM input i
-                      WHERE i.weekday = p.weekday AND i.step = p.step
-                        AND i.resource_path IS NOT DISTINCT FROM p.resource_path)
-        ORDER BY p.weekday, p.step, p.resource_path, p.sort_order,
-                 p.moved_at DESC, p.material_impose_plan_id DESC
-    ),
-    -- Match every inserted row to its own first following spacer, then total per spacer.
-    claim AS (
-        SELECT i.weekday, i.step, i.resource_path, s.sort_order, s.duration_in_seconds,
-               sum(i.duration_in_seconds)::integer AS claimed_in_seconds
-        FROM input i
-        JOIN LATERAL (
-            SELECT l.sort_order, l.duration_in_seconds FROM current_lane l
-            WHERE l.weekday = i.weekday AND l.step = i.step
-              AND l.resource_path IS NOT DISTINCT FROM i.resource_path
-              AND l.material_id IS NULL AND l.sort_order > i.sort_order
-            ORDER BY l.sort_order LIMIT 1
-        ) s ON true
-        GROUP BY 1, 2, 3, 4, 5
-    ),
-    absorbed AS (
-        INSERT INTO mock.material_impose_plan
-            (weekday, step, resource_path, sort_order, material_id, duration_in_seconds)
-        SELECT weekday, step, resource_path, sort_order, NULL,
-               greatest(duration_in_seconds - claimed_in_seconds, 0)
-        FROM claim
-        RETURNING *
-    ),
-    inserted AS (
-        INSERT INTO mock.material_impose_plan
-            (weekday, step, resource_path, sort_order, material_id, duration_in_seconds)
-        SELECT weekday, step, resource_path, sort_order, material_id, duration_in_seconds
-        FROM input
-        RETURNING *
-    )
-    SELECT * FROM inserted UNION ALL SELECT * FROM absorbed;
+    INSERT INTO mock.material_impose_plan
+        (weekday, step, resource_path, sort_order, material_id, instance,
+         production_line_id, tenant_id, start_offset_in_seconds, is_pinned)
+    SELECT (e ->> 'weekday')::smallint,
+            e ->> 'step',
+           (e ->> 'resource_path')::ltree,
+           (e ->> 'sort_order')::numeric,
+           (e ->> 'material_id')::integer,
+           coalesce((e ->> 'instance')::integer, 0),
+           (e ->> 'production_line_id')::integer,
+           (e ->> 'tenant_id')::integer,
+           (e ->> 'start_offset_in_seconds')::integer,
+           (e ->> 'is_pinned')::boolean
+    FROM jsonb_array_elements(p_data) AS e
+    RETURNING *;
 $$;
 
-alter function mock.crud_material_impose_plan(jsonb, boolean) owner to xfw3;
+alter function mock.crud_material_impose_plan(jsonb) owner to xfw3;

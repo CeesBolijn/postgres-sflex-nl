@@ -202,13 +202,13 @@ BEGIN
     -- pv2 machine links belong to action.crud_object and stay untouched.
     -- Cancelled nests only lose their link. No plan or lane for the day:
     -- no link, never an invented lane — the backfill catches it later.
-    DELETE FROM action.nest_lane_item nli
+    DELETE FROM action.imposition_lane_item nli
     USING action.lane_item li
     WHERE nli.lane_item_id = li.lane_item_id
       AND li.source IN ('material-plan', 'nest')
-      AND nli.nest_id IN (SELECT ns.nest_id FROM nest_link ns);
+      AND nli.imposition_id IN (SELECT ns.nest_id FROM nest_link ns);
 
-    INSERT INTO action.nest_lane_item (nest_id, lane_item_id, sort_order)
+    INSERT INTO action.imposition_lane_item (imposition_id, lane_item_id, sort_order)
     SELECT ns.nest_id,
            COALESCE(ns.lane_item_id, own.lane_item_id),
            ns.sort_order
@@ -218,6 +218,18 @@ BEGIN
     WHERE NOT ns.is_cancelled
       AND COALESCE(ns.lane_item_id, own.lane_item_id) IS NOT NULL
     ON CONFLICT DO NOTHING;
+
+    -- ── imposition → unit manifest ────────────────────────────────────
+    -- What the imposition is made of, snapshotted from the orderline
+    -- manifests it holds (legacy.single_product is the bridge). Rebuilt for
+    -- every nest in this payload, so a re-nest or a merge refreshes it.
+    -- Cancelled nests keep their manifest: it records what was imposed, not
+    -- what is still planned — the lane link above is what disappears.
+    PERFORM legacy.create_imposition_unit_manifest(
+        array(SELECT DISTINCT pt.nest_id
+              FROM param_table pt
+              WHERE pt.crud IN ('create', 'merge', 'update')
+                AND pt.nest_id IS NOT NULL));
 
     SELECT MAX(pt.updated_at) INTO last_updated_at
     FROM param_table pt;

@@ -1,6 +1,6 @@
 {
   "data_group_id": 82,
-  "data_group": "production_schedule_filter",
+  "data_group": "production_resource_plan_filter",
   "data_group_json": [
     {
       "layout": "filter",

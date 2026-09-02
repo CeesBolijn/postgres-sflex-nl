@@ -1,15 +1,17 @@
 -- return type changes, so the old signature has to go first
 drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer);
 drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer[], bigint[], integer, integer[], integer[], boolean, numeric, integer, integer);
+-- the version before production_impact_in_seconds joined the output
+drop function if exists mapping.get_production_orderline_aggregate(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer[], bigint[], integer[], integer[], integer[], boolean, numeric, integer, integer, integer);
 
-create function mapping.get_production_orderline_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_days_off boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_production_line_ids integer[] DEFAULT NULL::integer[], p_material_ids integer[] DEFAULT NULL::integer[], p_tenant_ids integer[] DEFAULT NULL::integer[], p_is_open boolean DEFAULT true, p_waste_percentage numeric DEFAULT 20, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1, p_customer_id integer DEFAULT NULL::integer) returns TABLE(material_id integer, material_name text, production_line_id integer, delivery_hours integer, material_media_type_id integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, rejected_amount numeric, produced_amount numeric, waste_percentage numeric, gross_sqm numeric, specs_json jsonb, status_json jsonb, part_status_json jsonb, nest_ids bigint[], delivery_class_names text[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[])
+create function mapping.get_production_orderline_aggregate(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_days_off boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_production_line_ids integer[] DEFAULT NULL::integer[], p_material_ids integer[] DEFAULT NULL::integer[], p_tenant_ids integer[] DEFAULT NULL::integer[], p_is_open boolean DEFAULT true, p_waste_percentage numeric DEFAULT 20, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1, p_customer_id integer DEFAULT NULL::integer) returns TABLE(material_id integer, material_name text, production_line_id integer, delivery_hours integer, material_media_type_id integer, orderline_count integer, product_amount numeric, part_amount integer, amount numeric, sqm numeric, forecast_sqm numeric, rework_count integer, rework_sqm numeric, impact_json jsonb, rejected_amount numeric, produced_amount numeric, waste_percentage numeric, gross_sqm numeric, specs_json jsonb, status_json jsonb, part_status_json jsonb, nest_ids bigint[], delivery_class_names text[], nest_count integer, seconds_to_logistics_date integer, class_names text[], unit_class_names text[], production_impact_in_seconds integer)
 	stable
 	language sql
 as $$
     with detail as (
         select *
         from mapping.get_production_orderline_detail(
-            p_from                    => p_from,
+            p_date                    => p_from,
             p_date_type               => p_date_type,
             p_look_back_days          => p_look_back_days,
             p_look_ahead_days         => p_look_ahead_days,
@@ -49,7 +51,10 @@ as $$
             -- how much time the tightest orderline of the group still has
             floor(extract(epoch from (min(d.logistics_at)
                                       - (p_from at time zone 'Europe/Amsterdam'))))::integer
-                as seconds_to_logistics_date
+                as seconds_to_logistics_date,
+            -- the standard production impact of the group, straight from the
+            -- orderline manifests (units x per-unit seconds)
+            sum(d.production_impact_in_seconds) as production_impact_in_seconds
         from detail d
         group by d.material_id, d.material_name, d.production_line_id, d.delivery_hours
     ),
@@ -109,7 +114,8 @@ as $$
                coalesce(g.rework_sqm, 0)                               as rework_sqm,
                coalesce(g.rejected_amount, 0)                          as rejected_amount,
                coalesce(g.produced_amount, 0)                          as produced_amount,
-               g.seconds_to_logistics_date
+               g.seconds_to_logistics_date,
+               coalesce(g.production_impact_in_seconds, 0)             as production_impact_in_seconds
         from grouped g
         full join forecast fc on fc.material_id = g.material_id and fc.production_line_id = g.production_line_id
         window w as (partition by g.material_id, g.production_line_id)
@@ -222,7 +228,8 @@ as $$
         coalesce(array_length(f.nest_ids, 1), 0),
         g.seconds_to_logistics_date,
         coalesce(f.class_names, '{}'::text[]),
-        coalesce(f.unit_class_names, '{}'::text[])
+        coalesce(f.unit_class_names, '{}'::text[]),
+        g.production_impact_in_seconds::integer
     from combined g
     -- media type 1 is sheet, 3 is roll
     left join lateral (

@@ -42,7 +42,7 @@
             }
           }
         },
-        "state.block.i18n": {
+        "state.i18n": {
           "ui": {
             "control": "i18n-text"
           }
@@ -51,16 +51,16 @@
       "donut_chart_config": {
         "mode": "duration",
         "code_field": "state.code",
-        "color_field": "state.color",
         "show_legend": true,
         "aggregate_fn": "sum",
         "center_field": "state.producing",
         "filter_field": "type",
-        "content_field": "state.block.i18n",
+        "content_field": "state.i18n",
         "aggregate_field": "duration_seconds",
         "group_by": [
           "state.code"
-        ]
+        ],
+        "class_names_field": "state.class_name"
       }
     }
   ]

@@ -6,8 +6,6 @@
       "src": [
         "get_resource_state_current"
       ],
-      "page": 50,
-      "title": "Resources",
       "layout": "three-d",
       "params": [
         {
@@ -25,36 +23,6 @@
       "row_options": {
         "nav": {
           "menu": [
-            {
-              "i18n": {
-                "de": {
-                  "title": "Maschine"
-                },
-                "en": {
-                  "title": "Machine"
-                },
-                "es": {
-                  "title": "Máquina"
-                },
-                "fr": {
-                  "title": "Machine"
-                },
-                "nl": {
-                  "title": "Machine"
-                },
-                "uk": {
-                  "title": "Машина"
-                }
-              },
-              "icon": "Settings01",
-              "path": "(sidebar:xfw/nl/sidebar/productielijn-machine)",
-              "params": [
-                {
-                  "key": "resource_id",
-                  "is_query_param": true
-                }
-              ]
-            },
             {
               "i18n": {
                 "de": {
@@ -329,39 +297,6 @@
                   "value": [
                     "cutter",
                     "slitter"
-                  ]
-                }
-              ]
-            },
-            {
-              "i18n": {
-                "de": {
-                  "title": "Warteschlange"
-                },
-                "en": {
-                  "title": "Queued jobs"
-                },
-                "es": {
-                  "title": "Trabajos en cola"
-                },
-                "fr": {
-                  "title": "File d'attente"
-                },
-                "nl": {
-                  "title": "Wachtrij"
-                },
-                "uk": {
-                  "title": "Черга"
-                }
-              },
-              "icon": "LayersThree01",
-              "path": "(sidebar:queued-jobs)",
-              "hidden_when": [
-                {
-                  "op": "not in",
-                  "field": "type",
-                  "value": [
-                    "queue"
                   ]
                 }
               ]

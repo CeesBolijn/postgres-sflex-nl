@@ -40,7 +40,7 @@ begin
     with detail as (
         select *
         from mapping.get_production_orderline_detail(
-            p_from                    => v_from,
+            p_date                    => v_from,
             p_date_type               => 'nest',
             p_look_back_days          => 0,
             p_look_ahead_days         => v_look_ahead_days,

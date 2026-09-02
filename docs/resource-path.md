@@ -38,14 +38,21 @@ dk . sheet . print . 320 . uv . durst . p5-350hs-automat . 473363
 | 7 | type | modelnaam, kebab-case | `p5-350hs-automat`, `g3-xl`, `sc-9100` |
 | 8 | serial | serienummer, lowercase | `473363`, `g300l320060` |
 
-### impose-resources stoppen bij de breedte
+### impose-resources: breedte, of dieper als een machine apart imposeert
 
-Imposeren gebeurt per materiaalbreedte, niet per machine: één resource per
-unieke `site.material.width` die printers heeft, met `impose` op positie 3
-(`dk.sheet.impose.210`). Ze worden **afgeleid uit de printerpaden**
-(`sql/migration_impose_resources.sql`), niet met de hand bijgehouden — een
-nieuwe printerbreedte levert vanzelf zijn impose-resource op. Dit zijn de
-lanes van de nest-resource-agenda.
+Imposeren gebeurt meestal per materiaalbreedte, niet per machine: één resource
+per unieke `site.material.width` die printers heeft, met `impose` op positie 3
+(`dk.sheet.impose.210`). Die basis wordt **afgeleid uit de printerpaden**
+(`sql/migration_impose_resources.sql`), zodat een nieuwe printerbreedte
+vanzelf zijn impose-resource oplevert.
+
+Imposeert één machine op zijn eigen manier, dan krijgt die een **dieper**
+impose-pad, tot en met het model: `dk.sheet.impose.320.uv.swissq.kudu`. Dat is
+geen uitzondering maar hetzelfde principe — het pad loopt door tot het niveau
+waarop het imposeren echt verschilt. Zulke resources zijn niet af te leiden en
+worden bewust aangemaakt. `mock.material_impose_plan.resource_path` wijst naar
+het niveau dat van toepassing is; deze resources zijn de lanes van
+`impose_resource_plan`.
 
 ### positie 5 is de sleutel voor cutters
 

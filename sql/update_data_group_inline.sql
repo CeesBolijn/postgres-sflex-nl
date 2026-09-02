@@ -5537,7 +5537,13 @@ WITH payload AS (
             "is_query_param": true
           },
           {
-            "key": "production_line_id",
+            "key": "production_line_ids",
+            "is_optional": true,
+            "is_query_param": true
+          },
+          {
+            "key": "customer_id",
+            "is_optional": true,
             "is_query_param": true
           },
           {
@@ -5610,7 +5616,37 @@ WITH payload AS (
                   "title": "Orders"
                 }
               },
-              "order": 3
+              "order": 3,
+              "hidden_when": [
+                {
+                  "op": "==",
+                  "value": 0,
+                  "field": "order_count"
+                }
+              ]
+            }
+          },
+          "part_amount": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Teile"
+                },
+                "en": {
+                  "title": "Parts"
+                },
+                "nl": {
+                  "title": "Delen"
+                }
+              },
+              "order": 5,
+              "hidden_when": [
+                {
+                  "op": "==",
+                  "field": "part_amount",
+                  "value_field": "regular_amount"
+                }
+              ]
             }
           },
           "regular_sqm": {
@@ -5626,7 +5662,7 @@ WITH payload AS (
                   "title": "m²"
                 }
               },
-              "order": 5,
+              "order": 6,
               "scale": 1
             }
           },
@@ -5643,7 +5679,7 @@ WITH payload AS (
                   "title": "m²"
                 }
               },
-              "order": 14,
+              "order": 15,
               "scale": 1
             }
           },
@@ -5660,7 +5696,7 @@ WITH payload AS (
                   "title": "Herstel"
                 }
               },
-              "order": 6
+              "order": 7
             }
           },
           "status_title": {
@@ -5708,7 +5744,7 @@ WITH payload AS (
                   "title": "H. units"
                 }
               },
-              "order": 7
+              "order": 8
             }
           },
           "logistics_date": {
@@ -5791,7 +5827,7 @@ WITH payload AS (
                   "title": "H. m²"
                 }
               },
-              "order": 17,
+              "order": 18,
               "scale": 1
             }
           },
@@ -5831,11 +5867,38 @@ WITH payload AS (
                   "title": "Orders"
                 }
               },
-              "order": 12
+              "order": 12,
+              "hidden_when": [
+                {
+                  "op": "==",
+                  "value": 0,
+                  "field": "material_order_count"
+                }
+              ]
             }
           },
           "day_distribution_json": {
             "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Status"
+                },
+                "en": {
+                  "title": "Status"
+                },
+                "es": {
+                  "title": "Estado"
+                },
+                "fr": {
+                  "title": "Statut"
+                },
+                "nl": {
+                  "title": "Status"
+                },
+                "uk": {
+                  "title": "Статус"
+                }
+              },
               "hidden": false
             }
           },
@@ -5852,7 +5915,7 @@ WITH payload AS (
                   "title": "Herstel"
                 }
               },
-              "order": 15
+              "order": 16
             }
           },
           "material_rework_amount": {
@@ -5868,7 +5931,7 @@ WITH payload AS (
                   "title": "H. units"
                 }
               },
-              "order": 16
+              "order": 17
             }
           },
           "material_product_amount": {
@@ -5885,6 +5948,29 @@ WITH payload AS (
                 }
               },
               "order": 13
+            }
+          },
+          "material_part_amount": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Teile"
+                },
+                "en": {
+                  "title": "Parts"
+                },
+                "nl": {
+                  "title": "Delen"
+                }
+              },
+              "order": 14,
+              "hidden_when": [
+                {
+                  "op": "==",
+                  "field": "material_part_amount",
+                  "value_field": "material_product_amount"
+                }
+              ]
             }
           },
           "material_distribution_json": {
@@ -5909,7 +5995,7 @@ WITH payload AS (
                   "title": "Статус"
                 }
               },
-              "order": 18,
+              "order": 19,
               "control": "distribution-bar",
               "distribution_bar_config": {
                 "i18n_field": "i18n",
@@ -5960,20 +6046,18 @@ WITH payload AS (
                               "path": "(sidebar:production-board-detail)",
                               "params": [
                                 {
-                                  "key": "from",
+                                  "key": "date",
                                   "value_from": "logistics_date",
                                   "is_query_param": true
                                 },
                                 {
-                                  "key": "look_back_days",
-                                  "default_value": 0
+                                  "key": "production_line_ids",
+                                  "is_optional": true,
+                                  "is_query_param": true
                                 },
                                 {
-                                  "key": "look_ahead_days",
-                                  "default_value": 0
-                                },
-                                {
-                                  "key": "production_line_id",
+                                  "key": "customer_id",
+                                  "is_optional": true,
                                   "is_query_param": true
                                 },
                                 {
@@ -6069,7 +6153,7 @@ WITH payload AS (
                                 "title": "m²"
                               }
                             },
-                            "order": 3,
+                            "order": 4,
                             "scale": 1,
                             "class_name": "col-span-2"
                           }
@@ -6077,7 +6161,7 @@ WITH payload AS (
                         "material_name": {
                           "ui": {
                             "order": 0,
-                            "class_name": "col-span-6 font-medium"
+                            "class_name": "col-span-8 font-medium"
                           }
                         },
                         "material_rework_sqm": {
@@ -6093,7 +6177,7 @@ WITH payload AS (
                                 "title": "H. m²"
                               }
                             },
-                            "order": 6,
+                            "order": 7,
                             "scale": 1,
                             "class_name": "col-span-2",
                             "hidden_when": [
@@ -6119,7 +6203,14 @@ WITH payload AS (
                               }
                             },
                             "order": 1,
-                            "class_name": "col-span-2"
+                            "class_name": "col-span-2",
+                            "hidden_when": [
+                              {
+                                "op": "==",
+                                "value": 0,
+                                "field": "material_order_count"
+                              }
+                            ]
                           }
                         },
                         "material_rework_count": {
@@ -6135,7 +6226,7 @@ WITH payload AS (
                                 "title": "Herstel"
                               }
                             },
-                            "order": 4,
+                            "order": 5,
                             "class_name": "col-span-2",
                             "hidden_when": [
                               {
@@ -6159,7 +6250,7 @@ WITH payload AS (
                                 "title": "H. units"
                               }
                             },
-                            "order": 5,
+                            "order": 6,
                             "class_name": "col-span-2",
                             "hidden_when": [
                               {
@@ -6187,11 +6278,35 @@ WITH payload AS (
                             "class_name": "col-span-2"
                           }
                         },
+                        "material_part_amount": {
+                          "ui": {
+                            "i18n": {
+                              "de": {
+                                "title": "Teile"
+                              },
+                              "en": {
+                                "title": "Parts"
+                              },
+                              "nl": {
+                                "title": "Delen"
+                              }
+                            },
+                            "order": 3,
+                            "class_name": "col-span-2",
+                            "hidden_when": [
+                              {
+                                "op": "==",
+                                "field": "material_part_amount",
+                                "value_field": "material_product_amount"
+                              }
+                            ]
+                          }
+                        },
                         "material_distribution_json": {
                           "ui": {
-                            "order": 7,
+                            "order": 8,
                             "control": "distribution-bar",
-                            "class_name": "col-span-6",
+                            "class_name": "col-span-8",
                             "distribution_bar_config": {
                               "i18n_field": "i18n",
                               "value_field": "amount",
@@ -6211,7 +6326,7 @@ WITH payload AS (
                         "logistics_date",
                         "logistics_datetime"
                       ],
-                      "fields_class_name": "grid grid-cols-6 gap-1"
+                      "fields_class_name": "grid grid-cols-8 gap-1"
                     }
                   ],
                   "group_by": [
@@ -6245,7 +6360,7 @@ WITH payload AS (
                             "title": "m²"
                           }
                         },
-                        "order": 4,
+                        "order": 5,
                         "scale": 1,
                         "class_name": "col-span-2"
                       },
@@ -6255,7 +6370,7 @@ WITH payload AS (
                       "ui": {
                         "order": 1,
                         "control": "distribution-bar",
-                        "class_name": "col-span-6",
+                        "class_name": "col-span-8",
                         "distribution_bar_config": {
                           "i18n_field": "i18n",
                           "value_field": "amount",
@@ -6281,7 +6396,7 @@ WITH payload AS (
                         },
                         "type": "datetime",
                         "order": 0,
-                        "class_name": "col-span-6"
+                        "class_name": "col-span-8"
                       }
                     },
                     "material_rework_sqm": {
@@ -6323,8 +6438,15 @@ WITH payload AS (
                             "title": "Orders"
                           }
                         },
-                        "order": 3,
-                        "class_name": "col-span-2"
+                        "order": 2,
+                        "class_name": "col-span-2",
+                        "hidden_when": [
+                          {
+                            "op": "==",
+                            "value": 0,
+                            "field": "material_order_count"
+                          }
+                        ]
                       },
                       "aggregate_fn": "sum"
                     },
@@ -6391,13 +6513,38 @@ WITH payload AS (
                             "title": "Units"
                           }
                         },
-                        "order": 5,
+                        "order": 3,
                         "class_name": "col-span-2"
+                      },
+                      "aggregate_fn": "sum"
+                    },
+                    "material_part_amount": {
+                      "ui": {
+                        "i18n": {
+                          "de": {
+                            "title": "Teile"
+                          },
+                          "en": {
+                            "title": "Parts"
+                          },
+                          "nl": {
+                            "title": "Delen"
+                          }
+                        },
+                        "order": 4,
+                        "class_name": "col-span-2",
+                        "hidden_when": [
+                          {
+                            "op": "==",
+                            "field": "material_part_amount",
+                            "value_field": "material_product_amount"
+                          }
+                        ]
                       },
                       "aggregate_fn": "sum"
                     }
                   },
-                  "fields_class_name": "grid grid-cols-6 gap-1"
+                  "fields_class_name": "grid grid-cols-8 gap-1"
                 }
               ],
               "group_by": [
@@ -6424,7 +6571,7 @@ WITH payload AS (
                         "title": "m²"
                       }
                     },
-                    "order": 4,
+                    "order": 5,
                     "scale": 1,
                     "class_name": "col-span-2"
                   },
@@ -6445,7 +6592,7 @@ WITH payload AS (
                     },
                     "type": "date",
                     "order": 0,
-                    "class_name": "col-span-3"
+                    "class_name": "col-span-4"
                   }
                 },
                 "material_rework_sqm": {
@@ -6461,7 +6608,7 @@ WITH payload AS (
                         "title": "H. m²"
                       }
                     },
-                    "order": 7,
+                    "order": 8,
                     "scale": 1,
                     "class_name": "col-span-2",
                     "hidden_when": [
@@ -6488,15 +6635,42 @@ WITH payload AS (
                       }
                     },
                     "order": 2,
-                    "class_name": "col-span-2"
+                    "class_name": "col-span-2",
+                    "hidden_when": [
+                      {
+                        "op": "==",
+                        "value": 0,
+                        "field": "material_order_count"
+                      }
+                    ]
                   },
                   "aggregate_fn": "sum"
                 },
                 "day_distribution_json": {
                   "ui": {
+                    "i18n": {
+                      "de": {
+                        "title": "Status"
+                      },
+                      "en": {
+                        "title": "Status"
+                      },
+                      "es": {
+                        "title": "Estado"
+                      },
+                      "fr": {
+                        "title": "Statut"
+                      },
+                      "nl": {
+                        "title": "Status"
+                      },
+                      "uk": {
+                        "title": "Статус"
+                      }
+                    },
                     "order": 1,
                     "control": "distribution-bar",
-                    "class_name": "col-span-3",
+                    "class_name": "col-span-4",
                     "distribution_bar_config": {
                       "i18n_field": "i18n",
                       "value_field": "amount",
@@ -6520,7 +6694,7 @@ WITH payload AS (
                         "title": "Herstel"
                       }
                     },
-                    "order": 5,
+                    "order": 6,
                     "class_name": "col-span-2",
                     "hidden_when": [
                       {
@@ -6545,7 +6719,7 @@ WITH payload AS (
                         "title": "H. units"
                       }
                     },
-                    "order": 6,
+                    "order": 7,
                     "class_name": "col-span-2",
                     "hidden_when": [
                       {
@@ -6574,9 +6748,34 @@ WITH payload AS (
                     "class_name": "col-span-2"
                   },
                   "aggregate_fn": "sum"
+                },
+                "material_part_amount": {
+                  "ui": {
+                    "i18n": {
+                      "de": {
+                        "title": "Teile"
+                      },
+                      "en": {
+                        "title": "Parts"
+                      },
+                      "nl": {
+                        "title": "Delen"
+                      }
+                    },
+                    "order": 4,
+                    "class_name": "col-span-2",
+                    "hidden_when": [
+                      {
+                        "op": "==",
+                        "field": "material_part_amount",
+                        "value_field": "material_product_amount"
+                      }
+                    ]
+                  },
+                  "aggregate_fn": "sum"
                 }
               },
-              "fields_class_name": "grid grid-cols-6 gap-1"
+              "fields_class_name": "grid grid-cols-8 gap-1"
             }
           ],
           "group_by": [
@@ -6620,7 +6819,13 @@ WITH payload AS (
         "layout": "flow-board",
         "params": [
           {
-            "key": "production_line_id",
+            "key": "production_line_ids",
+            "is_optional": true,
+            "is_query_param": true
+          },
+          {
+            "key": "customer_id",
+            "is_optional": true,
             "is_query_param": true
           },
           {
@@ -6629,18 +6834,16 @@ WITH payload AS (
             "is_optional": true
           },
           {
-            "key": "from",
+            "key": "date",
             "is_query_param": true
           },
           {
             "key": "look_back_days",
-            "is_optional": true,
-            "is_query_param": true
+            "default_value": 0
           },
           {
             "key": "look_ahead_days",
-            "is_optional": true,
-            "is_query_param": true
+            "default_value": 0
           },
           {
             "key": "material_ids",
@@ -6673,7 +6876,7 @@ WITH payload AS (
                   "title": "m²"
                 }
               },
-              "order": 5
+              "order": 6
             },
             "scale": 1
           },
@@ -6742,7 +6945,14 @@ WITH payload AS (
                   "title": "Delen"
                 }
               },
-              "order": 10
+              "order": 5,
+              "hidden_when": [
+                {
+                  "op": "==",
+                  "field": "part_amount",
+                  "value_field": "product_amount"
+                }
+              ]
             }
           },
           "rework_count": {
@@ -6763,7 +6973,7 @@ WITH payload AS (
                   "title": "Status"
                 }
               },
-              "order": 9
+              "order": 10
             }
           },
           "manifest_json": {
@@ -6805,7 +7015,7 @@ WITH payload AS (
                   "title": "Logistiek datum"
                 }
               },
-              "order": 6,
+              "order": 7,
               "type": "date"
             }
           },
@@ -6813,18 +7023,23 @@ WITH payload AS (
             "ui": {
               "i18n": {
                 "de": {
-                  "title": "Menge"
+                  "title": "Einheiten"
                 },
                 "en": {
-                  "title": "Qty"
+                  "title": "Units"
                 },
                 "nl": {
-                  "title": "Aantal"
+                  "title": "Units"
                 }
               },
               "order": 4
             },
             "scale": 0
+          },
+          "order_count": {
+            "ui": {
+              "hidden": true
+            }
           },
           "produced_amount": {
             "ui": {
@@ -6844,7 +7059,7 @@ WITH payload AS (
                   "title": "Productiedatum"
                 }
               },
-              "order": 8,
+              "order": 9,
               "type": "date"
             }
           },
@@ -6891,7 +7106,7 @@ WITH payload AS (
                   "title": "Logistiek tijdstip"
                 }
               },
-              "order": 7,
+              "order": 8,
               "type": "datetime"
             }
           },
@@ -6994,7 +7209,7 @@ WITH payload AS (
             "material_name": {
               "ui": {
                 "order": 0,
-                "class_name": "col-span-3"
+                "class_name": "col-span-4"
               }
             },
             "order_count": {
@@ -7011,7 +7226,14 @@ WITH payload AS (
                   }
                 },
                 "order": 1,
-                "class_name": "col-span-1"
+                "class_name": "col-span-1",
+                "hidden_when": [
+                  {
+                    "op": "==",
+                    "value": 0,
+                    "field": "order_count"
+                  }
+                ]
               },
               "aggregate_fn": "sum"
             },
@@ -7033,6 +7255,31 @@ WITH payload AS (
               },
               "aggregate_fn": "sum"
             },
+            "part_amount": {
+              "ui": {
+                "i18n": {
+                  "de": {
+                    "title": "Teile"
+                  },
+                  "en": {
+                    "title": "Parts"
+                  },
+                  "nl": {
+                    "title": "Delen"
+                  }
+                },
+                "order": 3,
+                "class_name": "col-span-1",
+                "hidden_when": [
+                  {
+                    "op": "==",
+                    "field": "part_amount",
+                    "value_field": "product_amount"
+                  }
+                ]
+              },
+              "aggregate_fn": "sum"
+            },
             "sqm": {
               "ui": {
                 "i18n": {
@@ -7046,7 +7293,7 @@ WITH payload AS (
                     "title": "m²"
                   }
                 },
-                "order": 3,
+                "order": 4,
                 "scale": 1,
                 "class_name": "col-span-1"
               },
@@ -7065,7 +7312,7 @@ WITH payload AS (
                     "title": "Herstel"
                   }
                 },
-                "order": 4,
+                "order": 5,
                 "class_name": "col-span-1",
                 "hidden_when": [
                   {
@@ -7090,7 +7337,7 @@ WITH payload AS (
                     "title": "H. units"
                   }
                 },
-                "order": 5,
+                "order": 6,
                 "class_name": "col-span-1",
                 "hidden_when": [
                   {
@@ -7115,7 +7362,7 @@ WITH payload AS (
                     "title": "H. m²"
                   }
                 },
-                "order": 6,
+                "order": 7,
                 "scale": 1,
                 "class_name": "col-span-1",
                 "hidden_when": [
@@ -7129,7 +7376,7 @@ WITH payload AS (
               "aggregate_fn": "sum"
             }
           },
-          "fields_class_name": "grid grid-cols-3 gap-1",
+          "fields_class_name": "grid grid-cols-4 gap-1",
           "children": [
             {
               "layout": "flow-container",
@@ -7157,7 +7404,7 @@ WITH payload AS (
                     },
                     "order": 0,
                     "control": "i18n-text",
-                    "class_name": "col-span-3"
+                    "class_name": "col-span-4"
                   }
                 },
                 "order_count": {
@@ -7174,7 +7421,14 @@ WITH payload AS (
                       }
                     },
                     "order": 1,
-                    "class_name": "col-span-1"
+                    "class_name": "col-span-1",
+                    "hidden_when": [
+                      {
+                        "op": "==",
+                        "value": 0,
+                        "field": "order_count"
+                      }
+                    ]
                   },
                   "aggregate_fn": "sum"
                 },
@@ -7196,6 +7450,31 @@ WITH payload AS (
                   },
                   "aggregate_fn": "sum"
                 },
+                "part_amount": {
+                  "ui": {
+                    "i18n": {
+                      "de": {
+                        "title": "Teile"
+                      },
+                      "en": {
+                        "title": "Parts"
+                      },
+                      "nl": {
+                        "title": "Delen"
+                      }
+                    },
+                    "order": 3,
+                    "class_name": "col-span-1",
+                    "hidden_when": [
+                      {
+                        "op": "==",
+                        "field": "part_amount",
+                        "value_field": "product_amount"
+                      }
+                    ]
+                  },
+                  "aggregate_fn": "sum"
+                },
                 "sqm": {
                   "ui": {
                     "i18n": {
@@ -7209,7 +7488,7 @@ WITH payload AS (
                         "title": "m²"
                       }
                     },
-                    "order": 3,
+                    "order": 4,
                     "scale": 1,
                     "class_name": "col-span-1"
                   },
@@ -7228,7 +7507,7 @@ WITH payload AS (
                         "title": "Herstel"
                       }
                     },
-                    "order": 4,
+                    "order": 5,
                     "class_name": "col-span-1",
                     "hidden_when": [
                       {
@@ -7253,7 +7532,7 @@ WITH payload AS (
                         "title": "H. units"
                       }
                     },
-                    "order": 5,
+                    "order": 6,
                     "class_name": "col-span-1",
                     "hidden_when": [
                       {
@@ -7278,7 +7557,7 @@ WITH payload AS (
                         "title": "H. m²"
                       }
                     },
-                    "order": 6,
+                    "order": 7,
                     "scale": 1,
                     "class_name": "col-span-1",
                     "hidden_when": [
@@ -7292,7 +7571,7 @@ WITH payload AS (
                   "aggregate_fn": "sum"
                 }
               },
-              "fields_class_name": "grid grid-cols-3 gap-1",
+              "fields_class_name": "grid grid-cols-4 gap-1",
               "children": [
                 {
                   "layout": "flow-container",
@@ -7393,7 +7672,7 @@ WITH payload AS (
                               ],
                               "hidden_when": [
                                 {
-                                  "key": "nest_ids[0]",
+                                  "field": "nest_ids[0]",
                                   "op": "==",
                                   "value": null
                                 }
@@ -7436,13 +7715,20 @@ WITH payload AS (
                             "class_name": "col-span-1"
                           }
                         },
-                        "sqm": {
+                        "part_amount": {
                           "ui": {
                             "order": 3,
-                            "class_name": "col-span-1"
+                            "class_name": "col-span-1",
+                            "hidden_when": [
+                              {
+                                "op": "==",
+                                "field": "part_amount",
+                                "value_field": "product_amount"
+                              }
+                            ]
                           }
                         },
-                        "part_amount": {
+                        "sqm": {
                           "ui": {
                             "order": 4,
                             "class_name": "col-span-1"
@@ -13475,7 +13761,13 @@ WITH payload AS (
             "is_query_param": true
           },
           {
-            "key": "production_line_id",
+            "key": "production_line_ids",
+            "is_optional": true,
+            "is_query_param": true
+          },
+          {
+            "key": "customer_id",
+            "is_optional": true,
             "is_query_param": true
           },
           {
@@ -13847,7 +14139,8 @@ WITH payload AS (
           },
           "group_by": [
             "internal_status_code"
-          ]
+          ],
+          "column_min_width": 200
         }
       }
     ]
@@ -14323,6 +14616,28 @@ WITH payload AS (
             "key": "status_levels",
             "is_optional": true,
             "is_query_param": true
+          },
+          {
+            "key": "production_line_ids",
+            "is_optional": true,
+            "is_query_param": true
+          },
+          {
+            "key": "customer_id",
+            "is_optional": true,
+            "is_query_param": true
+          },
+          {
+            "key": "look_back_days",
+            "default_value": 10,
+            "is_optional": true,
+            "is_query_param": true
+          },
+          {
+            "key": "look_ahead_days",
+            "default_value": 5,
+            "is_optional": true,
+            "is_query_param": true
           }
         ],
         "children": [],
@@ -14359,6 +14674,171 @@ WITH payload AS (
                 "params": [],
                 "text_field": "level",
                 "value_field": "level"
+              }
+            }
+          },
+          "production_line_ids": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Produktionslinien"
+                },
+                "en": {
+                  "title": "Production lines"
+                },
+                "es": {
+                  "title": "Líneas de producción"
+                },
+                "fr": {
+                  "title": "Lignes de production"
+                },
+                "nl": {
+                  "title": "Productielijnen"
+                },
+                "uk": {
+                  "title": "Виробничі лінії"
+                }
+              },
+              "order": 1,
+              "control": "multi-select",
+              "input_data": {
+                "src": [
+                  "get_production_lines"
+                ],
+                "params": [],
+                "text_field": "i18n",
+                "value_field": "line_id"
+              }
+            }
+          },
+          "customer_id": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Kunde"
+                },
+                "en": {
+                  "title": "Customer"
+                },
+                "es": {
+                  "title": "Cliente"
+                },
+                "fr": {
+                  "title": "Client"
+                },
+                "nl": {
+                  "title": "Klant"
+                },
+                "uk": {
+                  "title": "Клієнт"
+                }
+              },
+              "order": 2,
+              "control": "combobox",
+              "input_data": {
+                "src": [
+                  "get_customers"
+                ],
+                "params": [
+                  {
+                    "key": "search",
+                    "is_optional": true,
+                    "is_search_term": true
+                  }
+                ],
+                "text_field": "company_name",
+                "value_fields": [
+                  "customer_id",
+                  "production_line_ids"
+                ]
+              }
+            }
+          },
+          "look_back_days": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Arbeitstage zurück"
+                },
+                "en": {
+                  "title": "Workdays back"
+                },
+                "es": {
+                  "title": "Días laborables atrás"
+                },
+                "fr": {
+                  "title": "Jours ouvrés en arrière"
+                },
+                "nl": {
+                  "title": "Werkdagen terug"
+                },
+                "uk": {
+                  "title": "Робочі дні назад"
+                }
+              },
+              "order": 3,
+              "control": "select",
+              "input_data": {
+                "src": [
+                  "get_numbers"
+                ],
+                "params": [
+                  {
+                    "key": "numbers",
+                    "default_value": [
+                      5,
+                      10,
+                      15,
+                      20
+                    ]
+                  }
+                ],
+                "text_field": "number",
+                "value_field": "number"
+              }
+            }
+          },
+          "look_ahead_days": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Arbeitstage voraus"
+                },
+                "en": {
+                  "title": "Workdays ahead"
+                },
+                "es": {
+                  "title": "Días laborables adelante"
+                },
+                "fr": {
+                  "title": "Jours ouvrés en avant"
+                },
+                "nl": {
+                  "title": "Werkdagen vooruit"
+                },
+                "uk": {
+                  "title": "Робочі дні вперед"
+                }
+              },
+              "order": 4,
+              "control": "select",
+              "input_data": {
+                "src": [
+                  "get_numbers"
+                ],
+                "params": [
+                  {
+                    "key": "numbers",
+                    "default_value": [
+                      3,
+                      5,
+                      7,
+                      10
+                    ]
+                  }
+                ],
+                "text_field": "number",
+                "value_field": "number"
               }
             }
           }
@@ -15865,7 +16345,7 @@ WITH payload AS (
             },
             "input_data": {
               "src": [
-                "get_print_schedule_materials"
+                "get_plan_lanes"
               ],
               "params": [
                 {
@@ -16251,11 +16731,11 @@ WITH payload AS (
   },
   {
     "data_group_id": 76,
-    "data_group": "nest_schedule",
+    "data_group": "impose_plan",
     "data_group_json": [
       {
         "src": [
-          "get_nest_schedule"
+          "get_impose_plan"
         ],
         "layout": "timeline",
         "params": [
@@ -16299,7 +16779,7 @@ WITH payload AS (
             "is_query_param": true
           }
         ],
-        "widget_id": "get_nest_schedule",
+        "widget_id": "get_impose_plan",
         "row_options": {
           "draggable": true,
           "order_field": "sort_order",
@@ -16429,24 +16909,18 @@ WITH payload AS (
                 "path": "(sidebar:production-board-detail)",
                 "params": [
                   {
-                    "key": "from",
+                    "key": "date",
                     "value_from": "nest_date",
                     "is_query_param": true
                   },
                   {
-                    "key": "look_back_days",
-                    "default_value": 0
-                  },
-                  {
-                    "key": "look_ahead_days",
-                    "default_value": 0
-                  },
-                  {
-                    "key": "production_line_id",
+                    "key": "production_line_ids",
+                    "value_from": "production_line_id",
                     "is_query_param": true
                   },
                   {
-                    "key": "material_id",
+                    "key": "material_ids",
+                    "value_from": "material_id",
                     "is_query_param": true
                   }
                 ],
@@ -17532,7 +18006,7 @@ WITH payload AS (
             },
             "input_data": {
               "src": [
-                "get_print_schedule_materials"
+                "get_plan_lanes"
               ],
               "params": [
                 {
@@ -17841,8 +18315,6 @@ WITH payload AS (
               }
             },
             "column_min_width": 200,
-            "is_fixed_group_field": "is_fixed_group",
-            "next_start_offset_in_seconds_field": "next_start_offset_in_seconds",
             "fields_class_name": "grid grid-cols-4 gap-1",
             "group_by": [
               "tenant_id"
@@ -17852,6 +18324,8 @@ WITH payload AS (
             ],
             "deselectable": true
           },
+          "is_fixed_group_field": "is_fixed_group",
+          "next_start_offset_in_seconds_field": "next_start_offset_in_seconds",
           "duration_field": "duration_in_seconds",
           "set_date_field": "date",
           "is_pinned_field": "is_pinned",
@@ -17911,7 +18385,15 @@ WITH payload AS (
           "group_title_fields": [
             "tenant_name"
           ],
-          "no_label": false
+          "no_label": false,
+          "evaluate": {
+            "formula_field": "formula",
+            "params_field": "param_json"
+          },
+          "valid_resources": {
+            "field": "data.valid_resources",
+            "resource_field": "resource_path"
+          }
         },
         "fields_class_name": "@container grid grid-cols-6 gap-1"
       }
@@ -17919,11 +18401,11 @@ WITH payload AS (
   },
   {
     "data_group_id": 78,
-    "data_group": "nest_resource_schedule",
+    "data_group": "impose_resource_plan",
     "data_group_json": [
       {
         "src": [
-          "get_nest_schedule"
+          "get_impose_plan"
         ],
         "layout": "timeline",
         "params": [
@@ -18048,24 +18530,18 @@ WITH payload AS (
                 "path": "(sidebar:production-board-detail)",
                 "params": [
                   {
-                    "key": "from",
+                    "key": "date",
                     "value_from": "nest_date",
                     "is_query_param": true
                   },
                   {
-                    "key": "look_back_days",
-                    "default_value": 0
-                  },
-                  {
-                    "key": "look_ahead_days",
-                    "default_value": 0
-                  },
-                  {
-                    "key": "production_line_id",
+                    "key": "production_line_ids",
+                    "value_from": "production_line_id",
                     "is_query_param": true
                   },
                   {
-                    "key": "material_id",
+                    "key": "material_ids",
+                    "value_from": "material_id",
                     "is_query_param": true
                   }
                 ],
@@ -19125,7 +19601,7 @@ WITH payload AS (
             },
             "input_data": {
               "src": [
-                "get_print_schedule_materials"
+                "get_plan_lanes"
               ],
               "params": [
                 {
@@ -19144,14 +19620,15 @@ WITH payload AS (
                   "is_query_param": true
                 },
                 {
-                  "key": "only_starting_today",
-                  "default_value": true,
-                  "is_query_param": true
+                  "key": "steps",
+                  "default_value": [
+                    "impose"
+                  ],
+                  "is_query_param": false
                 }
               ],
               "group_by": [
-                "tenant_id",
-                "resource_uid"
+                "tenant_id"
               ]
             },
             "selectable": true,
@@ -19159,7 +19636,7 @@ WITH payload AS (
               {
                 "op": "==",
                 "value": null,
-                "field": "material_id"
+                "field": "resource_uid"
               }
             ],
             "field_config": {
@@ -19362,7 +19839,6 @@ WITH payload AS (
               }
             },
             "column_min_width": 200,
-            "is_fixed_group_field": "is_fixed_group",
             "fields_class_name": "grid grid-cols-4 gap-1",
             "group_by": [
               "tenant_id"
@@ -19372,7 +19848,9 @@ WITH payload AS (
             ],
             "deselectable": true
           },
-          "duration_field": "duration_in_seconds",
+          "is_fixed_group_field": "is_fixed_group",
+          "next_start_offset_in_seconds_field": "next_start_offset_in_seconds",
+          "duration_field": "param_json.duration_in_seconds",
           "is_pinned_field": "is_pinned",
           "no_timeline_now": false,
           "column_min_width": 0,
@@ -19385,7 +19863,7 @@ WITH payload AS (
           "class_names_field": "class_names",
           "chain_scope": "lane",
           "time_scale_config": {
-            "mode": "fixed",
+            "mode": "relative",
             "type": "time",
             "input_data": {
               "src": [
@@ -19422,13 +19900,20 @@ WITH payload AS (
             "zoom": 4.5
           },
           "group_by": [
-            "tenant_id",
-            "resource_uid"
+            "tenant_id"
           ],
           "group_title_fields": [
             "tenant_name"
           ],
-          "no_label": false
+          "no_label": false,
+          "evaluate": {
+            "formula_field": "formula",
+            "params_field": "param_json"
+          },
+          "valid_resources": {
+            "field": "data.valid_resources",
+            "resource_field": "resource_path"
+          }
         },
         "fields_class_name": "@container grid grid-cols-6 gap-1"
       }
@@ -20540,7 +21025,7 @@ WITH payload AS (
   },
   {
     "data_group_id": 80,
-    "data_group": "nest_schedule_filter",
+    "data_group": "impose_plan_filter",
     "data_group_json": [
       {
         "layout": "filter",
@@ -21052,11 +21537,11 @@ WITH payload AS (
   },
   {
     "data_group_id": 81,
-    "data_group": "production_schedule",
+    "data_group": "production_resource_plan",
     "data_group_json": [
       {
         "src": [
-          "get_production_schedule"
+          "get_production_plan"
         ],
         "layout": "timeline",
         "params": [
@@ -22139,7 +22624,7 @@ WITH payload AS (
             },
             "input_data": {
               "src": [
-                "get_production_schedule"
+                "get_plan_lanes"
               ],
               "params": [
                 {
@@ -22161,6 +22646,22 @@ WITH payload AS (
                   "key": "step",
                   "default_value": "print",
                   "is_query_param": true
+                },
+                {
+                  "key": "steps",
+                  "default_value": [
+                    "print",
+                    "coat",
+                    "laminate",
+                    "route",
+                    "cut"
+                  ],
+                  "is_query_param": false
+                },
+                {
+                  "key": "plan_type",
+                  "default_value": "production-plan",
+                  "is_query_param": false
                 }
               ],
               "group_by": [
@@ -22295,7 +22796,7 @@ WITH payload AS (
   },
   {
     "data_group_id": 82,
-    "data_group": "production_schedule_filter",
+    "data_group": "production_resource_plan_filter",
     "data_group_json": [
       {
         "layout": "filter",

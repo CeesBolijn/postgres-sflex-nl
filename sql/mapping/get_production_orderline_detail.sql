@@ -4,8 +4,10 @@ drop function if exists mapping.get_production_orderline_detail(timestamp with t
 drop function if exists mapping.get_production_orderline_detail(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer, integer[], integer[], bigint[], boolean, integer, integer, integer[]);
 drop function if exists mapping.get_production_orderline_detail(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer, integer[], integer[], bigint[], boolean, integer, integer, integer[], timestamp without time zone);
 drop function if exists mapping.get_production_orderline_detail(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer, integer[], integer[], bigint[], boolean, integer, integer, integer[], timestamp with time zone);
+-- the version before production_impact_in_seconds joined the output
+drop function if exists mapping.get_production_orderline_detail(timestamp with time zone, text, integer, integer, boolean, boolean, integer[], text[], integer[], integer[], integer[], bigint[], boolean, integer, integer, integer[], timestamp without time zone, integer);
 
-create function mapping.get_production_orderline_detail(p_from timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_days_off boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_production_line_ids integer[] DEFAULT NULL::integer[], p_material_ids integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_is_open boolean DEFAULT true, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1, p_tenant_ids integer[] DEFAULT NULL::integer[], p_logistics_at timestamp without time zone DEFAULT NULL::timestamp without time zone, p_customer_id integer DEFAULT NULL::integer) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, product_width numeric, product_height numeric, ship_separately boolean, production_line_id integer, production_company_id integer, delivery_hours integer, internal_status_code text, status_sequence integer, status_level text, status_title text, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, impact_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[], order_count integer, manifest_json jsonb)
+create function mapping.get_production_orderline_detail(p_date timestamp with time zone DEFAULT CURRENT_DATE, p_date_type text DEFAULT 'logistics'::text, p_look_back_days integer DEFAULT NULL::integer, p_look_ahead_days integer DEFAULT NULL::integer, p_include_weekend boolean DEFAULT true, p_include_mandatory_days_off boolean DEFAULT true, p_status_sequences integer[] DEFAULT NULL::integer[], p_status_levels text[] DEFAULT NULL::text[], p_production_line_ids integer[] DEFAULT NULL::integer[], p_material_ids integer[] DEFAULT NULL::integer[], p_batch_ids integer[] DEFAULT NULL::integer[], p_nest_ids bigint[] DEFAULT NULL::bigint[], p_is_open boolean DEFAULT true, p_threshold integer DEFAULT 1, p_domain_id integer DEFAULT 1, p_tenant_ids integer[] DEFAULT NULL::integer[], p_logistics_at timestamp without time zone DEFAULT NULL::timestamp without time zone, p_customer_id integer DEFAULT NULL::integer) returns TABLE(number text, order_sequence integer, order_id integer, production_order_id integer, production_orderline_id integer, sales_orderline_id integer, customer_json jsonb, material_id integer, material_name text, product_amount numeric, sqm numeric, product_width numeric, product_height numeric, ship_separately boolean, production_line_id integer, production_company_id integer, delivery_hours integer, internal_status_code text, status_sequence integer, status_level text, status_title text, part_amount integer, part_status_json jsonb, nest_date date, production_date date, logistics_date date, logistics_at timestamp without time zone, shipment_date date, dates_json jsonb, impact_json jsonb, rejected_amount numeric, produced_amount numeric, nest_json jsonb, nest_ids bigint[], delivery_class_names text[], class_names text[], unit_class_names text[], order_count integer, manifest_json jsonb, production_impact_in_seconds integer)
 	stable
 	SET plan_cache_mode=force_custom_plan
 	language plpgsql
@@ -18,8 +20,8 @@ declare
     v_nested_sequence constant integer := 450;
     -- The viewed moment is the reference for every class name; never now(),
     -- so a board of another day judges that day.
-    v_day   date      := (p_from at time zone 'Europe/Amsterdam')::date;
-    v_at    timestamp := (p_from at time zone 'Europe/Amsterdam');
+    v_day   date      := (p_date at time zone 'Europe/Amsterdam')::date;
+    v_at    timestamp := (p_date at time zone 'Europe/Amsterdam');
     v_from  date;
     v_until date;
     -- Scope: batch wins over nest, nest wins over the date window.
@@ -31,7 +33,7 @@ begin
     -- a plain range on one column. No window means both edges stay NULL.
     if v_scope = 'window' then
         select w.from_date, w.until_date into v_from, v_until
-        from action.get_date_window(p_from, p_look_back_days, p_look_ahead_days,
+        from action.get_date_window(p_date, p_look_back_days, p_look_ahead_days,
                                     p_include_weekend, p_include_mandatory_days_off, p_tenant_ids) w;
     end if;
 
@@ -49,7 +51,7 @@ begin
                cs.nest_date, cs.production_date, cs.logistics_date, cs.shipment_date,
                cs.order_date, cs.production_order_amount, cs.manifest_json,
                ist.sequence as status_sequence, ist.level as status_level,
-               ist.internal_title as status_title
+               ist.internal_title as status_title, ist.class_name as status_class_name
         from mapping.component_specs cs
         join mapping.internal_status ist
           on ist.code      = cs.internal_status_code
@@ -89,6 +91,22 @@ begin
                    and cs.nest_date <  (v_until::timestamp at time zone v_zone))
                or (p_date_type = 'shipment'
                    and cs.shipment_date >= v_from and cs.shipment_date < v_until))
+          -- Batch and nest scope narrow the base here already: every
+          -- enrichment below runs over the rows in scope instead of the whole
+          -- open workload. A board fires one call per nest set, so without
+          -- this each call paid for every open orderline (~100 ms a call,
+          -- seconds a board). The in_scope filter at the end still applies
+          -- the cancel markers.
+          and (v_scope = 'window'
+               or (v_scope = 'nest' and cs.production_orderline_id in (
+                       select sp.production_orderline_id
+                       from legacy.single_product sp
+                       where sp.nest_id = any (p_nest_ids)))
+               or (v_scope = 'batch' and cs.production_orderline_id in (
+                       select sp.production_orderline_id
+                       from legacy.single_product sp
+                       join legacy.nest n on n.nest_id = sp.nest_id
+                       where n.batch_id = any (p_batch_ids))))
     ),
     -- The nests of these orderlines, resolved once. Serves three purposes:
     -- the batch and nest scope, nest_json, and the nest rework.
@@ -192,6 +210,17 @@ begin
                on si.sequence = pc.part_status and si.domain_id = p_domain_id
         group by pc.production_orderline_id
     ),
+    -- The standard production impact per unit of the orderlines in scope:
+    -- the sum of the manifest rows (seconds per unit, written by
+    -- create_spec_unit_manifest from the xbom formulas), multiplied by the
+    -- units in the final select.
+    manifest_impact as materialized (
+        select m.production_orderline_id,
+               sum(m.production_impact_per_unit) as impact_per_unit
+        from mapping.spec_unit_manifest m
+        join orderline_base ob on ob.production_orderline_id = m.production_orderline_id
+        group by m.production_orderline_id
+    ),
     -- One name per material, only for the materials in scope.
     material_name as (
         select distinct on (mpl.material_id)
@@ -267,17 +296,22 @@ begin
         -- apart from class_names, because the board groups its cells on it.
         case when ob.logistics_date::date < v_day then array['state-delayed'] end,
         -- Sorted, because consumers group on this array and array comparison
-        -- is order sensitive.
-        array(select distinct c from unnest(array[
-            case when ob.logistics_date::date < v_day then 'state-delayed' end,
-            case when ob.status_sequence < v_nested_sequence then
-                case when (ob.nest_date at time zone v_zone) - v_at <= v_alert
-                     then 'plan-alert' else 'plan-signal' end
-            end,
-            -- rework on the orderline itself or on one of its nests
-            case when coalesce(orw.rework_count, 0) > 0
-                   or coalesce(na.nest_rework_count, 0) > 0 then 'plan-rework' end
-        ]) c where c is not null order by c),
+        -- is order sensitive. A nest scope reports the status of its
+        -- orderlines instead: the nests exist, so the planning signals
+        -- (alert/signal) say nothing there.
+        case when v_scope = 'nest'
+             then array_remove(array[ob.status_class_name], null)
+             else array(select distinct c from unnest(array[
+                 case when ob.logistics_date::date < v_day then 'state-delayed' end,
+                 case when ob.status_sequence < v_nested_sequence then
+                     case when (ob.nest_date at time zone v_zone) - v_at <= v_alert
+                          then 'plan-alert' else 'plan-signal' end
+                 end,
+                 -- rework on the orderline itself or on one of its nests
+                 case when coalesce(orw.rework_count, 0) > 0
+                        or coalesce(na.nest_rework_count, 0) > 0 then 'plan-rework' end
+             ]) c where c is not null order by c)
+        end,
         -- production_order_amount is kept on the row, so no aggregate needed
         case when ob.production_order_amount is null then '{}'::text[]
              when ob.production_order_amount <= p_threshold then array['units-lte-threshold']
@@ -287,12 +321,19 @@ begin
         -- in impact_json — field_config reads it with dot notation)
         (row_number() over (partition by ob.production_order_id
                             order by ob.production_orderline_id) = 1)::integer,
-        ob.manifest_json
+        ob.manifest_json,
+        -- the standard production impact of the whole orderline: units
+        -- (parts when there are more of them than products, as in the
+        -- aggregate's amount) times the per-unit sum of its manifest rows
+        round(greatest(coalesce((select sum(x) from unnest(pg.part_amount) x), 0),
+                       coalesce(ob.product_amount, 0))
+              * coalesce(mi.impact_per_unit, 0))::integer
     from orderline_base ob
     left join nest_agg na               on na.production_orderline_id   = ob.production_orderline_id
     left join orderline_rework orw      on orw.production_orderline_id  = ob.production_orderline_id
     left join progress pg               on pg.production_orderline_id   = ob.production_orderline_id
     left join part_status_json_agg psja on psja.production_orderline_id = ob.production_orderline_id
+    left join manifest_impact mi        on mi.production_orderline_id   = ob.production_orderline_id
     left join material_name mn          on mn.material_id = ob.material_id
     where v_scope = 'window'
        or ob.production_orderline_id in (select production_orderline_id from in_scope)

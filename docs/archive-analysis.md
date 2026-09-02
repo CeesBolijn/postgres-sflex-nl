@@ -77,7 +77,7 @@ verwijzen per definitie).
 | 37 | ✓ nest_schedule_old | ja | ja | geen |
 | 61 | ✓ plan-capacity | ja | ja | legacy block 11 (page 20), `rename-map.json`, `docs/handoff-control-room.md`, `docs/data-group-governance.md`, gerefereerd door plan-capacity-overview (zelf onnodig) |
 | 60 | ✓ plan-capacity-overview | ja | ja | legacy block 12 (page 21), zelfde docs/rename-map |
-| 17 | ✓ production_line_overview | ja | ja | `docs/data-group-governance.md`; verwijst zelf naar legacy `"page": 50` en sidebar-links |
+| 17 | ~~✓~~ production_line_overview | ja | ja | **teruggezet 2026-08-31**: toch nodig. Pagina `production-line-overview` toegevoegd aan pages.json, dus voldoet nu aan het criterium. Opgeschoond bij terugzetten: legacy `"page": 50` en block-titel eruit, twee dode sidebar-links verwijderd |
 | 81 | production_schedule | ja | ja | `docs/plan-production-schedule.md` — **actief voorstel, zie kanttekening** |
 | 82 | production_schedule_filter | ja | ja | `docs/plan-production-schedule.md` — idem |
 | 28 | ✓ resource_blocked_jobs | ja | ja | geen |
@@ -135,7 +135,7 @@ data_group-json aanwezig (grep, `.history/` uitgesloten).
 | functie | gebruikt door | waarom oppassen |
 |---|---|---|
 | relation.get_login | login (data_table `getLogin`) | als de login-flow van de frontend/API dit endpoint direct aanroept (buiten het data_group-systeem om) breekt inloggen; externe callers zijn vanaf hier onzichtbaar |
-| mock.get_production_schedule | production_schedule | `docs/plan-production-schedule.md` is een **actief voorstel** dat hier juist naartoe bouwt (vervangt plan_timeline); weggooien = het voorstel weggooien |
+| mock.get_production_plan (was get_production_schedule) | production_schedule | `docs/plan-production-schedule.md` is een **actief voorstel** dat hier juist naartoe bouwt (vervangt plan_timeline); weggooien = het voorstel weggooien |
 | site.get_widget_showcase | widget_showcase | data_group 83 is het nieuwste id; oogt als dev/showcase-werk, geen repo-bestand |
 | site.save_widget_showcase | widget_showcase (ook als `stored_proc` van de data_table) | idem |
 
@@ -161,8 +161,8 @@ data_group-json aanwezig (grep, `.history/` uitgesloten).
 |---|---|---|
 | `(sidebar:material-forecast)` | print_schedule, nest_schedule, nest_resource_schedule (**alle drie gebruikt**) | pagina `material-forecast` bestaat niet |
 | ~~`(sidebar:nest-schedule-queue)`~~ | nest_schedule, nest_resource_schedule, production_schedule | **opgelost 2026-08-24**: pagina toegevoegd aan pages.json |
-| `(sidebar:queued-jobs)` | production_line_overview (onnodig) | pagina bestaat niet; was vermoedelijk de host van resource_queue |
-| `(sidebar:xfw)` | `json/nav/xfw.main-menu-right.json` en production_line_overview | pagina `xfw` staat niet in pages.json; in het menu-bestand mogelijk een top-level route i.p.v. een pagina — nakijken |
+| ~~`(sidebar:queued-jobs)`~~ | production_line_overview | **opgelost 2026-08-31**: menu-item verwijderd bij het terugzetten van de data_group |
+| `(sidebar:xfw)` | `json/nav/xfw.main-menu-right.json` | pagina `xfw` staat niet in pages.json; in het menu-bestand mogelijk een top-level route i.p.v. een pagina — nakijken. Het pad `(sidebar:xfw/nl/sidebar/productielijn-machine)` in production_line_overview is 2026-08-31 verwijderd |
 
 Alle overige sidebar-doelen (in `json/nav/*.json`, `json/data/nav/menu-items.json` en
 de data_group-lichamen) bestaan in pages.json. `json/data/block/pages-content.json`

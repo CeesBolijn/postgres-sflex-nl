@@ -1,10 +1,10 @@
 {
   "data_group_id": 81,
-  "data_group": "production_schedule",
+  "data_group": "production_resource_plan",
   "data_group_json": [
     {
       "src": [
-        "get_production_schedule"
+        "get_production_plan"
       ],
       "layout": "timeline",
       "params": [
@@ -1087,7 +1087,7 @@
           },
           "input_data": {
             "src": [
-              "get_production_schedule"
+              "get_plan_lanes"
             ],
             "params": [
               {
@@ -1109,6 +1109,22 @@
                 "key": "step",
                 "default_value": "print",
                 "is_query_param": true
+              },
+              {
+                "key": "steps",
+                "default_value": [
+                  "print",
+                  "coat",
+                  "laminate",
+                  "route",
+                  "cut"
+                ],
+                "is_query_param": false
+              },
+              {
+                "key": "plan_type",
+                "default_value": "production-plan",
+                "is_query_param": false
               }
             ],
             "group_by": [

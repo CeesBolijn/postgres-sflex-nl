@@ -23,8 +23,9 @@ begin
          where pl.line_type = p_line_type;
     end if;
 
+    -- the flat lookup with counts_as/alias_of lives in log.lookup
     select lk.lookup_json into v_lookup_json
-      from relation.lookup lk
+      from log.lookup lk
      where lk.lookup = 'lookup_resource_state'
      limit 1;
 
@@ -35,13 +36,12 @@ begin
 
     return query
     with state_map as (
+        -- flat lookup: one node per state
         select
             s.value ->> 'code'  as state_code,
             s.value ->> 'group' as group_code,
             s.value             as state_json
-        from jsonb_array_elements(v_lookup_json)        as ss(value),
-             jsonb_array_elements(ss.value -> 'states') as s(value)
-        where s.value ->> 'group' = 'state'
+        from jsonb_array_elements(v_lookup_json) as s(value)
     ),
     group_state_map as (
         select

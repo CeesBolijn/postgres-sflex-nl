@@ -4,9 +4,11 @@ create function log.get_resource_state_aggregate(p_resource_uids text[] DEFAULT 
 as $$
 #variable_conflict use_column
 declare
-    v_running_code    text := 'running';
-    v_producing_code  text := 'producing';
-    v_data_error_code text := 'data-error';
+    v_running_code         text := 'running';
+    v_producing_code       text := 'producing';
+    -- running with no production behind it: waiting, same code the
+    -- shift builder writes; the lookup aliases it to starved
+    v_starved_running_code text := 'starved.running';
     v_from            timestamp with time zone;
 begin
     v_from := case
@@ -34,12 +36,11 @@ begin
         select distinct resource_uid, step from src
     ),
 
-    -- producing / data-error leaf json from the lookup
+    -- producing / starved.running node json from the flat lookup
     state_map as (
         select s.value ->> 'code' as state_code, s.value as state_json
-        from relation.lookup                             lk,
-             jsonb_array_elements(lk.lookup_json)       as ss(value),
-             jsonb_array_elements(ss.value -> 'states') as s(value)
+        from log.lookup                        lk,
+             jsonb_array_elements(lk.lookup_json) as s(value)
         where lk.lookup = 'lookup_resource_state'
     ),
 
@@ -113,14 +114,14 @@ begin
 
         union all
 
-        -- data-error = running with no production behind it
+        -- starved.running = running with no production behind it
         select
             r.resource_uid, st.step, sm.state_json,
             greatest(coalesce(r.envelope_seconds, 0) - coalesce(r.producing_seconds, 0), 0),
             r.start_at, r.until
         from recon     r
         join steps     st on st.resource_uid = r.resource_uid
-        join state_map sm on sm.state_code   = v_data_error_code
+        join state_map sm on sm.state_code   = v_starved_running_code
         where greatest(coalesce(r.envelope_seconds, 0) - coalesce(r.producing_seconds, 0), 0) > 0
     )
 

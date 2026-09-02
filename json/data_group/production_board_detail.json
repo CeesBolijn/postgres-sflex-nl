@@ -24,7 +24,7 @@
           "is_optional": true
         },
         {
-          "key": "from",
+          "key": "date",
           "is_query_param": true
         },
         {
@@ -503,7 +503,7 @@
                 }
               },
               "order": 5,
-              "class_name": "col-span-1",
+              "class_name": "col-start-1 col-span-1",
               "hidden_when": [
                 {
                   "field": "impact_json.rework_count",
@@ -698,7 +698,7 @@
                     }
                   },
                   "order": 5,
-                  "class_name": "col-span-1",
+                  "class_name": "col-start-1 col-span-1",
                   "hidden_when": [
                     {
                       "field": "impact_json.rework_count",
@@ -938,7 +938,7 @@
                             }
                           },
                           "order": 5,
-                          "class_name": "col-span-1",
+                          "class_name": "col-start-1 col-span-1",
                           "hidden_when": [
                             {
                               "field": "impact_json.rework_count",

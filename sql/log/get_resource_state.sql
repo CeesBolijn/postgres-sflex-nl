@@ -21,32 +21,25 @@ begin
     where pl.line_type = p_line_type;
   end if;
 
+  -- the flat lookup with counts_as/alias_of lives in log.lookup
   select lk.lookup_json into v_lookup_json
-  from relation.lookup lk
+  from log.lookup lk
   where lk.lookup = 'lookup_resource_state'
   limit 1;
 
   return query
   with
   state_map as (
-    -- leaf states: group_state is the parent top-level node (minus its states)
+    -- flat lookup: one node per state. alias_of resolves a source
+    -- variant (starved.operator, blocked.operator) to the state it is;
+    -- group_state is the resolved node itself, the hierarchy is gone
     select
-      s.value ->> 'code'   as state_code,
-      s.value              as state_json,
-      ss.value - 'states'  as group_state_json
-    from jsonb_array_elements(v_lookup_json)             as ss(value),
-         jsonb_array_elements(ss.value -> 'states')      as s(value)
-    where s.value ->> 'group' = 'state'
-
-    union all
-
-    -- top-level codes Durst emits directly (running, idle, breakdown, offline):
-    -- resolve to themselves, and are their own parent group
-    select
-      ss.value ->> 'code'  as state_code,
-      ss.value - 'states'  as state_json,
-      ss.value - 'states'  as group_state_json
-    from jsonb_array_elements(v_lookup_json) as ss(value)
+      s.value ->> 'code'          as state_code,
+      coalesce(t.value, s.value)  as state_json,
+      coalesce(t.value, s.value)  as group_state_json
+    from jsonb_array_elements(v_lookup_json) as s(value)
+    left join jsonb_array_elements(v_lookup_json) as t(value)
+      on t.value ->> 'code' = s.value ->> 'alias_of'
   ),
   -- last change per resource that starts before the window
   anchor as (

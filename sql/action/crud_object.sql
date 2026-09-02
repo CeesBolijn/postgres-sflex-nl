@@ -201,7 +201,7 @@ BEGIN
       AND (pt.action_json ->> 'start_date') IS NOT NULL;
 
     -- deletes: the item, its nests and its edges (edges cascade)
-    DELETE FROM action.nest_lane_item nli
+    DELETE FROM action.imposition_lane_item nli
     USING action.lane_item li, param_table pt
     WHERE nli.lane_item_id = li.lane_item_id
       AND li.source = 'pv2' AND li.source_ref = pt.plannable_item_id::text
@@ -319,12 +319,12 @@ BEGIN
     WHERE li.lane_item_id = x.lane_item_id;
 
     -- the nests of the items: replaced as a set
-    DELETE FROM action.nest_lane_item nli
+    DELETE FROM action.imposition_lane_item nli
     USING action.lane_item li, item_plan ip
     WHERE nli.lane_item_id = li.lane_item_id
       AND li.source = 'pv2' AND li.source_ref = ip.source_ref;
 
-    INSERT INTO action.nest_lane_item (nest_id, lane_item_id, sort_order)
+    INSERT INTO action.imposition_lane_item (imposition_id, lane_item_id, sort_order)
     SELECT DISTINCT ON ((ba.value ->> 'nest_id')::bigint, li.lane_item_id)
            (ba.value ->> 'nest_id')::bigint, li.lane_item_id, (ba.value ->> 'sequence')::numeric
     FROM item_plan ip

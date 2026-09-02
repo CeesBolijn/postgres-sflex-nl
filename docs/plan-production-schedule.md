@@ -1,4 +1,4 @@
-# plan: `mock.get_production_schedule` — plan and realized on one board
+# plan: `mock.get_production_plan` — plan and realized on one board
 
 Status: proposal. Replaces `action.get_plan_timeline` + `plan_timeline.json` (56)
 with a board in the style of `nest_resource_schedule` (78): lanes per resource,
@@ -75,10 +75,10 @@ physical department's plan automatically; every board shows all items of its
 lanes, so borrowed occupation is always visible. The drag mutation writes
 `plan_lane.sort_order` (order differs per board).
 
-## 3. `mock.get_production_schedule` — the plan side
+## 3. `mock.get_production_plan` — the plan side
 
 ```
-mock.get_production_schedule(
+mock.get_production_plan(
     p_until        timestamptz default now(),   -- the viewed moment (p_at later, see plan-date-parameters.md)
     p_step         text        default 'print',  -- one step per board call; the client asks per step
     p_line_type    text        default null,
@@ -137,7 +137,7 @@ After every payload the touched lanes are renumbered by start (`sort_order`
 is unique per lane), in two steps so the constraint never trips.
 
 **Realized (level 1): read from the logs**, not written yet.
-`get_production_schedule` calls `log.get_resource_state` and
+`get_production_plan` calls `log.get_resource_state` and
 `log.get_resource_produced` for the lanes' resources. A writer that folds
 them into level-1 lane items can come later; the board will not notice.
 
@@ -168,7 +168,7 @@ dependencies. Those three are the questions for the client.
 
 ## 6. data group `production_schedule` (new id, replaces 56)
 
-Copy of 78 with: `src: [get_production_schedule]`, params `line_type, until,
+Copy of 78 with: `src: [get_production_plan]`, params `line_type, until,
 tenant_ids, step` (+ idents), `group_by: [tenant_id, resource_uid]`,
 `group_title_fields: [tenant_name, resource_name]`, `set_group_fields`
 idem, `chain_scope: lane`, `is_pinned_field`, `row_options.drop.within_fields:
@@ -185,7 +185,7 @@ tooltip = the 78 tooltip plus a state section for realized rows
    alternative from 2.3). Update `get_print_schedule_materials` /
    `get_nest_schedule` for `steps`. — one script, one measurement of the nest
    boards afterwards (nothing may change).
-2. `mock.get_production_schedule` plan side, on `nest_lane_item` and the
+2. `mock.get_production_plan` plan side, on `nest_lane_item` and the
    aggregate; realized side reading `log.get_resource_state` /
    `log.get_resource_produced` directly.
 3. `production_schedule.json` + filter, `site.data_table` entry, `pull` /

@@ -1,6 +1,6 @@
 {
   "data_group_id": 80,
-  "data_group": "nest_schedule_filter",
+  "data_group": "impose_plan_filter",
   "data_group_json": [
     {
       "layout": "filter",

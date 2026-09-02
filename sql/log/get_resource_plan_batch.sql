@@ -24,8 +24,9 @@ BEGIN
          WHERE pl.line_type = p_line_type;
     END IF;
 
+    -- the flat lookup with counts_as/alias_of lives in log.lookup
     SELECT lk.lookup_json INTO v_lookup_json
-      FROM relation.lookup lk
+      FROM log.lookup lk
      WHERE lk.lookup = 'lookup_resource_state'
      LIMIT 1;
 
@@ -93,13 +94,11 @@ BEGIN
             ns.*,
             COALESCE(
                 (SELECT s.value
-                 FROM jsonb_array_elements(v_lookup_json)        AS ss(value),
-                      jsonb_array_elements(ss.value -> 'states') AS s(value)
+                 FROM jsonb_array_elements(v_lookup_json) AS s(value)
                  WHERE s.value ->>'code' = ns.internal_status_code
                  LIMIT 1),
                 (SELECT s.value
-                 FROM jsonb_array_elements(v_lookup_json)        AS ss(value),
-                      jsonb_array_elements(ss.value -> 'states') AS s(value)
+                 FROM jsonb_array_elements(v_lookup_json) AS s(value)
                  WHERE s.value ->>'code' = COALESCE(
                      NULLIF(ns.action_json ->>'status', ''),
                      ns.action_json ->>'type',

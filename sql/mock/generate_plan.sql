@@ -71,13 +71,13 @@ as $$
         WHERE p.material_id IS NOT NULL
         RETURNING lane_item_id
     )
-    -- the lane table keeps its old column name until it disappears with the
-    -- print read (action.lane_item.source_ref already carries plan_id:date)
-    INSERT INTO mock.material_resource_plan_lane (lane_id, material_resource_plan_id)
-    SELECT npl.lane_id, p.material_impose_plan_id
+    -- No lane-to-pattern table any more: action.lane_item.source_ref carries
+    -- <material_impose_plan_id>:<date>, so the link is on the item itself.
+    -- The inserts above still run — a data-modifying CTE always executes,
+    -- referenced or not.
+    SELECT (SELECT plan_id FROM new_plan), npl.lane_id, p.material_impose_plan_id
     FROM new_plan_lane npl
-    JOIN numbered_pattern p ON p.sort_order = npl.sort_order
-    RETURNING (SELECT plan_id FROM new_plan), lane_id, material_resource_plan_id AS material_impose_plan_id;
+    JOIN numbered_pattern p ON p.sort_order = npl.sort_order;
 $$;
 
 alter function mock.generate_plan(date, text, text) owner to xfw3;

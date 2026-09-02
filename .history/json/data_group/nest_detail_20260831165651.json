@@ -1,0 +1,243 @@
+{
+  "data_group_id": 51,
+  "data_group": "nest_detail",
+  "data_group_json": [
+    {
+      "src": [
+        "get_nest_detail"
+      ],
+      "layout": "flow-board",
+      "params": [
+        {
+          "key": "nest_id",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "batch_id",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "nest_ids",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "children": [],
+      "widget_id": "nest_detail",
+      "field_config": {
+        "nest_id": {
+          "ui": {
+            "order": 0,
+            "hidden": true
+          }
+        },
+        "start_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Startzeit"
+              },
+              "en": {
+                "title": "Start at"
+              },
+              "nl": {
+                "title": "Starttijd"
+              }
+            },
+            "type": "datetime",
+            "order": 6
+          }
+        },
+        "batch_uid": {
+          "ui": {
+            "order": 2,
+            "hidden": true
+          }
+        },
+        "nest_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Nest"
+              },
+              "en": {
+                "title": "Nest"
+              },
+              "nl": {
+                "title": "Nest"
+              }
+            },
+            "order": 1
+          }
+        },
+        "nested_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Generiert am"
+              },
+              "en": {
+                "title": "Nested at"
+              },
+              "nl": {
+                "title": "Genest op"
+              }
+            },
+            "type": "datetime",
+            "order": 4
+          }
+        },
+        "updated_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Aktualisiert am"
+              },
+              "en": {
+                "title": "Updated at"
+              },
+              "nl": {
+                "title": "Bijgewerkt op"
+              }
+            },
+            "type": "datetime",
+            "order": 5
+          }
+        },
+        "nest_json.job_thumbnail": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Vorschau"
+              },
+              "en": {
+                "title": "Preview"
+              },
+              "nl": {
+                "title": "Preview"
+              }
+            },
+            "order": 3,
+            "control": "img",
+            "field": "https://f003.backblazeb2.com/file/probo-hub/${nest_json.job_thumbnail}",
+            "hidden_when": [
+              {
+                "op": "==",
+                "field": "nest_json.job_thumbnail",
+                "value": null
+              }
+            ]
+          }
+        },
+        "nest_json.waste_percentage": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Ausschussanteil"
+              },
+              "en": {
+                "title": "Waste percentage"
+              },
+              "es": {
+                "title": "Porcentaje de desperdicio"
+              },
+              "fr": {
+                "title": "Pourcentage de déchets"
+              },
+              "nl": {
+                "title": "Rest percentage"
+              },
+              "uk": {
+                "title": "Відсоток відходів"
+              }
+            },
+            "order": 3,
+            "class_name": "col-span-1"
+          },
+          "scale": 1
+        }
+      },
+      "flow_board_config": {
+        "layout": "flow-grid",
+        "children": [
+          {
+            "layout": "flow-cards",
+            "group_by": [
+              "nest_name"
+            ],
+            "row_options": {
+              "colexp": false,
+              "checkable": false,
+              "selectable": true
+            },
+            "field_config": {
+              "nest_name": {
+                "ui": {
+                  "order": 0,
+                  "class_name": "col-span-2"
+                }
+              },
+              "nested_at": {
+                "ui": {
+                  "type": "datetime",
+                  "order": 1,
+                  "class_name": "col-span-2"
+                }
+              },
+              "nest_json.job_thumbnail": {
+                "ui": {
+                  "order": 4,
+                  "control": "img",
+                  "field": "https://f003.backblazeb2.com/file/probo-hub/${nest_json.job_thumbnail}",
+                  "class_name": "col-span-6",
+                  "hidden_when": [
+                    {
+                      "op": "==",
+                      "field": "nest_json.job_thumbnail",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "nest_json.printfile_name": {
+                "ui": {
+                  "order": 3,
+                  "class_name": "col-span-6"
+                }
+              },
+              "nest_json.waste_percentage": {
+                "ui": {
+                  "order": 2,
+                  "class_name": "col-span-2 text-right"
+                },
+                "scale": 1
+              }
+            },
+            "fields_class_name": "grid grid-cols-6 gap-1"
+          }
+        ],
+        "group_by": [
+          "nest_name"
+        ],
+        "row_options": {
+          "colexp": false,
+          "checkable": false,
+          "selectable": true
+        },
+        "field_config": {
+          "nest_name": {
+            "ui": {
+              "order": 0,
+              "hidden": true
+            }
+          }
+        },
+        "column_max_width": 250,
+        "column_min_width": 250,
+        "fields_class_name": "grid grid-cols-1 gap-1"
+      }
+    }
+  ]
+}

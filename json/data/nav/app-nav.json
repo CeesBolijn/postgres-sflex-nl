@@ -6,24 +6,82 @@
     "block": {
       "title": "View",
       "i18n": {
-        "en": { "title": "View" },
-        "nl": { "title": "Weergave" },
-        "de": { "title": "Ansicht" },
-        "fr": { "title": "Vue" },
-        "es": { "title": "Vista" },
-        "uk": { "title": "Вигляд" }
+        "en": {
+          "title": "View"
+        },
+        "nl": {
+          "title": "Weergave"
+        },
+        "de": {
+          "title": "Ansicht"
+        },
+        "fr": {
+          "title": "Vue"
+        },
+        "es": {
+          "title": "Vista"
+        },
+        "uk": {
+          "title": "Вигляд"
+        }
       }
     },
     "content_src": "pages-content.json",
     "pages": [
-      { "path": "/control-room", "code": "control-room", "environments": ["development"] },
-      { "path": "/production-lines", "code": "production-lines" },
-      { "path": "/production-board", "code": "production-board" },
-      { "path": "/print-schedule", "code": "print-schedule", "environments": ["development"] },
-      { "path": "/nest-schedule", "code": "nest-schedule", "environments": ["development"] },
-      { "path": "/nest-resource-schedule", "code": "nest-resource-schedule", "environments": ["development"] },
-      { "path": "/production-planning", "code": "production-planning", "environments": ["development"] },
-      { "path": "/batch-nests", "code": "batch-nests", "environments": ["development"] }
+      {
+        "path": "/control-room",
+        "code": "control-room",
+        "environments": [
+          "development"
+        ]
+      },
+      {
+        "path": "/production-lines",
+        "code": "production-lines"
+      },
+      {
+        "path": "/production-line-overview",
+        "code": "production-line-overview"
+      },
+      {
+        "path": "/production-board",
+        "code": "production-board"
+      },
+      {
+        "path": "/print-schedule",
+        "code": "print-schedule",
+        "environments": [
+          "development"
+        ]
+      },
+      {
+        "path": "/impose-plan",
+        "code": "impose-plan",
+        "environments": [
+          "development"
+        ]
+      },
+      {
+        "path": "/impose-resource-plan",
+        "code": "impose-resource-plan",
+        "environments": [
+          "development"
+        ]
+      },
+      {
+        "path": "/production-planning",
+        "code": "production-planning",
+        "environments": [
+          "development"
+        ]
+      },
+      {
+        "path": "/batch-nests",
+        "code": "batch-nests",
+        "environments": [
+          "development"
+        ]
+      }
     ]
   },
   {
@@ -33,22 +91,35 @@
     "block": {
       "title": "Production line",
       "i18n": {
-        "en": { "title": "Production line" },
-        "nl": { "title": "Productielijn" },
-        "de": { "title": "Produktionslinie" },
-        "fr": { "title": "Ligne de production" },
-        "es": { "title": "Línea de producción" },
-        "uk": { "title": "Виробнича лінія" }
+        "en": {
+          "title": "Production line"
+        },
+        "nl": {
+          "title": "Productielijn"
+        },
+        "de": {
+          "title": "Produktionslinie"
+        },
+        "fr": {
+          "title": "Ligne de production"
+        },
+        "es": {
+          "title": "Línea de producción"
+        },
+        "uk": {
+          "title": "Виробнича лінія"
+        }
       }
     },
     "src": "models.json",
     "visible_on": [
       "/control-room",
       "/production-lines",
+      "/production-line-overview",
       "/production-board",
       "/print-schedule",
-      "/nest-schedule",
-      "/nest-resource-schedule",
+      "/impose-plan",
+      "/impose-resource-plan",
       "/production-planning",
       "/batch-nests"
     ],
@@ -98,12 +169,24 @@
     "block": {
       "title": "Account",
       "i18n": {
-        "en": { "title": "Account" },
-        "nl": { "title": "Account" },
-        "de": { "title": "Konto" },
-        "fr": { "title": "Compte" },
-        "es": { "title": "Cuenta" },
-        "uk": { "title": "Обліковий запис" }
+        "en": {
+          "title": "Account"
+        },
+        "nl": {
+          "title": "Account"
+        },
+        "de": {
+          "title": "Konto"
+        },
+        "fr": {
+          "title": "Compte"
+        },
+        "es": {
+          "title": "Cuenta"
+        },
+        "uk": {
+          "title": "Обліковий запис"
+        }
       }
     }
   }

@@ -1,10 +1,10 @@
 {
   "data_group_id": 78,
-  "data_group": "nest_resource_schedule",
+  "data_group": "impose_resource_plan",
   "data_group_json": [
     {
       "src": [
-        "get_nest_schedule"
+        "get_impose_plan"
       ],
       "layout": "timeline",
       "params": [
@@ -129,7 +129,7 @@
               "path": "(sidebar:production-board-detail)",
               "params": [
                 {
-                  "key": "from",
+                  "key": "date",
                   "value_from": "nest_date",
                   "is_query_param": true
                 },
@@ -1200,7 +1200,7 @@
           },
           "input_data": {
             "src": [
-              "get_print_schedule_materials"
+              "get_plan_lanes"
             ],
             "params": [
               {
@@ -1219,9 +1219,11 @@
                 "is_query_param": true
               },
               {
-                "key": "only_starting_today",
-                "default_value": true,
-                "is_query_param": true
+                "key": "steps",
+                "default_value": [
+                  "impose"
+                ],
+                "is_query_param": false
               }
             ],
             "group_by": [
@@ -1233,7 +1235,7 @@
             {
               "op": "==",
               "value": null,
-              "field": "material_id"
+              "field": "resource_uid"
             }
           ],
           "field_config": {
@@ -1436,7 +1438,6 @@
             }
           },
           "column_min_width": 200,
-          "is_fixed_group_field": "is_fixed_group",
           "fields_class_name": "grid grid-cols-4 gap-1",
           "group_by": [
             "tenant_id"
@@ -1446,7 +1447,9 @@
           ],
           "deselectable": true
         },
-        "duration_field": "duration_in_seconds",
+        "is_fixed_group_field": "is_fixed_group",
+        "next_start_offset_in_seconds_field": "next_start_offset_in_seconds",
+        "duration_field": "param_json.duration_in_seconds",
         "is_pinned_field": "is_pinned",
         "no_timeline_now": false,
         "column_min_width": 0,
@@ -1496,13 +1499,20 @@
           "zoom": 4.5
         },
         "group_by": [
-          "tenant_id",
-          "resource_uid"
+          "tenant_id"
         ],
         "group_title_fields": [
           "tenant_name"
         ],
-        "no_label": false
+        "no_label": false,
+        "evaluate": {
+          "formula_field": "formula",
+          "params_field": "param_json"
+        },
+        "valid_resources": {
+          "field": "data.valid_resources",
+          "resource_field": "resource_path"
+        }
       },
       "fields_class_name": "@container grid grid-cols-6 gap-1"
     }

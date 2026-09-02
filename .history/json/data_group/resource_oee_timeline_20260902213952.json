@@ -1,0 +1,432 @@
+{
+  "data_group_id": 19,
+  "data_group": "resource_oee_timeline",
+  "data_group_json": [
+    {
+      "src": [
+        "get_resource_oee_timeline"
+      ],
+      "layout": "timeline",
+      "params": [
+        {
+          "key": "resource_uids",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "line_type",
+          "default_value": null
+        },
+        {
+          "key": "from",
+          "is_optional": true,
+          "is_query_param": true
+        },
+        {
+          "key": "until",
+          "is_optional": true,
+          "is_query_param": true
+        }
+      ],
+      "widget_id": "resource_oee",
+      "row_options": {
+        "nav": {
+          "menu": [
+            {
+              "i18n": {
+                "de": {
+                  "title": "Charge öffnen"
+                },
+                "en": {
+                  "title": "Open batch"
+                },
+                "es": {
+                  "title": "Abrir lote"
+                },
+                "fr": {
+                  "title": "Ouvrir le lot"
+                },
+                "nl": {
+                  "title": "Batch openen"
+                },
+                "uk": {
+                  "title": "Відкрити партію"
+                }
+              },
+              "icon": "Package01",
+              "path": "(detail:batch)",
+              "params": [
+                {
+                  "key": "batch_id",
+                  "is_query_param": true
+                }
+              ],
+              "hidden_when": [
+                {
+                  "op": "==",
+                  "value": 0,
+                  "field": "batch_id"
+                }
+              ]
+            }
+          ]
+        },
+        "selectable": true,
+        "multi_selectable": true
+      },
+      "field_config": {
+        "batch_id": {
+          "ui": {
+            "hidden": true
+          }
+        },
+        "start_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Startzeit"
+              },
+              "en": {
+                "title": "Start time"
+              },
+              "es": {
+                "title": "Hora de inicio"
+              },
+              "fr": {
+                "title": "Heure de début"
+              },
+              "nl": {
+                "title": "Starttijd"
+              },
+              "uk": {
+                "title": "Час початку"
+              }
+            },
+            "order": 1,
+            "no_label": true,
+            "type": "datetime"
+          }
+        },
+        "batch_name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Chargenname"
+              },
+              "en": {
+                "title": "Batch name"
+              },
+              "es": {
+                "title": "Nombre del lote"
+              },
+              "fr": {
+                "title": "Nom du lot"
+              },
+              "nl": {
+                "title": "Batchnaam"
+              },
+              "uk": {
+                "title": "Назва партії"
+              }
+            },
+            "order": 0,
+            "no_label": true
+          }
+        },
+        "data.end_at": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Endzeit"
+              },
+              "en": {
+                "title": "End time"
+              },
+              "es": {
+                "title": "Hora de fin"
+              },
+              "fr": {
+                "title": "Heure de fin"
+              },
+              "nl": {
+                "title": "Eindtijd"
+              },
+              "uk": {
+                "title": "Час завершення"
+              }
+            },
+            "order": 2,
+            "type": "datetime"
+          }
+        },
+        "data.material.name": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Material"
+              },
+              "en": {
+                "title": "Material"
+              },
+              "es": {
+                "title": "Material"
+              },
+              "fr": {
+                "title": "Matériau"
+              },
+              "nl": {
+                "title": "Materiaal"
+              },
+              "uk": {
+                "title": "Матеріал"
+              }
+            },
+            "order": 4,
+            "no_label": true
+          }
+        },
+        "data.waste_percentage": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Ausschussanteil"
+              },
+              "en": {
+                "title": "Waste percentage"
+              },
+              "es": {
+                "title": "Porcentaje de desperdicio"
+              },
+              "fr": {
+                "title": "Taux de rebut"
+              },
+              "nl": {
+                "title": "Afval percentage"
+              },
+              "uk": {
+                "title": "Відсоток відходів"
+              }
+            },
+            "order": 5
+          },
+          "type": "percent",
+          "no_label": true
+        },
+        "data.filled_percentage": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Füllgrad"
+              },
+              "en": {
+                "title": "Filled percentage"
+              },
+              "es": {
+                "title": "Porcentaje de llenado"
+              },
+              "fr": {
+                "title": "Taux de remplissage"
+              },
+              "nl": {
+                "title": "Vulling"
+              },
+              "uk": {
+                "title": "Відсоток заповнення"
+              }
+            },
+            "order": 6
+          },
+          "type": "percent",
+          "no_label": true
+        },
+        "group_state.block.i18n": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Typ"
+              },
+              "en": {
+                "title": "Type"
+              },
+              "es": {
+                "title": "Tipo"
+              },
+              "fr": {
+                "title": "Type"
+              },
+              "nl": {
+                "title": "Type"
+              },
+              "uk": {
+                "title": "Тип"
+              }
+            },
+            "control": "i18n-text",
+            "no_label": true
+          }
+        },
+        "data.nest_status.amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Anzahl"
+              },
+              "en": {
+                "title": "Amount"
+              },
+              "es": {
+                "title": "Cantidad"
+              },
+              "fr": {
+                "title": "Quantité"
+              },
+              "nl": {
+                "title": "Aantal"
+              },
+              "uk": {
+                "title": "Кількість"
+              }
+            },
+            "order": 1,
+            "no_label": true
+          }
+        },
+        "data.stock_material_amount": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Gesamtmenge"
+              },
+              "en": {
+                "title": "Total amount"
+              },
+              "es": {
+                "title": "Cantidad total"
+              },
+              "fr": {
+                "title": "Quantité totale"
+              },
+              "nl": {
+                "title": "Totaal aantal"
+              },
+              "uk": {
+                "title": "Загальна кількість"
+              }
+            },
+            "order": 5,
+            "no_label": true
+          }
+        },
+        "data.nest_status.internal_status_code": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Status"
+              },
+              "en": {
+                "title": "Status"
+              },
+              "es": {
+                "title": "Estado"
+              },
+              "fr": {
+                "title": "Statut"
+              },
+              "nl": {
+                "title": "Status"
+              },
+              "uk": {
+                "title": "Статус"
+              }
+            },
+            "order": 0,
+            "no_label": true
+          }
+        }
+      },
+      "timeline_config": {
+        "tooltip": {
+          "sections": [
+            {
+              "field_config": {
+                "start_at": {
+                  "ui": {
+                    "order": 1
+                  }
+                },
+                "batch_name": {
+                  "ui": {
+                    "order": 0
+                  }
+                },
+                "data.end_at": {
+                  "ui": {
+                    "order": 2
+                  }
+                }
+              }
+            },
+            {
+              "field_config": {
+                "nest_name": {
+                  "ui": {
+                    "order": 0
+                  }
+                },
+                "data.material.name": {
+                  "ui": {
+                    "order": 1
+                  }
+                },
+                "data.waste_percentage": {
+                  "ui": {
+                    "order": 3
+                  }
+                },
+                "data.filled_percentage": {
+                  "ui": {
+                    "order": 4
+                  }
+                },
+                "data.stock_material_amount": {
+                  "ui": {
+                    "order": 2
+                  }
+                }
+              }
+            },
+            {
+              "group": {
+                "fields_class_name": "grid grid-cols-6 gap-1",
+                "data_field": "data.nest_status",
+                "field_config": {
+                  "data.nest_status.amount": {
+                    "ui": {
+                      "class_name": "col-span-2  text-right"
+                    }
+                  },
+                  "data.nest_status.internal_status_code": {
+                    "ui": {
+                      "class_name": "col-span-4"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "end_time": "22:00",
+        "set_field": "state.group",
+        "start_time": "04:00",
+        "color_field": "state.color",
+        "offset_field": "offset_seconds",
+        "duration_field": "duration_seconds",
+        "set_order_field": "state.order",
+        "set_title_field": "name",
+        "group_by": [
+          "resource_uid"
+        ]
+      }
+    }
+  ]
+}

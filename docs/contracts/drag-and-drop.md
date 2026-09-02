@@ -200,11 +200,13 @@ On `nest_resource_schedule`, `within_fields` already pins a card to its lane, so
 
 ## Related contracts
 
-- `label_options.next_start_offset_in_seconds_field` — the axis step for the free chain.
-  Its single home is `label_options`. It does **not** space a fixed group: those items run
-  back-to-back by `duration_in_seconds` in `order_field` order.
-- `label_options.is_fixed_group_field` — a nullable group **number**, not a boolean. Every
-  row of group `"18"` shares the value. The layout only treats a board as scheduled when a
-  lane actually carries the column, not merely because the key is named.
+- `timeline_config.next_start_offset_in_seconds_field` — the axis step for the free chain.
+  Its single home is `timeline_config`: the chain is a board property, not a label one
+  (corrected 27 aug, it sat a level too deep on `label_options`). It does **not** space a
+  fixed group: those items run back-to-back by `duration_in_seconds` in `order_field` order.
+- `timeline_config.is_fixed_group_field` — a nullable group **number**, not a boolean. Every
+  row of group `"18"` shares the value. Same home and same correction as the key above. The
+  layout only treats a board as scheduled when a lane actually carries the column, not merely
+  because the key is named.
 - `timeline_config.chain_scope` — `"plan"` (one chain per main group) or `"lane"` (one per
   lane, lanes run in parallel).

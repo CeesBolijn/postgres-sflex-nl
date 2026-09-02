@@ -21,7 +21,7 @@
         {
           "data_group": "internal_rework_trend"
         },
-        { 
+        {
           "data_group": "ticket_trend"
         }
       ]
@@ -315,7 +315,7 @@
     }
   },
   {
-    "code": "nest-schedule",
+    "code": "impose-plan",
     "main": {
       "grid": {
         "rows": "auto 1fr",
@@ -323,10 +323,10 @@
       },
       "sections": [
         {
-          "data_group": "nest_schedule_filter"
+          "data_group": "impose_plan_filter"
         },
         {
-          "data_group": "nest_schedule"
+          "data_group": "impose_plan"
         }
       ]
     },
@@ -343,7 +343,7 @@
     }
   },
   {
-    "code": "nest-resource-schedule",
+    "code": "impose-resource-plan",
     "header": {
       "grid": {
         "columns": "auto 1fr",
@@ -369,10 +369,10 @@
       },
       "sections": [
         {
-          "data_group": "nest_schedule_filter"
+          "data_group": "impose_plan_filter"
         },
         {
-          "data_group": "nest_resource_schedule"
+          "data_group": "impose_resource_plan"
         }
       ]
     },
@@ -496,6 +496,16 @@
         {
           "area": "status-bar",
           "data_group": "status_bar"
+        }
+      ]
+    }
+  },
+  {
+    "code": "production-line-overview",
+    "main": {
+      "sections": [
+        {
+          "data_group": "production_line_overview"
         }
       ]
     }

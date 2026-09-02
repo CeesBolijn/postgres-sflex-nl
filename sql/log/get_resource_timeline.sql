@@ -18,11 +18,12 @@ begin
            r.nest_name, r.filename, r.page_number,
            r.batch_id, r.batch_name, r.data, r.start_at, r.offset_seconds, r.duration_seconds
     from log.get_resource_produced(p_resource_uids, p_from, p_until, p_line_type) r
-    union all
-    select i.resource_uid, i.state, i.group_state, i.layout_name, i.step, i.name,
-           i.nest_name, i.filename, i.page_number,
-           i.batch_id, i.batch_name, i.data, i.start_at, i.offset_seconds, i.duration_seconds
-    from log.get_resource_plan_impact(p_resource_uids, p_from, p_until, p_line_type) i
+    -- plan impact lane disabled for now, comes back later
+    -- union all
+    -- select i.resource_uid, i.state, i.group_state, i.layout_name, i.step, i.name,
+    --        i.nest_name, i.filename, i.page_number,
+    --        i.batch_id, i.batch_name, i.data, i.start_at, i.offset_seconds, i.duration_seconds
+    -- from log.get_resource_plan_impact(p_resource_uids, p_from, p_until, p_line_type) i
     order by
         step,
         name,
