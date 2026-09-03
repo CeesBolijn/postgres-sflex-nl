@@ -354,7 +354,7 @@ het venster. `v_excluded_states` is weg. Planning blijft een eigen lijn
 | 3 | `log.lookup` aanmaken + platte lookup erin (`counts_as` 4 buckets, `alias_of`); `relation.lookup` blijft onaangeraakt | `sql/migration_oee_shift_totals.sql` + `sql/update_log_lookup_resource_state.sql` | klaar; samen met 4 |
 | 4 | alleen `shift_totals` om: buckets → `param_json`, `v_formula_json`, `evaluate_many_nas`; `v_excluded_states` en de `.operator`-`CASE` weg. Overige lezers verhuizen later | `sql/log/get_resource_state_shift_totals.sql` (drop zit in stap 3) | klaar; samen met 3 |
 | 5 | v1 verhuist: `get_resource_state`, `_aggregate` (restant → `starved.running`), `_produced`, `_plan_batch` naar `log.lookup`; data_groups 19 + 29: `state.block.i18n` → `state.i18n`, `color_field` → `class_names_field: state.class_name` (nieuwe key op `donut_chart_config` — widget moet hem lezen) | `sql/migration_oee_v1_readers.sql` + `sql/update_data_group_partial.sql` (19, 29, 48) | klaar om te draaien |
-| 6 | data_group 62 bijwerken: `y_field` → `duration_percentage`, planned-lijn op `oee_json.planned_percentage`, filter-default `states` nalopen | `json/data_group/resource_oee_area_chart.json` | nog te maken |
+| 6 | data_groups 62 + 64: `y_field` → `duration_percentage`, `color_field` → `class_names_field`, `normalized` uit, tooltip + OEE in de header, states-default en filteropties op de nieuwe states (uit de platte lookup, met echte i18n) | `sql/update_data_group_partial.sql` (62, 64) | klaar om te draaien |
 
 Stap 1–2 kunnen los vooruit (raken de lookup niet). Stap 3 en 4 horen bij
 elkaar in één zitting. De verificatiequeries staan onderaan

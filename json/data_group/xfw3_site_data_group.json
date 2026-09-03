@@ -11986,8 +11986,14 @@
             "key": "states",
             "is_optional": true,
             "default_value": [
-              "running",
-              "breakdown"
+              "producing",
+              "setup",
+              "starved",
+              "blocked",
+              "idle",
+              "breakdown",
+              "offline",
+              "missingdata"
             ],
             "is_query_param": true
           },
@@ -12127,11 +12133,6 @@
               "hidden": true
             }
           },
-          "resource_json": {
-            "ui": {
-              "hidden": true
-            }
-          },
           "resource_name": {
             "ui": {
               "i18n": {
@@ -12156,60 +12157,6 @@
               },
               "order": 2
             }
-          },
-          "parent_percent": {
-            "ui": {
-              "i18n": {
-                "de": {
-                  "title": "Relativ"
-                },
-                "en": {
-                  "title": "Relative"
-                },
-                "es": {
-                  "title": "Relativo"
-                },
-                "fr": {
-                  "title": "Relatif"
-                },
-                "nl": {
-                  "title": "Relatief"
-                },
-                "uk": {
-                  "title": "Відносний"
-                }
-              },
-              "type": "percent",
-              "order": 7
-            },
-            "scale": 1
-          },
-          "duration_percent": {
-            "ui": {
-              "i18n": {
-                "de": {
-                  "title": "Anteil"
-                },
-                "en": {
-                  "title": "Share"
-                },
-                "es": {
-                  "title": "Proporción"
-                },
-                "fr": {
-                  "title": "Part"
-                },
-                "nl": {
-                  "title": "Aandeel"
-                },
-                "uk": {
-                  "title": "Частка"
-                }
-              },
-              "type": "percent",
-              "order": 6
-            },
-            "scale": 1
           },
           "duration_seconds": {
             "ui": {
@@ -12237,9 +12184,55 @@
               "order": 5
             }
           },
-          "total_duration_seconds": {
+          "duration_percentage": {
             "ui": {
-              "hidden": true
+              "i18n": {
+                "de": {
+                  "title": "Anteil"
+                },
+                "en": {
+                  "title": "Share"
+                },
+                "es": {
+                  "title": "Proporción"
+                },
+                "fr": {
+                  "title": "Part"
+                },
+                "nl": {
+                  "title": "Aandeel"
+                },
+                "uk": {
+                  "title": "Частка"
+                }
+              },
+              "type": "percent",
+              "order": 6
+            },
+            "scale": 1
+          },
+          "oee_json.producing_oee": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "OEE"
+                },
+                "en": {
+                  "title": "OEE"
+                },
+                "es": {
+                  "title": "OEE"
+                },
+                "fr": {
+                  "title": "OEE"
+                },
+                "nl": {
+                  "title": "OEE"
+                },
+                "uk": {
+                  "title": "OEE"
+                }
+              }
             }
           }
         },
@@ -12254,7 +12247,7 @@
                 "tooltip": {
                   "header": {
                     "group": {
-                      "fields_class_name": "grid grid-cols-5 gap-1",
+                      "fields_class_name": "grid grid-cols-7 gap-1",
                       "field_config": {
                         "step": {
                           "ui": {
@@ -12267,6 +12260,13 @@
                             "order": 0,
                             "class_name": "col-span-3"
                           }
+                        },
+                        "oee_json.producing_oee": {
+                          "ui": {
+                            "order": 2,
+                            "class_name": "col-span-2 text-right"
+                          },
+                          "type": "percent"
                         }
                       }
                     }
@@ -12282,20 +12282,6 @@
                               "class_name": "col-span-3"
                             }
                           },
-                          "parent_percent": {
-                            "ui": {
-                              "order": 3,
-                              "class_name": "col-span-2"
-                            },
-                            "type": "percent"
-                          },
-                          "duration_percent": {
-                            "ui": {
-                              "order": 2,
-                              "class_name": "col-span-2"
-                            },
-                            "type": "percent"
-                          },
                           "duration_seconds": {
                             "ui": {
                               "order": 1,
@@ -12303,6 +12289,13 @@
                             },
                             "type": "duration",
                             "format": "hh:mm"
+                          },
+                          "duration_percentage": {
+                            "ui": {
+                              "order": 2,
+                              "class_name": "col-span-2"
+                            },
+                            "type": "percent"
                           }
                         }
                       }
@@ -12314,12 +12307,11 @@
                   }
                 },
                 "x_field": "shift_date",
-                "y_field": "duration_percent",
+                "y_field": "duration_percentage",
                 "y_height": 100,
                 "set_field": "state",
                 "show_grid": true,
-                "normalized": true,
-                "color_field": "state_json.color",
+                "normalized": false,
                 "show_legend": true,
                 "set_overrides": {
                   "planned": {
@@ -12336,7 +12328,8 @@
                   "line",
                   "step",
                   "resource_uid"
-                ]
+                ],
+                "class_names_field": "state_json.class_name"
               }
             }
           ],
@@ -12717,71 +12710,48 @@
               "input_data": {
                 "data": [
                   {
-                    "code": "running",
+                    "code": "producing",
                     "i18n": {
                       "de": {
-                        "title": "Running"
+                        "title": "Produziert"
                       },
                       "en": {
-                        "title": "Running"
+                        "title": "Producing"
                       },
                       "es": {
-                        "title": "Running"
+                        "title": "Produciendo"
                       },
                       "fr": {
-                        "title": "Running"
+                        "title": "En production"
                       },
                       "nl": {
-                        "title": "Running"
+                        "title": "Producing"
                       },
                       "uk": {
-                        "title": "Running"
+                        "title": "Виробництво"
                       }
                     }
                   },
                   {
-                    "code": "idle",
+                    "code": "setup",
                     "i18n": {
                       "de": {
-                        "title": "Idle"
+                        "title": "Rüsten"
                       },
                       "en": {
-                        "title": "Idle"
+                        "title": "Setup"
                       },
                       "es": {
-                        "title": "Idle"
+                        "title": "Configuración"
                       },
                       "fr": {
-                        "title": "Idle"
+                        "title": "Configuration"
                       },
                       "nl": {
-                        "title": "Idle"
+                        "title": "Setup"
                       },
                       "uk": {
-                        "title": "Idle"
-                      }
-                    }
-                  },
-                  {
-                    "code": "breakdown",
-                    "i18n": {
-                      "de": {
-                        "title": "Breakdown"
-                      },
-                      "en": {
-                        "title": "Breakdown"
-                      },
-                      "es": {
-                        "title": "Breakdown"
-                      },
-                      "fr": {
-                        "title": "Breakdown"
-                      },
-                      "nl": {
-                        "title": "Breakdown"
-                      },
-                      "uk": {
-                        "title": "Breakdown"
+                        "title": "Налаштування"
                       }
                     }
                   },
@@ -12789,22 +12759,22 @@
                     "code": "starved",
                     "i18n": {
                       "de": {
-                        "title": "Starved"
+                        "title": "Materialmangel"
                       },
                       "en": {
                         "title": "Starved"
                       },
                       "es": {
-                        "title": "Starved"
+                        "title": "Sin material"
                       },
                       "fr": {
-                        "title": "Starved"
+                        "title": "Sous-alimenté"
                       },
                       "nl": {
                         "title": "Starved"
                       },
                       "uk": {
-                        "title": "Starved"
+                        "title": "Голодування"
                       }
                     }
                   },
@@ -12812,22 +12782,68 @@
                     "code": "blocked",
                     "i18n": {
                       "de": {
-                        "title": "Blocked"
+                        "title": "Blockiert"
                       },
                       "en": {
                         "title": "Blocked"
                       },
                       "es": {
-                        "title": "Blocked"
+                        "title": "Bloqueado"
                       },
                       "fr": {
-                        "title": "Blocked"
+                        "title": "Bloqué"
                       },
                       "nl": {
                         "title": "Blocked"
                       },
                       "uk": {
-                        "title": "Blocked"
+                        "title": "Заблоковано"
+                      }
+                    }
+                  },
+                  {
+                    "code": "idle",
+                    "i18n": {
+                      "de": {
+                        "title": "Leerlauf"
+                      },
+                      "en": {
+                        "title": "Idle"
+                      },
+                      "es": {
+                        "title": "Inactivo"
+                      },
+                      "fr": {
+                        "title": "Inactif"
+                      },
+                      "nl": {
+                        "title": "Idle"
+                      },
+                      "uk": {
+                        "title": "Неактивний"
+                      }
+                    }
+                  },
+                  {
+                    "code": "breakdown",
+                    "i18n": {
+                      "de": {
+                        "title": "Störung"
+                      },
+                      "en": {
+                        "title": "Breakdown"
+                      },
+                      "es": {
+                        "title": "Avería"
+                      },
+                      "fr": {
+                        "title": "Panne"
+                      },
+                      "nl": {
+                        "title": "Breakdown"
+                      },
+                      "uk": {
+                        "title": "Поломка"
                       }
                     }
                   },
@@ -12841,16 +12857,62 @@
                         "title": "Offline"
                       },
                       "es": {
-                        "title": "Offline"
+                        "title": "Sin conexión"
                       },
                       "fr": {
-                        "title": "Offline"
+                        "title": "Hors ligne"
                       },
                       "nl": {
                         "title": "Offline"
                       },
                       "uk": {
-                        "title": "Offline"
+                        "title": "Офлайн"
+                      }
+                    }
+                  },
+                  {
+                    "code": "missingdata",
+                    "i18n": {
+                      "de": {
+                        "title": "Fehlende Daten"
+                      },
+                      "en": {
+                        "title": "Missing data"
+                      },
+                      "es": {
+                        "title": "Datos faltantes"
+                      },
+                      "fr": {
+                        "title": "Données manquantes"
+                      },
+                      "nl": {
+                        "title": "Missing data"
+                      },
+                      "uk": {
+                        "title": "Відсутні дані"
+                      }
+                    }
+                  },
+                  {
+                    "code": "running",
+                    "i18n": {
+                      "de": {
+                        "title": "Läuft"
+                      },
+                      "en": {
+                        "title": "Running"
+                      },
+                      "es": {
+                        "title": "En marcha"
+                      },
+                      "fr": {
+                        "title": "En marche"
+                      },
+                      "nl": {
+                        "title": "Running"
+                      },
+                      "uk": {
+                        "title": "В роботі"
                       }
                     }
                   }
