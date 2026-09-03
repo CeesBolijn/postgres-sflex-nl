@@ -254,6 +254,30 @@
             }
           }
         },
+        "oee_json.producing_hours": {
+          "ui": {
+            "i18n": {
+              "de": {
+                "title": "Produktionsstunden"
+              },
+              "en": {
+                "title": "producing hours"
+              },
+              "es": {
+                "title": "producing hours"
+              },
+              "fr": {
+                "title": "producing hours"
+              },
+              "nl": {
+                "title": "productie-uren"
+              },
+              "uk": {
+                "title": "producing hours"
+              }
+            }
+          }
+        },
         "param_json.total_shift_hours": {
           "ui": {
             "i18n": {

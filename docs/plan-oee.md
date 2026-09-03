@@ -345,20 +345,40 @@ evaluatieresultaat) terug; `duration_percentage` per state is het aandeel in
 het venster. `v_excluded_states` is weg. Planning blijft een eigen lijn
 (geschatte productietijd) en gaat nooit in `total_shift_hours`.
 
-## 6. draaivolgorde
+## 6. draaivolgorde — uitgevoerd
 
-| # | stap | script | status |
-|---|---|---|---|
-| 1 | `upsert_state_shift_agg`: delete-then-insert, restant → `starved.running` (rename-migratie: `sql/migration_starved_running.sql`), productie gespreid, left join, nachtvensters | `sql/migration_state_shift_agg.sql` | klaar om te draaien |
-| 2 | backfill: stap 1 over de historie vanaf 2026-05-01 | zelfde file, onderste blok | klaar om te draaien |
-| 3 | `log.lookup` aanmaken + platte lookup erin (`counts_as` 4 buckets, `alias_of`); `relation.lookup` blijft onaangeraakt | `sql/migration_oee_shift_totals.sql` + `sql/update_log_lookup_resource_state.sql` | klaar; samen met 4 |
-| 4 | alleen `shift_totals` om: buckets → `param_json`, `v_formula_json`, `evaluate_many_nas`; `v_excluded_states` en de `.operator`-`CASE` weg. Overige lezers verhuizen later | `sql/log/get_resource_state_shift_totals.sql` (drop zit in stap 3) | klaar; samen met 3 |
-| 5 | v1 verhuist: `get_resource_state`, `_aggregate` (restant → `starved.running`), `_produced`, `_plan_batch` naar `log.lookup`; data_groups 19 + 29: `state.block.i18n` → `state.i18n`, `color_field` → `class_names_field: state.class_name` (nieuwe key op `donut_chart_config` — widget moet hem lezen) | `sql/migration_oee_v1_readers.sql` + `sql/update_data_group_partial.sql` (19, 29, 48) | klaar om te draaien |
-| 6 | data_groups 62 + 64: `y_field` → `duration_percentage`, `color_field` → `class_names_field`, `normalized` uit, tooltip + OEE in de header, states-default en filteropties op de nieuwe states (uit de platte lookup, met echte i18n) | `sql/update_data_group_partial.sql` (62, 64) | klaar om te draaien |
+Alles hieronder is gedraaid en geverifieerd (sep 2026); de eenmalige
+migratiescripts zijn daarna opgeruimd. Wat blijft:
 
-Stap 1–2 kunnen los vooruit (raken de lookup niet). Stap 3 en 4 horen bij
-elkaar in één zitting. De verificatiequeries staan onderaan
-`sql/migration_state_shift_agg.sql` en `sql/migration_oee_readers.sql`.
+| blijvend script | rol |
+|---|---|
+| `sql/log/*.sql`, `sql/action/*.sql` | de object-mirrors — dit is de bron; deployen = drop + file draaien |
+| `sql/update_log_lookup_resource_state.sql` | gegenereerd uit `json/lookup/log/lookup_resource_state.json`; na elke wijziging in de JSON opnieuw genereren en draaien |
+| `sql/update_shift_totals.sql` | gegenereerde drop + create van de OEE-read, uit de mirror |
+| `sql/update_data_group_partial.sql` | gegenereerd met `node scripts/build_update_data_group.js <ids>` |
+| `sql/check_state_shift_agg.sql` | blijvende read-only checks op de tellende data |
+
+Wat er stond (en wat het deed) in volgorde van uitvoering:
+
+1. builder herbouwd: delete-then-insert per datum, restant `starved.running`
+   (eigen code, alias naar starved), productie gespreid over
+   `[start_at, start_at + production_time_seconds]`, left join zodat running
+   zonder productie volledig restant wordt, nachtvensters (+1 day, v_until)
+2. backfill over de hele historie — **altijd als DO-blok**, zie
+   [[backfill-do-block]]-les: een per-rij SELECT wordt door client-paginering
+   afgekapt
+3. `log.lookup` + platte lookup (32 nodes, `counts_as`, `alias_of`,
+   `fill`/`color` uit `docs/css_variables.css`); `relation.lookup` bleef
+   onaangeraakt voor de nog niet verhuisde lezers
+4. `get_resource_state_shift_totals`: buckets → `param_json`,
+   `v_formula_json`, `evaluate_many_nas`, synthetische `available`-rij die de
+   stapel op het venster laat sluiten, `counts_as` als platte kolom,
+   `unavailable_rest_in_seconds` voor de tooltip
+5. v1 verhuisd: `get_resource_state`, `_aggregate` (restant →
+   `starved.running`), `_produced`, `_plan_batch` naar `log.lookup`
+6. shiftdefinitie `23:59` → `00:00` (werkdag = exact 18 h) + backfill
+7. data_groups 19/29/62/64 op de nieuwe vorm; het frontend-contract staat in
+   `docs/handoff-oee-frontend.md`
 
 ## 7. open beslissingen
 
@@ -369,7 +389,7 @@ functie + `param_json` + `evaluate_many_nas` (§5); `v_excluded_states` leeg;
 
 1. **De Dyflexis-sync** — wordt `relation.shift_planning` /
    `shift_registered_hours` weer gevuld? Zo ja, dan komt het venster per lijn
-   daaruit (`SWAP POINT` in `sql/migration_state_shift_agg.sql` én `shift_def`
+   daaruit (`SWAP POINT` in `sql/log/upsert_state_shift_agg.sql` én `shift_def`
    in `get_resource_state_shift_totals`) en kan `action.dates.shift_json` weg,
    zoals de geblokkeerde migratie al vraagt. Zo nee, dan blijft de noemer een
    bedrijfsbreed patroon en is OEE per resource niet beter te maken dan dat.

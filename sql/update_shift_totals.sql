@@ -1,3 +1,18 @@
+-- ============================================================
+-- Update: get_resource_state_shift_totals — the unavailable rest
+-- (breakdown + offline not shown as its own area) is a synthetic
+-- STATE row 'unavailable' at the top of the stack, not a separate
+-- tooltip entity. The available band shrinks accordingly, so
+-- producing + losses + available + unavailable(+shown) still sum to
+-- the window. No row when the selection already covers everything.
+-- Run together with sql/update_log_lookup_resource_state.sql (the
+-- 'unavailable' node) and sql/update_data_group_partial.sql (62).
+-- ============================================================
+
+BEGIN;
+
+DROP FUNCTION log.get_resource_state_shift_totals(p_resource_uids text[], p_until timestamp with time zone, p_days integer, p_line_type text, p_states text[], p_include_weekends boolean, p_include_mandatory_days_off boolean, p_include_shifts boolean, p_group_by text, p_tenant_ids integer[]);
+
 create function log.get_resource_state_shift_totals(p_resource_uids text[] DEFAULT NULL::text[], p_until timestamp with time zone DEFAULT CURRENT_TIMESTAMP, p_days integer DEFAULT 42, p_line_type text DEFAULT NULL::text, p_states text[] DEFAULT NULL::text[], p_include_weekends boolean DEFAULT false, p_include_mandatory_days_off boolean DEFAULT false, p_include_shifts boolean DEFAULT true, p_group_by text DEFAULT NULL::text, p_tenant_ids integer[] DEFAULT NULL::integer[]) returns TABLE(shift_date date, shift_index integer, shift_start timestamp with time zone, shift_end timestamp with time zone, resource_uid text, resource_name text, resource_uids jsonb, line text, step text, state text, state_json jsonb, counts_as text, duration_seconds numeric, duration_percentage numeric, param_json jsonb, oee_json jsonb, count_resources integer, sort_order integer)
 	stable
 	language plpgsql
@@ -316,3 +331,27 @@ end;
 $$;
 
 alter function log.get_resource_state_shift_totals(text[], timestamp with time zone, integer, text, text[], boolean, boolean, boolean, text, integer[]) owner to xfw3;
+
+COMMIT;
+
+-- verification 1: the stack still closes on the window; expected: no rows
+-- (group by resource_uid, never by name: several names exist twice)
+SELECT shift_date, resource_uid
+FROM (
+  SELECT shift_date, resource_uid,
+         sum(duration_seconds) FILTER (WHERE state <> 'planned') AS stack_seconds,
+         max((param_json ->> 'total_shift_in_seconds')::numeric) AS window_seconds
+  FROM log.get_resource_state_shift_totals(
+           NULL, now(), 3, NULL, array['producing', 'setup'], false, false, false, 'resource', NULL)
+  GROUP BY shift_date, resource_uid
+) x
+WHERE abs(stack_seconds - window_seconds) > 2;
+
+-- verification 2: everything selected -> no unavailable rows left
+SELECT count(*) AS unavailable_rows
+FROM log.get_resource_state_shift_totals(
+         NULL, now(), 3, NULL,
+         array['producing', 'setup', 'breakdown', 'maintenance', 'interruption',
+               'offline', 'installation', 'missingdata'],
+         false, false, false, 'resource', NULL)
+WHERE state = 'unavailable';

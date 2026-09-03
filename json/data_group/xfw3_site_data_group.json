@@ -1398,7 +1398,9 @@
           "group_by": [
             "state.code"
           ],
-          "class_names_field": "state.class_name"
+          "class_names_field": "state.class_name",
+          "fill_field": "state.fill",
+          "color_field": "state.color"
         }
       }
     ]
@@ -11988,11 +11990,11 @@
             "default_value": [
               "producing",
               "setup",
-              "starved",
-              "blocked",
-              "idle",
               "breakdown",
+              "maintenance",
+              "interruption",
               "offline",
+              "installation",
               "missingdata"
             ],
             "is_query_param": true
@@ -12184,33 +12186,6 @@
               "order": 5
             }
           },
-          "duration_percentage": {
-            "ui": {
-              "i18n": {
-                "de": {
-                  "title": "Anteil"
-                },
-                "en": {
-                  "title": "Share"
-                },
-                "es": {
-                  "title": "Proporción"
-                },
-                "fr": {
-                  "title": "Part"
-                },
-                "nl": {
-                  "title": "Aandeel"
-                },
-                "uk": {
-                  "title": "Частка"
-                }
-              },
-              "type": "percent",
-              "order": 6
-            },
-            "scale": 1
-          },
           "oee_json.producing_oee": {
             "ui": {
               "i18n": {
@@ -12234,6 +12209,30 @@
                 }
               }
             }
+          },
+          "param_json.total_shift_hours": {
+            "ui": {
+              "i18n": {
+                "de": {
+                  "title": "Schichtstunden"
+                },
+                "en": {
+                  "title": "Shift hours"
+                },
+                "es": {
+                  "title": "Shift hours"
+                },
+                "fr": {
+                  "title": "Shift hours"
+                },
+                "nl": {
+                  "title": "Shifturen"
+                },
+                "uk": {
+                  "title": "Shift hours"
+                }
+              }
+            }
           }
         },
         "flow_board_config": {
@@ -12247,24 +12246,30 @@
                 "tooltip": {
                   "header": {
                     "group": {
-                      "fields_class_name": "grid grid-cols-7 gap-1",
+                      "fields_class_name": "grid grid-cols-6 gap-1",
                       "field_config": {
-                        "step": {
-                          "ui": {
-                            "order": 1,
-                            "class_name": "col-span-2"
-                          }
-                        },
                         "shift_date": {
                           "ui": {
                             "order": 0,
+                            "class_name": "col-span-4"
+                          }
+                        },
+                        "step": {
+                          "ui": {
+                            "order": 1,
+                            "class_name": "col-span-2 text-right"
+                          }
+                        },
+                        "param_json.total_shift_hours": {
+                          "ui": {
+                            "order": 2,
                             "class_name": "col-span-3"
                           }
                         },
                         "oee_json.producing_oee": {
                           "ui": {
-                            "order": 2,
-                            "class_name": "col-span-2 text-right"
+                            "order": 3,
+                            "class_name": "col-span-3 text-right"
                           },
                           "type": "percent"
                         }
@@ -12279,37 +12284,25 @@
                           "state": {
                             "ui": {
                               "order": 0,
-                              "class_name": "col-span-3"
+                              "class_name": "col-span-5"
                             }
                           },
                           "duration_seconds": {
                             "ui": {
                               "order": 1,
-                              "class_name": "col-span-2"
+                              "class_name": "col-span-4 text-right"
                             },
                             "type": "duration",
                             "format": "hh:mm"
-                          },
-                          "duration_percentage": {
-                            "ui": {
-                              "order": 2,
-                              "class_name": "col-span-2"
-                            },
-                            "type": "percent"
                           }
                         }
                       }
                     }
-                  ],
-                  "set_order_field": "sort_order",
-                  "sort": {
-                    "direction": "desc"
-                  }
+                  ]
                 },
                 "x_field": "shift_date",
-                "y_field": "duration_percentage",
-                "y_height": 100,
-                "set_field": "state",
+                "y_field": "duration_seconds",
+                "set_field": "counts_as",
                 "show_grid": true,
                 "normalized": false,
                 "show_legend": true,
@@ -12317,10 +12310,13 @@
                   "planned": {
                     "type": "line",
                     "stacked": false
+                  },
+                  "available": {
+                    "no_legend": true,
+                    "no_tooltip": true
                   }
                 },
                 "set_order_field": "sort_order",
-                "set_title_field": "${line} ${step} ${resource_name}",
                 "optional_group_fields": [
                   "shift_index"
                 ],
@@ -12329,7 +12325,14 @@
                   "step",
                   "resource_uid"
                 ],
-                "class_names_field": "state_json.class_name"
+                "class_names_field": "state_json.class_name",
+                "y_axis": {
+                  "format": "hh:mm",
+                  "begin_at_zero": true,
+                  "max_field": "param_json.total_shift_in_seconds"
+                },
+                "fill_field": "state_json.fill",
+                "color_field": "state_json.color"
               }
             }
           ],

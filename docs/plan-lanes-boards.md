@@ -73,8 +73,8 @@ production_line_id, lane_item_id, resource_uid]`, `get_impose_plan` idem zonder
    `mock.get_plan_lanes`, maakt `action.get_plan_lanes` (offset-regel + resource-modus).
 2. [`sql/mock/get_impose_plan.sql`](../sql/mock/get_impose_plan.sql) — enige caller,
    wijst nu naar action.
-3. [`sql/migration_move_get_plan_lanes.sql`](../sql/migration_move_get_plan_lanes.sql)
-   — data_table query + primary keys.
+3. [`archive/sql/migrations/migration_move_get_plan_lanes.sql`](../archive/sql/migrations/migration_move_get_plan_lanes.sql)
+   — data_table query + primary keys (gedraaid; gearchiveerd sep 2026).
 4. [`sql/update_data_group_partial.sql`](../sql/update_data_group_partial.sql) —
    data_groups 78 en 81.
 

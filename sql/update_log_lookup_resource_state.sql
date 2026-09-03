@@ -8,10 +8,11 @@
 -- (this script is generated from that file — edit the values THERE,
 -- then regenerate; do not edit the JSON below by hand).
 --
--- Structure: one flat array, 31 nodes, no hierarchy. Per node: code,
+-- Structure: one flat array, 33 nodes, no hierarchy. Per node: code,
 -- i18n (directly on the node, no block wrapper), group, order,
 -- class_name, and where applicable counts_as and alias_of. color is
--- gone — class_name carries the styling.
+-- gone; fill and color carry css variables (docs/css_variables.css),
+-- because svg cannot be styled through class_names.
 --
 -- counts_as has exactly four values, nothing else:
 --   producing  producing, setup
@@ -57,7 +58,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 10,
-    "class_name": "plan-not-released"
+    "class_name": "plan-not-released",
+    "fill": "var(--plan-not_released)",
+    "color": "var(--plan-not_released-color)"
   },
   {
     "code": "nesting",
@@ -83,7 +86,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 20,
-    "class_name": "plan-nesting"
+    "class_name": "plan-nesting",
+    "fill": "var(--plan-nesting)",
+    "color": "var(--plan-nesting-color)"
   },
   {
     "code": "nested",
@@ -109,7 +114,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 30,
-    "class_name": "plan-nested"
+    "class_name": "plan-nested",
+    "fill": "var(--plan-nested)",
+    "color": "var(--plan-nested-color)"
   },
   {
     "code": "ripping",
@@ -135,7 +142,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 40,
-    "class_name": "plan-ripping"
+    "class_name": "plan-ripping",
+    "fill": "var(--plan-ripping)",
+    "color": "var(--plan-ripping-color)"
   },
   {
     "code": "ripped",
@@ -161,7 +170,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 50,
-    "class_name": "plan-ripped"
+    "class_name": "plan-ripped",
+    "fill": "var(--plan-ripped)",
+    "color": "var(--plan-ripped-color)"
   },
   {
     "code": "cut",
@@ -187,7 +198,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 60,
-    "class_name": "plan-cut"
+    "class_name": "plan-cut",
+    "fill": "var(--plan-cut)",
+    "color": "var(--plan-cut-color)"
   },
   {
     "code": "printed",
@@ -213,7 +226,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 70,
-    "class_name": "plan-printed"
+    "class_name": "plan-printed",
+    "fill": "var(--plan-printed)",
+    "color": "var(--plan-printed-color)"
   },
   {
     "code": "laminated",
@@ -239,7 +254,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 80,
-    "class_name": "plan-laminated"
+    "class_name": "plan-laminated",
+    "fill": "var(--plan-laminated)",
+    "color": "var(--plan-laminated-color)"
   },
   {
     "code": "batch-reserved",
@@ -265,7 +282,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 90,
-    "class_name": "plan-batch-reserved"
+    "class_name": "plan-batch-reserved",
+    "fill": "var(--plan-batch-reserved)",
+    "color": "var(--plan-batch-reserved-color)"
   },
   {
     "code": "batch-initiated",
@@ -291,7 +310,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 100,
-    "class_name": "plan-batch-initiated"
+    "class_name": "plan-batch-initiated",
+    "fill": "var(--plan-batch-initiated)",
+    "color": "var(--plan-batch-initiated-color)"
   },
   {
     "code": "batch",
@@ -317,7 +338,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 110,
-    "class_name": "plan-batch"
+    "class_name": "plan-batch",
+    "fill": "var(--plan-batch)",
+    "color": "var(--plan-batch-color)"
   },
   {
     "code": "impact",
@@ -343,7 +366,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 120,
-    "class_name": "plan-impact"
+    "class_name": "plan-impact",
+    "fill": "var(--plan-impact)",
+    "color": "var(--plan-impact-color)"
   },
   {
     "code": "planned",
@@ -370,7 +395,9 @@ VALUES ('lookup_resource_state', $json$
     "group": "state",
     "order": 130,
     "class_name": "plan",
-    "counts_as": "planned"
+    "counts_as": "planned",
+    "fill": "var(--plan)",
+    "color": "var(--plan-color)"
   },
   {
     "code": "breaks",
@@ -396,7 +423,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 140,
-    "class_name": "plan-breaks"
+    "class_name": "plan-breaks",
+    "fill": "var(--plan-breaks)",
+    "color": "var(--plan-breaks-color)"
   },
   {
     "code": "changeovertime",
@@ -422,7 +451,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 150,
-    "class_name": "plan-changeovertime"
+    "class_name": "plan-changeovertime",
+    "fill": "var(--plan-changeovertime)",
+    "color": "var(--plan-changeovertime-color)"
   },
   {
     "code": "ticket",
@@ -448,7 +479,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "plan",
     "order": 160,
-    "class_name": "plan-ticket"
+    "class_name": "plan-ticket",
+    "fill": "var(--plan-ticket)",
+    "color": "var(--plan-ticket-color)"
   },
   {
     "code": "maintenance",
@@ -475,7 +508,9 @@ VALUES ('lookup_resource_state', $json$
     "group": "plan",
     "order": 170,
     "class_name": "plan-maintenance",
-    "counts_as": "breakdown"
+    "counts_as": "breakdown",
+    "fill": "var(--plan-maintenance)",
+    "color": "var(--plan-maintenance-color)"
   },
   {
     "code": "interruption",
@@ -502,7 +537,9 @@ VALUES ('lookup_resource_state', $json$
     "group": "plan",
     "order": 180,
     "class_name": "plan-interruption",
-    "counts_as": "breakdown"
+    "counts_as": "breakdown",
+    "fill": "var(--plan-interruption)",
+    "color": "var(--plan-interruption-color)"
   },
   {
     "code": "producing",
@@ -529,7 +566,9 @@ VALUES ('lookup_resource_state', $json$
     "group": "state",
     "order": 190,
     "class_name": "state-producing",
-    "counts_as": "producing"
+    "counts_as": "producing",
+    "fill": "var(--state-producing)",
+    "color": "var(--state-producing-color)"
   },
   {
     "code": "setup",
@@ -556,7 +595,9 @@ VALUES ('lookup_resource_state', $json$
     "group": "state",
     "order": 200,
     "class_name": "state-setup",
-    "counts_as": "producing"
+    "counts_as": "producing",
+    "fill": "var(--state-setup)",
+    "color": "var(--state-setup-color)"
   },
   {
     "code": "running",
@@ -582,7 +623,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "state",
     "order": 210,
-    "class_name": "state-running"
+    "class_name": "state-running",
+    "fill": "var(--state-running)",
+    "color": "var(--state-running-color)"
   },
   {
     "code": "idle",
@@ -608,7 +651,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "state",
     "order": 220,
-    "class_name": "state-idle"
+    "class_name": "state-idle",
+    "fill": "var(--state-idle)",
+    "color": "var(--state-idle-color)"
   },
   {
     "code": "starved",
@@ -634,7 +679,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "state",
     "order": 230,
-    "class_name": "state-starved"
+    "class_name": "state-starved",
+    "fill": "var(--state-starved)",
+    "color": "var(--state-starved-color)"
   },
   {
     "code": "starved.operator",
@@ -661,7 +708,9 @@ VALUES ('lookup_resource_state', $json$
     "group": "state",
     "order": 240,
     "class_name": "state-starved",
-    "alias_of": "starved"
+    "alias_of": "starved",
+    "fill": "var(--state-starved-operator)",
+    "color": "var(--state-starved-operator-color)"
   },
   {
     "code": "blocked",
@@ -687,7 +736,9 @@ VALUES ('lookup_resource_state', $json$
     },
     "group": "state",
     "order": 250,
-    "class_name": "state-blocked"
+    "class_name": "state-blocked",
+    "fill": "var(--state-blocked)",
+    "color": "var(--state-blocked-color)"
   },
   {
     "code": "blocked.operator",
@@ -714,7 +765,9 @@ VALUES ('lookup_resource_state', $json$
     "group": "state",
     "order": 260,
     "class_name": "state-blocked",
-    "alias_of": "blocked"
+    "alias_of": "blocked",
+    "fill": "var(--state-blocked-operator, var(--state-blocked))",
+    "color": "var(--state-blocked-operator-color, var(--state-blocked-color))"
   },
   {
     "code": "starved.running",
@@ -741,7 +794,37 @@ VALUES ('lookup_resource_state', $json$
     "group": "state",
     "order": 270,
     "class_name": "state-starved",
-    "alias_of": "starved"
+    "alias_of": "starved",
+    "fill": "var(--state-starved-running, var(--state-starved))",
+    "color": "var(--state-starved-running-color, var(--state-starved-color))"
+  },
+  {
+    "code": "available",
+    "i18n": {
+      "de": {
+        "title": "Verfügbar"
+      },
+      "en": {
+        "title": "Available"
+      },
+      "es": {
+        "title": "Disponible"
+      },
+      "fr": {
+        "title": "Disponible"
+      },
+      "nl": {
+        "title": "Beschikbaar"
+      },
+      "uk": {
+        "title": "Доступно"
+      }
+    },
+    "group": "state",
+    "order": 275,
+    "class_name": "state-available",
+    "fill": "var(--state-available, transparent)",
+    "color": "var(--state-available-color, #111111)"
   },
   {
     "code": "breakdown",
@@ -768,7 +851,9 @@ VALUES ('lookup_resource_state', $json$
     "group": "state",
     "order": 280,
     "class_name": "state-breakdown",
-    "counts_as": "breakdown"
+    "counts_as": "breakdown",
+    "fill": "var(--state-breakdown)",
+    "color": "var(--state-breakdown-color)"
   },
   {
     "code": "missingdata",
@@ -795,7 +880,9 @@ VALUES ('lookup_resource_state', $json$
     "group": "state",
     "order": 290,
     "class_name": "state-missingdata",
-    "counts_as": "offline"
+    "counts_as": "offline",
+    "fill": "var(--state-missingdata)",
+    "color": "var(--state-missingdata-color)"
   },
   {
     "code": "offline",
@@ -822,7 +909,9 @@ VALUES ('lookup_resource_state', $json$
     "group": "state",
     "order": 300,
     "class_name": "state-offline",
-    "counts_as": "offline"
+    "counts_as": "offline",
+    "fill": "var(--state-offline)",
+    "color": "var(--state-offline-color)"
   },
   {
     "code": "installation",
@@ -849,7 +938,37 @@ VALUES ('lookup_resource_state', $json$
     "group": "state",
     "order": 310,
     "class_name": "state-installation",
-    "counts_as": "offline"
+    "counts_as": "offline",
+    "fill": "var(--state-installation)",
+    "color": "var(--state-installation-color)"
+  },
+  {
+    "code": "unavailable",
+    "i18n": {
+      "de": {
+        "title": "Nicht verfügbar"
+      },
+      "en": {
+        "title": "Unavailable"
+      },
+      "es": {
+        "title": "No disponible"
+      },
+      "fr": {
+        "title": "Indisponible"
+      },
+      "nl": {
+        "title": "Niet beschikbaar"
+      },
+      "uk": {
+        "title": "Недоступно"
+      }
+    },
+    "group": "state",
+    "order": 320,
+    "class_name": "state-unavailable",
+    "fill": "var(--state-unavailable, var(--state-offline))",
+    "color": "var(--state-unavailable-color, var(--state-offline-color))"
   }
 ]
 $json$::jsonb)
@@ -863,8 +982,8 @@ COMMIT;
 -- verification
 -- ============================================================
 
--- 1. flat and clean: 31 nodes, none nested, no old-form keys, no
---    counts_as outside the four buckets; expected: 31 | 0 | 0 | 0
+-- 1. flat and clean: 33 nodes, none nested, no old-form keys, no
+--    counts_as outside the four buckets; expected: 33 | 0 | 0 | 0
 SELECT jsonb_array_length(l.lookup_json)                                       AS nodes,
        count(*) FILTER (WHERE g.value ? 'states')                              AS nested,
        count(*) FILTER (WHERE NOT (g.value ? 'i18n') OR g.value ? 'block'

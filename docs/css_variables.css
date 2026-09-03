@@ -1,0 +1,356 @@
+:root {
+  /* ──────────────────────────────────────────────
+     state group (group: "state")
+     ────────────────────────────────────────────── */
+  --state-running: #38a194;
+  --state-running-color: #111111;
+  --state-producing: #4ce17a;
+  --state-producing-color: #111111;
+  --state-setup: #7d2cff;
+  --state-setup-color: #f5f5f5;
+  --state-starved: #e7a809;
+  --state-starved-color: #111111;
+  --state-starved-operator: #23a684;
+  --state-starved-operator-color: #111111;
+  --state-blocked: #fab881;
+  --state-blocked-color: #111111;
+  --state-idle: #f5e846;
+  --state-idle-color: #111111;
+  --state-breakdown: #ff2c2c;
+  --state-rush: #ff2c2c;
+  --state-breakdown-color: #111111;
+  --state-missingdata: #cd6e79;
+  --state-missingdata-color: #111111;
+  --state-offline: #818181;
+  --state-offline-color: #111111;
+  --state-installation: #638fd8;
+  --state-installation-color: #111111;
+  --state-available: #transparent;
+  --state-available-color: #111111;
+
+  /* ──────────────────────────────────────────────
+     plan group (group: "plan")
+     productieketen — blauwe ramp, dark theme
+     Statussen uit de orderline-status JSON, in
+     volgorde van sequence.
+     ────────────────────────────────────────────── */
+  --plan-dtp: #8fc7f4;                    /* seq 100 */
+  --plan-dtp-color: #111111;
+  --plan-file_in_gangrun: #29d1c9;        /* seq 450 */
+  --plan-file_in_gangrun-color: #111111;
+  --plan-out_of_stock: #d9822b;           /* seq 475 */
+  --plan-out_of_stock-color: #111111;
+  --plan-ready_to_purchase: #e8b931;      /* seq 480 */
+  --plan-ready_to_purchase-color: #111111;
+  --plan-nesting: #29d1c9;                /* seq 495 */
+  --plan-nesting-color: #111111;
+  --plan-nested: #4d8be8;                 /* seq 500 */
+  --plan-nested-color: #111111;
+  --plan-batched: #6190d8;                /* seq 550 */
+  --plan-batched-color: #111111;
+  --plan-planned: #7fa8e8;                /* seq 575 */
+  --plan-planned-color: #111111;
+  --plan-ripping: #3a5fd0;                /* seq 590 */
+  --plan-ripping-color: #f5f5f5;
+  --plan-ripped: #3a5fd0;                 /* seq 600 */
+  --plan-ripped-color: #f5f5f5;
+  --plan-purchased: #d4a017;              /* seq 615 */
+  --plan-purchased-color: #111111;
+  --plan-purchase_received: #c08a2e;      /* seq 625 */
+  --plan-purchase_received-color: #111111;
+  --plan-technical_failure: #e03e3e;      /* seq 650 */
+  --plan-technical_failure-color: #111111;
+  --plan-finishing_unavailable: #d97b6a;  /* seq 660 */
+  --plan-finishing_unavailable-color: #111111;
+  --plan-printed: #9b8cd9;                /* seq 700 */
+  --plan-printed-color: #111111;
+  --plan-calendering: #8a76d1;            /* seq 710 */
+  --plan-calendering-color: #111111;
+  --plan-drying: #8267c9;                 /* seq 715 */
+  --plan-drying-color: #111111;
+  --plan-treated: #7b5cc0;                /* seq 720 */
+  --plan-treated-color: #111111;
+  --plan-coated: #8c5cb8;                 /* seq 790 */
+  --plan-coated-color: #111111;
+  --plan-laminated: #9a5fb0;              /* seq 795 */
+  --plan-laminated-color: #111111;
+  --plan-applied: #a866ab;                /* seq 797 */
+  --plan-applied-color: #111111;
+  --plan-cut: #5fa25e;                    /* seq 801 */
+  --plan-cut-color: #111111;
+  --plan-folded: #6dab52;                 /* seq 802 */
+  --plan-folded-color: #111111;
+  --plan-bundled: #79a94e;                /* seq 803 */
+  --plan-bundled-color: #111111;
+  --plan-slitted_and_creased: #86a848;    /* seq 804 */
+  --plan-slitted_and_creased-color: #111111;
+  --plan-finishing: #3f74d6;              /* seq 810 */
+  --plan-finishing-color: #f5f5f5;
+  --plan-logistics: #2f56b8;              /* seq 925 */
+  --plan-logistics-color: #f5f5f5;
+
+
+  /* ── plan: niet in de status-JSON, wel in gebruik ── */
+  --plan: #6fb0f2;
+  --plan-color: #111111;
+  --plan-not_released: #de2222;
+  --plan-not_released-color: #111111;
+  /* impact is translucent (#f8f5f5 @ ~37%): rendert grijs op een
+     donkere achtergrond, dus bijna-wit contrasteert het best.
+     Behandel je 'm als vaste near-white kleur? Zet 'm dan op #111111. */
+  --plan-impact: #f8f5f55e;
+  --plan-impact-color: #f5f5f5;
+  --plan-batch-reserved: #757272;
+  --plan-batch-reserved-color: #f5f5f5;
+  --plan-batch-initiated: #303031;
+  --plan-batch-initiated-color: #4c4c4d;
+  --plan-batch: #6190d8;
+  --plan-batch-color: #111111;
+
+  /* idle-gerelateerd */
+  --plan-breaks: #eabd11;
+  --plan-breaks-color: #111111;
+  --plan-changeovertime: #a0a0a0;
+  --plan-changeovertime-color: #111111;
+  --plan-ticket: #ce7162;
+  --plan-ticket-color: #111111;
+
+  /* breakdown-gerelateerd */
+  --plan-maintenance: #fb923c;
+  --plan-maintenance-color: #111111;
+  --plan-interruption: #ce7162;
+  --plan-interruption-color: #111111;
+  --plan-maintenance-testprint: #8884d5;
+  --plan-maintenance-testprint-color: #111111;
+
+  /* ──────────────────────────────────────────────
+     segment modifiers (combinable) — ride on top of a
+     status class on chart segments / cards
+     ────────────────────────────────────────────── */
+  --segment-rework: #de2222;
+  --segment-rework-shade: color-mix(in srgb, var(--segment-rework) 40%, transparent);
+
+  /* ──────────────────────────────────────────────
+     plan signal levels (combinable) — alert > warning > signal > info
+     A card can carry several at once; the priority is the stacking order.
+     ────────────────────────────────────────────── */
+  --plan-alert:   #fb1a1a;   /* alert: a bit more red */
+  --plan-warning: #ffa733;   /* warning: a lighter orange */
+  --plan-signal:  #6fb0f2;
+  --plan-info:    #9aa0a6;
+  --plan-pending: oklch(0.72 0.03 250);
+  /* alert + warning combined = one in-between colour (orange-red), not two stacked lines. */
+  --plan-alert-warning: color-mix(in srgb, var(--plan-alert), var(--plan-warning));
+
+  /* Each level's visual = a neutral near-black hairline hugging the card (so the coloured ring
+     stays legible even when the card shares the signal's hue — blue signal on a blue card, orange
+     warning on an orange card) + a SOLID colour ring just outside it (wider spread = drawn further
+     out, so several levels nest as concentric rings) + a light tint for a hint of fill (kept low
+     so it doesn't muddy the card's own colour) + a glow on alert. Composed via the four `--sig-*`
+     slots below; unset levels fall back to a 0-size transparent shadow. */
+  --sig-sep: 0 0 0 1px color-mix(in srgb, #0a0a0d 75%, transparent);
+  /* The inset tint of every ring is one knob (`--sig-fill`, default 1 = the light
+     hint of fill). A host raises it where the RING itself cannot be seen — a
+     selected timeline card's brand outline paints exactly over the ring, so the
+     selected card shows its level as a stronger fill instead. The ring stacks
+     themselves live ON the level classes (below), not here: a custom property
+     declared on :root would resolve `var(--sig-fill)` at :root and bake 1 in. */
+  --sig-fill: 1;
+
+  /* ──────────────────────────────────────────────
+     group / legend swatches — gemapt op hun state-kleur
+     ────────────────────────────────────────────── */
+  --state-group-producing: var(--state-producing);
+  --state-group-producing-color: var(--state-producing-color);
+  --state-group-halted: var(--state-idle);
+  --state-group-halted-color: var(--state-idle-color);
+  --state-group-waiting: var(--state-starved);
+  --state-group-waiting-color: var(--state-starved-color);
+  --state-group-breakdown: var(--state-breakdown);
+  --state-group-breakdown-color: var(--state-breakdown-color);
+  --state-group-maintenance: var(--plan-maintenance);
+  --state-group-maintenance-color: var(--plan-maintenance-color);
+}
+
+/* ════════════════════════════════════════════════
+   CLASSES
+   Elke class zet background-color + de bijbehorende
+   tekstkleur (var --*-color).
+   ════════════════════════════════════════════════ */
+
+/* ── state group ── */
+.state-running          { background-color: var(--state-running);          color: var(--state-running-color); --seg-color: var(--state-running); }
+.state-producing        { background-color: var(--state-producing);        color: var(--state-producing-color); --seg-color: var(--state-producing); }
+.state-setup            { background-color: var(--state-setup);             color: var(--state-setup-color); --seg-color: var(--state-setup); }
+.state-starved          { background-color: var(--state-starved);          color: var(--state-starved-color); --seg-color: var(--state-starved); }
+.state-starved-operator { background-color: var(--state-starved-operator); color: var(--state-starved-operator-color); --seg-color: var(--state-starved-operator); }
+.state-blocked          { background-color: var(--state-blocked);          color: var(--state-blocked-color); --seg-color: var(--state-blocked); }
+.state-idle             { background-color: var(--state-idle);             color: var(--state-idle-color); --seg-color: var(--state-idle); }
+.state-breakdown        { background-color: var(--state-breakdown);        color: var(--state-breakdown-color); --seg-color: var(--state-breakdown); }
+.state-missingdata      { background-color: var(--state-missingdata);      color: var(--state-missingdata-color); --seg-color: var(--state-missingdata); }
+.state-offline          { background-color: var(--state-offline);          color: var(--state-offline-color); --seg-color: var(--state-offline); }
+.state-installation     { background-color: var(--state-installation);     color: var(--state-installation-color); --seg-color: var(--state-installation); }
+.state-available        { background-color: var(--state-available);        color: var(--state-available-color); --seg-color: var(--state-available); }
+
+/* ── plan group — statussen uit de orderline-status JSON, sequence-volgorde ── */
+.plan-dtp                  { background-color: var(--plan-dtp);                  color: var(--plan-dtp-color); --seg-color: var(--plan-dtp); }
+.plan-file_in_gangrun      { background-color: var(--plan-file_in_gangrun);      color: var(--plan-file_in_gangrun-color); --seg-color: var(--plan-file_in_gangrun); }
+.plan-out_of_stock         { background-color: var(--plan-out_of_stock);         color: var(--plan-out_of_stock-color); --seg-color: var(--plan-out_of_stock); }
+.plan-ready_to_purchase    { background-color: var(--plan-ready_to_purchase);    color: var(--plan-ready_to_purchase-color); --seg-color: var(--plan-ready_to_purchase); }
+.plan-nesting              { background-color: var(--plan-nesting);              color: var(--plan-nesting-color); --seg-color: var(--plan-nesting); }
+.plan-nested               { background-color: var(--plan-nested);               color: var(--plan-nested-color); --seg-color: var(--plan-nested); }
+.plan-batched              { background-color: var(--plan-batched);              color: var(--plan-batched-color); --seg-color: var(--plan-batched); }
+.plan-planned              { background-color: var(--plan-planned);              color: var(--plan-planned-color); --seg-color: var(--plan-planned); }
+.plan-ripping              { background-color: var(--plan-ripping);              color: var(--plan-ripping-color); --seg-color: var(--plan-ripping); }
+.plan-ripped               { background-color: var(--plan-ripped);               color: var(--plan-ripped-color); --seg-color: var(--plan-ripped); }
+.plan-purchased            { background-color: var(--plan-purchased);            color: var(--plan-purchased-color); --seg-color: var(--plan-purchased); }
+.plan-purchase_received    { background-color: var(--plan-purchase_received);    color: var(--plan-purchase_received-color); --seg-color: var(--plan-purchase_received); }
+.plan-technical_failure    { background-color: var(--plan-technical_failure);    color: var(--plan-technical_failure-color); --seg-color: var(--plan-technical_failure); }
+.plan-finishing_unavailable { background-color: var(--plan-finishing_unavailable); color: var(--plan-finishing_unavailable-color); --seg-color: var(--plan-finishing_unavailable); }
+.plan-printed              { background-color: var(--plan-printed);              color: var(--plan-printed-color); --seg-color: var(--plan-printed); }
+.plan-calendering          { background-color: var(--plan-calendering);          color: var(--plan-calendering-color); --seg-color: var(--plan-calendering); }
+.plan-drying               { background-color: var(--plan-drying);               color: var(--plan-drying-color); --seg-color: var(--plan-drying); }
+.plan-treated              { background-color: var(--plan-treated);              color: var(--plan-treated-color); --seg-color: var(--plan-treated); }
+.plan-coated               { background-color: var(--plan-coated);               color: var(--plan-coated-color); --seg-color: var(--plan-coated); }
+.plan-laminated            { background-color: var(--plan-laminated);            color: var(--plan-laminated-color); --seg-color: var(--plan-laminated); }
+.plan-applied              { background-color: var(--plan-applied);              color: var(--plan-applied-color); --seg-color: var(--plan-applied); }
+.plan-cut                  { background-color: var(--plan-cut);                  color: var(--plan-cut-color); --seg-color: var(--plan-cut); }
+.plan-folded               { background-color: var(--plan-folded);               color: var(--plan-folded-color); --seg-color: var(--plan-folded); }
+.plan-bundled              { background-color: var(--plan-bundled);              color: var(--plan-bundled-color); --seg-color: var(--plan-bundled); }
+.plan-slitted_and_creased  { background-color: var(--plan-slitted_and_creased);  color: var(--plan-slitted_and_creased-color); --seg-color: var(--plan-slitted_and_creased); }
+.plan-finishing            { background-color: var(--plan-finishing);            color: var(--plan-finishing-color); --seg-color: var(--plan-finishing); }
+.plan-logistics            { background-color: var(--plan-logistics);            color: var(--plan-logistics-color); --seg-color: var(--plan-logistics); }
+
+
+/* ── plan: niet in de status-JSON, wel in gebruik ── */
+.plan                   { background-color: var(--plan);                   color: var(--plan-color); --seg-color: var(--plan); }
+.plan-not_released      { background-color: var(--plan-not_released);      color: var(--plan-not_released-color); --seg-color: var(--plan-not_released); }
+.plan-impact            { background-color: var(--plan-impact);            color: var(--plan-impact-color); --seg-color: var(--plan-impact); }
+.plan-batch-reserved    { background-color: var(--plan-batch-reserved);    color: var(--plan-batch-reserved-color); --seg-color: var(--plan-batch-reserved); }
+.plan-batch-initiated, .plan-initiated  {
+   background-color: var(--plan-batch-reserved);    color: var(--plan-batch-reserved-color); --seg-color: var(--plan-batch-reserved); opacity: 0.3;
+
+   &.is-selected {
+       opacity: 1;
+   }
+}
+.plan-batch             { background-color: var(--plan-batch);             color: var(--plan-batch-color); --seg-color: var(--plan-batch); }
+
+.plan-breaks            { background-color: var(--plan-breaks);            color: var(--plan-breaks-color); --seg-color: var(--plan-breaks); }
+.plan-changeovertime    { background-color: var(--plan-changeovertime);    color: var(--plan-changeovertime-color); --seg-color: var(--plan-changeovertime); }
+.plan-ticket            { background-color: var(--plan-ticket);            color: var(--plan-ticket-color); --seg-color: var(--plan-ticket); }
+
+.plan-maintenance       { background-color: var(--plan-maintenance);       color: var(--plan-maintenance-color); --seg-color: var(--plan-maintenance); }
+.plan-interruption      { background-color: var(--plan-interruption);      color: var(--plan-interruption-color); --seg-color: var(--plan-interruption); }
+.plan-maintenance-testprint { background-color: var(--plan-maintenance-testprint); color: var(--plan-maintenance-testprint-color); --seg-color: var(--plan-maintenance-testprint); }
+
+/* ── segment modifiers (combinable) — on top of a status class ──
+   The data emits one per segment: regular production vs rework. */
+/* segment-regular: deliberately empty — the explicit counterpart of
+   segment-rework, so class_names arrays can always carry a modifier. */
+.segment-regular {}
+/* segment-rework: a red shade OVER whatever the base class paints. HTML
+   surfaces get a translucent overlay via background-image; SVG chart cells
+   can't layer paints, so they read `--seg-paint` (the base --seg-color
+   color-mixed with the rework red) before --seg-color — see the chart fill
+   rule in app.css. */
+.segment-rework {
+  background-image: linear-gradient(var(--segment-rework-shade), var(--segment-rework-shade));
+  /* oklab keeps the mix visibly RED-ish; srgb averaging of complementary
+     hues (red over teal) turns to grey mud. */
+  --seg-paint: color-mix(in oklab, var(--segment-rework) 40%, var(--seg-color, var(--text-muted)));
+}
+
+/* ── plan signal levels (combinable) ──
+   Each level only fills its own `--sig-*` slot; the shared composition rule below paints
+   whichever slots are set. So `.plan-alert.plan-warning` shows both rings, `.plan-info` alone
+   shows just the info ring, etc. Priority (alert > warning > signal > info) is the order in the
+   `box-shadow` list: earlier = painted on top. */
+.plan-alert {
+  --sig-alert:
+    var(--sig-sep),
+    0 0 0 2.5px var(--plan-alert),
+    0 0 5px 1px color-mix(in srgb, var(--plan-alert) 55%, transparent),
+    inset 0 0 0 1000px color-mix(in srgb, var(--plan-alert) calc(12% * var(--sig-fill)), transparent);
+  --sig-color: var(--plan-alert);
+}
+.plan-warning {
+  --sig-warning:
+    var(--sig-sep),
+    0 0 0 2.5px var(--plan-warning),
+    inset 0 0 0 1000px color-mix(in srgb, var(--plan-warning) calc(11% * var(--sig-fill)), transparent);
+  --sig-color: var(--plan-warning);
+}
+.plan-signal {
+  --sig-signal:
+    var(--sig-sep),
+    0 0 0 2px var(--plan-signal),
+    inset 0 0 0 1000px color-mix(in srgb, var(--plan-signal) calc(10% * var(--sig-fill)), transparent);
+  --sig-color: var(--plan-signal);
+}
+.plan-info {
+  --sig-info:
+    var(--sig-sep),
+    0 0 0 3.5px var(--plan-info),
+    inset 0 0 0 1000px color-mix(in srgb, var(--plan-info) calc(9% * var(--sig-fill)), transparent);
+  --sig-color: var(--plan-info);
+}
+/* `--sig-color`: the level's ONE colour for surfaces that paint a level as a plain
+   fill rather than a ring (a lit segment column). Priority when several levels meet
+   on one element = the last declared wins in the cascade order above (info > signal
+   > warning > alert), so the composer picks ONE level per element instead. */
+
+/* The one rule that stacks the levels. Unset slots fall back to a transparent 0-size shadow, so
+   carrying no signal class leaves the card unchanged. Which cards carry which levels is driven by
+   the classes on the element — supplied per row by the data via `class_names_field` (the JSON
+   class-name array), resolved in src/widgets/timeline/data.ts. */
+.plan-alert,
+.plan-warning,
+.plan-signal,
+.plan-info {
+  box-shadow:
+    var(--sig-alert,   0 0 #0000),
+    var(--sig-warning, 0 0 #0000),
+    var(--sig-signal,  0 0 #0000),
+    var(--sig-info,    0 0 #0000);
+}
+
+/* Override for the alert + warning combination — one in-between (orange-red) colour, a single
+   ring (no double lines) with a soft glow + subtle tint. Higher specificity (two classes) wins
+   over the per-level composition rule above. */
+.plan-alert.plan-warning {
+  box-shadow:
+    var(--sig-sep),
+    0 0 0 2.5px var(--plan-alert-warning),
+    0 0 5px 1px color-mix(in srgb, var(--plan-alert-warning) 50%, transparent),
+    inset 0 0 0 1000px color-mix(in srgb, var(--plan-alert-warning) 12%, transparent);
+}
+
+/* state-delayed — a translucent plan-alert RED fill (30%) WITHOUT the ring: flags a
+   "delayed" card by colour only. Just an inset-tint layer (like the plan-alert ring's fill, a touch
+   stronger), so the element keeps its normal border — no red ring, glow or near-black
+   separator. Use in place of plan-alert when a card should read "delayed" via the red
+   background alone. */
+.state-delayed {
+  box-shadow: inset 0 0 0 1000px color-mix(in srgb, var(--plan-alert) 30%, transparent);
+}
+/* Below gangrun, but still room to spare. */
+.state-pending {
+  box-shadow: inset 0 0 0 1000px color-mix(in srgb, var(--plan-pending) 15%, transparent);
+}
+
+/* Below gangrun and due within v_at_risk_days. */
+.state-at-risk {
+  box-shadow: inset 0 0 0 1000px color-mix(in srgb, var(--plan-warning) 30%, transparent);
+}
+
+.state-rush {
+  box-shadow: inset 0 0 0 1000px color-mix(in srgb, var(--plan-alert) 15%, transparent);
+}
+
+/* ── group / legend swatches ── */
+.state-group-producing   { background-color: var(--state-group-producing);   color: var(--state-group-producing-color); --seg-color: var(--state-group-producing); }
+.state-group-halted      { background-color: var(--state-group-halted);      color: var(--state-group-halted-color); --seg-color: var(--state-group-halted); }
+.state-group-waiting     { background-color: var(--state-group-waiting);     color: var(--state-group-waiting-color); --seg-color: var(--state-group-waiting); }
+.state-group-breakdown   { background-color: var(--state-group-breakdown);   color: var(--state-group-breakdown-color); --seg-color: var(--state-group-breakdown); }
+.state-group-maintenance { background-color: var(--state-group-maintenance); color: var(--state-group-maintenance-color); --seg-color: var(--state-group-maintenance); }

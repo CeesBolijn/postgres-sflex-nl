@@ -60,7 +60,9 @@
         "group_by": [
           "state.code"
         ],
-        "class_names_field": "state.class_name"
+        "class_names_field": "state.class_name",
+        "fill_field": "state.fill",
+        "color_field": "state.color"
       }
     }
   ]
