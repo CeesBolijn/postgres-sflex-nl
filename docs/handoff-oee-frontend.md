@@ -37,7 +37,10 @@ config verwacht. Alle voorbeelden komen letterlijk uit de data_groups
 ## 2. stacked-area-chart (data_group 62)
 
 De functie levert per (datum × groep) rijen per state plus één synthetische
-`available`-rij; de stapel sluit áltijd exact op het venster.
+`available`-rij en één `unavailable`-rij. Onderin producing, dan de
+`available`-band, bovenop altijd `unavailable`; de stapel sluit bij elke
+selectie exact op het venster. Alle tijden in `param_json` en `oee_json`
+zijn hele seconden (`*_in_seconds`); de frontend maakt er hh:mm van.
 
 | config-key | waarde | wat de widget moet doen |
 |---|---|---|
@@ -48,12 +51,12 @@ De functie levert per (datum × groep) rijen per state plus één synthetische
 | `fill_field` / `color_field` | `state_json.fill` / `state_json.color` | **nieuw**: svg-fill en tekstkleur per serie, waarde is een `var(...)`-string |
 | `class_names_field` | `state_json.class_name` | enkel string-pad, bestaande feature |
 | `set_overrides.planned` | `{"type": "line", "stacked": false}` | de planning als losse lijn, niet in de stapel |
-| `set_overrides.available` | `{"no_legend": true, "no_tooltip": true}` | **nieuw**: de serie wordt getekend (de band die de stapel sluit) maar verschijnt niet in de legenda en niet in de tooltip |
+| `set_overrides.available` | `{"no_legend": true, "no_tooltip": true}` | **nieuw**: de serie wordt getekend (de middenband) maar verschijnt niet in de legenda en niet in de tooltip |
 | geen `set_title_field` | — | geen titel boven de chart |
 
 Tooltip: header over twee regels (regel 1 `shift_date` + `step`, regel 2
-`param_json.total_shift_hours` + `oee_json.producing_oee` als `percent` — de
-spans vullen per paar de gridregel); daaronder één sectie met per staterij
+`param_json.total_shift_in_seconds` als `duration` `hh:mm` +
+`oee_json.producing_oee` als `percent` — de spans vullen per paar de gridregel); daaronder één sectie met per staterij
 `state` + `duration_seconds` (`duration`, `hh:mm`). Geen aparte
 samenvattingssectie: "niet beschikbaar" is een gewone staterij.
 
@@ -65,15 +68,22 @@ gedragen zich verder als elke andere state.
 
 Betekenis van de tooltipwaarden:
 
-- `total_shift_hours` — het venster: de som van de shiftlengtes (18,0 werkdag,
-  9,0 weekend), de vaste bovenkant van de chart.
-- `unavailable_hours` ("niet beschikbaar") — `breakdown_hours +
-  offline_hours`: de uren dat de machine er niet kón zijn. Dit is wat vóór de
-  OEE-deling van het venster afgaat.
-- `producing_oee` — `producing_hours / (total_shift_hours −
-  unavailable_hours) × 100`.
-- de `available`-band (geen tooltipwaarde meer) is een restwaarde: venster
-  minus alles wat als vlak getoond wordt; hij beweegt mee met de filterselectie.
+- `total_shift_in_seconds` — het venster: de som van de shiftlengtes (64.800
+  werkdag, 32.400 weekend), de vaste bovenkant van de chart.
+- `unavailable_in_seconds` ("niet beschikbaar") — `breakdown_in_seconds +
+  offline_in_seconds`: de tijd dat de machine er niet kón zijn. Dit is wat
+  vóór de OEE-deling van het venster afgaat.
+- `producing_oee` — `producing_in_seconds / (total_shift_in_seconds −
+  unavailable_in_seconds) × 100`.
+- de `available`-band (geen tooltipwaarde) is een formule:
+  `production_in_seconds − producing_in_seconds − shown_loss_in_seconds`. Een
+  aangevinkt verlies (starved, blocked, idle) wordt een eigen vlak en gaat uit
+  de band; aangevinkte breakdown/offline gaan uit de `unavailable`-rest
+  bovenop. `running` komt nooit als rij terug (het is de envelope van
+  producing + starved.running).
+- het filter (`states`) selecteert series: een state komt mee op zijn eigen
+  code óf op zijn `counts_as`, dus `producing` tekent ook setup en `offline`
+  ook missingdata.
 
 ## 3. donut (data_group 29)
 

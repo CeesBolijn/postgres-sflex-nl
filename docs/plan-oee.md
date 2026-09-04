@@ -320,24 +320,40 @@ Per (`shift_date`, `shift_index`, `line`, `step`, `resource_uid`):
 
 ```json
 {
-  "total_shift_hours": 9.0, "producing_hours": 6.8,
-  "breakdown_hours": 0.4, "offline_hours": 0.0, "planned_hours": 7.5
+  "total_shift_in_seconds": 32400, "producing_in_seconds": 24480,
+  "breakdown_in_seconds": 1440, "offline_in_seconds": 0, "planned_in_seconds": 27000,
+  "shown_loss_in_seconds": 0, "shown_unavailable_in_seconds": 1440
 }
 ```
 
-`total_shift_hours` is de **vensterlengte × resources in de groep** (uit
+Alle tijden zijn hele **seconden** (`*_in_seconds`, besloten 2026-09-04); de
+frontend maakt er hh:mm van. `total_shift_in_seconds` is de
+**vensterlengte × resources in de groep** (uit
 `shift_def` × `resources`), nooit een som van gelogde states — een gat in de
 logging drukt zo de OEE in plaats van de noemer stil te verkleinen.
 
 ```json
 [
-  "production_hours = total_shift_hours - (breakdown_hours + offline_hours)",
-  "producing_oee = production_hours > 0 ? producing_hours / production_hours * 100 : 0",
-  "breakdown_percentage = total_shift_hours > 0 ? breakdown_hours / total_shift_hours * 100 : 0",
-  "offline_percentage = total_shift_hours > 0 ? offline_hours / total_shift_hours * 100 : 0",
-  "planned_percentage = total_shift_hours > 0 ? planned_hours / total_shift_hours * 100 : 0"
+  "unavailable_in_seconds = breakdown_in_seconds + offline_in_seconds",
+  "production_in_seconds = total_shift_in_seconds - unavailable_in_seconds",
+  "unavailable_rest_in_seconds = max(unavailable_in_seconds - shown_unavailable_in_seconds, 0)",
+  "available_in_seconds = max(production_in_seconds - producing_in_seconds - shown_loss_in_seconds, 0)",
+  "producing_oee = production_in_seconds > 0 ? producing_in_seconds / production_in_seconds * 100 : 0",
+  "breakdown_percentage = total_shift_in_seconds > 0 ? breakdown_in_seconds / total_shift_in_seconds * 100 : 0",
+  "offline_percentage = total_shift_in_seconds > 0 ? offline_in_seconds / total_shift_in_seconds * 100 : 0",
+  "planned_percentage = total_shift_in_seconds > 0 ? planned_in_seconds / total_shift_in_seconds * 100 : 0"
 ]
 ```
+
+De stapel (besloten 2026-09-04): onderin producing (incl. setup, via
+`counts_as`), dan de `available`-band, bovenop altijd `unavailable`.
+`available_in_seconds` is het productievenster minus producing minus de
+verliezen die als eigen vlak getekend worden (`shown_loss_in_seconds`: de
+aangevinkte states zonder `counts_as` — starved, blocked, idle); aangevinkte
+breakdown/offline gaan uit de `unavailable`-rest. Zo sluit de stapel bij elke
+selectie op het venster. `running` wordt in de functie overgeslagen — het is
+de envelope van `producing + starved.running` en zou dubbeltellen — en staat
+daarom ook niet meer in het filter (64), net als `missingdata`.
 
 De evaluator kent `? :` en `max()`, dus de nuldelingen zitten in de formule en
 niet in de SQL. De functie geeft per rij `param_json` en `oee_json` (het

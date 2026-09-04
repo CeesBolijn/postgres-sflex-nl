@@ -293,6 +293,9 @@
         "production_orderline_id": {
           "ui": {
             "hidden": true
+          },
+          "nav": {
+            "path": "https://v2.proboview.nl/orders/edit/{order_id}/production-orderlines/{production_orderline_id}/nests"
           }
         }
       },

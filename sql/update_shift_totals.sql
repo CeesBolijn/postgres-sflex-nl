@@ -1,12 +1,17 @@
 -- ============================================================
--- Update: get_resource_state_shift_totals — the unavailable rest
--- (breakdown + offline not shown as its own area) is a synthetic
--- STATE row 'unavailable' at the top of the stack, not a separate
--- tooltip entity. The available band shrinks accordingly, so
--- producing + losses + available + unavailable(+shown) still sum to
--- the window. No row when the selection already covers everything.
--- Run together with sql/update_log_lookup_resource_state.sql (the
--- 'unavailable' node) and sql/update_data_group_partial.sql (62).
+-- Update: get_resource_state_shift_totals — the stack is producing at
+-- the bottom, the available band in the middle, unavailable always on
+-- top. available = production window - producing - the losses drawn as
+-- their own area (starved, blocked, idle when selected); a selected
+-- breakdown/offline moves out of the unavailable rest instead. So the
+-- stack closes on the window for every selection. 'running' is the
+-- envelope of producing + starved.running and is never a row of its
+-- own, whatever the filter sends. A state passes the filter on its own
+-- code or on its counts_as bucket (producing draws setup, offline draws
+-- missingdata), matching the series the chart groups on.
+-- Every time in param_json and oee_json is in whole seconds
+-- (*_in_seconds), no more *_hours; the frontend formats hh:mm.
+-- Run together with sql/update_data_group_partial.sql (62, 64).
 -- ============================================================
 
 BEGIN;
@@ -29,23 +34,26 @@ declare
   -- the OEE formulas. The bucket totals (counts_as in
   -- lookup_resource_state) go into param_json per group and
   -- evaluate_many_nas runs these lines over them. A state without a
-  -- counts_as sits inside production_hours without being summed:
-  -- that is the not-producing loss
+  -- counts_as sits inside production_in_seconds without being summed:
+  -- that is the not-producing loss. Every time is in seconds, the
+  -- frontend formats them as hh:mm
   v_formula_json jsonb := jsonb_build_array(
-      'unavailable_hours = breakdown_hours + offline_hours',
-      'production_hours = total_shift_hours - unavailable_hours',
+      'unavailable_in_seconds = breakdown_in_seconds + offline_in_seconds',
+      'production_in_seconds = total_shift_in_seconds - unavailable_in_seconds',
       -- the tooltip rest value: unavailable time not already shown as
       -- its own area (breakdown/offline selected in the filter), so it
-      -- is never counted twice; in seconds for hh:mm display
-      'unavailable_rest_in_seconds = max(unavailable_hours - shown_unavailable_hours, 0) * 3600',
-      -- the middle band of the chart: the window minus the shown areas
-      -- and minus the unavailable rest (its own synthetic state at the
-      -- top), so the stack always closes on total_shift_hours
-      'available_hours = max(total_shift_hours - shown_hours - (unavailable_hours - shown_unavailable_hours), 0)',
-      'producing_oee = production_hours > 0 ? producing_hours / production_hours * 100 : 0',
-      'breakdown_percentage = total_shift_hours > 0 ? breakdown_hours / total_shift_hours * 100 : 0',
-      'offline_percentage = total_shift_hours > 0 ? offline_hours / total_shift_hours * 100 : 0',
-      'planned_percentage = total_shift_hours > 0 ? planned_hours / total_shift_hours * 100 : 0');
+      -- is never counted twice
+      'unavailable_rest_in_seconds = max(unavailable_in_seconds - shown_unavailable_in_seconds, 0)',
+      -- the middle band of the chart: the production window minus
+      -- producing and minus the losses drawn as their own area
+      -- (starved, blocked, idle when selected). Bottom producing, then
+      -- available, unavailable always on top; a selected loss moves
+      -- out of available, a selected breakdown/offline out of unavailable
+      'available_in_seconds = max(production_in_seconds - producing_in_seconds - shown_loss_in_seconds, 0)',
+      'producing_oee = production_in_seconds > 0 ? producing_in_seconds / production_in_seconds * 100 : 0',
+      'breakdown_percentage = total_shift_in_seconds > 0 ? breakdown_in_seconds / total_shift_in_seconds * 100 : 0',
+      'offline_percentage = total_shift_in_seconds > 0 ? offline_in_seconds / total_shift_in_seconds * 100 : 0',
+      'planned_percentage = total_shift_in_seconds > 0 ? planned_in_seconds / total_shift_in_seconds * 100 : 0');
 begin
   if v_group_by not in ('resource', 'step', 'line') then
     raise exception 'invalid p_group_by %, expected one of: resource, step, line', v_group_by;
@@ -122,6 +130,9 @@ begin
     left join state_map sm on sm.state_code = agg.state
     where agg.shift_date between v_until - p_days + 1 and v_until
       and agg.resource_uid = any(p_resource_uids)
+      -- running is the envelope of producing + starved.running: never a
+      -- row of its own, it would count that time twice
+      and agg.state <> 'running'
       and (p_include_weekends or not d.is_weekend)
       and (p_include_mandatory_days_off or not (coalesce(p_tenant_ids, d.tenants_mandatory_day_off) <@ d.tenants_mandatory_day_off and d.tenants_mandatory_day_off <> '{}'))
     group by agg.shift_date, agg.shift_index, agg.shift_start, agg.shift_end,
@@ -189,21 +200,25 @@ begin
              case when v_keep_step then r.step else null::text end,
              r.line
   ),
+  -- the filter selects series (set_field = counts_as in the chart): a
+  -- state is drawn when its own code or its bucket is selected, so
+  -- 'producing' draws setup too and 'offline' draws missingdata
   bucket_sums as (
     select b.shift_date, b.shift_index, b.resource_uid, b.step, b.line,
            sum(b.seconds) filter (where sm.counts_as = 'producing') as producing_seconds,
            sum(b.seconds) filter (where sm.counts_as = 'breakdown') as breakdown_seconds,
            sum(b.seconds) filter (where sm.counts_as = 'offline')   as offline_seconds,
            sum(b.seconds) filter (where sm.counts_as = 'planned')   as planned_seconds,
-           -- everything drawn as an area (the selected states, planned
-           -- excluded): the available band is the window minus this,
-           -- so the stack always closes on the window
-           sum(b.seconds) filter (where b.state <> 'planned'
-                                    and (p_states is null or b.state = any(p_states))) as shown_seconds,
-           -- the unavailable part of that: already visible as its own
-           -- area, so the tooltip rest value must not count it again
+           -- the losses (no counts_as) drawn as their own area: they
+           -- move out of the available band
+           sum(b.seconds) filter (where sm.counts_as is null
+                                    and (p_states is null or b.state = any(p_states)
+                                         or sm.counts_as = any(p_states))) as shown_loss_seconds,
+           -- the unavailable time drawn as its own area: it moves out of
+           -- the unavailable rest on top, so it is never counted twice
            sum(b.seconds) filter (where sm.counts_as in ('breakdown', 'offline')
-                                    and (p_states is null or b.state = any(p_states))) as shown_unavailable_seconds
+                                    and (p_states is null or b.state = any(p_states)
+                                         or sm.counts_as = any(p_states))) as shown_unavailable_seconds
     from base b
     left join state_map sm on sm.state_code = b.state
     group by b.shift_date, b.shift_index, b.resource_uid, b.step, b.line
@@ -216,11 +231,13 @@ begin
            -- synthetic state row at the top of the stack
            greatest(coalesce(bs.breakdown_seconds, 0) + coalesce(bs.offline_seconds, 0)
                     - coalesce(bs.shown_unavailable_seconds, 0), 0) as unavailable_rest_seconds,
-           -- the middle band of the chart: window minus the shown areas
-           -- and minus that unavailable rest
-           greatest(t.total_seconds - coalesce(bs.shown_seconds, 0)
-                    - greatest(coalesce(bs.breakdown_seconds, 0) + coalesce(bs.offline_seconds, 0)
-                               - coalesce(bs.shown_unavailable_seconds, 0), 0), 0) as available_seconds,
+           -- the middle band of the chart: production window minus
+           -- producing minus the losses drawn as their own area (same as
+           -- available_in_seconds in v_formula_json)
+           greatest(t.total_seconds
+                    - coalesce(bs.breakdown_seconds, 0) - coalesce(bs.offline_seconds, 0)
+                    - coalesce(bs.producing_seconds, 0)
+                    - coalesce(bs.shown_loss_seconds, 0), 0) as available_seconds,
            ev.param_json,
            public.evaluate_many_nas(v_formula_json, ev.param_json) as oee_json
     from totals t
@@ -231,17 +248,17 @@ begin
      and bs.step is not distinct from t.step
      and bs.line is not distinct from t.line
     cross join lateral (
+      -- every time in whole seconds, the same unit as duration_seconds:
+      -- the chart pins its y-scale to the window (y_axis.max_field) and
+      -- the frontend formats hh:mm
       select jsonb_build_object(
-                 'total_shift_hours', round(t.total_seconds / 3600.0, 4),
-                 -- same unit as duration_seconds, so the chart can pin
-                 -- its y-scale to the window (y_axis.max_field)
-                 'total_shift_in_seconds', round(t.total_seconds, 0),
-                 'producing_hours',   round(coalesce(bs.producing_seconds, 0) / 3600.0, 4),
-                 'breakdown_hours',   round(coalesce(bs.breakdown_seconds, 0) / 3600.0, 4),
-                 'offline_hours',     round(coalesce(bs.offline_seconds, 0) / 3600.0, 4),
-                 'planned_hours',     round(coalesce(bs.planned_seconds, 0) / 3600.0, 4),
-                 'shown_hours',       round(coalesce(bs.shown_seconds, 0) / 3600.0, 4),
-                 'shown_unavailable_hours', round(coalesce(bs.shown_unavailable_seconds, 0) / 3600.0, 4)
+                 'total_shift_in_seconds',       round(t.total_seconds, 0),
+                 'producing_in_seconds',         round(coalesce(bs.producing_seconds, 0), 0),
+                 'breakdown_in_seconds',         round(coalesce(bs.breakdown_seconds, 0), 0),
+                 'offline_in_seconds',           round(coalesce(bs.offline_seconds, 0), 0),
+                 'planned_in_seconds',           round(coalesce(bs.planned_seconds, 0), 0),
+                 'shown_loss_in_seconds',        round(coalesce(bs.shown_loss_seconds, 0), 0),
+                 'shown_unavailable_in_seconds', round(coalesce(bs.shown_unavailable_seconds, 0), 0)
              ) as param_json
     ) ev
   ),
@@ -269,13 +286,15 @@ begin
      and o.resource_uid is not distinct from b.resource_uid
      and o.step is not distinct from b.step
      and o.line is not distinct from b.line
-    where p_states is null or b.state = any(p_states) or b.state = 'planned'
+    where p_states is null or b.state = any(p_states)
+       or sm.counts_as = any(p_states) or b.state = 'planned'
 
     union all
 
     -- one synthetic 'available' row per group: the middle band of the
-    -- stack, so producing + losses + available + breakdown + offline
-    -- always sum to the window and the top of the chart is flat
+    -- stack between producing and unavailable. Whatever the selection,
+    -- producing + drawn losses + available + drawn unavailable +
+    -- unavailable rest sums to the window
     select o.shift_date,
            coalesce(o.shift_index, 1),
            o.shift_start, o.shift_end,
@@ -334,24 +353,47 @@ alter function log.get_resource_state_shift_totals(text[], timestamp with time z
 
 COMMIT;
 
--- verification 1: the stack still closes on the window; expected: no rows
+-- verification 1: the stack closes on the window for every selection
+-- (nothing, the filter's seven states, producing only); expected: no rows
 -- (group by resource_uid, never by name: several names exist twice)
-SELECT shift_date, resource_uid
-FROM (
+WITH sel(states) AS (VALUES
+  (NULL::text[]),
+  (array['producing', 'breakdown', 'offline', 'starved', 'setup', 'blocked', 'idle']),
+  (array['producing']))
+SELECT sel.states, x.shift_date, x.resource_uid, x.stack_seconds, x.window_seconds
+FROM sel
+CROSS JOIN LATERAL (
   SELECT shift_date, resource_uid,
          sum(duration_seconds) FILTER (WHERE state <> 'planned') AS stack_seconds,
          max((param_json ->> 'total_shift_in_seconds')::numeric) AS window_seconds
   FROM log.get_resource_state_shift_totals(
-           NULL, now(), 3, NULL, array['producing', 'setup'], false, false, false, 'resource', NULL)
+           NULL, now(), 3, NULL, sel.states, false, false, false, 'resource', NULL)
   GROUP BY shift_date, resource_uid
 ) x
-WHERE abs(stack_seconds - window_seconds) > 2;
+WHERE abs(x.stack_seconds - x.window_seconds) > 2;
 
--- verification 2: everything selected -> no unavailable rows left
-SELECT count(*) AS unavailable_rows
+-- verification 2: a selected loss moves out of available, a selected
+-- breakdown/offline out of unavailable; expected: no rows
+SELECT a.shift_date, a.resource_uid, a.state,
+       a.duration_seconds AS producing_only, b.duration_seconds AS with_starved_and_breakdown
 FROM log.get_resource_state_shift_totals(
-         NULL, now(), 3, NULL,
-         array['producing', 'setup', 'breakdown', 'maintenance', 'interruption',
-               'offline', 'installation', 'missingdata'],
-         false, false, false, 'resource', NULL)
-WHERE state = 'unavailable';
+         NULL, now(), 3, NULL, array['producing'], false, false, false, 'resource', NULL) a
+JOIN log.get_resource_state_shift_totals(
+         NULL, now(), 3, NULL, array['producing', 'starved', 'breakdown'], false, false, false, 'resource', NULL) b
+  ON b.shift_date = a.shift_date AND b.resource_uid = a.resource_uid AND b.state = a.state
+WHERE a.state IN ('available', 'unavailable')
+  AND b.duration_seconds > a.duration_seconds + 2;
+
+-- verification 3: running is never a row, also with nothing selected;
+-- expected: 0
+SELECT count(*) AS running_rows
+FROM log.get_resource_state_shift_totals(
+         NULL, now(), 3, NULL, NULL, false, false, false, 'resource', NULL)
+WHERE state = 'running';
+
+-- verification 4: sql and formula agree on the band; expected: no rows
+SELECT shift_date, resource_uid, duration_seconds, (oee_json ->> 'available_in_seconds')::numeric AS formula_seconds
+FROM log.get_resource_state_shift_totals(
+         NULL, now(), 3, NULL, array['producing'], false, false, false, 'resource', NULL)
+WHERE state = 'available'
+  AND abs(duration_seconds - (oee_json ->> 'available_in_seconds')::numeric) > 2;

@@ -159,6 +159,9 @@
                 "title": "Рядок замовлення"
               }
             }
+          },
+          "nav": {
+            "path": "https://v2.proboview.nl/orders/edit/{order_id}/sales-orderlines/{sales_orderline_id}/production-orderlines"
           }
         },
         "number": {
@@ -184,6 +187,9 @@
               }
             },
             "hidden": true
+          },
+          "nav": {
+            "path": "https://v2.proboview.nl/orders/edit/{order_id}"
           }
         },
         "product_amount": {
@@ -921,6 +927,9 @@
                           },
                           "order": 0,
                           "class_name": "col-span-2"
+                        },
+                        "nav": {
+                          "path": "https://v2.proboview.nl/orders/edit/{order_id}/sales-orderlines/{sales_orderline_id}/production-orderlines"
                         }
                       },
                       "product_amount": {

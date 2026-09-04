@@ -254,7 +254,7 @@
             }
           }
         },
-        "param_json.total_shift_hours": {
+        "param_json.total_shift_in_seconds": {
           "ui": {
             "i18n": {
               "de": {
@@ -275,7 +275,8 @@
               "uk": {
                 "title": "Shift hours"
               }
-            }
+            },
+            "type": "duration"
           }
         }
       },
@@ -304,11 +305,13 @@
                           "class_name": "col-span-2 text-right"
                         }
                       },
-                      "param_json.total_shift_hours": {
+                      "param_json.total_shift_in_seconds": {
                         "ui": {
                           "order": 2,
                           "class_name": "col-span-3"
-                        }
+                        },
+                        "type": "duration",
+                        "format": "hh:mm"
                       },
                       "oee_json.producing_oee": {
                         "ui": {

@@ -1789,6 +1789,9 @@
           "order_id": {
             "ui": {
               "hidden": true
+            },
+            "nav": {
+              "path": "https://v2.proboview.nl/orders/edit/{order_id}"
             }
           },
           "back_width": {
@@ -4320,6 +4323,9 @@
                 }
               },
               "order": 6
+            },
+            "nav": {
+              "path": "https://v2.proboview.nl/orders/edit/{order_id}"
             }
           },
           "source": {
@@ -4461,6 +4467,9 @@
                 }
               },
               "order": 2
+            },
+            "nav": {
+              "path": "https://v2.proboview.nl/orders/edit/{order_id}/production-orderlines/{production_orderline_id}/nests"
             }
           },
           "batch_name": {
@@ -4739,6 +4748,9 @@
           "production_orderline_id": {
             "ui": {
               "hidden": true
+            },
+            "nav": {
+              "path": "https://v2.proboview.nl/orders/edit/{order_id}/sales-orderlines/{sales_orderline_id}/production-orderlines"
             }
           }
         },
@@ -4772,6 +4784,9 @@
                   "ui": {
                     "order": 0,
                     "class_name": "col-span-3"
+                  },
+                  "nav": {
+                    "path": "https://v2.proboview.nl/orders/edit/{order_id}"
                   }
                 },
                 "source": {
@@ -4847,6 +4862,9 @@
               "ui": {
                 "order": 2,
                 "class_name": "col-span-3"
+              },
+              "nav": {
+                "path": "https://v2.proboview.nl/orders/edit/{order_id}/production-orderlines/{production_orderline_id}/nests"
               }
             },
             "batch_name": {
@@ -5523,6 +5541,9 @@
           "production_orderline_id": {
             "ui": {
               "hidden": true
+            },
+            "nav": {
+              "path": "https://v2.proboview.nl/orders/edit/{order_id}/production-orderlines/{production_orderline_id}/nests"
             }
           }
         },
@@ -7470,6 +7491,9 @@
                 }
               },
               "order": 1
+            },
+            "nav": {
+              "path": "https://v2.proboview.nl/orders/edit/{order_id}"
             }
           },
           "nest_ids": {
@@ -7714,6 +7738,9 @@
           "production_orderline_id": {
             "ui": {
               "hidden": true
+            },
+            "nav": {
+              "path": "https://v2.proboview.nl/orders/edit/{order_id}/sales-orderlines/{sales_orderline_id}/production-orderlines"
             }
           },
           "orderline_status_sequence": {
@@ -8277,6 +8304,9 @@
                             "order": 0,
                             "hidden": false,
                             "class_name": "col-span-1"
+                          },
+                          "nav": {
+                            "path": "https://v2.proboview.nl/orders/edit/{order_id}/sales-orderlines/{sales_orderline_id}/production-orderlines"
                           }
                         },
                         "status_title": {
@@ -8408,6 +8438,9 @@
                       "ui": {
                         "order": 0,
                         "class_name": "col-span-2"
+                      },
+                      "nav": {
+                        "path": "https://v2.proboview.nl/orders/edit/{order_id}"
                       }
                     },
                     "product_amount": {
@@ -12210,7 +12243,7 @@
               }
             }
           },
-          "param_json.total_shift_hours": {
+          "param_json.total_shift_in_seconds": {
             "ui": {
               "i18n": {
                 "de": {
@@ -12231,7 +12264,8 @@
                 "uk": {
                   "title": "Shift hours"
                 }
-              }
+              },
+              "type": "duration"
             }
           }
         },
@@ -12260,11 +12294,13 @@
                             "class_name": "col-span-2 text-right"
                           }
                         },
-                        "param_json.total_shift_hours": {
+                        "param_json.total_shift_in_seconds": {
                           "ui": {
                             "order": 2,
                             "class_name": "col-span-3"
-                          }
+                          },
+                          "type": "duration",
+                          "format": "hh:mm"
                         },
                         "oee_json.producing_oee": {
                           "ui": {
@@ -12736,98 +12772,6 @@
                     }
                   },
                   {
-                    "code": "setup",
-                    "i18n": {
-                      "de": {
-                        "title": "Rüsten"
-                      },
-                      "en": {
-                        "title": "Setup"
-                      },
-                      "es": {
-                        "title": "Configuración"
-                      },
-                      "fr": {
-                        "title": "Configuration"
-                      },
-                      "nl": {
-                        "title": "Setup"
-                      },
-                      "uk": {
-                        "title": "Налаштування"
-                      }
-                    }
-                  },
-                  {
-                    "code": "starved",
-                    "i18n": {
-                      "de": {
-                        "title": "Materialmangel"
-                      },
-                      "en": {
-                        "title": "Starved"
-                      },
-                      "es": {
-                        "title": "Sin material"
-                      },
-                      "fr": {
-                        "title": "Sous-alimenté"
-                      },
-                      "nl": {
-                        "title": "Starved"
-                      },
-                      "uk": {
-                        "title": "Голодування"
-                      }
-                    }
-                  },
-                  {
-                    "code": "blocked",
-                    "i18n": {
-                      "de": {
-                        "title": "Blockiert"
-                      },
-                      "en": {
-                        "title": "Blocked"
-                      },
-                      "es": {
-                        "title": "Bloqueado"
-                      },
-                      "fr": {
-                        "title": "Bloqué"
-                      },
-                      "nl": {
-                        "title": "Blocked"
-                      },
-                      "uk": {
-                        "title": "Заблоковано"
-                      }
-                    }
-                  },
-                  {
-                    "code": "idle",
-                    "i18n": {
-                      "de": {
-                        "title": "Leerlauf"
-                      },
-                      "en": {
-                        "title": "Idle"
-                      },
-                      "es": {
-                        "title": "Inactivo"
-                      },
-                      "fr": {
-                        "title": "Inactif"
-                      },
-                      "nl": {
-                        "title": "Idle"
-                      },
-                      "uk": {
-                        "title": "Неактивний"
-                      }
-                    }
-                  },
-                  {
                     "code": "breakdown",
                     "i18n": {
                       "de": {
@@ -12874,48 +12818,94 @@
                     }
                   },
                   {
-                    "code": "missingdata",
+                    "code": "starved",
                     "i18n": {
                       "de": {
-                        "title": "Fehlende Daten"
+                        "title": "Materialmangel"
                       },
                       "en": {
-                        "title": "Missing data"
+                        "title": "Starved"
                       },
                       "es": {
-                        "title": "Datos faltantes"
+                        "title": "Sin material"
                       },
                       "fr": {
-                        "title": "Données manquantes"
+                        "title": "Sous-alimenté"
                       },
                       "nl": {
-                        "title": "Missing data"
+                        "title": "Starved"
                       },
                       "uk": {
-                        "title": "Відсутні дані"
+                        "title": "Голодування"
                       }
                     }
                   },
                   {
-                    "code": "running",
+                    "code": "setup",
                     "i18n": {
                       "de": {
-                        "title": "Läuft"
+                        "title": "Rüsten"
                       },
                       "en": {
-                        "title": "Running"
+                        "title": "Setup"
                       },
                       "es": {
-                        "title": "En marcha"
+                        "title": "Configuración"
                       },
                       "fr": {
-                        "title": "En marche"
+                        "title": "Configuration"
                       },
                       "nl": {
-                        "title": "Running"
+                        "title": "Setup"
                       },
                       "uk": {
-                        "title": "В роботі"
+                        "title": "Налаштування"
+                      }
+                    }
+                  },
+                  {
+                    "code": "blocked",
+                    "i18n": {
+                      "de": {
+                        "title": "Blockiert"
+                      },
+                      "en": {
+                        "title": "Blocked"
+                      },
+                      "es": {
+                        "title": "Bloqueado"
+                      },
+                      "fr": {
+                        "title": "Bloqué"
+                      },
+                      "nl": {
+                        "title": "Blocked"
+                      },
+                      "uk": {
+                        "title": "Заблоковано"
+                      }
+                    }
+                  },
+                  {
+                    "code": "idle",
+                    "i18n": {
+                      "de": {
+                        "title": "Leerlauf"
+                      },
+                      "en": {
+                        "title": "Idle"
+                      },
+                      "es": {
+                        "title": "Inactivo"
+                      },
+                      "fr": {
+                        "title": "Inactif"
+                      },
+                      "nl": {
+                        "title": "Idle"
+                      },
+                      "uk": {
+                        "title": "Неактивний"
                       }
                     }
                   }
@@ -20719,6 +20709,9 @@
                   "title": "Рядок замовлення"
                 }
               }
+            },
+            "nav": {
+              "path": "https://v2.proboview.nl/orders/edit/{order_id}/sales-orderlines/{sales_orderline_id}/production-orderlines"
             }
           },
           "number": {
@@ -20744,6 +20737,9 @@
                 }
               },
               "hidden": true
+            },
+            "nav": {
+              "path": "https://v2.proboview.nl/orders/edit/{order_id}"
             }
           },
           "product_amount": {
@@ -21481,6 +21477,9 @@
                             },
                             "order": 0,
                             "class_name": "col-span-2"
+                          },
+                          "nav": {
+                            "path": "https://v2.proboview.nl/orders/edit/{order_id}/sales-orderlines/{sales_orderline_id}/production-orderlines"
                           }
                         },
                         "product_amount": {
